@@ -1,0 +1,113 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'oureda'
+            keyPassword 'oureda123456'
+            storeFile file('../oureda.jks')
+            storePassword 'oureda123456'
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.sunny.youyun"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        android.compileOptions.sourceCompatibility 1.8
+        android.compileOptions.targetCompatibility 1.8
+
+        multiDexEnabled true
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "df24fa10f648e5e440bf19d3", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "YOU_YUN_CHANNEL", //用户渠道统计的渠道名称
+        ]
+    }
+    buildTypes {
+
+        release {
+            //开启混淆
+            minifyEnabled true
+            //压缩
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            pseudoLocalesEnabled true
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+repositories {
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //ButterKnife
+    compile 'com.jakewharton:butterknife:8.7.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    //Logger
+    compile 'com.orhanobut:logger:2.1.1'
+    //RxJava
+    //retrofit
+    //RxDownload
+    //rx download
+    compile 'zlc.season:rxdownload2:2.0.4'
+    //Router
+    compile 'com.github.mzule.activityrouter:activityrouter:1.2.2'
+    annotationProcessor 'com.github.mzule.activityrouter:compiler:1.1.7'
+    //图片加载 glide
+    compile 'com.github.bumptech.glide:glide:4.0.0'
+    implementation 'com.android.support:support-v4:25.4.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+    //bar color
+    compile 'com.githang:status-bar-compat:0.5.3'
+    //数据库
+    compile 'org.litepal.android:core:1.5.1'
+    //Animator
+    compile 'com.nineoldandroids:library:2.4.0'
+    //  zxing 库
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'com.google.zxing:android-core:3.2.1'
+    //JPush
+    // 此处以JPush 3.0.5 版本为例。
+    compile 'cn.jiguang.sdk:jpush:3.0.5'
+    // 此处以JCore 1.1.2 版本为例。
+    compile 'cn.jiguang.sdk:jcore:1.1.2'
+    //permission
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    //eventbus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:recyclerview-v7:25.4.0'
+    compile 'com.android.support:design:25.4.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.0'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.0'
+    implementation files('libs/open_sdk_r5793_lite.jar')
+    implementation files('libs/mta-sdk-1.6.2.jar')
+}

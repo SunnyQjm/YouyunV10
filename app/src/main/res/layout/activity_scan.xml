@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sunny.youyun.activity.scan.ScanActivity">
+
+    <com.sunny.youyun.views.QRScan.zxing.ZXingView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:lfkdsk="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/zxingview"
+        style="@style/MatchMatch"
+        android:clipToPadding="false"
+        android:fitsSystemWindows="false"
+        lfkdsk:qrcv_animTime="1000"
+        lfkdsk:qrcv_borderColor="@android:color/white"
+        lfkdsk:qrcv_borderSize="1dp"
+        lfkdsk:qrcv_cornerColor="@color/application_theme_color"
+        lfkdsk:qrcv_cornerLength="20dp"
+        lfkdsk:qrcv_cornerSize="6dp"
+        lfkdsk:qrcv_isCenterVertical="true"
+        lfkdsk:qrcv_isOnlyDecodeScanBoxArea="true"
+        lfkdsk:qrcv_isShowTipBackground="true"
+        lfkdsk:qrcv_isShowTipTextAsSingleLine="true"
+        lfkdsk:qrcv_maskColor="#9c000000"
+        lfkdsk:qrcv_qrCodeTipText="@string/scan_qr_code_helper"
+        lfkdsk:qrcv_rectWidth="270dp"
+        lfkdsk:qrcv_scanLineColor="@color/application_theme_color"
+        lfkdsk:qrcv_scanLineSize="1dp"
+        lfkdsk:qrcv_toolbarHeight="@dimen/action_bar_height"
+        lfkdsk:layout_constraintTop_toTopOf="parent"
+        lfkdsk:layout_constraintLeft_toLeftOf="parent"
+        lfkdsk:layout_constraintRight_toRightOf="parent"
+        lfkdsk:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:layout_width="0dp">
+
+    </com.sunny.youyun.views.QRScan.zxing.ZXingView>
+    <com.sunny.youyun.views.EasyBar
+        xmlns:easy="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/easyBar"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        easy:title="优云"
+        easy:title_size="17sp"
+        easy:title_color="@color/white"
+        easy:left_icon="@drawable/back"
+        android:layout_marginRight="0dp"
+        easy:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        easy:layout_constraintLeft_toLeftOf="parent"
+        easy:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp" />
+
+</android.support.constraint.ConstraintLayout>

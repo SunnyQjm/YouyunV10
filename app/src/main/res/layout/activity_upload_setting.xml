@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical"
+    tools:context="com.sunny.youyun.activity.upload_setting.UploadSettingActivity">
+
+    <include layout="@layout/bar_item" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+            <ImageView
+                android:id="@+id/img_add"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/white"
+                android:padding="12dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+                app:srcCompat="@drawable/icon_setting_add" />
+
+            <include
+                android:id="@+id/upload_setting_is_public"
+                layout="@layout/select_item_with_switch_bar" />
+
+            <include layout="@layout/divide_item" />
+            <include layout="@layout/divide_item" />
+            <include layout="@layout/divide_item" />
+
+            <com.sunny.youyun.views.LineMenuItem
+                android:id="@+id/upload_setting_effect_date"
+                style="@style/LineMenuItem"
+                app:menu_title="有效日期"
+                app:menu_value="永久"
+                app:menu_value_color="@color/gray">
+
+            </com.sunny.youyun.views.LineMenuItem>
+
+            <include layout="@layout/divide_item"/>
+
+            <com.sunny.youyun.views.LineMenuItem
+                android:id="@+id/upload_setting_effect_date_forever"
+                android:background="@color/transparent"
+                style="@style/LineMenuItem"
+                app:menu_title="永久"
+                android:visibility="gone"
+                app:is_right_icon_visible="false"
+                app:menu_value_color="@color/gray">
+
+            </com.sunny.youyun.views.LineMenuItem>
+
+            <include layout="@layout/divide_item" />
+
+            <com.sunny.youyun.views.LineMenuItem
+                android:id="@+id/upload_setting_effect_date_select"
+                style="@style/LineMenuItem"
+                android:background="@color/transparent"
+                app:menu_title="截止日期"
+                android:visibility="gone"
+                app:menu_value="2017-8-18"
+                app:is_right_icon_visible="false"
+                app:menu_value_color="@color/gray">
+
+            </com.sunny.youyun.views.LineMenuItem>
+
+            <include layout="@layout/divide_item" />
+
+            <com.sunny.youyun.views.LineMenuItem
+                android:id="@+id/upload_setting_allow_down_count"
+                style="@style/LineMenuItem"
+                app:menu_title="可下载次数"
+                app:menu_value="无限次"
+                app:menu_value_color="@color/gray">
+
+            </com.sunny.youyun.views.LineMenuItem>
+
+            <include layout="@layout/divide_item" />
+
+            <com.sunny.youyun.views.LineMenuItem
+                android:id="@+id/upload_setting_allow_down_count_infinite"
+                android:background="@color/transparent"
+                style="@style/LineMenuItem"
+                app:menu_title="无限次"
+                android:visibility="gone"
+                app:is_right_icon_visible="false"
+                app:menu_value_color="@color/gray">
+
+            </com.sunny.youyun.views.LineMenuItem>
+
+            <include layout="@layout/divide_item" />
+
+            <com.sunny.youyun.views.LineMenuItem
+                android:id="@+id/upload_setting_allow_down_count_edit"
+                style="@style/LineMenuItem"
+                android:background="@color/transparent"
+                app:menu_title="自定义"
+                android:visibility="gone"
+                app:menu_value="MAX"
+                app:is_right_icon_visible="false"
+                app:menu_value_color="@color/gray">
+
+            </com.sunny.youyun.views.LineMenuItem>
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/divide_item" />
+
+    <include layout="@layout/main_foot" />
+
+
+</LinearLayout>

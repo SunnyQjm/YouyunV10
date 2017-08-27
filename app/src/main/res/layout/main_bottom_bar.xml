@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:layout_height="45dp">
+    <ImageView
+        android:id="@+id/btn_main_page"
+        android:src="@drawable/icon_mainpage_selected"
+        style="@style/BottomBar_image"
+        />
+    <ImageView
+        android:id="@+id/btn_find"
+        android:src="@drawable/icon_findng"
+        style="@style/BottomBar_image" />
+    <ImageView
+        android:id="@+id/btn_msg"
+        android:src="@drawable/icon_message"
+        style="@style/BottomBar_image" />
+    <ImageView
+        android:id="@+id/btn_mine"
+        android:src="@drawable/icon_mine"
+        style="@style/BottomBar_image" />
+</LinearLayout>

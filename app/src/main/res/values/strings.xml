@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">优云</string>
+    <string name="createGroup">创建群组</string>
+    <string name="zXing">扫码连接</string>
+    <string name="searchConnect">搜索连接</string>
+    <string name="trans_record">传输记录</string>
+    <string name="sendRecord">发送记录</string>
+    <string name="receiveRecord">接收记录</string>
+    <string name="sendFile">发送文件</string>
+    <string name="disConnect">断开连接</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">登录</string>
+
+    <string name="loading">正在加载中...</string>
+    <string name="load_failed">加载失败，请点我重试</string>
+    <string name="load_end">没有更多数据</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="file_info_item_example_file_name">关于那件事.mp3</string>
+    <string name="cancel">取消</string>
+    <string name="sure">确定</string>
+    <string name="i_want_to_send">我要发送</string>
+    <string name="i_want_to_receive">我要接收</string>
+    <string name="QRCode">二维码</string>
+    <string name="addFile">添加文件</string>
+    <string name="scan_qr_code">扫描二维码</string>
+
+    <string name="scan_qr_code_helper">将二维码放入框内即可自动扫描</string>
+    <string name="exit_tip">退出将中断传输，确定退出？</string>
+    <string name="upload_setting">上传设置</string>
+    <string name="device_file">本机文件</string>
+    <string name="forever">永久</string>
+    <string name="please_input_allow_download_count">请输入可下载次数</string>
+    <string name="infinite">无限次</string>
+    <string name="cancelTip">确定取消？</string>
+    <string name="just_a_bg">just a bg</string>
+    <string name="getFile">提取文件</string>
+    <string name="please_input_code">请输入提取码</string>
+    <string name="downloadFile">下载文件</string>
+    <string name="concern">关注</string>
+    <string name="file_detail">文件详情</string>
+    <string name="code">提取码</string>
+    <string name="already_pause">已暂停</string>
+    <string name="trans_error">传输出错</string>
+    <string name="delete">删除</string>
+    <string name="file_download_success">文件下载完成</string>
+    <string name="file_download_error">文件下载失败</string>
+    <string name="upload_error">上传失败</string>
+    <string name="upload_success">上传成功</string>
+    <string name="QQ">QQ</string>
+    <string name="copy_link">复制链接</string>
+    <string name="QQ_ZONE">QQ空间</string>
+    <string name="WE_CHAT">微信</string>
+    <string name="FRIEND_CIRCLE">朋友圈</string>
+    <string name="link_already_copy_to_clipbpard">链接已复制到剪切板</string>
+    <string name="copy_code">复制提取码</string>
+    <string name="code_already_copy_to_clipbpard">提取码已复制到剪切板</string>
+    <string name="phone_number">手机号</string>
+    <string name="pass">密码</string>
+    <string name="register">注册</string>
+    <string name="new_pass">新密码</string>
+    <string name="confirm_code">验证码</string>
+    <string name="click_send">点击发送</string>
+    <string name="please_complete_info">请将信息填写完整</string>
+    <string name="please_input_correct_phone_number">请输入正确的手机号</string>
+    <string name="phone_number_not_allow_empty">手机号不能为空</string>
+    <string name="forget_pass">忘记密码?</string>
+    <string name="confirm_pass">确认密码</string>
+    <string name="please_input_correct_identify_code">请输入正确的提取码\n温馨提示：小优的提取码是6位短号哦</string>
+
+</resources>

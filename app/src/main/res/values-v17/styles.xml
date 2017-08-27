@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ImageButtonStyle">
+        <item name="android:paddingLeft">@dimen/imgBtn_padding_left</item>
+        <item name="android:paddingStart">@dimen/imgBtn_padding_left</item>
+        <item name="android:paddingRight">@dimen/imgBtn_padding_right</item>
+        <item name="android:paddingEnd">@dimen/imgBtn_padding_right</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/imgBtn_text_size</item>
+        <item name="android:layout_width">@dimen/imgBtn_width</item>
+        <item name="android:layout_height">@dimen/imgBtn_height</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:background">@drawable/image_button_bg</item>
+        <item name="android:drawablePadding">@dimen/imgBtn_drawable_padding</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="et_style">
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_width">272dp</item>
+        <item name="android:background">@drawable/et_bg</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textColorHint">@color/text_gray_light</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+</resources>
