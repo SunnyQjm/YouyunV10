@@ -23,6 +23,6 @@ public interface ClientSocketStrategy {
      * @param socket            the socket connect between your device and the destination
      * @param file              the file you want to send
      */
-    void sendSingleFile(Socket socket, File file, List<TransLocalFile> mList);
+    boolean sendSingleFile(Socket socket, File file, List<TransLocalFile> mList);
 
 }

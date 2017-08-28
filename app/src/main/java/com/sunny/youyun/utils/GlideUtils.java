@@ -29,4 +29,14 @@ public class GlideUtils {
                     .into(imageView);
         }
     }
+
+    public static void loadUrl(Context context, ImageView imageView, String url){
+        Glide.with(context)
+                .load(url)
+                .apply(GlideOptions
+                        .getInstance().getAvatarOptions())
+                .transition(GlideOptions
+                        .getInstance().getCrossFadeDrawableTransitionOptions())
+                .into(imageView);
+    }
 }

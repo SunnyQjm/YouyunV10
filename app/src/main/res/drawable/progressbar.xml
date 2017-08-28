@@ -29,13 +29,9 @@
     </item>
 
     <item android:id="@android:id/progress">
-
         <clip>
-
             <shape>
-
                 <corners android:radius="5dip" />
-
                 <solid android:color="@color/application_theme_color"/>
             </shape>
         </clip>

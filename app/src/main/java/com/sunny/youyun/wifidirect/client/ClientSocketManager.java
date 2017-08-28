@@ -66,11 +66,13 @@ public enum  ClientSocketManager implements ClientSocketStrategy {
     }
 
     @Override
-    public void sendSingleFile(final Socket socket, final File file, @NonNull final List<TransLocalFile> mList) {
+    public boolean sendSingleFile(final Socket socket, final File file, @NonNull final List<TransLocalFile> mList) {
         SocketUtils socketUtils = null;
+        boolean result = false;
         try {
             socketUtils = new SocketUtils(socket);
             socketUtils.writeFile(file, mList);
+            result = true;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -81,6 +83,7 @@ public enum  ClientSocketManager implements ClientSocketStrategy {
                     e.printStackTrace();
                 }
         }
+        return result;
     }
 
 
@@ -129,8 +132,11 @@ public enum  ClientSocketManager implements ClientSocketStrategy {
                 if (!file.exists()) {
                     return null;
                 }
-                getInstance().sendSingleFile(socket, file, mList);
-                callback.onSuccess();
+                if(getInstance().sendSingleFile(socket, file, mList)){
+                    callback.onSuccess();
+                } else {
+                    callback.onError("传输失败");
+                }
                 System.out.println("over");
                 if (socket.isClosed()) {
                     socket.close();

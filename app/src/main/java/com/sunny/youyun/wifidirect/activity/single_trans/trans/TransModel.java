@@ -33,12 +33,23 @@ class TransModel implements TransContract.Model {
     public void begin() {
         TransRxBus.getInstance()
                 .subscribe(uuid, fileTransEvent -> {
-                    System.out.println(fileTransEvent.getAlready());
-                    if (fileTransEvent.isDone() || fileTransEvent.getType() == FileTransEvent.Type.BEGIN)
-                        handler.post(() -> mPresenter.update());
-                    if(mList.size() <= fileTransEvent.getPosition())
-                        return;
-                    handler.post(() -> mPresenter.updateItem(mList.size() - fileTransEvent.getPosition() - 1, mList.get(fileTransEvent.getPosition())));
+                    switch (fileTransEvent.getType()){
+                        case BEGIN:
+                            handler.post(()-> mPresenter.update());
+                            break;
+                        case UPLOAD:
+                        case DOWNLOAD:
+                            System.out.println(fileTransEvent.getAlready());
+                            if (fileTransEvent.isDone() || fileTransEvent.getType() == FileTransEvent.Type.BEGIN)
+                                handler.post(() -> mPresenter.update());
+                            if(mList.size() <= fileTransEvent.getPosition())
+                                return;
+                            handler.post(() -> mPresenter.updateItem(mList.size() - fileTransEvent.getPosition() - 1, mList.get(fileTransEvent.getPosition())));
+                            break;
+                        case ERROR:
+                            mPresenter.showError("传输失败");
+                            break;
+                    }
                 }, throwable -> Logger.e(throwable, "面对面快传进度监听错误"));
         WifiDirectManager.getInstance().startServer(new SingleTransMode(mList));
     }

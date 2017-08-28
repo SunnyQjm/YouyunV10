@@ -20,6 +20,7 @@ import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.ShareContent;
+import com.sunny.youyun.model.User;
 import com.sunny.youyun.utils.FileUtils;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RxPermissionUtil;
@@ -96,8 +97,13 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         });
         String uuid = getIntent().getStringExtra("uuid");
         internetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
-        if (internetFile.getUserId() <= 0)
+        if (internetFile.getUser() == null)
             clUserInfo.setVisibility(View.GONE);
+        else {
+            User user = internetFile.getUser();
+            GlideUtils.loadUrl(this, imgAvatar, user.getAvatar());
+            tvUserSShare.setText(String.format("%s%s", user.getUsername(), getString(R.string.xxs_share)));
+        }
         GlideUtils.setImage(this, imgIcon, internetFile);
         tvCode.setText(String.format("%s: %s", getString(R.string.code), internetFile.getIdentifyCode()));
         tvFileNameSize.setText(String.format("%s(%s)", internetFile.getName(), Tool.convertToSize(internetFile.getSize())));

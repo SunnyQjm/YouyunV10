@@ -69,5 +69,9 @@
     <string name="forget_pass">忘记密码?</string>
     <string name="confirm_pass">确认密码</string>
     <string name="please_input_correct_identify_code">请输入正确的提取码\n温馨提示：小优的提取码是6位短号哦</string>
+    <string name="error">出错</string>
+    <string name="trans_item_share_icon">share_icon</string>
 
+    <string name="activity_trans_anim_duration">300</string>
+    <string name="xxs_share">的分享</string>
 </resources>

@@ -3,6 +3,7 @@ package com.sunny.youyun.fragment.main.main_fragment;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.sunny.youyun.App;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.download.DownloadActivity;
@@ -29,6 +29,7 @@ import com.sunny.youyun.internet.upload.FileUploadFileParam;
 import com.sunny.youyun.utils.DialogUtils;
 import com.sunny.youyun.utils.RecyclerViewUtils;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.wifidirect.activity.single_trans.main.SingleTransMainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
     private static final int UPLOAD_SETTING = 235;
 
     private View view = null;
+
     public static MainFragment newInstance() {
         Bundle args = new Bundle();
         MainFragment fragment = new MainFragment();
@@ -82,7 +84,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        if(view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.fragment_main, container, false);
             unbinder = ButterKnife.bind(this, view);
             initView();
@@ -117,16 +119,25 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
             closeAdd();
             switch (v.getId()) {
                 case R.id.et_trans:
-                    RouterUtils.open(activity, IndexRouter.SingleTransMainActivity);
-                    App.startAnim(activity);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        RouterUtils.openWithAnimation(activity, new Intent(activity, SingleTransMainActivity.class));
+                    } else {
+                        RouterUtils.open(activity, IndexRouter.SingleTransMainActivity);
+                    }
                     break;
                 case R.id.et_download:
-                    startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
-                    App.startAnim(activity);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
+                    } else {
+                        startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
+                    }
                     break;
                 case R.id.et_upload:
-                    startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
-                    App.startAnim(activity);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, FileManagerActivity.class), PATH_S);
+                    } else {
+                        startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
+                    }
                     break;
             }
         };
@@ -171,7 +182,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                 startActivityForResult(intent, UPLOAD_SETTING);
                 break;
             case UPLOAD_SETTING:
-                if(data == null)
+                if (data == null)
                     return;
                 paths = data.getStringArrayExtra(UploadSettingActivity.PATH);
                 int allowDownloadCount = data.getIntExtra(UploadSettingActivity.ALLOW_DOWNLOAD_COUNT, -1);

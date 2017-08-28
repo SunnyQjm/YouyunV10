@@ -129,6 +129,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter> 
                 if (data == null)
                     return;
                 String result = data.getStringExtra(ReceiverFragmentConfig.REQUEST_SCAN_RESULT_KEY);
+                showLoading();
                 mPresenter.connect(result, null);
                 break;
         }
@@ -136,6 +137,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter> 
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        showLoading();
         mPresenter.connect(mList.get(position).deviceAddress, null);
     }
 
@@ -153,6 +155,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter> 
 
     @Override
     public void connectSuccess() {
+        dismissDialog();
         RouterUtils.open(this, IndexRouter.TransActivity);
         App.startAnim(this);
         finish();

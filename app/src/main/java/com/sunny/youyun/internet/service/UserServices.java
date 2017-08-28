@@ -1,6 +1,7 @@
 package com.sunny.youyun.internet.service;
 
 
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
@@ -24,8 +25,12 @@ public interface UserServices {
     @POST("sendCode")
     Observable<BaseResponseBody<String>> sendCode(@Body RequestBody body);
 
-    @POST("login")
+    @POST(ApiInfo.LOGIN_URL)
     Observable<LoginResponseBody> login(@Body RequestBody body);
+
+
+    @POST(ApiInfo.QQ_LOGIN_URL)
+    Observable<LoginResponseBody> qqLogin(@Body RequestBody body);
 //
 //    @FormUrlEncoded
 //    @POST(ApiInfo.LOGIN_URL)

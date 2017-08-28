@@ -10,6 +10,7 @@ import com.sunny.youyun.utils.UUIDUtil;
 import com.sunny.youyun.wifidirect.config.EventConfig;
 import com.sunny.youyun.wifidirect.config.SocketConfig;
 import com.sunny.youyun.wifidirect.event.BaseEvent;
+import com.sunny.youyun.wifidirect.manager.DeviceInfoManager;
 import com.sunny.youyun.wifidirect.manager.SingleTransManager;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.utils.EventRxBus;
@@ -47,6 +48,9 @@ class SenderModel implements SenderContract.Model{
                 case EventConfig.IP_CHANGE:
                     if(event.getData() instanceof String){
                         SingleTransManager.getInstance().getTargetInfo().setIp((String) event.getData());
+                        Logger.i("targetInfo: " + SingleTransManager.getInstance().getTargetInfo());
+                        Logger.i("myInfo: " + SingleTransManager.getInstance().getMyInfo());
+                        Logger.i("groupInfo: " + DeviceInfoManager.getInstance().getGroupOwnerIp());
                         mPresenter.connectSuccess();
                         exit();
                     }

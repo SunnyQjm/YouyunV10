@@ -2,6 +2,7 @@ package com.sunny.youyun.wifidirect.activity.single_trans.receiver;
 
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 
 import com.orhanobut.logger.Logger;
@@ -25,6 +26,7 @@ import java.io.IOException;
 class ReceiverModel implements ReceiverContract.Model{
     private ReceiverPresenter mPresenter;
     private final String uuid = UUIDUtil.getUUID();
+    private final Handler handler  = new Handler();
     ReceiverModel(ReceiverPresenter receiverPresenter) {
         mPresenter = receiverPresenter;
     }
@@ -56,6 +58,9 @@ class ReceiverModel implements ReceiverContract.Model{
                             ip = ClientSocketManager.getInstance().askIP(DeviceInfoManager.getInstance().getGroupOwnerIp(), SocketConfig.singleTaskPort);
                         } catch (IOException e) {
                             Logger.e(e, "获取IP失败");
+                            handler.post(()->{
+                                mPresenter.showError("连接失败");
+                            });
                         }
                         System.out.println("我的IP：" + ip);
                         Logger.i("我的IP：" + ip);

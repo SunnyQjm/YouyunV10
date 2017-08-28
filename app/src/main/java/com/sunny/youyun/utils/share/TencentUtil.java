@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.model.ShareContent;
+import com.sunny.youyun.model.YouyunAPI;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -18,9 +19,12 @@ import java.util.ArrayList;
 
 public enum TencentUtil {
     INSTANCE;
+
     public static TencentUtil getInstance(@NonNull Activity activity) {
         if (INSTANCE.activity != activity) {
             INSTANCE.activity = activity;
+        }
+        if (INSTANCE.tencent == null) {
             INSTANCE.tencent = Tencent.createInstance(Constants.APP_ID, activity.getApplication());
         }
         return INSTANCE;
@@ -28,6 +32,7 @@ public enum TencentUtil {
 
     private Tencent tencent;
     private Activity activity;
+    private static final String SCOPE = "get_user_info";
 
     public void shareToQQ(ShareContent shareContent, IUiListener listener) {
         Bundle bundle = new Bundle();
@@ -39,7 +44,12 @@ public enum TencentUtil {
         tencent.shareToQQ(activity, bundle, listener);
     }
 
-    public void shareToQzon(    ShareContent shareContent, IUiListener listener) {
+
+    public Tencent getTencent() {
+        return tencent;
+    }
+
+    public void shareToQzon(ShareContent shareContent, IUiListener listener) {
         Bundle bundle = new Bundle();
         bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareContent.getShareUrl());
         bundle.putString(QQShare.SHARE_TO_QQ_TITLE, shareContent.getShareTitle());
@@ -48,5 +58,18 @@ public enum TencentUtil {
         list.add(shareContent.getShareImageUrl());
         bundle.putStringArrayList(QQShare.SHARE_TO_QQ_IMAGE_URL, list);
         tencent.shareToQzone(activity, bundle, listener);
+    }
+
+    public void login(IUiListener iUiListener) {
+        if (YouyunAPI.getOpenId() != null) {
+            tencent.setOpenId(YouyunAPI.getOpenId());
+            tencent.setAccessToken(YouyunAPI.getAccessToken(),
+                    String.valueOf(YouyunAPI.getExpiresIn()));
+        }
+        tencent.login(activity, SCOPE, iUiListener);
+    }
+
+    public void loginOut() {
+        tencent.logout(activity);
     }
 }

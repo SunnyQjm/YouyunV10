@@ -2,8 +2,10 @@ package com.sunny.youyun.activity.login;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.QQLoginResult;
 import com.sunny.youyun.model.YouyunAPI;
-import com.sunny.youyun.model.model_interface.UserInterface;
+import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 
 import org.json.JSONException;
@@ -29,32 +31,10 @@ class LoginModel implements LoginContract.Model{
 
     @Override
     public void login(String username, String password) {
-
-//        APIManager.getInstance()
-//                .getUserService(GsonConverterFactory.create())
-//                .login(username, password)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<User>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        Logger.i("completed");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Logger.e(e, "login failed");
-//                    }
-//
-//                    @Override
-//                    public void onNext(User user) {
-//                        Logger.i(user.toString());
-//                    }
-//                });
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("phone", username);
-            jsonObject.put("password", password);
+            jsonObject.put(ApiInfo.LOGIN_USERNAME, username);
+            jsonObject.put(ApiInfo.LOGIN_PASSWORD, password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -85,9 +65,63 @@ class LoginModel implements LoginContract.Model{
                     @Override
                     public void onNext(LoginResponseBody loginResponseBody) {
                         if(loginResponseBody.isSuccess()){      //判断是否登录成功
-                            UserInterface.setIsLogin(true);
-                            UserInterface.setUserInfo(loginResponseBody.getData());
+                            UserInfoManager.getInstance().setUserInfo(loginResponseBody.getData());
                             YouyunAPI.updateIsLogin(true);
+                            YouyunAPI.updateLoginMode(YouyunAPI.LOGIN_MODE_NORMAL);
+                            mPresenter.loginSuccess();
+                        }else{
+                            YouyunAPI.updateIsLogin(false);
+                            mPresenter.showTip(loginResponseBody.getMsg());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void qqLogin(QQLoginResult result) {
+        if(result.nameValuePairs == null){
+            mPresenter.showError("登陆失败");
+            Logger.i("login fail");
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(ApiInfo.QQ_LOGIN_ACCESS_TOKEN, result.nameValuePairs.access_token);
+            jsonObject.put(ApiInfo.QQ_LOGIN_OPEN_ID, result.nameValuePairs.openid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonObject.toString());
+
+        APIManager.getInstance()
+                .getUserService(GsonConverterFactory.create())
+                .qqLogin(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LoginResponseBody>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.e(e, "登录失败");
+                        mPresenter.showTip("登录失败，请检查网络连接");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mPresenter.addSubscription(d);
+                    }
+
+                    @Override
+                    public void onNext(LoginResponseBody loginResponseBody) {
+                        if(loginResponseBody.isSuccess() && loginResponseBody.getData() != null){      //判断是否登录成功
+                            YouyunAPI.updateIsLogin(true);
+                            YouyunAPI.updateLoginMode(YouyunAPI.LOGIN_MODE_QQ);
+                            UserInfoManager.getInstance().setUserInfo(loginResponseBody.getData());
+                            System.out.println(Thread.currentThread());
                             mPresenter.loginSuccess();
                         }else{
                             YouyunAPI.updateIsLogin(false);

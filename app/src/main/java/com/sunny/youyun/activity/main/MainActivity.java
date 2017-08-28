@@ -73,7 +73,7 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.blue, null));
+            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.blue, getTheme()));
         } else {
             StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.blue));
         }
@@ -181,6 +181,12 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         btnFind.setImageBitmap(BitmapFactory.decodeResource(getResources(), res[1]));
         btnMsg.setImageBitmap(BitmapFactory.decodeResource(getResources(), res[2]));
         btnMine.setImageBitmap(BitmapFactory.decodeResource(getResources(), res[3]));
+    }
+
+    @Override
+    public void onBackPressed() {
+        //将当前Activity加入到栈中，而不是退出
+        moveTaskToBack(true);
     }
 
     @Override

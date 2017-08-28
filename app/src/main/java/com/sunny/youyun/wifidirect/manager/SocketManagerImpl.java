@@ -46,7 +46,6 @@ class SocketManagerImpl implements SocketManager {
     }
 
 
-
     @Override
     public void beginDeviceInfoChange(int port, DeviceInfo deviceInfo, ForwardClientStrategy strategy) throws IOException {
         beginSendDeviceInfo(port, deviceInfo, strategy);

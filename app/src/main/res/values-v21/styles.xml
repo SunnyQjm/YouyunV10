@@ -8,9 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <!--设置状态栏的颜色-->
         <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <item name="android:windowExitTransition">@transition/explode</item>
-        <item name="android:windowEnterAnimation">@transition/explode</item>
-        <item name="android:windowReenterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/slide_out</item>
+        <item name="android:windowEnterAnimation">@transition/slide_in</item>
+        <item name="android:windowReenterTransition">@transition/fade</item>
 
     </style>
 </resources>

@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.login;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -9,14 +10,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mzule.activityrouter.annotation.Router;
+import com.orhanobut.logger.Logger;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.BaseUiListener;
 import com.sunny.youyun.base.MVPBaseActivity;
-import com.sunny.youyun.model.model_interface.UserInterface;
+import com.sunny.youyun.model.QQLoginResult;
+import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.utils.AccountValidatorUtil;
 import com.sunny.youyun.utils.GsonUtil;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.share.TencentUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.RichEditText;
+import com.tencent.tauth.Tencent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,7 +93,8 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
 
     @Override
     public void loginSuccess() {
-        Toast.makeText(this, GsonUtil.getInstance().toJson(UserInterface.getInstance()), Toast.LENGTH_SHORT).show();
+        dismissDialog();
+        onBackPressed();
     }
 
     @OnClick({R.id.tv_forget_pass, R.id.btn_login, R.id.btn_register})
@@ -96,17 +104,49 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
                 RouterUtils.open(this, IndexRouter.ForgetPassActivity);
                 break;
             case R.id.btn_login:
-                String username = etUsername.getText().toString();
+                String phone = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-                if(username.equals("") | password.equals("")){
+                if (phone.equals("") || password.equals("")) {
                     Toast.makeText(this, getString(R.string.please_complete_info), Toast.LENGTH_SHORT).show();
-                    break;
+                } else if (AccountValidatorUtil.isMobile(phone)) {
+                    showLoading();
+                    mPresenter.login(phone, password);
+                } else {
+                    Toast.makeText(this, getString(R.string.please_input_correct_phone_number), Toast.LENGTH_SHORT).show();
                 }
-                mPresenter.login(username, password);
+//                TencentUtil.getInstance(this)
+//                        .loginOut();
                 break;
             case R.id.btn_register:
-                RouterUtils.open(this, IndexRouter.RegisterActivity);
+//                RouterUtils.open(this, IndexRouter.RegisterActivity);
+                TencentUtil.getInstance(this)
+                        .login(new BaseUiListener(){
+                            @Override
+                            public void onComplete(Object o) {
+                                showLoading();
+                                QQLoginResult result = GsonUtil.getInstance()
+                                        .fromJson(GsonUtil.getInstance().toJson(o), QQLoginResult.class);
+                                Logger.i("result: " + result);
+                                YouyunAPI.updateQQLoginResult(result);
+                                mPresenter.qqLogin(result);
+                            }
+                        });
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Tencent.onActivityResultData(requestCode, resultCode, data,
+                new BaseUiListener(){
+                    @Override
+                    public void onComplete(Object o) {
+                        QQLoginResult result = GsonUtil.getInstance()
+                                .fromJson(GsonUtil.getInstance().toJson(o), QQLoginResult.class);
+                        Logger.i("result2: " + result);
+
+                    }
+                });
     }
 }

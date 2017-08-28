@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ForwardServerDataDealRunnable implements Runnable {
-    private LinkedBlockingQueue<byte[]> queue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<byte[]> queue = new LinkedBlockingQueue<>();
     private volatile boolean isStop;
 
     void add(byte[] data){

@@ -24,6 +24,7 @@ public class InternetFile extends DataSupport implements Serializable {
     private final int userId;
     private final int lookNum;          //浏览量
     private final int star;             //点赞人数
+    private final User user;
 
     private String status = Status.DOWNLOADING;
     private String path = "";
@@ -69,6 +70,7 @@ public class InternetFile extends DataSupport implements Serializable {
                 ", progress=" + progress +
                 ", rate='" + rate + '\'' +
                 ", fileTAG=" + fileTAG +
+                ", user=" + user +
                 '}';
     }
 
@@ -85,11 +87,12 @@ public class InternetFile extends DataSupport implements Serializable {
         userId = builder.userId;
         lookNum = builder.lookNum;
         star = builder.star;
+        user = builder.user;
         setStatus(builder.status);
         setPath(builder.path);
         setProgress(builder.progress);
         setRate(builder.rate);
-        fileTAG = builder.fileTAG;
+        setFileTAG(builder.fileTAG);
     }
 
     public void setIdentifyCode(String identifyCode) {
@@ -174,6 +177,10 @@ public class InternetFile extends DataSupport implements Serializable {
         return userId;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public int getLookNum() {
         return lookNum;
     }
@@ -207,6 +214,7 @@ public class InternetFile extends DataSupport implements Serializable {
         private int userId = -1;
         private int lookNum;
         private int star;
+        private User user;
         private String status;
         private boolean done;
         private String path;
@@ -276,6 +284,11 @@ public class InternetFile extends DataSupport implements Serializable {
 
         public Builder star(int val) {
             star = val;
+            return this;
+        }
+
+        public Builder user(User val) {
+            user = val;
             return this;
         }
 

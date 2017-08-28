@@ -1,9 +1,10 @@
 package com.sunny.youyun.fragment.main.main_fragment.UploadRecordFragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.App;
+import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.base.BaseQuickAdapter;
@@ -25,6 +27,7 @@ import com.sunny.youyun.internet.event.FileUploadEvent;
 import com.sunny.youyun.internet.upload.FileUploadPosition;
 import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.UUIDUtil;
 import com.sunny.youyun.utils.bus.ObjectPool;
 import com.sunny.youyun.views.MyPopupWindow;
@@ -80,7 +83,6 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("OnResume");
         //重新显示的时候更新数据
         if (adapter != null)
             adapter.notifyDataSetChanged();
@@ -265,10 +267,14 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
                 break;
             case FINISH:        //如果文件下载成功则可进入详情页
                 ObjectPool.getInstance().put(uuid, file);
-                Intent intent = new Intent(activity, FileDetailOffLineActivity.class);
-                intent.putExtra("uuid", uuid);
-                startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, img_icon, "share_icon").toBundle());
-//                RouterUtils.open(activity, IndexRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Intent intent = new Intent(activity, FileDetailOffLineActivity.class);
+                    intent.putExtra("uuid", uuid);
+                    intent.putExtra("position", position);
+                    RouterUtils.openWithAnimation(activity, intent, new Pair<>(img_icon, getString(R.string.trans_item_share_icon)));
+                } else {
+                    RouterUtils.open(activity, IndexRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
+                }
                 break;
         }
     }

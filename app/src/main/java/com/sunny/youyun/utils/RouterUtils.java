@@ -1,7 +1,13 @@
 package com.sunny.youyun.utils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
+import android.view.View;
 
 import com.github.mzule.activityrouter.router.Routers;
 import com.sunny.youyun.App;
@@ -35,9 +41,26 @@ public class RouterUtils {
         }
         System.out.println(router);
         Routers.open(context, router.toString());
-        //5.0以下用老版本的切换动画
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            App.startAnim(context);
-        }
+        App.startAnim(context);
+    }
+
+    @SafeVarargs
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public static void openWithAnimation(Activity activity, Intent intent, Pair<View, String>... shares) {
+        activity.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shares).toBundle());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @SafeVarargs
+    public static void openForResultWithAnimation(Activity activity, Intent intent, int requestCode, Pair<View, String>... shares){
+        activity.startActivityForResult(intent, requestCode,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shares).toBundle());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @SafeVarargs
+    public static void openForResultWithAnimation(Fragment fragment, Intent intent, int requestCode, Pair<View, String>... shares){
+        fragment.startActivityForResult(intent, requestCode,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(fragment.getActivity(), shares).toBundle());
     }
 }

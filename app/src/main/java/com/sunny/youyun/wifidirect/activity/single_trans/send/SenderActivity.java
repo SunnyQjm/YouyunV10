@@ -117,7 +117,6 @@ public class SenderActivity extends WifiDirectBaseActivity<SenderPresenter> impl
             case R.id.btn_qr_code:
                 if (dialog == null) {
                     dialog = YouyunQRDialog.newInstance(this, DeviceInfoManager.getInstance().getGroupOwnerMacAddr());
-//                    dialog = new YouyunQRDialog(this, DeviceInfoManager.getInstance().getGroupOwnerMacAddr());
                 }
                 dialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
                 break;

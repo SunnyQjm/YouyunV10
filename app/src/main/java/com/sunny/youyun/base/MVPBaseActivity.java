@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 
 import com.sunny.youyun.App;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyDialog;
+import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
 
@@ -21,6 +23,7 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompat
 
     protected P mPresenter;
     protected YouyunTipDialog dialog;
+    protected YouyunLoadingView loadingView;
 
     @Override
     protected void onStart() {
@@ -33,6 +36,9 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompat
         super.onCreate(savedInstanceState);
         System.out.println("onCreate presenter");
         mPresenter = onCreatePresenter();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        }
     }
 
     @Override
@@ -52,34 +58,46 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompat
      */
     public void showTip(String info) {
         dismissDialog();
-        dialog = EasyDialog.showTip(this, info);
+        if (dialog == null)
+            dialog = EasyDialog.showTip(this, info);
+        else
+            dialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
     public void showSuccess(String info) {
         dismissDialog();
-        dialog = EasyDialog.showSuccess(this, info);
+        if (dialog == null)
+            dialog = EasyDialog.showSuccess(this, info);
+        else
+            dialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
     public void showError(String info) {
         dismissDialog();
-        dialog = EasyDialog.showError(this, info);
+        if (dialog == null)
+            dialog = EasyDialog.showError(this, info);
+        else
+            dialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
-    protected void showProcess(String info) {
-//        if(sweetAlertDialog != null && sweetAlertDialog.isShowing())
-//            sweetAlertDialog.dismissWithAnimation();
-//        sweetAlertDialog = EasySweetAlertDialog.ShowProcess(this, info);
+    protected void showLoading() {
+        dismissDialog();
+        loadingView = EasyDialog.showLoading(this);
     }
 
     protected void dismissDialog() {
-        if(dialog != null && !dialog.isHidden())
+        if (dialog != null && !dialog.isHidden())
             dialog.dismiss();
+        if (loadingView != null && loadingView.isShowing())
+            loadingView.dismiss();
     }
 
     @Override
     @CallSuper
     public void finish() {
         super.finish();
+        dialog = null;
+        loadingView = null;
         //5.0以下用老版本的切换动画
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             App.finishAnim(this);

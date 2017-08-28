@@ -5,7 +5,7 @@ package com.sunny.youyun.internet.api;
  */
 
 public class ApiInfo {
-//    public static final String IP = "http://123.206.80.54";
+    //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
     public static final String IP = "http://192.168.1.3";
     public static final int port = 8080;
@@ -18,4 +18,7 @@ public class ApiInfo {
 
     public static final String LOGIN_URL = "login",
             LOGIN_USERNAME = "phone", LOGIN_PASSWORD = "password";
+
+    public static final String QQ_LOGIN_URL = "otherLogin",
+            QQ_LOGIN_ACCESS_TOKEN = "token", QQ_LOGIN_OPEN_ID = "openId";
 }

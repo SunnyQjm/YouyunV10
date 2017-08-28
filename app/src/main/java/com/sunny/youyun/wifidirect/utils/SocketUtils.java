@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.utils.MD5Util;
 import com.sunny.youyun.wifidirect.event.FileTransEvent;
+import com.sunny.youyun.wifidirect.exception.FileCreateFailedException;
 import com.sunny.youyun.wifidirect.info.CODE_TABLE;
 import com.sunny.youyun.wifidirect.model.SocketRequestBody;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
@@ -27,7 +28,6 @@ public class SocketUtils {
     private final DataOutputStream out;
     private final DataInputStream input;
 
-
     public SocketUtils(Socket socket) throws IOException {
         this.socket = socket;
         out = new DataOutputStream(socket.getOutputStream());
@@ -48,11 +48,14 @@ public class SocketUtils {
      * @param path
      * @return
      */
-    public File readFile(String path, TransLocalFile transLocalFile, int position)
-            throws IOException {
+    public void readFile(String path, TransLocalFile transLocalFile, int position)
+            throws IOException, FileCreateFailedException {
         FileOutputStream fileOutputStream = null;
         File file = new File(path);
-        file.createNewFile();
+        //如果文件创建不成功
+        if (!file.createNewFile()) {
+            throw new FileCreateFailedException("文件创建失败：" + path);
+        }
         if (!file.exists() || file.isDirectory())
             throw new FileNotFoundException("保存路径无效");
         boolean isSuccess = false;
@@ -130,7 +133,6 @@ public class SocketUtils {
             e.printStackTrace();
             isSuccess = false;
             Logger.e(e, "readFile failed！");
-            return null;
         } finally {
             //关闭文件输出流即可，Socket不需要手动关闭
             if (fileOutputStream != null) {
@@ -145,7 +147,6 @@ public class SocketUtils {
                 transLocalFile.saveOrUpdate("md5 = ?", md5);
             }
         }
-        return file;
     }
 
     /**
@@ -265,5 +266,12 @@ public class SocketUtils {
         out.close();
         input.close();
         socket.close();
+    }
+
+
+    public interface SocketCallBack{
+        void onBegin();
+        void onProgress(FileTransEvent fileTransEvent);
+        void onEnd();
     }
 }

@@ -1,7 +1,10 @@
 package com.sunny.youyun.fragment.main.main_fragment.DownloadReccordFragment;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +12,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sunny.youyun.App;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.base.BaseQuickAdapter;
 import com.sunny.youyun.base.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.main_fragment.Adapter.FileRecordAdapter;
@@ -59,14 +64,12 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
     @Override
     public void onStart() {
         super.onStart();
-        System.out.println("onStart");
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        System.out.println("onStop");
         EventBus.getDefault().unregister(this);
     }
 
@@ -220,7 +223,7 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
                 continueDownload(internetFile, position);
                 break;
             case FINISH:
-                showDetailOffLine(internetFile, position);
+                showDetailOffLine(internetFile, view, position);
                 break;
             case CANCEL:
                 break;
@@ -238,12 +241,20 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
                 .pause(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + internetFile.getIdentifyCode(), position);
     }
 
-    private void showDetailOffLine(InternetFile internetFile, int position) {
+    private void showDetailOffLine(InternetFile internetFile, View view, int position) {
         if (adapter == null)
             return;
         String uuid = UUIDUtil.getUUID();
         ObjectPool.getInstance().put(uuid, internetFile);
-        RouterUtils.open(activity, IndexRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
+        ImageView img_icon = (ImageView) view.findViewById(R.id.img_icon);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Intent intent = new Intent(activity, FileDetailOffLineActivity.class);
+            intent.putExtra("uuid", uuid);
+            intent.putExtra("position", position);
+            RouterUtils.openWithAnimation(activity, intent, new Pair<>(img_icon, getString(R.string.trans_item_share_icon)));
+        } else {
+            RouterUtils.open(activity, IndexRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
+        }
     }
 
     @Override

@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import zlc.season.rxdownload2.RxDownload;
 import zlc.season.rxdownload2.entity.DownloadStatus;
@@ -89,7 +89,7 @@ public class FileDownloadService extends Service {
                 RxDownload.getInstance(this)
                         .download(url, name, desDir)
                         .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .observeOn(Schedulers.io())
                         .subscribe(new Observer<DownloadStatus>() {
                             long lastBytes = 0;
                             long startTime = System.currentTimeMillis();

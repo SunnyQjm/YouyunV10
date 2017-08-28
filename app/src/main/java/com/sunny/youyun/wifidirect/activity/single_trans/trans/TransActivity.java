@@ -102,24 +102,10 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
                         @Override
                         public void onSureClick() {
                             WifiDirectManager.getInstance().disConnect();
+                            WifiDirectManager.getInstance().cancelConnect(null);
                             TransActivity.super.onBackPressed();
                         }
                     });
-//            dialog = new YouyunTipDialog.Builder()
-//                    .content("退出将终止传输，是否退出？")
-//                    .listener(new OnYouyunTipDialogClickListener() {
-//                        @Override
-//                        public void onCancelClick() {
-//                            dialog.dismiss();
-//                        }
-//
-//                        @Override
-//                        public void onSureClick() {
-//                            WifiDirectManager.getInstance().disConnect();
-//                            TransActivity.super.onBackPressed();
-//                        }
-//                    })
-//                    .build();
         }
         dialog.show(getSupportFragmentManager(), String.valueOf(TransActivity.class));
     }
@@ -152,8 +138,9 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        System.out.println("----------Destroy---------");
         mPresenter.exit();
+        super.onDestroy();
     }
 
     @Override

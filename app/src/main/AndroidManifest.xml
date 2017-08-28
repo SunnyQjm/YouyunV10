@@ -97,12 +97,17 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activity.TencentTest" />
         <activity android:name=".activity.main.MainActivity">
+
+        </activity>
+
+        <activity android:name=".activity.welcome.WelcomeActivity"
+            android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.register.RegisterActivity" />
         <activity android:name=".activity.download.DownloadActivity" />
@@ -132,7 +137,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.forget_pass.ForgetPassActivity"></activity>
+        <activity android:name=".activity.forget_pass.ForgetPassActivity" />
     </application>
 
 </manifest>

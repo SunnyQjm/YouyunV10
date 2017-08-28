@@ -3,6 +3,7 @@ package com.sunny.youyun.views;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.R;
+import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
@@ -11,9 +12,9 @@ import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
  */
 
 public class EasyDialog {
-    public static YouyunTipDialog tipDialog = null;
-    public static YouyunTipDialog errorDialog = null;
-    public static YouyunTipDialog successDialog = null;
+    private static YouyunTipDialog tipDialog = null;
+    private static YouyunTipDialog errorDialog = null;
+    private static YouyunTipDialog successDialog = null;
 
     public static YouyunTipDialog showTip(AppCompatActivity appCompatActivity, String info) {
         if (tipDialog == null) {
@@ -80,5 +81,11 @@ public class EasyDialog {
         }
         successDialog.show(appCompatActivity.getSupportFragmentManager(), "SUCCESS_DIALOG_TAG");
         return successDialog;
+    }
+
+    public static YouyunLoadingView showLoading(AppCompatActivity appCompatActivity) {
+        YouyunLoadingView youyunLoadingView = new YouyunLoadingView(appCompatActivity);
+        youyunLoadingView.show();
+        return youyunLoadingView;
     }
 }

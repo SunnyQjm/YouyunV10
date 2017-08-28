@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.login;
 
+import com.sunny.youyun.model.QQLoginResult;
 import com.sunny.youyun.mvp.BaseView;
 
 /**
@@ -19,6 +20,11 @@ class LoginPresenter extends LoginContract.Presenter{
     @Override
     void login(String username, String password) {
         mModel.login(username, password);
+    }
+
+    @Override
+    void qqLogin(QQLoginResult result) {
+        mModel.qqLogin(result);
     }
 
     @Override

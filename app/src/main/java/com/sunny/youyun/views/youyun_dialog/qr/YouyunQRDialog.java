@@ -29,7 +29,7 @@ public class YouyunQRDialog extends DialogFragment {
         this.context = context;
     }
 
-    public YouyunQRDialog(){
+    public YouyunQRDialog() {
 
     }
 
@@ -47,10 +47,12 @@ public class YouyunQRDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if(view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.fragment_youyun_qrdialog, container, false);
             imgQr = (ImageView) view.findViewById(R.id.img_qr);
             setContent(content);
+        } else {
+            imgQr = (ImageView) view.findViewById(R.id.img_qr);
         }
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null)
@@ -58,10 +60,13 @@ public class YouyunQRDialog extends DialogFragment {
         return view;
     }
 
-    public void setContent(String content){
-        QRCodeUtil.createQRImage(content, 500, 500, null, QR_PATH);
-        Bitmap bitmap1 = BitmapFactory.decodeFile(QR_PATH);
-        imgQr.setImageBitmap(bitmap1);
+    public void setContent(String content) {
+        this.content = content;
+        if (imgQr != null) {
+            QRCodeUtil.createQRImage(content, 500, 500, null, QR_PATH);
+            Bitmap bitmap1 = BitmapFactory.decodeFile(QR_PATH);
+            imgQr.setImageBitmap(bitmap1);
+        }
     }
 
     @Override

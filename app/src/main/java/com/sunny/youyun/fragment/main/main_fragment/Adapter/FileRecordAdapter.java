@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.orhanobut.logger.Logger;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.BaseQuickAdapter;
 import com.sunny.youyun.base.BaseViewHolder;
@@ -18,6 +17,8 @@ import com.sunny.youyun.utils.TimeUtils;
 import com.sunny.youyun.utils.Tool;
 
 import java.util.List;
+
+import static com.sunny.youyun.model.InternetFile.*;
 
 /**
  * Created by Sunny on 2017/8/7 0007.
@@ -45,64 +46,37 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, InternetFile item) {
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            if (Objects.equals(helper.itemView.getTag(), tag)) {
-//                updateWithPayloads(helper, item);
-//                Logger.i("upload with payloads");
-//            } else
-//                update(helper, item);
-//        } else {
-//            if (tag.equals(helper.itemView.getTag()))
-//                updateWithPayloads(helper, item);
-//            else
-//                update(helper, item);
-//        }
-
         update(helper, item);
     }
 
-    private void updateWithPayloads(BaseViewHolder helper, InternetFile item) {
-        Logger.i("onBindViewHolder with payloads");
-        if (item.isDone()) {
-            helper.setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
-                    .setText(R.id.tv_size, Tool.convertToSize(item.getSize()))
-                    .setImageResource(R.id.img_arrow, displayIcon);
-            helper.setVisible(R.id.progressBar, false);
-            helper.setVisible(R.id.tv_rate, false);
-            helper.setVisible(R.id.tv_time, true);
-            helper.setVisible(R.id.tv_size, true);
-        } else {
-            helper.setProgress(R.id.progressBar, item.getProgress())
-                    .setText(R.id.tv_rate, item.getRate())
-                    .setImageResource(R.id.img_arrow, displayIcon);
-            helper.setVisible(R.id.progressBar, true);
-            helper.setVisible(R.id.tv_rate, true);
-            helper.setVisible(R.id.tv_time, false);
-            helper.setVisible(R.id.tv_size, false);
-        }
-    }
-
     private void update(BaseViewHolder helper, InternetFile item) {
-        if (item.isDone()) {
-            helper.setText(R.id.tv_name, item.getName())
-                    .setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
-                    .setText(R.id.tv_size, Tool.convertToSize(item.getSize()));
-            helper.setVisible(R.id.progressBar, false);
-            helper.setVisible(R.id.tv_rate, false);
-            helper.setVisible(R.id.tv_time, true);
-            helper.setVisible(R.id.tv_size, true);
-        } else {
-            helper.setText(R.id.tv_name, item.getName())
-                    .setProgress(R.id.progressBar, item.getProgress())
-                    .setText(R.id.tv_rate, item.getRate());
-            helper.setVisible(R.id.progressBar, true);
-            helper.setVisible(R.id.tv_rate, true);
-            helper.setVisible(R.id.tv_time, false);
-            helper.setVisible(R.id.tv_size, false);
-
+        switch (item.getStatus()) {
+            case Status.FINISH:
+                helper.setText(R.id.tv_name, item.getName())
+                        .setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
+                        .setText(R.id.tv_size, Tool.convertToSize(item.getSize()));
+                progressStyle(helper, Status.FINISH);
+                break;
+            case Status.DOWNLOADING:
+                helper.setText(R.id.tv_name, item.getName())
+                        .setProgress(R.id.progressBar, item.getProgress())
+                        .setText(R.id.tv_rate, item.getRate());
+                progressStyle(helper, Status.DOWNLOADING);
+                break;
+            case Status.ERROR:
+                helper.setText(R.id.tv_name, item.getName())
+                        .setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
+                        .setText(R.id.tv_size, mContext.getString(R.string.error));
+                progressStyle(helper, Status.ERROR);
+                break;
+            case Status.CANCEL:
+            case Status.PAUSE:
+                helper.setText(R.id.tv_name, item.getName())
+                        .setProgress(R.id.progressBar, item.getProgress())
+                        .setText(R.id.tv_rate, item.getRate());
+                progressStyle(helper, Status.PAUSE);
+                break;
         }
-
         int result = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(item.getName());
         if (result == -1 && item.isDone()) {
             Glide.with(mContext)
@@ -125,6 +99,41 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
                 .load(FileTypeUtil.getIconIdByFileName(item.getName()))
                 .into(((ImageView) helper.getView(R.id.img_icon)));
 
+    }
+
+    /**
+     * 该方法改变item的样式
+     * if isProgressStyle = true, than display item with progress bar
+     *
+     * @param helper
+     */
+    private void progressStyle(BaseViewHolder helper, String status) {
+        switch (status) {
+            case Status.DOWNLOADING:
+            case Status.PAUSE:
+                helper.setVisible(R.id.progressBar, true);
+                helper.setVisible(R.id.tv_rate, true);
+                helper.setVisible(R.id.tv_time, false);
+                helper.setVisible(R.id.tv_size, false);
+                if (status.equals(Status.PAUSE)) {
+                    helper.setImageResource(R.id.img_arrow, R.drawable.icon_start);
+                } else {
+                    helper.setImageResource(R.id.img_arrow, R.drawable.icon_stop);
+                }
+                break;
+            case Status.FINISH:
+            case Status.CANCEL:
+            case Status.ERROR:
+                helper.setVisible(R.id.progressBar, false);
+                helper.setVisible(R.id.tv_rate, false);
+                helper.setVisible(R.id.tv_time, true);
+                helper.setVisible(R.id.tv_size, true);
+                if(status.equals(Status.ERROR))
+                    helper.setImageResource(R.id.img_arrow, R.drawable.icon_erro);
+                else
+                    helper.setImageResource(R.id.img_arrow, R.drawable.icon_arrow);
+                break;
+        }
     }
 
     /**

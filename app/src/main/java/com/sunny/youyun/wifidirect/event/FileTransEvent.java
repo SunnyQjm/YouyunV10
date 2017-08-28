@@ -12,7 +12,7 @@ public class FileTransEvent {
     private final Type type;
 
     public enum Type{
-        UPLOAD, DOWNLOAD, BEGIN
+        UPLOAD, DOWNLOAD, BEGIN, ERROR
     }
 
     private FileTransEvent(Builder builder) {
