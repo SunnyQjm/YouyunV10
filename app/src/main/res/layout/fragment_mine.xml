@@ -1,10 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/bar_item"/>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_avatar"
+        android:layout_width="match_parent"
+        android:background="@drawable/ripple_bg_white"
+        android:layout_height="65dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:text="用户头像"
+            android:textColor="@color/text_gray"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.478"
+            app:srcCompat="@drawable/blue_thumb" />
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="@dimen/arrow_size"
+            android:layout_height="@dimen/arrow_size"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_arrow" />
+    </android.support.constraint.ConstraintLayout>
+
+    <include layout="@layout/divide_item" />
+    
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_user_name"
+        app:menu_title="用户昵称"
+        app:right_margin="13dp"
+        app:left_margin="18dp"
+        android:background="@drawable/ripple_bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_item_height">
+
+    </com.sunny.youyun.views.LineMenuItem>
+
+    <include layout="@layout/divide_item"/>
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_bind_phone"
+        app:menu_title="账号绑定"
+        app:right_margin="13dp"
+        app:left_margin="18dp"
+        android:background="@drawable/ripple_bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_item_height">
+
+    </com.sunny.youyun.views.LineMenuItem>
+    <include layout="@layout/divide_item"/>
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/line_gray" />
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_my_file"
+        app:menu_title="我的文件"
+        app:right_margin="13dp"
+        app:left_margin="18dp"
+        android:background="@drawable/ripple_bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_item_height">
+
+    </com.sunny.youyun.views.LineMenuItem>
+
+    <include layout="@layout/divide_item"/>
+
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_password_change"
+        app:menu_title="密码更改"
+        app:right_margin="13dp"
+        app:left_margin="18dp"
+        android:background="@drawable/ripple_bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_item_height">
+
+    </com.sunny.youyun.views.LineMenuItem>
+
+    <include layout="@layout/divide_item"/>
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_callback"
+        app:menu_title="意见反馈"
+        app:right_margin="13dp"
+        app:left_margin="18dp"
+        android:background="@drawable/ripple_bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_item_height">
+
+    </com.sunny.youyun.views.LineMenuItem>
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/line_gray" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/li_exit"
+        android:text="@string/exit"
+        android:gravity="center"
+        android:textColor="@color/text_gray"
+        android:textSize="14sp"
+        android:background="@drawable/ripple_bg_white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/mine_item_height">
+
+    </TextView>
 </LinearLayout>

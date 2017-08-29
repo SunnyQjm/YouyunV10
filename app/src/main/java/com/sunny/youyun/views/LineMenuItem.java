@@ -38,6 +38,9 @@ public class LineMenuItem extends RelativeLayout {
     private int leftIconSize;
     private int rightIconSize;
 
+    private int leftMargin;
+    private int rightMargin;
+
     private ImageView left_icon;
     private ImageView right_icon;
     private TextView tv_title;
@@ -50,7 +53,7 @@ public class LineMenuItem extends RelativeLayout {
     private static final int DEFAULT_LEFT_RESOURCE = R.mipmap.logo;
     private static final int DEFAULT_RIGHT_RESOURCE = R.drawable.icon_arrow;
     private static final int DEFAULT_LEFT_ICON_SIZE = 24;
-    private static final int DEFAULT_RIGHT_ICON_SIZE = 12;
+    private static final int DEFAULT_RIGHT_ICON_SIZE = 24;
 
     public LineMenuItem(Context context) {
         this(context, null);
@@ -101,8 +104,11 @@ public class LineMenuItem extends RelativeLayout {
                 DensityUtil.dip2px(context, DEFAULT_RIGHT_ICON_SIZE));
         isRightIconVisible = ta
                 .getBoolean(R.styleable.LineMenuItem_is_right_icon_visible, true);
+        leftMargin = ta.getDimensionPixelSize(R.styleable.LineMenuItem_left_margin, DensityUtil.dip2px(context, DEFAULT_MARGIN));
+        rightMargin = ta.getDimensionPixelOffset(R.styleable.LineMenuItem_right_margin, DensityUtil.dip2px(context, DEFAULT_MARGIN));
         ta.recycle();
     }
+
     private void initView() {
         tv_title = new TextView(context);
         tv_title.setText(menuTitle);
@@ -112,7 +118,7 @@ public class LineMenuItem extends RelativeLayout {
         LayoutParams title_param = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         title_param.addRule(CENTER_VERTICAL);
-        title_param.leftMargin = DensityUtil.dip2px(context, DEFAULT_MARGIN);
+        title_param.leftMargin = leftMargin;
         tv_title.setLayoutParams(title_param);
         addView(tv_title, title_param);
 
@@ -126,7 +132,7 @@ public class LineMenuItem extends RelativeLayout {
         left_icon_param.addRule(CENTER_VERTICAL);
         left_icon_param.width = leftIconSize;
         left_icon_param.height = leftIconSize;
-        title_param.leftMargin = DensityUtil.dip2px(context, DEFAULT_MARGIN);
+        title_param.leftMargin = leftMargin;
         left_icon.setLayoutParams(left_icon_param);
         addView(left_icon, left_icon_param);
         left_icon.setVisibility(INVISIBLE);
@@ -142,7 +148,7 @@ public class LineMenuItem extends RelativeLayout {
         right_icon_param.addRule(ALIGN_PARENT_RIGHT);
         right_icon_param.width = rightIconSize;
         right_icon_param.height = rightIconSize;
-        right_icon_param.rightMargin = DensityUtil.dip2px(context, DEFAULT_MARGIN);
+        right_icon_param.rightMargin = rightMargin;
         right_icon.setLayoutParams(right_icon_param);
         addView(right_icon, right_icon_param);
         int right_icon_id = GeneratedId.generateViewId();
@@ -156,7 +162,7 @@ public class LineMenuItem extends RelativeLayout {
         LayoutParams tv_value_param = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         tv_value_param.addRule(CENTER_VERTICAL);
-        if(isRightIconVisible)
+        if (isRightIconVisible)
             tv_value_param.addRule(LEFT_OF, right_icon_id);
         else
             tv_value_param.addRule(ALIGN_PARENT_RIGHT);
@@ -164,7 +170,7 @@ public class LineMenuItem extends RelativeLayout {
         tv_value.setLayoutParams(tv_value_param);
         addView(tv_value, tv_value_param);
 
-        if(isRightIconVisible)
+        if (isRightIconVisible)
             setRightIconVisible();
         else
             setRightIconInVisible();
@@ -214,13 +220,13 @@ public class LineMenuItem extends RelativeLayout {
     }
 
 
-    public void setTitle(String title){
-        if(tv_title != null)
+    public void setTitle(String title) {
+        if (tv_title != null)
             tv_title.setText(title);
     }
 
-    public void setValue(String value){
-        if(tv_value != null)
+    public void setValue(String value) {
+        if (tv_value != null)
             tv_value.setText(value);
     }
 }

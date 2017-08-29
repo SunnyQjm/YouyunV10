@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.MVPBaseActivity;
+import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.model.InternetFile;

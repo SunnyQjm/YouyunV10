@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.MVPBaseFragment;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
 
 /**
  * Created by Sunny on 2017/6/25 0025.

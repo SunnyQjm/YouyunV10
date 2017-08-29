@@ -1,13 +1,12 @@
 package com.sunny.youyun.activity.main;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,14 +15,14 @@ import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.MVPBaseActivity;
-import com.sunny.youyun.base.MVPBaseFragment;
+import com.sunny.youyun.activity.main.config.MainActivityConfig;
+import com.sunny.youyun.base.activity.MVPBaseActivity;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.FindingFragment;
 import com.sunny.youyun.fragment.main.main_fragment.MainFragment;
 import com.sunny.youyun.fragment.main.message_fragment.MessageFragment;
 import com.sunny.youyun.fragment.main.mine_fragment.MineFragment;
 import com.sunny.youyun.utils.MyNotifyUtil;
-import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.TimePickerUtils;
 
 import butterknife.BindView;
@@ -68,6 +67,24 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         super.onPause();
         MyNotifyUtil.setShowTag(MyNotifyUtil.SHOW_TAG_OTHER);
         TimePickerUtils.unBind();
+    }
+
+    /**
+     * activity 采用SingleTask模式
+     *
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent == null)
+            return;
+        String tag = intent.getStringExtra(MainActivityConfig.LUNCH_TAG);
+        switch (tag){
+            case MainActivityConfig.LUNCH_TAG_UPLOAD_DOWNLOAD:
+                selectTab(0);
+                break;
+        }
     }
 
     @Override
@@ -133,7 +150,6 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
                 }
                 break;
             case MINE_PAGE_FRAGMENT:
-                RouterUtils.open(this, IndexRouter.LoginActivity);
                 if (mineFragment == null) {
                     mineFragment = MineFragment.newInstance();
                     ft.add(R.id.fragmentContainer, mineFragment);

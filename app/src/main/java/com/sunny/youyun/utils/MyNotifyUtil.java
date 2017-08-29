@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.main.MainActivity;
+import com.sunny.youyun.activity.main.config.MainActivityConfig;
 
 
 /**
@@ -70,6 +71,7 @@ public class MyNotifyUtil {
         if(SHOW_TAG == SHOW_TAG_MAIN)
             return;
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(MainActivityConfig.LUNCH_TAG, MainActivityConfig.LUNCH_TAG_UPLOAD_DOWNLOAD);
         MyNotifyUtil.newInstance(context)
                 .setCompatBuilder(new MyNotifyUtil.NormalNotificationBuilder(context)
                         .autoCancel(true)

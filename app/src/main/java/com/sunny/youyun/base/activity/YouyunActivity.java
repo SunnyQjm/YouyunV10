@@ -1,4 +1,4 @@
-package com.sunny.youyun.base;
+package com.sunny.youyun.base.activity;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -7,20 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
-import com.sunny.youyun.mvp.BasePresenter;
-import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
-
 /**
- * Created by Administrator on 2017/3/12 0012.
+ * Created by Sunny on 2017/8/29 0029.
  */
 
-public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseView {
+public class YouyunActivity extends AppCompatActivity{
 
-    protected P mPresenter;
     protected YouyunTipDialog dialog;
     protected YouyunLoadingView loadingView;
 
@@ -34,7 +30,6 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompat
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("onCreate presenter");
-        mPresenter = onCreatePresenter();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         }
@@ -44,10 +39,6 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompat
     @CallSuper
     protected void onDestroy() {
         super.onDestroy();
-        //当Activity被销毁时，取消所有订阅
-        if (mPresenter != null) {
-            mPresenter.clearAllDisposable();
-        }
     }
 
     /**
@@ -102,6 +93,4 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompat
 //            App.finishAnim(this);
 //        }
     }
-
-    protected abstract P onCreatePresenter();
 }

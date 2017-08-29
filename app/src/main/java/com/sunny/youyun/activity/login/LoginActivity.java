@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +15,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.BaseUiListener;
-import com.sunny.youyun.base.MVPBaseActivity;
+import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.model.QQLoginResult;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.utils.AccountValidatorUtil;
@@ -28,6 +29,10 @@ import com.tencent.tauth.Tencent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 @Router(IndexRouter.LoginActivity)
 public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements LoginContract.View {
@@ -43,6 +48,10 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
     Button btnLogin;
     @BindView(R.id.btn_register)
     Button btnRegister;
+    @BindView(R.id.img_qq_login)
+    ImageView imgQqLogin;
+    @BindView(R.id.img_we_chat_login)
+    ImageView imgWeChatLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +106,32 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
         onBackPressed();
     }
 
-    @OnClick({R.id.tv_forget_pass, R.id.btn_login, R.id.btn_register})
+    @OnClick({R.id.tv_forget_pass, R.id.btn_login, R.id.btn_register, R.id.img_qq_login, R.id.img_we_chat_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.img_qq_login:
+                showLoading();
+                Observable.create((ObservableOnSubscribe<QQLoginResult>) e ->
+                        //调用QQ登录接口，耗时，顾放在异步线程处理
+                        TencentUtil.getInstance(LoginActivity.this)
+                                .login(new BaseUiListener() {
+                                    @Override
+                                    public void onComplete(Object o) {
+                                        QQLoginResult result = GsonUtil.getInstance()
+                                                .fromJson(GsonUtil.getInstance().toJson(o), QQLoginResult.class);
+                                        Logger.i("result: " + result);
+                                        YouyunAPI.updateQQLoginResult(result);
+                                        e.onNext(result);
+                                    }
+                                }))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> mPresenter.qqLogin(result));
+
+                break;
+            case R.id.img_we_chat_login:
+                showTip("待开放");
+                break;
             case R.id.tv_forget_pass:
                 RouterUtils.open(this, IndexRouter.ForgetPassActivity);
                 break;
@@ -118,19 +150,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
 //                        .loginOut();
                 break;
             case R.id.btn_register:
-//                RouterUtils.open(this, IndexRouter.RegisterActivity);
-                TencentUtil.getInstance(this)
-                        .login(new BaseUiListener(){
-                            @Override
-                            public void onComplete(Object o) {
-                                showLoading();
-                                QQLoginResult result = GsonUtil.getInstance()
-                                        .fromJson(GsonUtil.getInstance().toJson(o), QQLoginResult.class);
-                                Logger.i("result: " + result);
-                                YouyunAPI.updateQQLoginResult(result);
-                                mPresenter.qqLogin(result);
-                            }
-                        });
+                RouterUtils.open(this, IndexRouter.RegisterActivity);
                 break;
         }
     }
@@ -139,7 +159,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Tencent.onActivityResultData(requestCode, resultCode, data,
-                new BaseUiListener(){
+                new BaseUiListener() {
                     @Override
                     public void onComplete(Object o) {
                         QQLoginResult result = GsonUtil.getInstance()

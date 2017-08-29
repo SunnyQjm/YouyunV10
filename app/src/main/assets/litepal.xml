@@ -34,6 +34,7 @@
     <list>
         <mapping class="com.sunny.youyun.model.InternetFile" />
         <mapping class="com.sunny.youyun.wifidirect.model.TransLocalFile"/>
+        <mapping class="com.sunny.youyun.model.User"/>
     </list>
 
     <!--

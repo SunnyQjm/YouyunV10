@@ -38,6 +38,15 @@ public enum YouyunAPI {
         if (SpUtils.contains(context, LOGIN_MODE)) {
             loginMode = SpUtils.get(context, LOGIN_MODE, LOGIN_MODE_NORMAL);
         }
+        if(SpUtils.contains(context, QQ_ACCESS_TOKEN)){
+            qqAccessToken = SpUtils.get(context, QQ_ACCESS_TOKEN, "");
+        }
+        if(SpUtils.contains(context, QQ_EXPIRES_IN)){
+            qqExpiresIn = SpUtils.get(context, QQ_EXPIRES_IN, 0L);
+        }
+        if(SpUtils.contains(context, QQ_OPEN_ID)) {
+            qqOpenid = SpUtils.get(context, QQ_OPEN_ID, "");
+        }
     }
 
     public void unBind() {

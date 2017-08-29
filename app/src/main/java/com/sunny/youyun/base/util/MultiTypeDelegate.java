@@ -5,7 +5,7 @@ import android.util.SparseIntArray;
 
 import java.util.List;
 
-import static com.sunny.youyun.base.BaseMultiItemQuickAdapter.TYPE_NOT_FOUND;
+import static com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter.TYPE_NOT_FOUND;
 
 /**
  * help you to achieve multi type easily

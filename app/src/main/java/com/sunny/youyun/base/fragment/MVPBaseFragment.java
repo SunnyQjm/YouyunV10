@@ -1,13 +1,16 @@
-package com.sunny.youyun.base;
+package com.sunny.youyun.base.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.mvp.BasePresenter;
+import com.sunny.youyun.views.EasyDialog;
+import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
+import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
 
 /**
@@ -16,18 +19,17 @@ import com.sunny.youyun.mvp.BasePresenter;
 
 public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment {
     protected P mPresenter;
-    protected Activity activity;
+    protected AppCompatActivity activity;
     protected OnFragmentInteractionListener mListener;
     protected OnFragmentListener paramListener;
 
+    protected YouyunTipDialog dialog;
+    protected YouyunLoadingView loadingView;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(mPresenter == null){
             mPresenter = onCreatePresenter();
-        }
-        if(activity == null){
-            activity = getActivity();
         }
     }
 
@@ -52,7 +54,7 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
         if(context instanceof OnFragmentListener){
             paramListener = (OnFragmentListener) context;
         }
-        activity = (Activity) context;
+        activity = (AppCompatActivity) context;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,37 +81,45 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
         }
     }
 
+    /**
+     * 显示提示
+     *
+     * @param info 要提示的信息
+     */
     public void showTip(String info) {
-//        if (sweetAlertDialog != null && sweetAlertDialog.isShowing())
-//            sweetAlertDialog.dismissWithAnimation();
-//        if(info.contains("404")){
-//            sweetAlertDialog = EasySweetAlertDialog.ShowTip(activity, "未登录或登录失效");
-//        }else{
-//            sweetAlertDialog = EasySweetAlertDialog.ShowTip(activity, info);
-//        }
+        dismissDialog();
+        if (dialog == null)
+            dialog = EasyDialog.showTip(activity, info);
+        else
+            dialog.show(activity.getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
-    public void showSuccess(String info){
-//        if(sweetAlertDialog != null && sweetAlertDialog.isShowing())
-//            sweetAlertDialog.dismissWithAnimation();
-//        sweetAlertDialog = EasySweetAlertDialog.ShowSuccess(activity, info);
+    public void showSuccess(String info) {
+        dismissDialog();
+        if (dialog == null)
+            dialog = EasyDialog.showSuccess(activity, info);
+        else
+            dialog.show(activity.getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
-    public void showError(String info){
-//        if(sweetAlertDialog != null && sweetAlertDialog.isShowing())
-//            sweetAlertDialog.dismissWithAnimation();
-//        sweetAlertDialog = EasySweetAlertDialog.ShowError(activity, info);
+    public void showError(String info) {
+        dismissDialog();
+        if (dialog == null)
+            dialog = EasyDialog.showError(activity, info);
+        else
+            dialog.show(activity.getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
-    protected void showProcess(String info){
-//        if(sweetAlertDialog != null && sweetAlertDialog.isShowing())
-//            sweetAlertDialog.dismissWithAnimation();
-//        sweetAlertDialog = EasySweetAlertDialog.ShowProcess(activity, info);
+    protected void showLoading() {
+        dismissDialog();
+        loadingView = EasyDialog.showLoading(activity);
     }
 
-    protected void dismissDialog(){
-//        if(sweetAlertDialog != null && sweetAlertDialog.isShowing())
-//            sweetAlertDialog.dismissWithAnimation();
+    protected void dismissDialog() {
+        if (dialog != null && !dialog.isHidden())
+            dialog.dismiss();
+        if (loadingView != null && loadingView.isShowing())
+            loadingView.dismiss();
     }
 
     /**

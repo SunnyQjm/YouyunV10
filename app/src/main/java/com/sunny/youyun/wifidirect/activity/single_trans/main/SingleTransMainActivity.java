@@ -9,7 +9,7 @@ import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.WifiDirectBaseActivity;
+import com.sunny.youyun.base.activity.WifiDirectBaseActivity;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.RichText;
@@ -53,6 +53,7 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
     private void initView() {
         easyBar.setTitle("一对一传输");
         easyBar.setRightIcon(R.drawable.icon_history);
+        easyBar.setRightIconVisible();
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {

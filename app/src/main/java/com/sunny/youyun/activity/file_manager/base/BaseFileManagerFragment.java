@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.adpater.ExpandableItemAdapter;
-import com.sunny.youyun.base.MVPBaseFragment;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.base.entity.MyDecoration;
 import com.sunny.youyun.mvp.BasePresenter;

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.adpater.FileAdapter;
-import com.sunny.youyun.base.MVPBaseFragment;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.base.entity.MyDecoration;
 
 import java.util.Stack;

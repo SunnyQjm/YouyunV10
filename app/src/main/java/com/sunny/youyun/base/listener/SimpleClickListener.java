@@ -8,15 +8,15 @@ import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.sunny.youyun.base.BaseQuickAdapter;
-import com.sunny.youyun.base.BaseViewHolder;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.base.adapter.BaseViewHolder;
 
 import java.util.Set;
 
-import static com.sunny.youyun.base.BaseQuickAdapter.EMPTY_VIEW;
-import static com.sunny.youyun.base.BaseQuickAdapter.FOOTER_VIEW;
-import static com.sunny.youyun.base.BaseQuickAdapter.HEADER_VIEW;
-import static com.sunny.youyun.base.BaseQuickAdapter.LOADING_VIEW;
+import static com.sunny.youyun.base.adapter.BaseQuickAdapter.EMPTY_VIEW;
+import static com.sunny.youyun.base.adapter.BaseQuickAdapter.FOOTER_VIEW;
+import static com.sunny.youyun.base.adapter.BaseQuickAdapter.HEADER_VIEW;
+import static com.sunny.youyun.base.adapter.BaseQuickAdapter.LOADING_VIEW;
 
 /**
  * Created by AllenCoder on 2016/8/03.

@@ -1,5 +1,6 @@
 package com.sunny.youyun.views;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.R;

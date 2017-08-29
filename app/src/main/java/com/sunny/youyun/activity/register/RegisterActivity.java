@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.MVPBaseActivity;
+import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.utils.AccountValidatorUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.RichEditText;

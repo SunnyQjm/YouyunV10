@@ -6,8 +6,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.BaseItemDraggableAdapter;
-import com.sunny.youyun.base.BaseQuickAdapter;
+import com.sunny.youyun.base.adapter.BaseItemDraggableAdapter;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 
 /**
  * Created by luoxw on 2016/6/20.

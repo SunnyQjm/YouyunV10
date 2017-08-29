@@ -8,8 +8,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.BaseQuickAdapter;
-import com.sunny.youyun.base.BaseViewHolder;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.utils.FileTypeUtil;
 import com.sunny.youyun.utils.GlideOptions;
@@ -36,6 +36,8 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
 
     public FileRecordAdapter(@LayoutRes int layoutResId, @Nullable List<InternetFile> data) {
         super(layoutResId, data);
+        this.openLoadAnimation(SLIDEIN_RIGHT);
+        this.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
     }
 
     @Nullable

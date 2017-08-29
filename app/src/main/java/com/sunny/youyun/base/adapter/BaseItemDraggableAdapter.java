@@ -1,4 +1,4 @@
-package com.sunny.youyun.base;
+package com.sunny.youyun.base.adapter;
 
 import android.graphics.Canvas;
 import android.support.annotation.NonNull;

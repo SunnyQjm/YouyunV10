@@ -20,7 +20,7 @@ import com.sunny.youyun.activity.download.DownloadActivity;
 import com.sunny.youyun.activity.file_manager.FileManagerActivity;
 import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
 import com.sunny.youyun.activity.upload_setting.UploadSettingActivity;
-import com.sunny.youyun.base.MVPBaseFragment;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.main_fragment.Adapter.RecordTabsAdapter;
 import com.sunny.youyun.fragment.main.main_fragment.DownloadReccordFragment.DownloadRecordFragment;
 import com.sunny.youyun.fragment.main.main_fragment.UploadRecordFragment.UploadRecordFragment;

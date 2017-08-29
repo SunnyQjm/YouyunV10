@@ -1,4 +1,4 @@
-package com.sunny.youyun.base;
+package com.sunny.youyun.base.activity;
 
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;

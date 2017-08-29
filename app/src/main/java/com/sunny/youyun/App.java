@@ -11,6 +11,7 @@ import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.MyThreadPool;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
@@ -45,6 +46,9 @@ public class App extends Application {
         LitePal.initialize(this);
         APIManager.init(this);
         WifiDirectManager.init(this);
+        //load user info from local
+        UserInfoManager.init();
+
         YouyunAPI.getInstance().bind(this);
         FileDownloader.bind(this);
         FileUploader.bind(this);

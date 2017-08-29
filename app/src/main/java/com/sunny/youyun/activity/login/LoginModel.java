@@ -49,7 +49,7 @@ class LoginModel implements LoginContract.Model{
                     @Override
                     public void onError(Throwable e) {
                         Logger.e(e, "登录失败");
-                        mPresenter.showTip("登录失败，请检查网络连接");
+                        mPresenter.showError("登录失败，请检查网络连接");
                     }
 
                     @Override
@@ -71,7 +71,7 @@ class LoginModel implements LoginContract.Model{
                             mPresenter.loginSuccess();
                         }else{
                             YouyunAPI.updateIsLogin(false);
-                            mPresenter.showTip(loginResponseBody.getMsg());
+                            mPresenter.showTip("登录失败，请检查用户名或密码是否正确");
                         }
                     }
                 });

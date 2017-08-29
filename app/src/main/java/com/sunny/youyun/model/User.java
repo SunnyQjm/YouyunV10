@@ -1,10 +1,12 @@
 package com.sunny.youyun.model;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by Sunny on 2017/6/6 0006.
  */
 
-public class User {
+public class User extends DataSupport{
 
     /**
      * username : username1
@@ -27,6 +29,8 @@ public class User {
     private int id;
     private long createTime;
     private long updateTime;
+    public static final int INSTANCE_TAG = 0;
+    private final int INSTANCE = INSTANCE_TAG;
 
     private User(Builder builder) {
         setUsername(builder.username);

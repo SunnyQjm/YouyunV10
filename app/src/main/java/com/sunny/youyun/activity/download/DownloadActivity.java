@@ -1,7 +1,6 @@
 package com.sunny.youyun.activity.download;
 
 import android.os.Bundle;
-import android.transition.Explode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,7 +8,7 @@ import android.widget.EditText;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.MVPBaseActivity;
+import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.UUIDUtil;

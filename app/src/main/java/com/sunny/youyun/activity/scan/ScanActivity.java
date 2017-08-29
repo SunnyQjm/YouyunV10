@@ -11,7 +11,7 @@ import android.view.View;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.scan.config.ScanConfig;
-import com.sunny.youyun.base.MVPBaseActivity;
+import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.utils.RxPermissionUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.QRScan.qrcode.core.QRCodeView;

@@ -2,7 +2,7 @@ package com.sunny.youyun.base.listener;
 
 import android.view.View;
 
-import com.sunny.youyun.base.BaseQuickAdapter;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 
 /**
  * Created by AllenCoder on 2016/8/03.

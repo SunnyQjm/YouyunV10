@@ -75,4 +75,8 @@
     <string name="activity_trans_anim_duration">300</string>
     <string name="xxs_share">的分享</string>
     <string name="searching">正在搜索...</string>
+    <string name="person_center">个人中心</string>
+    <string name="exit">退出</string>
+    <string name="select_photo">选择图片</string>
+    <string name="get_fail">获取失败</string>
 </resources>

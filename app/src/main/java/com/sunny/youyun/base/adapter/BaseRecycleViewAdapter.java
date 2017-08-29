@@ -1,4 +1,4 @@
-package com.sunny.youyun.base;
+package com.sunny.youyun.base.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

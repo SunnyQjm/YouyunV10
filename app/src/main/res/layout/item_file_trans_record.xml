@@ -68,8 +68,8 @@
 
     <ImageView
         android:id="@+id/img_arrow"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/arrow_size"
+        android:layout_height="@dimen/arrow_size"
         android:layout_marginBottom="24dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="24dp"

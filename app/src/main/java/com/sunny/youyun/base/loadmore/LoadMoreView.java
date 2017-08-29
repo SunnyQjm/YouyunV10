@@ -3,7 +3,7 @@ package com.sunny.youyun.base.loadmore;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 
-import com.sunny.youyun.base.BaseViewHolder;
+import com.sunny.youyun.base.adapter.BaseViewHolder;
 
 
 /**

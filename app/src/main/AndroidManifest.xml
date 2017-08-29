@@ -94,24 +94,23 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activity.TencentTest" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".activity.main.MainActivity">
-
-        </activity>
-
-        <activity android:name=".activity.welcome.WelcomeActivity"
+            android:name=".activity.main.MainActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".activity.welcome.WelcomeActivity"
             android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.register.RegisterActivity" />
         <activity
-            android:theme="@style/AppTheme"
-            android:name=".activity.download.DownloadActivity" />
+            android:name=".activity.download.DownloadActivity"
+            android:theme="@style/AppTheme" />
         <activity android:name=".wifidirect.activity.single_trans.main.SingleTransMainActivity" />
         <activity android:name=".activity.scan.ScanActivity" />
         <activity android:name=".wifidirect.activity.single_trans.trans.TransActivity" />
@@ -139,6 +138,7 @@
             android:exported="true" />
 
         <activity android:name=".activity.forget_pass.ForgetPassActivity" />
+        <activity android:name=".activity.decim.DcimActivity"></activity>
     </application>
 
 </manifest>

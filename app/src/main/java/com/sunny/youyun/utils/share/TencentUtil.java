@@ -61,7 +61,7 @@ public enum TencentUtil {
     }
 
     public void login(IUiListener iUiListener) {
-        if (YouyunAPI.getOpenId() != null) {
+        if (YouyunAPI.getOpenId() != null && !YouyunAPI.getOpenId().equals("")) {
             tencent.setOpenId(YouyunAPI.getOpenId());
             tencent.setAccessToken(YouyunAPI.getAccessToken(),
                     String.valueOf(YouyunAPI.getExpiresIn()));
