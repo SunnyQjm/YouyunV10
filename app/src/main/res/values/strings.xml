@@ -74,4 +74,5 @@
 
     <string name="activity_trans_anim_duration">300</string>
     <string name="xxs_share">的分享</string>
+    <string name="searching">正在搜索...</string>
 </resources>

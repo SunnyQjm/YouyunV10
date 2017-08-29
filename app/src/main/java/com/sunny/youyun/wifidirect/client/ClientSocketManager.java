@@ -3,12 +3,14 @@ package com.sunny.youyun.wifidirect.client;
 
 import android.support.annotation.NonNull;
 
+import com.sunny.youyun.wifidirect.event.FileTransEvent;
 import com.sunny.youyun.wifidirect.info.CODE_TABLE;
 import com.sunny.youyun.wifidirect.model.SocketRequestBody;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
 import com.sunny.youyun.wifidirect.utils.GsonUtil;
 import com.sunny.youyun.wifidirect.utils.ProtocolStringBuilder;
 import com.sunny.youyun.wifidirect.utils.SocketUtils;
+import com.sunny.youyun.wifidirect.utils.TransRxBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,14 +24,23 @@ import java.util.concurrent.FutureTask;
 /**
  * Created by Sunny on 2017/4/21 0021.
  */
-public enum  ClientSocketManager implements ClientSocketStrategy {
+public enum ClientSocketManager implements ClientSocketStrategy {
 
     INSTANCE;
+
     public static ClientSocketManager getInstance() {
         return INSTANCE;
     }
 
 
+    /**
+     * 询问IP
+     *
+     * @param ip
+     * @param port
+     * @return
+     * @throws IOException
+     */
     public String askIP(String ip, int port) throws IOException {
         Socket socket = new Socket(ip, port);
         SocketUtils su = new SocketUtils(socket);
@@ -43,6 +54,7 @@ public enum  ClientSocketManager implements ClientSocketStrategy {
         su.close();
         return IP;
     }
+
     private <T> void send(final Socket socket, final SocketRequestBody<T> body, final int code) throws IOException {
         SocketUtils su = new SocketUtils(socket);
 
@@ -71,7 +83,58 @@ public enum  ClientSocketManager implements ClientSocketStrategy {
         boolean result = false;
         try {
             socketUtils = new SocketUtils(socket);
-            socketUtils.writeFile(file, mList);
+            TransLocalFile transLocalFile = new TransLocalFile.Builder()
+                    .name(file.getName())
+                    .path(file.getPath())
+                    .size(file.length())
+                    .fileTAG(TransLocalFile.TAG_SEND)
+                    .createTime(System.currentTimeMillis())
+                    .build();
+            int position;
+            synchronized (SocketUtils.class) {
+                position = mList.size();
+                mList.add(transLocalFile);
+            }
+
+            socketUtils.writeFile(transLocalFile, new SocketUtils.FileTransCallback() {
+                @Override
+                public void onBegin() {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .done(false)
+                            .position(position)
+                            .type(FileTransEvent.Type.BEGIN)
+                            .build());
+                }
+
+                @Override
+                public void onProgress(FileTransEvent fileTransEvent) {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .already(fileTransEvent.getAlready())
+                            .total(fileTransEvent.getTotal())
+                            .done(fileTransEvent.isDone())
+                            .position(position)
+                            .type(FileTransEvent.Type.UPLOAD)
+                            .build());
+                }
+
+                @Override
+                public void onEnd() {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .done(true)
+                            .position(position)
+                            .type(FileTransEvent.Type.FINISH)
+                            .build());
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .exception(e)
+                            .position(position)
+                            .type(FileTransEvent.Type.ERROR)
+                            .build());
+                }
+            });
             result = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,7 +195,7 @@ public enum  ClientSocketManager implements ClientSocketStrategy {
                 if (!file.exists()) {
                     return null;
                 }
-                if(getInstance().sendSingleFile(socket, file, mList)){
+                if (getInstance().sendSingleFile(socket, file, mList)) {
                     callback.onSuccess();
                 } else {
                     callback.onError("传输失败");

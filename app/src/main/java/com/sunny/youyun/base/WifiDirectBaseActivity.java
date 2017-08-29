@@ -1,9 +1,12 @@
 package com.sunny.youyun.base;
 
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.ColorRes;
 
+import com.githang.statusbar.StatusBarCompat;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.utils.NetworkUtils;
@@ -38,6 +41,14 @@ public abstract class WifiDirectBaseActivity<P extends BasePresenter> extends MV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWifiDirectListenerAndIntentFilter();
+    }
+
+    protected void changeStatusBarColor(@ColorRes int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarCompat.setStatusBarColor(this, getResources().getColor(color, null));
+        } else {
+            StatusBarCompat.setStatusBarColor(this, getResources().getColor(color));
+        }
     }
 
     /**

@@ -33,8 +33,6 @@
     -->
     <list>
         <mapping class="com.sunny.youyun.model.InternetFile" />
-        <mapping class="com.sunny.youyun.model.LocalFile"/>
-        <mapping class="com.sunny.youyun.model.TransLocalFile"/>
         <mapping class="com.sunny.youyun.wifidirect.model.TransLocalFile"/>
     </list>
 

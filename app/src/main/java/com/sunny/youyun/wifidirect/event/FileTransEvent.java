@@ -10,9 +10,10 @@ public class FileTransEvent {
     private final boolean done;
     private final int position;
     private final Type type;
+    private Exception exception;
 
     public enum Type{
-        UPLOAD, DOWNLOAD, BEGIN, ERROR
+        UPLOAD, DOWNLOAD, BEGIN, ERROR, FINISH
     }
 
     private FileTransEvent(Builder builder) {
@@ -21,6 +22,7 @@ public class FileTransEvent {
         done = builder.done;
         position = builder.position;
         type = builder.type;
+        exception = builder.exception;
     }
 
     @Override
@@ -30,6 +32,8 @@ public class FileTransEvent {
                 ", total=" + total +
                 ", done=" + done +
                 ", position=" + position +
+                ", type=" + type +
+                ", exception=" + exception +
                 '}';
     }
 
@@ -59,6 +63,7 @@ public class FileTransEvent {
         private boolean done;
         private int position;
         private Type type;
+        private Exception exception;
 
         public Builder() {
         }
@@ -85,6 +90,11 @@ public class FileTransEvent {
 
         public Builder type(Type val) {
             type = val;
+            return this;
+        }
+
+        public Builder exception(Exception val) {
+            exception = val;
             return this;
         }
 

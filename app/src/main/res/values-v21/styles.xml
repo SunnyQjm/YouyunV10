@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/application_theme_color</item>
         <item name="colorPrimaryDark">@color/application_theme_color</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!--设置状态栏的颜色-->
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <item name="android:windowExitTransition">@transition/slide_out</item>
-        <item name="android:windowEnterAnimation">@transition/slide_in</item>
-        <item name="android:windowReenterTransition">@transition/fade</item>
 
+        <!--&lt;!&ndash; 允许使用transitions &ndash;&gt;-->
+        <!--<item name="android:windowContentTransitions">true</item>-->
+        <!--&lt;!&ndash;是否覆盖执行，其实可以理解成是否同步执行还是顺序执行&ndash;&gt;-->
+        <!--<item name="android:windowAllowEnterTransitionOverlap">true</item>-->
+        <!--<item name="android:windowAllowReturnTransitionOverlap">false</item>-->
+
+        <!--<item name="android:windowExitTransition">@transition/slide_out</item>-->
+        <!--<item name="android:windowEnterAnimation">@transition/slide_in</item>-->
+        <!--<item name="android:windowReenterTransition">@transition/fade</item>-->
     </style>
 </resources>

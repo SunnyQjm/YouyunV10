@@ -12,8 +12,8 @@ public enum  SingleTransManager {
         return INSTANCE;
     }
 
-    private final DeviceInfo myInfo = new DeviceInfo.Builder().build();
-    private final DeviceInfo targetInfo = new DeviceInfo.Builder().build();
+    private volatile DeviceInfo myInfo = new DeviceInfo.Builder().build();
+    private volatile DeviceInfo targetInfo = new DeviceInfo.Builder().build();
 
     public DeviceInfo getMyInfo() {
         return myInfo;
@@ -21,6 +21,11 @@ public enum  SingleTransManager {
 
     public DeviceInfo getTargetInfo() {
         return targetInfo;
+    }
+
+    public void clearInfo(){
+        myInfo = new DeviceInfo.Builder().build();
+        targetInfo = new DeviceInfo.Builder().build();
     }
 }
 

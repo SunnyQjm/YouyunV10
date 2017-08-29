@@ -38,10 +38,10 @@ public class FileUtils {
         return sdDir.toString();
     }
 
-    public static String getDownloadPath(){
+    public static String getDownloadPath() {
         String targetPath = getAppPath() + "/Download/";
         File file = new File(targetPath);
-        if(!file.exists())
+        if (!file.exists())
             file.mkdirs();
         return targetPath;
     }
@@ -49,8 +49,8 @@ public class FileUtils {
     public static String getWifiDirectPath() {
         String path = getAppPath() + "/WifiDirectFile/";
         File file = new File(path);
-        if (!file.exists() && file.mkdir()) {
-            return path;
+        if (!file.exists()) {
+            file.mkdirs();
         }
         return path;
     }
@@ -82,24 +82,22 @@ public class FileUtils {
     }
 
 
-    public static void openFile(final Context context, final String filePath){
+    public static void openFile(final Context context, final String filePath) {
         Intent intent = FileUtils.getOpenFileIntent(filePath);
         if (intent != null)
             context.startActivity(intent);
         else
             Toast.makeText(context, "该文件无法打开", Toast.LENGTH_SHORT).show();
     }
+
     /**
      * 打开一个文件
      *
-     * @param filePath
-     *            文件的绝对路径
+     * @param filePath 文件的绝对路径
      */
-    public static Intent getOpenFileIntent(final String filePath)
-    {
+    public static Intent getOpenFileIntent(final String filePath) {
         String ext = filePath.substring(filePath.lastIndexOf('.')).toLowerCase(Locale.US);
-        try
-        {
+        try {
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
             String temp = ext.substring(1);
             String mime = mimeTypeMap.getMimeTypeFromExtension(temp);
@@ -109,8 +107,7 @@ public class FileUtils {
             File file = new File(filePath);
             intent.setDataAndType(Uri.fromFile(file), mime);
             return intent;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.e(e, "文件无法打开");
             return null;
         }

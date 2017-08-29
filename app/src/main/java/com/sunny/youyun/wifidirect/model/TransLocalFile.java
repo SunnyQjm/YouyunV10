@@ -1,7 +1,6 @@
 package com.sunny.youyun.wifidirect.model;
 
 
-import org.litepal.annotation.Column;
 import org.litepal.crud.DataSupport;
 
 /**
@@ -9,8 +8,6 @@ import org.litepal.crud.DataSupport;
  */
 
 public class TransLocalFile extends DataSupport {
-
-    @Column(unique = true, defaultValue = "md5")
     private String md5;
     private final String name;
     private final long size;
@@ -23,7 +20,6 @@ public class TransLocalFile extends DataSupport {
     private int fileTAG = -1;
     public static final int TAG_SEND = 0;
     public static final int TAG_RECEIVE = 1;
-    private final static int MAX_PROGRESS = 100;
 
     private TransLocalFile(Builder builder) {
         setMd5(builder.md5);
@@ -66,10 +62,6 @@ public class TransLocalFile extends DataSupport {
         this.rate = rate;
     }
 
-    public static int getMaxProgress() {
-        return MAX_PROGRESS;
-    }
-
     public String getName() {
         return name;
     }
@@ -100,6 +92,10 @@ public class TransLocalFile extends DataSupport {
 
     public int getFileTAG() {
         return fileTAG;
+    }
+
+    public void setFileTAG(int fileTAG) {
+        this.fileTAG = fileTAG;
     }
 
     public static final class Builder {

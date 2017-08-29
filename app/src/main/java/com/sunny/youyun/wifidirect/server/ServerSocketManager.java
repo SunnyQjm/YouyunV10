@@ -15,7 +15,7 @@ import java.net.Socket;
 public class ServerSocketManager extends BaseRunnable {
 
     private final ServerSocket serverSocket;
-    private final ServerSocketStrategy strategy;
+    private volatile ServerSocketStrategy strategy;
 
     private ServerSocketManager(Builder builder) throws IOException {
         serverSocket = new ServerSocket(builder.port);

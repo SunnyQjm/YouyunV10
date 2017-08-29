@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
-import com.sunny.youyun.App;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyDialog;
@@ -98,10 +97,10 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends AppCompat
         super.finish();
         dialog = null;
         loadingView = null;
-        //5.0以下用老版本的切换动画
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            App.finishAnim(this);
-        }
+//        //5.0以下用老版本的切换动画
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//            App.finishAnim(this);
+//        }
     }
 
     protected abstract P onCreatePresenter();

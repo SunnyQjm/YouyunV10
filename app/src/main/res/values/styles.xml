@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/application_theme_color</item>
         <item name="colorPrimaryDark">@color/application_theme_color</item>
@@ -12,6 +12,10 @@
 
     <style name="WelcomeTheme" parent="AppTheme">
         <item name="android:windowBackground">@mipmap/welcome</item>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/application_theme_color</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="dialog" parent="@android:style/Theme.Dialog">

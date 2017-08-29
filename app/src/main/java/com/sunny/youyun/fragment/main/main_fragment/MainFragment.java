@@ -3,7 +3,6 @@ package com.sunny.youyun.fragment.main.main_fragment;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -29,7 +28,6 @@ import com.sunny.youyun.internet.upload.FileUploadFileParam;
 import com.sunny.youyun.utils.DialogUtils;
 import com.sunny.youyun.utils.RecyclerViewUtils;
 import com.sunny.youyun.utils.RouterUtils;
-import com.sunny.youyun.wifidirect.activity.single_trans.main.SingleTransMainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,25 +117,28 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
             closeAdd();
             switch (v.getId()) {
                 case R.id.et_trans:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        RouterUtils.openWithAnimation(activity, new Intent(activity, SingleTransMainActivity.class));
-                    } else {
-                        RouterUtils.open(activity, IndexRouter.SingleTransMainActivity);
-                    }
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                        RouterUtils.openWithAnimation(activity, new Intent(activity, SingleTransMainActivity.class));
+//                    } else {
+//                        RouterUtils.open(activity, IndexRouter.SingleTransMainActivity);
+//                    }
+                    RouterUtils.open(activity, IndexRouter.SingleTransMainActivity);
                     break;
                 case R.id.et_download:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
-                    } else {
-                        startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
-                    }
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
+//                    } else {
+//                        startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
+//                    }
+                    startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
                     break;
                 case R.id.et_upload:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, FileManagerActivity.class), PATH_S);
-                    } else {
-                        startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
-                    }
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, FileManagerActivity.class), PATH_S);
+//                    } else {
+//                        startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
+//                    }
+                    startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
                     break;
             }
         };

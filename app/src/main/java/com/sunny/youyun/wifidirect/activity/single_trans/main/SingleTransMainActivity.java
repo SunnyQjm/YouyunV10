@@ -1,5 +1,6 @@
 package com.sunny.youyun.wifidirect.activity.single_trans.main;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.sunny.youyun.base.WifiDirectBaseActivity;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.RichText;
+import com.sunny.youyun.wifidirect.activity.single_trans.receiver.ReceiverActivity;
+import com.sunny.youyun.wifidirect.activity.single_trans.send.SenderActivity;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 
 import butterknife.BindView;
@@ -48,6 +51,8 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
     }
 
     private void initView() {
+        easyBar.setTitle("一对一传输");
+        easyBar.setRightIcon(R.drawable.icon_history);
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {
@@ -56,10 +61,9 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
 
             @Override
             public void onRightIconClick(View view) {
-
+                //TODO here to go to history
             }
         });
-        easyBar.setTitle("一对一传输");
         WifiDirectManager.getInstance().disConnect();
     }
 
@@ -73,10 +77,18 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_i_want_receive_file:
-                RouterUtils.open(this, IndexRouter.ReceiverActivity);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    RouterUtils.openWithAnimation(this ,new Intent(this, ReceiverActivity.class));
+                } else {
+                    RouterUtils.open(this, IndexRouter.ReceiverActivity);
+                }
                 break;
             case R.id.btn_i_want_send_file:
-                RouterUtils.open(this, IndexRouter.SenderActivity);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    RouterUtils.openWithAnimation(this, new Intent(this, SenderActivity.class));
+                } else {
+                    RouterUtils.open(this, IndexRouter.SenderActivity);
+                }
                 break;
         }
     }

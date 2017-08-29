@@ -10,7 +10,6 @@ import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.InternetFile;
-import com.sunny.youyun.model.LocalFile;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.utils.MyThreadPool;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
@@ -33,7 +32,6 @@ import cn.jpush.android.api.JPushInterface;
 
 public class App extends Application {
     public static final String AppName = "Youyun";
-    public static final List<LocalFile> mList_LocalFile = new CopyOnWriteArrayList<>();
     public static final List<TransLocalFile> mList_SendRecord = new CopyOnWriteArrayList<>();
     public static final List<TransLocalFile> mList_ReceiveRecord = new CopyOnWriteArrayList<>();
     public static final List<InternetFile> mList_UploadRecord = new CopyOnWriteArrayList<>();
@@ -94,8 +92,9 @@ public class App extends Application {
         System.out.println("上传文件记录：" + mList_UploadRecord.size());
         mList_DownloadRecord.addAll(DataSupport.where("fileTAG = ?", String.valueOf(InternetFile.TAG_DOWNLOAD)).find(InternetFile.class));
         System.out.println("下载文件记录：" + mList_DownloadRecord.size());
-        mList_LocalFile.addAll(DataSupport.findAll(LocalFile.class));
         mList_ReceiveRecord.addAll(DataSupport.where("fileTAG = ?", String.valueOf(TransLocalFile.TAG_RECEIVE)).find(TransLocalFile.class));
+        System.out.println("快传接收记录：" + mList_ReceiveRecord.size());
         mList_SendRecord.addAll(DataSupport.where("fileTAG = ?", String.valueOf(TransLocalFile.TAG_SEND)).find(TransLocalFile.class));
+        System.out.println("快传发送记录：" + mList_SendRecord.size());
     }
 }

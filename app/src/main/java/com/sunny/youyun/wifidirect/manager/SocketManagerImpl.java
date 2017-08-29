@@ -37,7 +37,8 @@ class SocketManagerImpl implements SocketManager {
 
     @Override
     public void startServer(@NonNull ServerSocketStrategy strategy) {
-        if (startFileServerSocket == null || startFileServerSocket.isAlive()) {
+        //第一次或
+        if (startFileServerSocket == null || !startFileServerSocket.isAlive()) {
             StartFileServer(strategy);
             System.out.println("SocketServer begin listen file and msg");
         } else {

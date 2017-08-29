@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.utils.MD5Util;
 import com.sunny.youyun.wifidirect.event.FileTransEvent;
-import com.sunny.youyun.wifidirect.exception.FileCreateFailedException;
 import com.sunny.youyun.wifidirect.info.CODE_TABLE;
 import com.sunny.youyun.wifidirect.model.SocketRequestBody;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
@@ -18,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.List;
 
 /**
  * Created by Sunny on 2017/4/20 0020.
@@ -34,6 +32,7 @@ public class SocketUtils {
         input = new DataInputStream(socket.getInputStream());
     }
 
+
     public void writeUTF(final String info) throws IOException {
         out.writeUTF(info);
     }
@@ -45,18 +44,14 @@ public class SocketUtils {
     /**
      * 读文件
      *
-     * @param path
      * @return
      */
-    public void readFile(String path, TransLocalFile transLocalFile, int position)
-            throws IOException, FileCreateFailedException {
+    public void readFile(@NonNull final TransLocalFile transLocalFile, final FileTransCallback callBack) throws IOException {
         FileOutputStream fileOutputStream = null;
-        File file = new File(path);
+        String savePath = transLocalFile.getPath();
+        File file = new File(savePath);
         //如果文件创建不成功
-        if (!file.createNewFile()) {
-            throw new FileCreateFailedException("文件创建失败：" + path);
-        }
-        System.out.println("asdf");
+        file.createNewFile();
         if (!file.exists() || file.isDirectory())
             throw new FileNotFoundException("保存路径无效");
         boolean isSuccess = false;
@@ -70,13 +65,8 @@ public class SocketUtils {
 
             fileOutputStream = new FileOutputStream(file);
             int length = 0;
-            TransRxBus.getInstance().post(new FileTransEvent.Builder()
-                    .already(alreadyTransBits)
-                    .total(totalSize)
-                    .done(alreadyTransBits == totalSize)
-                    .position(position)
-                    .type(FileTransEvent.Type.BEGIN)
-                    .build());
+            if (callBack != null)
+                callBack.onBegin();
             long startTime = System.currentTimeMillis();
             long preTime = startTime;
             while (true) {
@@ -85,7 +75,6 @@ public class SocketUtils {
                 }
                 alreadyTransBits += length;
                 fileOutputStream.write(buffer, 0, length);
-                fileOutputStream.flush();
 
                 //获取当前文件的传输进度
                 now_process = (int) Math.ceil(alreadyTransBits * 1.0 / totalSize * 100);
@@ -105,34 +94,42 @@ public class SocketUtils {
                     preTransBits = alreadyTransBits;
 
                     pre_process = now_process;
-                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
-                            .already(alreadyTransBits)
-                            .total(totalSize)
-                            .done(alreadyTransBits == totalSize)
-                            .position(position)
-                            .type(FileTransEvent.Type.DOWNLOAD)
-                            .build());
+                    if (callBack != null) {
+                        callBack.onProgress(new FileTransEvent.Builder()
+                                .already(alreadyTransBits)
+                                .type(FileTransEvent.Type.DOWNLOAD)
+                                .total(totalSize)
+                                .done(alreadyTransBits == totalSize)
+                                .build()
+                        );
+                    }
+
                 }
             }
+            fileOutputStream.flush();
 
             transLocalFile.setRate(
                     Tool.convertToRate(totalSize, System.currentTimeMillis() - startTime)
             );
             transLocalFile.setCreateTime(System.currentTimeMillis());
-            transLocalFile.setPath(path);
+            transLocalFile.setPath(savePath);
             transLocalFile.setDone(true);
             //传输完毕后再发一次
-            TransRxBus.getInstance().post(new FileTransEvent.Builder()
-                    .already(alreadyTransBits)
-                    .total(totalSize)
-                    .done(true)
-                    .position(position)
-                    .type(FileTransEvent.Type.DOWNLOAD)
-                    .build());
+            if (callBack != null)
+                callBack.onEnd();
+//            TransRxBus.getInstance().post(new FileTransEvent.Builder()
+//                    .already(alreadyTransBits)
+//                    .total(totalSize)
+//                    .done(true)
+//                    .position(position)
+//                    .type(FileTransEvent.Type.DOWNLOAD)
+//                    .build());
             isSuccess = true;
         } catch (IOException e) {
             e.printStackTrace();
             isSuccess = false;
+            if (callBack != null)
+                callBack.onError(e);
             Logger.e(e, "readFile failed！");
         } finally {
             //关闭文件输出流即可，Socket不需要手动关闭
@@ -145,6 +142,8 @@ public class SocketUtils {
             }
             if (isSuccess) {
                 String md5 = MD5Util.getFileMD5(new FileInputStream(file));
+                System.out.println("md5: " + md5);
+                transLocalFile.setMd5(md5);
                 transLocalFile.saveOrUpdate("md5 = ?", md5);
             }
         }
@@ -153,22 +152,18 @@ public class SocketUtils {
     /**
      * 写文件
      *
-     * @param file
      * @return
      */
-    public boolean writeFile(final File file, @NonNull final List<TransLocalFile> listSend) {
-        if (file == null || !file.exists() || file.isDirectory()) {
-            return false;
+    public void writeFile(TransLocalFile transLocalFile, FileTransCallback callback) throws IOException {
+        File file = new File(transLocalFile.getPath());
+        if (!file.exists() || file.isDirectory()) {
+            if (callback != null)
+                callback.onError(new FileNotFoundException("文件不存在"));
+            throw new FileNotFoundException("文件不存在");
         }
 
         FileInputStream fileInputStream = null;
-        TransLocalFile transLocalFile = new TransLocalFile.Builder()
-                .name(file.getName())
-                .path(file.getPath())
-                .size(file.length())
-                .fileTAG(TransLocalFile.TAG_SEND)
-                .createTime(System.currentTimeMillis())
-                .build();
+
         byte[] buffer = new byte[1024 * 24];
         int length;
         int pre_process = 0;
@@ -179,14 +174,9 @@ public class SocketUtils {
         int alreadyTransBits = 0;
         int preTransBits = 0;
         int position;
+        boolean isSuccess = false;
         try {
             fileInputStream = new FileInputStream(file);
-
-            synchronized (SocketUtils.class) {
-                position = listSend.size();
-                listSend.add(transLocalFile);
-            }
-
             SocketRequestBody<TransLocalFile> body =
                     new SocketRequestBody<>(
                             CODE_TABLE.REQUEST_SINGLE_FILE, "传输单个文件", transLocalFile);
@@ -198,14 +188,9 @@ public class SocketUtils {
                     .toString();
             //发送文件基本信息
             writeUTF(str);
-
-            TransRxBus.getInstance().post(new FileTransEvent.Builder()
-                    .already(alreadyTransBits)
-                    .total(totalSize)
-                    .done(false)
-                    .position(position)
-                    .type(FileTransEvent.Type.BEGIN)
-                    .build());
+            //开始传输
+            if (callback != null)
+                callback.onBegin();
             while ((length = fileInputStream.read(buffer)) > 0) { //如果还没发完
                 out.write(buffer, 0, length);
                 out.flush();
@@ -227,12 +212,13 @@ public class SocketUtils {
                     );
                     preTransBits = alreadyTransBits;
 
-                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
-                            .already(alreadyTransBits)
-                            .total(totalSize)
-                            .position(position)
-                            .type(FileTransEvent.Type.UPLOAD)
-                            .build());
+                    if (callback != null)
+                        callback.onProgress(new FileTransEvent.Builder()
+                                .already(alreadyTransBits)
+                                .total(totalSize)
+                                .done(alreadyTransBits == totalSize)
+                                .type(FileTransEvent.Type.UPLOAD)
+                                .build());
                 }
             }
 
@@ -241,17 +227,14 @@ public class SocketUtils {
             );
             transLocalFile.setCreateTime(System.currentTimeMillis());
             transLocalFile.setDone(true);
-            TransRxBus.getInstance().post(new FileTransEvent.Builder()
-                    .already(alreadyTransBits)
-                    .total(totalSize)
-                    .position(position)
-                    .type(FileTransEvent.Type.UPLOAD)
-                    .build());
-            String md5 = MD5Util.getFileMD5(new FileInputStream(transLocalFile.getPath()));
-            transLocalFile.setMd5(md5);
-            transLocalFile.saveOrUpdate("md5 = ?", md5);
+            if (callback != null)
+                callback.onEnd();
+            isSuccess = true;
         } catch (IOException e) {
+            isSuccess = false;
             Logger.e(e, "发送文件失败");
+            if (callback != null)
+                callback.onError(e);
         } finally {
             if (fileInputStream != null)
                 try {
@@ -259,8 +242,13 @@ public class SocketUtils {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            if (isSuccess) {
+                String md5 = MD5Util.getFileMD5(new FileInputStream(file));
+                System.out.println("md5: " + md5);
+                transLocalFile.setMd5(md5);
+                transLocalFile.saveOrUpdate("md5 = ?", md5);
+            }
         }
-        return true;
     }
 
     public void close() throws IOException {
@@ -270,9 +258,13 @@ public class SocketUtils {
     }
 
 
-    public interface SocketCallBack{
+    public interface FileTransCallback {
         void onBegin();
+
         void onProgress(FileTransEvent fileTransEvent);
+
         void onEnd();
+
+        void onError(Exception e);
     }
 }

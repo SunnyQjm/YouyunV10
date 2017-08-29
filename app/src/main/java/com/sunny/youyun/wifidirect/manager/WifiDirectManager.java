@@ -261,6 +261,8 @@ public enum WifiDirectManager implements WifiDirectConnectManager, SocketManager
         //要通过requestGroupInfo的方式，在此处处理
         private final WifiP2pManager.GroupInfoListener groupInfoListener = group -> {
 
+            if(group == null)
+                return;
             if (group.getOwner() != null) {
                 //设置组长MAC
                 DeviceInfoManager.getInstance().setGroupOwnerMacAddr(group.getOwner().deviceAddress);

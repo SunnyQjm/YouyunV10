@@ -44,7 +44,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        welcomeLayout.post(()->{
+        welcomeLayout.post(() -> {
             RouterUtils.open(WelcomeActivity.this, IndexRouter.MainActivity);
             finish();
         });

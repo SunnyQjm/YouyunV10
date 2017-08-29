@@ -1,28 +1,34 @@
 package com.sunny.youyun.wifidirect.server;
 
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.utils.FileUtils;
-import com.sunny.youyun.wifidirect.config.EventConfig;
-import com.sunny.youyun.wifidirect.event.BaseEvent;
+import com.sunny.youyun.wifidirect.event.FileTransEvent;
 import com.sunny.youyun.wifidirect.info.CODE_TABLE;
 import com.sunny.youyun.wifidirect.model.SocketRequestBody;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
-import com.sunny.youyun.wifidirect.utils.EventRxBus;
 import com.sunny.youyun.wifidirect.utils.GsonUtil;
 import com.sunny.youyun.wifidirect.utils.ProtocolStringBuilder;
 import com.sunny.youyun.wifidirect.utils.SocketUtils;
+import com.sunny.youyun.wifidirect.utils.TransRxBus;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
-public class SingleTransMode implements ServerSocketStrategy {
+public enum  SingleTransMode implements ServerSocketStrategy {
 
-    private final List<TransLocalFile> mListReceive;
-    public SingleTransMode(List<TransLocalFile> list) {
-        mListReceive = list;
+    INSTANCE;
+    public static SingleTransMode getInstance(){
+        return INSTANCE;
+    }
+    private volatile List<TransLocalFile> mListReceive;
+
+    public void bindMList(@NonNull List<TransLocalFile> mListReceive){
+        this.mListReceive = mListReceive;
     }
 
 
@@ -40,27 +46,24 @@ public class SingleTransMode implements ServerSocketStrategy {
                     //将对方的IP写回，以便对方获取IP
                     socketUtils.writeUTF(socket.getInetAddress().getHostAddress());
                     break;
-                case CODE_TABLE.CHANGE_IP:
-                    socketUtils.writeUTF(socket.getInetAddress().getHostAddress());
-                    EventRxBus.getInstance().post(new BaseEvent<>(
-                            EventConfig.IP_CHANGE, "IP", socket.getInetAddress().getHostAddress()
-                    ));
                 case CODE_TABLE.REQUEST_SINGLE_FILE:
                     SocketRequestBody<TransLocalFile> body = GsonUtil.getInstance().fromJson(results[1],
                             new TypeToken<SocketRequestBody<TransLocalFile>>() {
                             }.getType());
-                    TransLocalFile localFile = body.getObj();
-                    String path = FileUtils.getWifiDirectPath() + localFile.getName();
-                    System.out.println("传输的文件名：" + localFile.getName());
-                    System.out.println("文件的大小为：" + localFile.getSize());
+                    TransLocalFile transLocalFile = body.getObj();
+                    transLocalFile.setFileTAG(TransLocalFile.TAG_RECEIVE);
+                    String path = FileUtils.getWifiDirectPath() + transLocalFile.getName();
+                    transLocalFile.setPath(path);
+                    System.out.println("传输的文件名：" + transLocalFile.getName());
+                    System.out.println("文件的大小为：" + transLocalFile.getSize());
                     System.out.println("文件接收路径：" + path);
                     System.out.println();
                     int position;
-                    synchronized (SocketUtils.class){
+                    synchronized (SocketUtils.class) {
                         position = mListReceive.size();
-                        mListReceive.add(localFile);
+                        mListReceive.add(transLocalFile);
                     }
-                    socketUtils.readFile(path, localFile, position);
+                    receiveFile(socketUtils, position, transLocalFile);
                     System.out.println("文件读取完毕");
                     break;
                 default:
@@ -76,6 +79,57 @@ public class SingleTransMode implements ServerSocketStrategy {
                     Logger.e(e, "socket 关闭失败");
                 }
             }
+        }
+    }
+
+    private void receiveFile(SocketUtils socketUtils, int position, TransLocalFile localFile) {
+        try {
+            socketUtils.readFile(localFile, new SocketUtils.FileTransCallback() {
+                @Override
+                public void onBegin() {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .already(0)
+                            .total(0)
+                            .done(false)
+                            .position(position)
+                            .type(FileTransEvent.Type.BEGIN)
+                            .build());
+                }
+
+                @Override
+                public void onProgress(FileTransEvent fileTransEvent) {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .already(fileTransEvent.getAlready())
+                            .total(fileTransEvent.getTotal())
+                            .done(fileTransEvent.isDone())
+                            .position(position)
+                            .type(FileTransEvent.Type.DOWNLOAD)
+                            .build());
+                }
+
+                @Override
+                public void onEnd() {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .already(0)
+                            .total(0)
+                            .done(false)
+                            .position(position)
+                            .type(FileTransEvent.Type.FINISH)
+                            .build());
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    TransRxBus.getInstance().post(new FileTransEvent.Builder()
+                            .exception(e)
+                            .position(position)
+                            .type(FileTransEvent.Type.ERROR)
+                            .build());
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            Logger.e("写入文件IO错误", e);
         }
     }
 }

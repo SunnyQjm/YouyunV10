@@ -33,7 +33,9 @@ class TransModel implements TransContract.Model {
     public void begin() {
         TransRxBus.getInstance()
                 .subscribe(uuid, fileTransEvent -> {
+                    Logger.i(fileTransEvent.toString());
                     switch (fileTransEvent.getType()){
+                        case FINISH:
                         case BEGIN:
                             handler.post(()-> mPresenter.update());
                             break;
@@ -42,8 +44,10 @@ class TransModel implements TransContract.Model {
                             System.out.println(fileTransEvent.getAlready());
                             if (fileTransEvent.isDone() || fileTransEvent.getType() == FileTransEvent.Type.BEGIN)
                                 handler.post(() -> mPresenter.update());
-                            if(mList.size() <= fileTransEvent.getPosition())
+                            if(mList.size() <= fileTransEvent.getPosition()) {
+                                Logger.i("mList.size() > fileTransEvent.getPosition()");
                                 return;
+                            }
                             handler.post(() -> mPresenter.updateItem(mList.size() - fileTransEvent.getPosition() - 1, mList.get(fileTransEvent.getPosition())));
                             break;
                         case ERROR:
@@ -51,7 +55,9 @@ class TransModel implements TransContract.Model {
                             break;
                     }
                 }, throwable -> Logger.e(throwable, "面对面快传进度监听错误"));
-        WifiDirectManager.getInstance().startServer(new SingleTransMode(mList));
+        SingleTransMode.getInstance()
+                .bindMList(mList);
+        WifiDirectManager.getInstance().startServer(SingleTransMode.getInstance());
     }
 
     @Override
@@ -61,6 +67,8 @@ class TransModel implements TransContract.Model {
 
     @Override
     public void send(String[] paths) {
+        System.out.println("ip: " + SingleTransManager.getInstance().getTargetInfo().getIp());
+        System.out.println(SingleTransManager.getInstance().getTargetInfo());
         for (String path : paths) {
             WifiDirectManager.getInstance()
                     .sendFile(path, SingleTransManager.getInstance().getTargetInfo().getIp(), mList);
