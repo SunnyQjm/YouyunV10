@@ -15,7 +15,7 @@ import java.util.List;
 
 interface DcimContract {
     interface View extends BaseView {
-        void getDataSuccess();
+        void getDataSuccess(boolean isFirst);
     }
 
     interface Model extends BaseModel {
@@ -28,7 +28,7 @@ interface DcimContract {
     abstract class Presenter extends BasePresenter<View, Model> {
         abstract List<FileItem> getFileItems();
         abstract void getData(Context context);
-        abstract void getDataSuccess();
+        abstract void getDataSuccess(boolean isFirst);
         abstract List<String> getSelectItems();
         abstract void selected(int position);
     }

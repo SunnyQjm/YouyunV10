@@ -129,3 +129,14 @@
 -dontpreverify
 -dontwarn cn.jpush.**
 -keep class cn.jpush.** { *; }
+
+#We_chat
+-keep class com.tencent.mm.opensdk.** {
+   *;
+}
+-keep class com.tencent.wxop.** {
+   *;
+}
+-keep class com.tencent.mm.sdk.** {
+   *;
+}

@@ -63,6 +63,7 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
             @Override
             public void onRightIconClick(View view) {
                 //TODO here to go to history
+                RouterUtils.open(SingleTransMainActivity.this, IndexRouter.WifiDirectRecordActivity);
             }
         });
         WifiDirectManager.getInstance().disConnect();

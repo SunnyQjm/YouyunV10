@@ -33,8 +33,8 @@ class DcimPresenter extends DcimContract.Presenter{
     }
 
     @Override
-    void getDataSuccess() {
-        mView.getDataSuccess();
+    void getDataSuccess(boolean isFirst) {
+        mView.getDataSuccess(isFirst);
     }
 
     @Override

@@ -81,8 +81,21 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
             }
 
             @Override
-            public void onRightIconClick(View view) {
+            public void onRightIconClick(final View view) {
                 //TODO add share operator here
+                if (ActivityCompat.checkSelfPermission(FileDetailOffLineActivity.this,
+                        Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                        ActivityCompat.checkSelfPermission(FileDetailOffLineActivity.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    RxPermissionUtil.getInstance(FileDetailOffLineActivity.this)
+                            .request(Manifest.permission.READ_PHONE_STATE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe(aBoolean -> {
+                                if (aBoolean)
+                                    showShareDialog(view);
+                            });
+                    return;
+                }
                 showShareDialog(view);
             }
         });
@@ -101,6 +114,8 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
         tvFileNameSize.setText(String.format("%s(%s)", internetFile.getName(), Tool.convertToSize(internetFile.getSize())));
     }
 
+    @RequiresPermission(allOf = {Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE})
     private void showShareDialog(View parent) {
         if (shareDialog == null)
             shareDialog = new ShareDialog(FileDetailOffLineActivity.this,

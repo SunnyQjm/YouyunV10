@@ -7,9 +7,12 @@ import com.sunny.youyun.model.response_body.LoginResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  *
@@ -22,7 +25,7 @@ public interface UserServices {
      * @param body 包含手机号码
      * @return
      */
-    @POST("sendCode")
+    @POST(ApiInfo.SEND_CODE)
     Observable<BaseResponseBody<String>> sendCode(@Body RequestBody body);
 
     @POST(ApiInfo.LOGIN_URL)
@@ -39,8 +42,12 @@ public interface UserServices {
 //            @Field(ApiInfo.LOGIN_PASSWORD) String password
 //    );
 
-    @POST("register")
+    @POST(ApiInfo.REGISTER)
     Observable<RegisterResponseBody> register(@Body RequestBody body);
+
+    @Multipart
+    @POST(ApiInfo.MODIFY_AVATAR)
+    Observable<BaseResponseBody<String>> modifyAvatar(@Part MultipartBody.Part avatar);
 //
 //    @POST("login")
 //    Observable<LoginResponseBody> login(@Body RequestBody body);

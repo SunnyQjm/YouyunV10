@@ -101,6 +101,10 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     //eventbus
     compile 'org.greenrobot:eventbus:3.0.0'
+
+    //wechat
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.4.0'
+
     implementation 'com.android.support:appcompat-v7:25.4.0'
     compile 'com.android.support:recyclerview-v7:25.4.0'
     compile 'com.android.support:design:25.4.0'

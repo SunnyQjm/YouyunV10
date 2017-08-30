@@ -48,7 +48,7 @@ class DcimModel implements DcimContract.Model {
                     selectItems.add(entry.getKey());
                 }
                 fileItems.addAll(stringListMap.get(selectItems.get(0)));
-                mPresenter.getDataSuccess();
+                mPresenter.getDataSuccess(true);
             }
 
             @Override
@@ -65,6 +65,6 @@ class DcimModel implements DcimContract.Model {
         String key = selectItems.get(position);
         fileItems.clear();
         fileItems.addAll(stringListMap.get(key));
-        mPresenter.getDataSuccess();
+        mPresenter.getDataSuccess(false);
     }
 }

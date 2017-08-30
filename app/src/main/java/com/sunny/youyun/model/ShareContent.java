@@ -1,5 +1,7 @@
 package com.sunny.youyun.model;
 
+import android.graphics.Bitmap;
+
 import com.tencent.connect.share.QQShare;
 
 /**
@@ -53,6 +55,8 @@ public class ShareContent {
 
     private final String identifyCode;
 
+    private final Bitmap thumb;
+
 
     private ShareContent(Builder builder) {
         shareType = builder.shareType;
@@ -63,6 +67,7 @@ public class ShareContent {
         shareAppName = builder.shareAppName;
         shareExtra = builder.shareExtra;
         identifyCode = builder.identifyCode;
+        thumb = builder.thumb;
     }
 
 
@@ -98,6 +103,10 @@ public class ShareContent {
         return identifyCode;
     }
 
+    public Bitmap getThumb() {
+        return thumb;
+    }
+
     public static final class Builder {
         private int shareType = QQShare.SHARE_TO_QQ_TYPE_DEFAULT;
         private String shareUrl;
@@ -107,6 +116,7 @@ public class ShareContent {
         private String shareAppName;
         private int shareExtra;
         private String identifyCode;
+        private Bitmap thumb;
 
         public Builder() {
         }
@@ -148,6 +158,11 @@ public class ShareContent {
 
         public Builder identifyCode(String val) {
             identifyCode = val;
+            return this;
+        }
+
+        public Builder thumb(Bitmap val) {
+            thumb = val;
             return this;
         }
 

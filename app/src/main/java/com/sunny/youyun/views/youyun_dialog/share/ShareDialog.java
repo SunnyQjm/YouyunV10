@@ -19,6 +19,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.R;
 import com.sunny.youyun.model.ShareContent;
 import com.sunny.youyun.utils.share.TencentUtil;
+import com.sunny.youyun.utils.share.WechatUtil;
 import com.sunny.youyun.views.MyPopupWindow;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
@@ -113,8 +114,12 @@ public class ShareDialog {
                             .shareToQzon(shareContent, iUiListener);
                     break;
                 case SHARE_TO_WE_CHAT:
+                    WechatUtil.getInstance(context)
+                            .shareToWechatSession(shareContent);
                     break;
                 case SHARE_FRIEND_CIRCLE:
+                    WechatUtil.getInstance(context)
+                            .shareToWechatTimeline(shareContent);
                     break;
             }
             myPopupWindow.dismiss();

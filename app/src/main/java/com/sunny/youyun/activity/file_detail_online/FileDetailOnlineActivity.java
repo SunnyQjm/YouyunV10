@@ -15,6 +15,7 @@ import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.App;
 import com.sunny.youyun.IndexRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.download.FileDownloader;
@@ -92,6 +93,19 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             @Override
             public void onRightIconClick(View view) {
                 //TODO add share operator here
+                if (ActivityCompat.checkSelfPermission(FileDetailOnlineActivity.this,
+                        Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                        ActivityCompat.checkSelfPermission(FileDetailOnlineActivity.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    RxPermissionUtil.getInstance(FileDetailOnlineActivity.this)
+                            .request(Manifest.permission.READ_PHONE_STATE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe(aBoolean -> {
+                                if(aBoolean)
+                                    showShareDialog(view);
+                            });
+                    return;
+                }
                 showShareDialog(view);
             }
         });

@@ -22,4 +22,6 @@ public class IndexRouter {
     public static final String FileDetailOffLineActivity = Activity + "FileDetailOffLineActivity";
     public static final String ForgetPassActivity = Activity + "ForgetPassActivity";
     public static final String DcimActivity = Activity + "DcimActivity";
+    public static final String ClipImageActivity = Activity + "ClipImageActivity";
+    public static final String WifiDirectRecordActivity = Activity + "WifiDirectRecordActivity";
 }

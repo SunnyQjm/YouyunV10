@@ -3,6 +3,7 @@ package com.sunny.youyun.wifidirect.activity.single_trans.trans;
 import android.os.Handler;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.App;
 import com.sunny.youyun.utils.UUIDUtil;
 import com.sunny.youyun.wifidirect.event.FileTransEvent;
 import com.sunny.youyun.wifidirect.manager.SingleTransManager;
@@ -36,6 +37,13 @@ class TransModel implements TransContract.Model {
                     Logger.i(fileTransEvent.toString());
                     switch (fileTransEvent.getType()){
                         case FINISH:
+                            if(fileTransEvent.getType() == FileTransEvent.Type.UPLOAD){
+                                App.mList_SendRecord.add(mList.get(fileTransEvent.getPosition()));
+                                break;
+                            }
+                            if(fileTransEvent.getType() == FileTransEvent.Type.DOWNLOAD){
+                                App.mList_ReceiveRecord.add(mList.get(fileTransEvent.getPosition()));
+                            }
                         case BEGIN:
                             handler.post(()-> mPresenter.update());
                             break;

@@ -8,6 +8,7 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.model.ShareContent;
 import com.sunny.youyun.model.YouyunAPI;
 import com.tencent.connect.share.QQShare;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 
@@ -25,12 +26,15 @@ public enum TencentUtil {
             INSTANCE.activity = activity;
         }
         if (INSTANCE.tencent == null) {
-            INSTANCE.tencent = Tencent.createInstance(Constants.APP_ID, activity.getApplication());
+            //QQ
+            INSTANCE.tencent = Tencent.createInstance(Constants.QQ_APP_ID, activity.getApplication());
+
         }
         return INSTANCE;
     }
 
     private Tencent tencent;
+    private IWXAPI wechat;
     private Activity activity;
     private static final String SCOPE = "get_user_info";
 

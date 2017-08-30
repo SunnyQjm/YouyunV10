@@ -6,6 +6,8 @@
     <uses-permission
         android:name="android.permission.ACCESS_WIFI_STATE"
         android:required="true" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission
         android:name="android.permission.CHANGE_WIFI_STATE"
         android:required="true" />
@@ -88,6 +90,12 @@
                 <data android:scheme="tencent1105716704" />
             </intent-filter>
         </activity>
+
+        <!--<activity-->
+            <!--android:name=".wxapi.WXEntryActivity"-->
+            <!--android:exported="true"-->
+            <!--android:label="@string/app_name" />-->
+
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -96,7 +104,7 @@
         <activity
             android:name=".activity.main.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.welcome.WelcomeActivity"
             android:theme="@style/WelcomeTheme">
@@ -138,7 +146,9 @@
             android:exported="true" />
 
         <activity android:name=".activity.forget_pass.ForgetPassActivity" />
-        <activity android:name=".activity.decim.DcimActivity"></activity>
+        <activity android:name=".activity.decim.DcimActivity" />
+        <activity android:name=".activity.clip.ClipImageActivity" />
+        <activity android:name=".wifidirect.activity.record.WifiDirectRecordActivity"></activity>
     </application>
 
 </manifest>
