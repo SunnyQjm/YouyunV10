@@ -8,11 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
 import com.sunny.youyun.activity.upload_setting.adapter.ExpandableItemAdapter;
@@ -21,6 +20,7 @@ import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
+import com.sunny.youyun.views.LineMenuSwitch;
 import com.sunny.youyun.views.YouyunDatePickerDialog;
 import com.sunny.youyun.views.YouyunEditDialog;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(value = IndexRouter.UploadSettingActivity)
+@Router(value = IntentRouter.UploadSettingActivity)
 public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresenter> implements UploadSettingContract.View, BaseQuickAdapter.OnItemChildClickListener {
 
     @BindView(R.id.easyBar)
@@ -39,8 +39,8 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     RecyclerView recyclerView;
     @BindView(R.id.img_add)
     ImageView imgAdd;
-    @BindView(R.id.switch1)
-    Switch switch1;
+    @BindView(R.id.upload_setting_is_public)
+    LineMenuSwitch uploadSettingIsPublic;
     @BindView(R.id.upload_setting_effect_date)
     LineMenuItem uploadSettingEffectDate;
     @BindView(R.id.upload_setting_allow_down_count)
@@ -99,7 +99,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
             }
         });
 
-        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        uploadSettingIsPublic.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
         });
 
@@ -111,7 +111,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
-        switch1.setChecked(isPublic);
+        uploadSettingIsPublic.setChecked(isPublic);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 showCancelTipDialog();
                 break;
             case R.id.img_add:
-                RouterUtils.openForResult(this, IndexRouter.FileManagerActivity, REQUEST_PATH);
+                RouterUtils.openForResult(this, IntentRouter.FileManagerActivity, REQUEST_PATH);
                 break;
             case R.id.tv_sure:
                 Intent intent = new Intent();
@@ -188,7 +188,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         if (editDialog == null) {
             editDialog = YouyunEditDialog.newInstance("请输入可下载次数",
                     result -> {
-                        allowDownloadCount = result;
+                        allowDownloadCount = Integer.parseInt(result);
                         if (uploadSettingAllowDownCount != null)
                             uploadSettingAllowDownCount.setValue(String.valueOf(result));
                         if (uploadSettingAllowDownCountEdit != null)
@@ -196,7 +196,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                         changeAllowDownCountOption();
                     });
         }
-        editDialog.show(getFragmentManager(), "tag");
+        editDialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
     public void showSelectDateDialog() {

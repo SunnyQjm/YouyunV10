@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.sunny.youyun.activity.about_youyun.AboutYouyunActivity">
+
+        <include
+            android:id="@+id/include9"
+            layout="@layout/bar_item"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="50dp"
+            app:srcCompat="@drawable/icon_logo_round" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="v1.0"
+            android:textColor="@color/text_gray"
+            android:textSize="18sp" />
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/line_gray" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_about_youyun_version_update"
+            style="@style/LineMenuItem"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:menu_title="版本更新"
+            app:right_margin="@dimen/mine_margin_right">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_about_youyun_user_protocol"
+            style="@style/LineMenuItem"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:menu_title="用户协议"
+            app:right_margin="@dimen/mine_margin_right">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_about_youyun_about_us"
+            style="@style/LineMenuItem"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:menu_title="关于我们"
+            app:right_margin="@dimen/mine_margin_right">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_about_youyun_comment"
+            style="@style/LineMenuItem"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:menu_title="去评分"
+            app:right_margin="@dimen/mine_margin_right">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

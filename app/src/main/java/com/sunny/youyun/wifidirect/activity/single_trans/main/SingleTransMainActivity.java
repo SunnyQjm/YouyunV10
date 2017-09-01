@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.WifiDirectBaseActivity;
 import com.sunny.youyun.utils.RouterUtils;
@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IndexRouter.SingleTransMainActivity)
+@Router(IntentRouter.SingleTransMainActivity)
 public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransMainPresenter>
         implements SingleTranMainContract.View {
 
@@ -63,7 +63,7 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
             @Override
             public void onRightIconClick(View view) {
                 //TODO here to go to history
-                RouterUtils.open(SingleTransMainActivity.this, IndexRouter.WifiDirectRecordActivity);
+                RouterUtils.open(SingleTransMainActivity.this, IntentRouter.WifiDirectRecordActivity);
             }
         });
         WifiDirectManager.getInstance().disConnect();
@@ -82,14 +82,14 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     RouterUtils.openWithAnimation(this ,new Intent(this, ReceiverActivity.class));
                 } else {
-                    RouterUtils.open(this, IndexRouter.ReceiverActivity);
+                    RouterUtils.open(this, IntentRouter.ReceiverActivity);
                 }
                 break;
             case R.id.btn_i_want_send_file:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     RouterUtils.openWithAnimation(this, new Intent(this, SenderActivity.class));
                 } else {
-                    RouterUtils.open(this, IndexRouter.SenderActivity);
+                    RouterUtils.open(this, IntentRouter.SenderActivity);
                 }
                 break;
         }

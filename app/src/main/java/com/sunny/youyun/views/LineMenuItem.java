@@ -34,6 +34,7 @@ public class LineMenuItem extends RelativeLayout {
     private int rightResource;
 
     private boolean isRightIconVisible;
+    private boolean isLeftIconVisible;
 
     private int leftIconSize;
     private int rightIconSize;
@@ -104,25 +105,14 @@ public class LineMenuItem extends RelativeLayout {
                 DensityUtil.dip2px(context, DEFAULT_RIGHT_ICON_SIZE));
         isRightIconVisible = ta
                 .getBoolean(R.styleable.LineMenuItem_is_right_icon_visible, true);
+        isLeftIconVisible = ta
+                .getBoolean(R.styleable.LineMenuItem_is_left_icon_visible, false);
         leftMargin = ta.getDimensionPixelSize(R.styleable.LineMenuItem_left_margin, DensityUtil.dip2px(context, DEFAULT_MARGIN));
         rightMargin = ta.getDimensionPixelOffset(R.styleable.LineMenuItem_right_margin, DensityUtil.dip2px(context, DEFAULT_MARGIN));
         ta.recycle();
     }
 
     private void initView() {
-        tv_title = new TextView(context);
-        tv_title.setText(menuTitle);
-        tv_title.setTextColor(menuTitleColor);
-        tv_title.setTextSize(menuTitleSize);
-        tv_title.setBackgroundResource(R.color.transparent);
-        LayoutParams title_param = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        title_param.addRule(CENTER_VERTICAL);
-        title_param.leftMargin = leftMargin;
-        tv_title.setLayoutParams(title_param);
-        addView(tv_title, title_param);
-
-
         left_icon = new ImageView(context);
         left_icon.setImageResource(leftResource);
         left_icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -132,10 +122,30 @@ public class LineMenuItem extends RelativeLayout {
         left_icon_param.addRule(CENTER_VERTICAL);
         left_icon_param.width = leftIconSize;
         left_icon_param.height = leftIconSize;
-        title_param.leftMargin = leftMargin;
+        left_icon_param.leftMargin = leftMargin;
         left_icon.setLayoutParams(left_icon_param);
         addView(left_icon, left_icon_param);
-        left_icon.setVisibility(INVISIBLE);
+        if(!isLeftIconVisible){
+            left_icon.setVisibility(GONE);
+        }
+        int left_icon_id = GeneratedId.generateViewId();
+        left_icon.setId(left_icon_id);
+
+        tv_title = new TextView(context);
+        tv_title.setText(menuTitle);
+        tv_title.setTextColor(menuTitleColor);
+        tv_title.setTextSize(menuTitleSize);
+        tv_title.setBackgroundResource(R.color.transparent);
+        LayoutParams title_param = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        title_param.addRule(CENTER_VERTICAL);
+        title_param.leftMargin = leftMargin;
+        title_param.addRule(RIGHT_OF, left_icon_id);
+        tv_title.setLayoutParams(title_param);
+        addView(tv_title, title_param);
+
+
+
 
 
         right_icon = new ImageView(context);

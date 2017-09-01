@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.model.InternetFile;
@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IndexRouter.DownloadActivity)
+@Router(IntentRouter.DownloadActivity)
 public class DownloadActivity extends MVPBaseActivity<DownloadPresenter> implements DownloadContract.View {
 
 
@@ -80,7 +80,7 @@ public class DownloadActivity extends MVPBaseActivity<DownloadPresenter> impleme
         String uuid = UUIDUtil.getUUID();
         ObjectPool.getInstance()
                 .put(uuid, data);
-        RouterUtils.open(this, IndexRouter.FileDetailOnlineActivity, uuid);
+        RouterUtils.open(this, IntentRouter.FileDetailOnlineActivity, uuid);
         finish();
     }
 }

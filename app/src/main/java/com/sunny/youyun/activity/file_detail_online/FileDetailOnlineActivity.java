@@ -13,9 +13,8 @@ import android.widget.TextView;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.App;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.download.FileDownloader;
@@ -38,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(value = IndexRouter.FileDetailOnlineActivity + "/:uuid", stringParams = "uuid")
+@Router(value = IntentRouter.FileDetailOnlineActivity + "/:uuid", stringParams = "uuid")
 public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePresenter> implements FileDetailOnlineContract.View {
 
     @BindView(R.id.easyBar)

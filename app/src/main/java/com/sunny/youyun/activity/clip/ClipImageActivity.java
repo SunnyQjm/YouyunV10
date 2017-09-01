@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.clip.config.ClipImageConfig;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 
-@Router(value = IndexRouter.ClipImageActivity + "/:" + ClipImageConfig.PATH,
+@Router(value = IntentRouter.ClipImageActivity + "/:" + ClipImageConfig.PATH,
         stringParams = ClipImageConfig.PATH)
 public class ClipImageActivity extends MVPBaseActivity<ClipImagePresenter> implements ClipImageContrat.View {
 

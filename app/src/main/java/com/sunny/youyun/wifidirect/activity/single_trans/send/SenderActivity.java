@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.FileManagerActivity;
 import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-@Router(IndexRouter.SenderActivity)
+@Router(IntentRouter.SenderActivity)
 public class SenderActivity extends WifiDirectBaseActivity<SenderPresenter> implements SenderContract.View, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.btn_qr_code)
     RichText btnQrCode;
@@ -222,7 +222,7 @@ public class SenderActivity extends WifiDirectBaseActivity<SenderPresenter> impl
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             RouterUtils.openWithAnimation(this, new Intent(this, TransActivity.class));
         } else {
-            RouterUtils.open(this, IndexRouter.TransActivity);
+            RouterUtils.open(this, IntentRouter.TransActivity);
         }
         finish();
     }

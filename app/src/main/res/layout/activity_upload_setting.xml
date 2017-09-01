@@ -41,9 +41,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView"
                 app:srcCompat="@drawable/icon_setting_add" />
 
-            <include
+            <com.sunny.youyun.views.LineMenuSwitch xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/upload_setting_is_public"
-                layout="@layout/select_item_with_switch_bar" />
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/LineMenuItem"
+                app:menu_title="是否公开"
+                app:menu_title_color="@color/gray">
+
+            </com.sunny.youyun.views.LineMenuSwitch>
 
             <include layout="@layout/divide_item" />
             <include layout="@layout/divide_item" />

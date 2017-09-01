@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.FileManagerActivity;
 import com.sunny.youyun.activity.scan.ScanActivity;
@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-@Router(IndexRouter.ReceiverActivity)
+@Router(IntentRouter.ReceiverActivity)
 public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter> implements ReceiverContract.View, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.btn_scan_qr_code)
     RichText btnScanQrCode;
@@ -203,7 +203,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter> 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             RouterUtils.openWithAnimation(this, new Intent(this, TransActivity.class));
         } else {
-            RouterUtils.open(this, IndexRouter.TransActivity);
+            RouterUtils.open(this, IntentRouter.TransActivity);
         }
         finish();
     }

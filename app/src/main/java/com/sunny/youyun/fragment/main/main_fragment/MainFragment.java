@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.download.DownloadActivity;
 import com.sunny.youyun.activity.file_manager.FileManagerActivity;
@@ -120,9 +120,9 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
 //                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 //                        RouterUtils.openWithAnimation(activity, new Intent(activity, SingleTransMainActivity.class));
 //                    } else {
-//                        RouterUtils.open(activity, IndexRouter.SingleTransMainActivity);
+//                        RouterUtils.open(activity, IntentRouter.SingleTransMainActivity);
 //                    }
-                    RouterUtils.open(activity, IndexRouter.SingleTransMainActivity);
+                    RouterUtils.open(activity, IntentRouter.SingleTransMainActivity);
                     break;
                 case R.id.et_download:
 //                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

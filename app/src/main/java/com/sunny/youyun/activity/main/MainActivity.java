@@ -13,7 +13,8 @@ import android.widget.ImageView;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.orhanobut.logger.Logger;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.main.config.MainActivityConfig;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
@@ -29,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IndexRouter.MainActivity)
+@Router(IntentRouter.MainActivity)
 public class MainActivity extends MVPBaseActivity<MainPresenter> implements MainContract.View, MVPBaseFragment.OnFragmentInteractionListener {
 
 
@@ -80,7 +81,9 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         if (intent == null)
             return;
         String tag = intent.getStringExtra(MainActivityConfig.LUNCH_TAG);
-        switch (tag){
+        if(tag == null || tag.equals(""))
+            return;
+        switch (tag) {
             case MainActivityConfig.LUNCH_TAG_UPLOAD_DOWNLOAD:
                 selectTab(0);
                 break;
@@ -97,10 +100,26 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
             StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.blue));
         }
         ButterKnife.bind(this);
-        initView();
+        if (savedInstanceState == null)
+            initView();
+        else
+            reCallInit();
+    }
+
+    /**
+     * 内存重启时处理
+     */
+    private void reCallInit() {
+        fragmentManager = getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        mainFragment = (MainFragment) fragmentManager.getFragment(bundle, MainFragment.class.getName());
+        findingFragment = (FindingFragment) fragmentManager.getFragment(bundle, FindingFragment.class.getName());
+        messageFragment = (MessageFragment) fragmentManager.getFragment(bundle, MessageFragment.class.getName());
+        mineFragment = (MineFragment) fragmentManager.getFragment(bundle, MineFragment.class.getName());
     }
 
     private void initView() {
+        System.out.println("initView");
         fragmentManager = getSupportFragmentManager();
         selectTab(MAIN_PAGE_FRAGMENT);
     }
@@ -128,7 +147,8 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
             case MAIN_PAGE_FRAGMENT:
                 if (mainFragment == null) {
                     mainFragment = MainFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, mainFragment);
+                    ft.add(R.id.fragmentContainer, mainFragment, MainFragment.class.getName());
+                    Logger.i("add MAIN");
                 } else {
                     ft.show(mainFragment);
                 }
@@ -136,7 +156,8 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
             case FINDING_PAGE_FRAGMENT:
                 if (findingFragment == null) {
                     findingFragment = FindingFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, findingFragment);
+                    ft.add(R.id.fragmentContainer, findingFragment, FindingFragment.class.getName());
+                    Logger.i("add FIND");
                 } else {
                     ft.show(findingFragment);
                 }
@@ -144,7 +165,8 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
             case MESSAGE_PAGE_FRAGMENT:
                 if (messageFragment == null) {
                     messageFragment = MessageFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, messageFragment);
+                    ft.add(R.id.fragmentContainer, messageFragment, MessageFragment.class.getName());
+                    Logger.i("add MSG");
                 } else {
                     ft.show(messageFragment);
                 }
@@ -152,7 +174,8 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
             case MINE_PAGE_FRAGMENT:
                 if (mineFragment == null) {
                     mineFragment = MineFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, mineFragment);
+                    ft.add(R.id.fragmentContainer, mineFragment, MineFragment.class.getName());
+                    Logger.i("add Mine");
                 } else {
                     ft.show(mineFragment);
                 }
@@ -205,6 +228,13 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     public void onBackPressed() {
         //将当前Activity加入到栈中，而不是退出
         moveTaskToBack(true);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy");
     }
 
     @Override

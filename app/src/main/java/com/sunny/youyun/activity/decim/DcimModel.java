@@ -19,8 +19,11 @@ class DcimModel implements DcimContract.Model {
     private final List<FileItem> fileItems = new ArrayList<>();
     private final List<String> selectItems = new ArrayList<>();
     private Map<String, List<FileItem>> stringListMap = null;
+    private final android.os.Handler handler = new android.os.Handler();
+
     DcimModel(DcimPresenter dcimPresenter) {
         mPresenter = dcimPresenter;
+        selectItems.add("DCIM");
     }
 
     @Override
@@ -48,7 +51,7 @@ class DcimModel implements DcimContract.Model {
                     selectItems.add(entry.getKey());
                 }
                 fileItems.addAll(stringListMap.get(selectItems.get(0)));
-                mPresenter.getDataSuccess(true);
+                handler.post(() -> mPresenter.getDataSuccess(true));
             }
 
             @Override
@@ -60,7 +63,7 @@ class DcimModel implements DcimContract.Model {
 
     @Override
     public void selected(int position) {
-        if(stringListMap == null || stringListMap.size() <= position)
+        if (stringListMap == null || stringListMap.size() <= position)
             return;
         String key = selectItems.get(position);
         fileItems.clear();

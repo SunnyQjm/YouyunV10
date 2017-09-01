@@ -4,13 +4,13 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.YouyunActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.utils.ActivityUtils;
 
-@Router(IndexRouter.DcimActivity)
+@Router(IntentRouter.DcimActivity)
 public class DcimActivity extends YouyunActivity implements MVPBaseFragment.OnFragmentInteractionListener{
 
     @Override

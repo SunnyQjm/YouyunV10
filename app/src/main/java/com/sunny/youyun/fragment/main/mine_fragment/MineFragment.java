@@ -9,15 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
+import com.sunny.youyun.views.YouyunEditDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,20 +37,30 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     EasyBar easyBar;
     @BindView(R.id.cl_avatar)
     ConstraintLayout clAvatar;
-    @BindView(R.id.li_user_name)
-    LineMenuItem liUserName;
-    @BindView(R.id.li_bind_phone)
-    LineMenuItem liBindPhone;
-    @BindView(R.id.li_my_file)
-    LineMenuItem liMyFile;
-    @BindView(R.id.li_password_change)
-    LineMenuItem liPasswordChange;
+    @BindView(R.id.li_my_collect)
+    LineMenuItem liMyCollect;
+    @BindView(R.id.li_my_concern)
+    LineMenuItem liMyConcern;
     @BindView(R.id.li_callback)
     LineMenuItem liCallback;
-    @BindView(R.id.li_exit)
-    TextView liExit;
+    @BindView(R.id.li_setting)
+    LineMenuItem liSetting;
     @BindView(R.id.img_avatar)
     ImageView imgAvatar;
+    @BindView(R.id.tv_nickname)
+    TextView tvNickname;
+    @BindView(R.id.img_qr_code)
+    ImageView imgQrCode;
+    @BindView(R.id.li_my_share)
+    LineMenuItem liMyShare;
+    @BindView(R.id.li_file_manager)
+    LineMenuItem liAboutYouyun;
+    @BindView(R.id.img_edit)
+    ImageView imgEdit;
+
+
+    private YouyunEditDialog editDialog = null;
+    private User user;
 
     public static MineFragment newInstance() {
 
@@ -85,6 +97,7 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
         } else {
             unbinder = ButterKnife.bind(this, view);
         }
+
         return view;
     }
 
@@ -92,8 +105,11 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
         easyBar.setTitle(getString(R.string.person_center));
         easyBar.setLeftIconInVisible();
 
-        User user = UserInfoManager.getInstance().getUserInfo();
-        liUserName.setValue(user.getUsername());
+        user = UserInfoManager.getInstance().getUserInfo();
+        if(YouyunAPI.isIsLogin())
+            tvNickname.setText(user.getUsername());
+        else
+            tvNickname.setText(getString(R.string.click_here_to_login));
         GlideUtils.loadUrl(activity, imgAvatar, user.getAvatar());
     }
 
@@ -123,25 +139,59 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
         unbinder.unbind();
     }
 
-    @OnClick({R.id.cl_avatar, R.id.li_user_name, R.id.li_bind_phone, R.id.li_my_file, R.id.li_password_change, R.id.li_callback, R.id.li_exit})
+    @OnClick({R.id.cl_avatar, R.id.li_my_collect, R.id.li_my_concern, R.id.li_callback,
+            R.id.li_setting, R.id.li_my_share, R.id.li_file_manager, R.id.img_edit,
+            R.id.img_avatar})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_avatar:
-                RouterUtils.open(activity, IndexRouter.DcimActivity);
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    RouterUtils.openWithAnimation(activity, new Intent(activity, PersonInfoActivity.class),
+//                            new Pair<>(imgAvatar, getString(R.string.mine_share_avatar)),
+//                            new Pair<>(tvNickname, getString(R.string.mine_share_nickname))
+////                            , new Pair<>(clAvatar, getString(R.string.mine_share_item))
+//                    );
+//                } else {
+//                }
+                if(YouyunAPI.isIsLogin()){
+                    RouterUtils.open(activity, IntentRouter.PersonInfoActivity);
+                } else {
+                    RouterUtils.open(activity, IntentRouter.LoginActivity);
+                }
                 break;
-            case R.id.li_user_name:
+            case R.id.li_my_collect:
                 break;
-            case R.id.li_bind_phone:
-                break;
-            case R.id.li_my_file:
-                break;
-            case R.id.li_password_change:
+            case R.id.li_my_concern:
                 break;
             case R.id.li_callback:
                 break;
-            case R.id.li_exit:
-                RouterUtils.open(activity, IndexRouter.LoginActivity);
+            case R.id.li_setting:
+                RouterUtils.open(activity, IntentRouter.SettingActivity);
+                break;
+            case R.id.li_my_share:
+                break;
+            case R.id.li_file_manager:
+                break;
+            case R.id.img_edit:
+                showEditDialog(user.getUsername());
+                break;
+            case R.id.img_avatar:
+                RouterUtils.open(activity, IntentRouter.DcimActivity);
                 break;
         }
     }
+
+    private void showEditDialog(String nickname) {
+        if (editDialog == null)
+            editDialog = YouyunEditDialog.newInstance(getString(R.string.edit_nickname),
+                    nickname, result -> {
+                        System.out.println(result);
+                    });
+        else {
+            editDialog.setHint(nickname);
+        }
+        editDialog.show(getFragmentManager(), String.valueOf(this.getClass()));
+    }
+
+
 }

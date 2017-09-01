@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.App;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
@@ -273,7 +273,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
                     intent.putExtra("position", position);
                     RouterUtils.openWithAnimation(activity, intent, new Pair<>(img_icon, getString(R.string.trans_item_share_icon)));
                 } else {
-                    RouterUtils.open(activity, IndexRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
+                    RouterUtils.open(activity, IntentRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
                 }
                 break;
         }

@@ -4,7 +4,7 @@ package com.sunny.youyun;
  * Created by Administrator on 2017/3/15 0015.
  */
 
-public class IndexRouter {
+public class IntentRouter {
     public static final String IndexScheme = "youyun://";
     private static final String Activity = "Activity/";
     public static final String WifiDirectMainActivity = Activity + "WifiDirectMainActivity";
@@ -24,4 +24,7 @@ public class IndexRouter {
     public static final String DcimActivity = Activity + "DcimActivity";
     public static final String ClipImageActivity = Activity + "ClipImageActivity";
     public static final String WifiDirectRecordActivity = Activity + "WifiDirectRecordActivity";
+    public static final String PersonInfoActivity = Activity + "PersonInfoActivity";
+    public static final String SettingActivity = Activity + "SettingActivity";
+    public static final String AboutYouyunActivity = Activity + "AboutYouyunActivity";
 }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.mvp.BasePresenter;
@@ -25,14 +26,34 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
 
     protected YouyunTipDialog dialog;
     protected YouyunLoadingView loadingView;
+
+    //用来标识保存Fragment的显示状态
+    public static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(mPresenter == null){
             mPresenter = onCreatePresenter();
         }
+        //页面重启时，Fragment会被保存恢复，而此时再加载Fragment，会导致重叠
+        if(savedInstanceState != null) {
+            boolean isHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+            if(isHidden){
+                ft.hide(this);
+            } else {
+                ft.show(this);
+            }
+            ft.commit();
+        }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
+    }
 
     @Override
     public void onDestroy() {

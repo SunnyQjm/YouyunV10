@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.views.EasyBar;
@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IndexRouter.ForgetPassActivity)
+@Router(IntentRouter.ForgetPassActivity)
 public class ForgetPassActivity extends MVPBaseActivity<ForgetPassPresenter> implements ForgetPassContract.View {
 
     @BindView(R.id.easyBar)

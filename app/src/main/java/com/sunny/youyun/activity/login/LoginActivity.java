@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.BaseUiListener;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
@@ -34,7 +34,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@Router(IndexRouter.LoginActivity)
+@Router(IntentRouter.LoginActivity)
 public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements LoginContract.View {
     @BindView(R.id.easyBar)
     EasyBar easyBar;
@@ -126,14 +126,17 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
                                 }))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> mPresenter.qqLogin(result));
+                        .subscribe(result -> {
+                            showLoading();
+                            mPresenter.qqLogin(result);
+                        });
 
                 break;
             case R.id.img_we_chat_login:
                 showTip("待开放");
                 break;
             case R.id.tv_forget_pass:
-                RouterUtils.open(this, IndexRouter.ForgetPassActivity);
+                RouterUtils.open(this, IntentRouter.ForgetPassActivity);
                 break;
             case R.id.btn_login:
                 String phone = etUsername.getText().toString();
@@ -150,7 +153,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
 //                        .loginOut();
                 break;
             case R.id.btn_register:
-                RouterUtils.open(this, IndexRouter.RegisterActivity);
+                RouterUtils.open(this, IntentRouter.RegisterActivity);
                 break;
         }
     }
@@ -158,6 +161,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        dismissDialog();
         Tencent.onActivityResultData(requestCode, resultCode, data,
                 new BaseUiListener() {
                     @Override

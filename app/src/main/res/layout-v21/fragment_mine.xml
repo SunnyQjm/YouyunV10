@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/bar_item" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:transitionName="@string/mine_share_item"
+            android:background="@drawable/ripple_bg_white">
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:transitionName="@string/mine_share_avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.526"
+                app:srcCompat="@null" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="@dimen/arrow_size"
+                android:layout_height="@dimen/arrow_size"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_arrow" />
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:transitionName="@string/mine_share_nickname"
+                android:layout_marginStart="16dp"
+                android:textSize="16sp"
+                android:textColor="@color/text_gray"
+                android:text="xxxxx"
+                app:layout_constraintBottom_toTopOf="@+id/img_avatar"
+                app:layout_constraintStart_toEndOf="@+id/img_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/img_avatar" />
+
+            <ImageView
+                android:id="@+id/img_qr_code"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_send_code" />
+
+            <ImageView
+                android:id="@+id/img_edit"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_nickname"
+                app:layout_constraintEnd_toStartOf="@+id/img_qr_code"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/tv_nickname"
+                app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+                app:srcCompat="@drawable/icon_mine_edit"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="16dp" />
+        </android.support.constraint.ConstraintLayout>
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_gray" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_my_collect"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            app:is_left_icon_visible="true"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:left_resource="@drawable/icon_mine_collect"
+            app:menu_title="我的收藏"
+            app:right_margin="@dimen/mine_margin_right">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_my_concern"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            app:is_left_icon_visible="true"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:left_resource="@drawable/icon__mine_like"
+            app:menu_title="关注的人"
+            app:right_margin="@dimen/mine_margin_right">
+
+        </com.sunny.youyun.views.LineMenuItem>
+        <include layout="@layout/divide_item" />
+
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_gray" />
+
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_file_manager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            app:is_left_icon_visible="true"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:left_resource="@drawable/icon_mine_file_manager"
+            app:menu_title="文件管理"
+            app:right_margin="@dimen/mine_margin_right" />
+        <include layout="@layout/divide_item" />
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_gray" />
+
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_callback"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            app:is_left_icon_visible="true"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:right_margin="@dimen/mine_margin_right"
+            app:left_resource="@drawable/icon_mine_callback"
+            app:menu_title="意见反馈"
+            >
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_my_share"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            app:is_left_icon_visible="true"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:left_resource="@drawable/icon_mine_share"
+            app:menu_title="我的分享"
+            app:right_margin="@dimen/mine_margin_right">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_gray" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/li_setting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            android:gravity="center"
+            android:textSize="14sp"
+            app:is_left_icon_visible="true"
+            app:left_margin="@dimen/mine_item_margin_left"
+            app:right_margin="@dimen/mine_margin_right"
+            app:left_resource="@drawable/icon_mine_setting"
+            app:menu_title="@string/setting"
+            >
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+    </LinearLayout>
+</ScrollView>

@@ -3,6 +3,7 @@ package com.sunny.youyun.views.youyun_dialog.loading;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -36,8 +37,9 @@ public class YouyunLoadingView extends ProgressDialog{
         if(window == null)
             return;
         WindowManager.LayoutParams params = window.getAttributes();
-        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        params.gravity = Gravity.CENTER;
         getWindow().setAttributes(params);
     }
 }

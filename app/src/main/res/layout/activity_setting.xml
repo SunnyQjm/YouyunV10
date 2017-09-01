@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_gray"
+        android:orientation="vertical"
+        tools:context="com.sunny.youyun.activity.setting.SettingActivity">
+
+        <include layout="@layout/bar_item" />
+
+        <com.sunny.youyun.views.LineMenuSwitch
+            android:id="@+id/setting_is_tran_on_wifi_state"
+            style="@style/LineMenuItem"
+            android:layout_marginTop="20dp"
+            app:left_margin="18dp"
+            app:menu_title="Wi-fi下上传下载"
+            app:menu_title_color="@color/gray"
+            app:right_margin="13dp">
+
+        </com.sunny.youyun.views.LineMenuSwitch>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuSwitch
+            android:id="@+id/setting_is_receive_notify"
+            style="@style/LineMenuItem"
+            app:left_margin="18dp"
+            app:menu_title="是否接收消息推送通知"
+            app:menu_title_color="@color/gray"
+            app:right_margin="13dp">
+
+        </com.sunny.youyun.views.LineMenuSwitch>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuSwitch
+            android:id="@+id/setting_is_update_auto_on_wifi_state"
+            style="@style/LineMenuItem"
+            app:left_margin="18dp"
+            app:menu_title="Wi-fi下自动更新"
+            app:menu_title_color="@color/gray"
+            app:right_margin="13dp">
+
+        </com.sunny.youyun.views.LineMenuSwitch>
+
+        <include layout="@layout/divide_item" />
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_gray" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/setting_clear_cache"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            app:left_margin="18dp"
+            app:menu_title="清除缓存"
+            app:menu_title_color="@color/gray"
+            app:right_margin="13dp">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+        <com.sunny.youyun.views.LineMenuItem
+            android:id="@+id/setting_about_youyun"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@drawable/ripple_bg_white"
+            app:left_margin="18dp"
+            app:menu_title="关于"
+            app:menu_title_color="@color/gray"
+            app:right_margin="13dp">
+
+        </com.sunny.youyun.views.LineMenuItem>
+
+        <include layout="@layout/divide_item" />
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_gray" />
+
+        <TextView
+            android:id="@+id/exit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mine_item_height"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/exit"
+            android:textColor="@color/gray" />
+
+        <include layout="@layout/divide_item" />
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

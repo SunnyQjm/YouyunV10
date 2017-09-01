@@ -5,11 +5,13 @@ import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
+import com.sunny.youyun.model.result.GetUserInfoResult;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -44,6 +46,9 @@ public interface UserServices {
 
     @POST(ApiInfo.REGISTER)
     Observable<RegisterResponseBody> register(@Body RequestBody body);
+
+    @GET(ApiInfo.GET_USER_INFO)
+    Observable<BaseResponseBody<GetUserInfoResult>> getUserIno();
 
     @Multipart
     @POST(ApiInfo.MODIFY_AVATAR)

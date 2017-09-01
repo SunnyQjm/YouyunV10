@@ -80,4 +80,12 @@
     <string name="select_photo">选择图片</string>
     <string name="get_fail">获取失败</string>
     <string name="select_avatar">选择头像</string>
+    <string name="user_exit_tip">退出将清空用户数据，确认退出？</string>
+    <string name="setting">设置</string>
+    <string name="edit_nickname">修改昵称</string>
+    <string name="about_youyun">关于优云</string>
+    <string name="mine_share_avatar">mine_share_avatar</string>
+    <string name="mine_share_nickname">mine_share_nickname</string>
+    <string name="mine_share_item">mine_share_item</string>
+    <string name="click_here_to_login">点此登录</string>
 </resources>

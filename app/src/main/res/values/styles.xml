@@ -74,9 +74,9 @@
     </style>
 
     <style name="LineMenuItem">
-        <item name="android:background">@drawable/clickable_bg</item>
+        <item name="android:background">@drawable/ripple_bg_white</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">@dimen/mine_item_height</item>
     </style>
 
     <style name="PopupWindowStyle">
@@ -114,5 +114,10 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="colorAccent">@color/application_theme_color</item>
+    </style>
+
+    <style name="Widget.Design.AppBarLayout" parent="android:Widget">
+        <item name="elevation">0dp</item>
+        <item name="android:background">?attr/colorPrimary</item>
     </style>
 </resources>

@@ -7,7 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.utils.AccountValidatorUtil;
@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IndexRouter.RegisterActivity)
+@Router(IntentRouter.RegisterActivity)
 public class RegisterActivity extends MVPBaseActivity<RegisterPresenter> implements RegisterContract.View {
     @BindView(R.id.easyBar)
     EasyBar easyBar;

@@ -46,11 +46,20 @@
         <attr name="drawable_location"/>
     </declare-styleable>
 
+
+    <attr name="menu_title" format="string"/>
+    <attr name="menu_title_size" format="dimension"/>
+    <attr name="menu_title_color" format="color"/>
+    <attr name="right_margin" format="dimension"/>
+    <attr name="left_margin" format="dimension"/>
+
     <declare-styleable name="LineMenuItem">
-        <attr name="menu_title" format="string"/>
+        <attr name="menu_title"/>
+        <attr name="menu_title_size"/>
+        <attr name="menu_title_color"/>
+        <attr name="right_margin" />
+        <attr name="left_margin" />
         <attr name="menu_value" format="string"/>
-        <attr name="menu_title_size" format="dimension"/>
-        <attr name="menu_title_color" format="color"/>
         <attr name="menu_value_size" format="dimension"/>
         <attr name="menu_value_color" format="color"/>
         <attr name="left_resource" format="reference"/>
@@ -58,8 +67,17 @@
         <attr name="left_icon_size" format="dimension"/>
         <attr name="right_icon_size" format="dimension"/>
         <attr name="is_right_icon_visible" format="boolean"/>
-        <attr name="right_margin" format="dimension"/>
-        <attr name="left_margin" format="dimension"/>
+        <attr name="is_left_icon_visible" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="LineMenuSwitch">
+        <attr name="menu_title"/>
+        <attr name="menu_title_size"/>
+        <attr name="menu_title_color"/>
+        <attr name="right_margin" />
+        <attr name="left_margin" />
+        <attr name="switch_track" format="reference"/>
+        <attr name="switch_thumb" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="EasyBar">

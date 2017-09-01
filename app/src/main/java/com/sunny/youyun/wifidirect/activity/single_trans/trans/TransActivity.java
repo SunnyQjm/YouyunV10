@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.FileManagerActivity;
 import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IndexRouter.TransActivity)
+@Router(IntentRouter.TransActivity)
 public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
         implements TransContract.View, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.easyBar)

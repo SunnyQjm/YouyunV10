@@ -7,7 +7,8 @@ package com.sunny.youyun.internet.api;
 public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
-    public static final String IP = "http://192.168.1.3";
+//    public static final String IP = "http://192.168.1.3";
+    public static final String IP = "http://192.168.1.124";
     public static final int port = 8080;
     public static final String BaseUrl = IP + ":" + port + "/youyun/";
 //    public static final String BaseUrl = IP + "/";
@@ -16,6 +17,11 @@ public class ApiInfo {
             BASE_DOWNLOAD_URL = BaseUrl + DOWNLOAD;
     public static final String GET_FILE_INFO = "file/message", GET_FILE_INFO_IDENTIFY_CODE = "identifycode";
 
+
+
+    ///////////////////////////////////////////////////////
+    ///// UserService
+    //////////////////////////////////////////////////////
     public static final String LOGIN_URL = "login",
             LOGIN_USERNAME = "phone", LOGIN_PASSWORD = "password";
 
@@ -32,6 +38,9 @@ public class ApiInfo {
     //修改头像
     public static final String MODIFY_AVATAR = "authc/user/setAvatar",
             MODIFY_AVATAR_AVATAR = "avatar";
+
+    public static final String GET_USER_INFO = "authc/user";
+
 
 
 }

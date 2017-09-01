@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.internet.api.ApiInfo;
@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(value = IndexRouter.FileDetailOffLineActivity + "/:uuid/:position", stringParams = "uuid",
+@Router(value = IntentRouter.FileDetailOffLineActivity + "/:uuid/:position", stringParams = "uuid",
         intParams = "position")
 public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLinePresenter>
         implements FileDetailOffLineContract.View {
@@ -219,7 +219,7 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
         String uuid = UUIDUtil.getUUID();
         ObjectPool.getInstance()
                 .put(uuid, internetFile);
-        RouterUtils.open(this, IndexRouter.FileDetailOnlineActivity, uuid);
+        RouterUtils.open(this, IntentRouter.FileDetailOnlineActivity, uuid);
         finish();
     }
 }

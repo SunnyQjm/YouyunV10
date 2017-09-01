@@ -34,6 +34,20 @@ public enum UserInfoManager {
         this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
     }
 
+    /**
+     * 更新用户头像
+     * @param avatar
+     */
+    public void updateAvatar(String avatar){
+        this.user.setAvatar(avatar);
+        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+    }
+
+    public void clear(){
+        user.delete();
+        user = new User.Builder().build();
+    }
+
     public User getUserInfo() {
         return user;
     }

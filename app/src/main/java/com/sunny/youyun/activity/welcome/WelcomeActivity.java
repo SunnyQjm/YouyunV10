@@ -7,7 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import com.githang.statusbar.StatusBarCompat;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.utils.RouterUtils;
 
@@ -45,7 +45,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         welcomeLayout.post(() -> {
-            RouterUtils.open(WelcomeActivity.this, IndexRouter.MainActivity);
+            RouterUtils.open(WelcomeActivity.this, IntentRouter.MainActivity);
             finish();
         });
     }

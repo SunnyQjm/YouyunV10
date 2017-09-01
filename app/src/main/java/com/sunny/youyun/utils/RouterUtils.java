@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.github.mzule.activityrouter.router.Routers;
 import com.sunny.youyun.App;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 
 /**
  * Created by Administrator on 2017/3/29/029.
@@ -19,7 +19,7 @@ import com.sunny.youyun.IndexRouter;
 
 public class RouterUtils {
     public static void openForResult(Activity activity, String routerWithNoScheme, int requestCode, String... params) {
-        String router = IndexRouter.IndexScheme + routerWithNoScheme;
+        String router = IntentRouter.IndexScheme + routerWithNoScheme;
         if (params != null) {
             for (String param : params) {
                 router += "/" + param;
@@ -33,7 +33,7 @@ public class RouterUtils {
     }
 
     public static void open(Activity context, String routerWithNoScheme, String... params) {
-        StringBuilder router = new StringBuilder(IndexRouter.IndexScheme + routerWithNoScheme);
+        StringBuilder router = new StringBuilder(IntentRouter.IndexScheme + routerWithNoScheme);
         if (params != null) {
             for (String param : params) {
                 router.append("/").append(param);

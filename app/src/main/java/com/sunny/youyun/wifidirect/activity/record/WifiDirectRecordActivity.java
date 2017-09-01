@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-@Router(IndexRouter.WifiDirectRecordActivity)
+@Router(IntentRouter.WifiDirectRecordActivity)
 public class WifiDirectRecordActivity extends MVPBaseActivity<WifiDirectRecordPresenter> implements
         WifiDirectRecordContract.View, MVPBaseFragment.OnFragmentInteractionListener {
 

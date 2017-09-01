@@ -1,11 +1,12 @@
 package com.sunny.youyun.views;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class YouyunEditDialog extends DialogFragment {
     private View view = null;
 
     private String title = "";
+    private String hint = "";
     private OnYouyunEditDialogClickListener listener;
 
     public YouyunEditDialog() {
@@ -41,6 +43,12 @@ public class YouyunEditDialog extends DialogFragment {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+        if(editText != null)
+            editText.setText(hint);
     }
 
     public void setListener(OnYouyunEditDialogClickListener listener) {
@@ -57,9 +65,21 @@ public class YouyunEditDialog extends DialogFragment {
         return fragment;
     }
 
+    public static YouyunEditDialog newInstance(String title, String hint, OnYouyunEditDialogClickListener listener) {
+        Bundle args = new Bundle();
+
+        YouyunEditDialog fragment = new YouyunEditDialog();
+        fragment.setArguments(args);
+        fragment.setTitle(title);
+        fragment.setHint(hint);
+        fragment.setListener(listener);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (view == null) {
             view = inflater.inflate(R.layout.youyun_edit_dialog, container, false);
             unbinder = ButterKnife.bind(this, view);
@@ -77,6 +97,7 @@ public class YouyunEditDialog extends DialogFragment {
 
     private void initView() {
         tvTitle.setText(title);
+        editText.setText(hint);
     }
 
     @Override
@@ -93,7 +114,7 @@ public class YouyunEditDialog extends DialogFragment {
                 break;
             case R.id.tv_sure:
                 if (listener != null) {
-                    listener.onResult(Integer.valueOf(editText.getText().toString()));
+                    listener.onResult(editText.getText().toString());
                 }
                 this.dismiss();
                 break;
@@ -101,6 +122,6 @@ public class YouyunEditDialog extends DialogFragment {
     }
 
     public interface OnYouyunEditDialogClickListener {
-        void onResult(int result);
+        void onResult(String result);
     }
 }

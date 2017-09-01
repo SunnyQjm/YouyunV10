@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
-import com.sunny.youyun.IndexRouter;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.adpater.RecordTabsAdapter;
 import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
@@ -41,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IndexRouter.FileManagerActivity)
+@Router(IntentRouter.FileManagerActivity)
 public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> implements FileManagerContract.View, MVPBaseFragment.OnFragmentInteractionListener {
 
     @BindView(R.id.tabLayout)

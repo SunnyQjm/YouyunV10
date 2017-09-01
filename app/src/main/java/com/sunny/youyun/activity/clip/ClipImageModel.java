@@ -77,8 +77,9 @@ class ClipImageModel implements ClipImageContrat.Model {
                     public void onNext(BaseResponseBody<String> stringBaseResponseBody) {
                         System.out.println(stringBaseResponseBody);
                         if(stringBaseResponseBody.isSuccess()){
+                            //更新头像信息
                             UserInfoManager.getInstance()
-                                    .getUserInfo().setAvatar(stringBaseResponseBody.getData());
+                                    .updateAvatar(stringBaseResponseBody.getData());
                             mPresenter.updateSuccess();
                         } else {
                             mPresenter.showError("头像修改失败，请检查网络连接");
