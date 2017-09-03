@@ -99,7 +99,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
         uploadRecordFragment = UploadRecordFragment.newInstance();
         fragmentList.add(downloadRecordFragment);
         fragmentList.add(uploadRecordFragment);
-        adapter = new RecordTabsAdapter(getFragmentManager(), fragmentList);
+        adapter = new RecordTabsAdapter(getChildFragmentManager(), fragmentList);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
 

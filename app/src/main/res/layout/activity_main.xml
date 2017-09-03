@@ -7,13 +7,12 @@
     android:background="@color/application_theme_color"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <com.sunny.youyun.views.NoScrollViewPager
+        android:id="@+id/viewpager"
         android:layout_weight="9"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
-    </FrameLayout>
+        android:layout_height="0dp"/>
 
     <include layout="@layout/divide_item"/>
     <include layout="@layout/main_bottom_bar"/>

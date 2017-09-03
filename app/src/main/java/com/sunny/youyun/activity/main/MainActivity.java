@@ -5,17 +5,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
-import com.orhanobut.logger.Logger;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.main.adapter.MainAdapter;
 import com.sunny.youyun.activity.main.config.MainActivityConfig;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
@@ -25,6 +24,10 @@ import com.sunny.youyun.fragment.main.message_fragment.MessageFragment;
 import com.sunny.youyun.fragment.main.mine_fragment.MineFragment;
 import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.TimePickerUtils;
+import com.sunny.youyun.views.NoScrollViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,8 +42,6 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     private static final int MESSAGE_PAGE_FRAGMENT = 2;
     private static final int MINE_PAGE_FRAGMENT = 3;
 
-    @BindView(R.id.fragmentContainer)
-    FrameLayout fragmentContainer;
     @BindView(R.id.btn_main_page)
     ImageView btnMainPage;
     @BindView(R.id.btn_find)
@@ -49,12 +50,17 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     ImageView btnMsg;
     @BindView(R.id.btn_mine)
     ImageView btnMine;
+    @BindView(R.id.viewpager)
+    NoScrollViewPager viewpager;
 
     private FragmentManager fragmentManager;
     private MainFragment mainFragment;
     private FindingFragment findingFragment;
     private MessageFragment messageFragment;
     private MineFragment mineFragment;
+
+    private List<Fragment> fragmentList = new ArrayList<>();
+    private MainAdapter mainAdapter;
 
     @Override
     protected void onResume() {
@@ -81,11 +87,11 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         if (intent == null)
             return;
         String tag = intent.getStringExtra(MainActivityConfig.LUNCH_TAG);
-        if(tag == null || tag.equals(""))
+        if (tag == null || tag.equals(""))
             return;
         switch (tag) {
             case MainActivityConfig.LUNCH_TAG_UPLOAD_DOWNLOAD:
-                selectTab(0);
+                viewpager.setCurrentItem(MAIN_PAGE_FRAGMENT, false);
                 break;
         }
     }
@@ -100,89 +106,25 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
             StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.blue));
         }
         ButterKnife.bind(this);
-        if (savedInstanceState == null)
-            initView();
-        else
-            reCallInit();
-    }
-
-    /**
-     * 内存重启时处理
-     */
-    private void reCallInit() {
-        fragmentManager = getSupportFragmentManager();
-        Bundle bundle = new Bundle();
-        mainFragment = (MainFragment) fragmentManager.getFragment(bundle, MainFragment.class.getName());
-        findingFragment = (FindingFragment) fragmentManager.getFragment(bundle, FindingFragment.class.getName());
-        messageFragment = (MessageFragment) fragmentManager.getFragment(bundle, MessageFragment.class.getName());
-        mineFragment = (MineFragment) fragmentManager.getFragment(bundle, MineFragment.class.getName());
+        initView();
     }
 
     private void initView() {
         System.out.println("initView");
-        fragmentManager = getSupportFragmentManager();
-        selectTab(MAIN_PAGE_FRAGMENT);
+        mainFragment = MainFragment.newInstance();
+        findingFragment = FindingFragment.newInstance();
+        messageFragment = MessageFragment.newInstance();
+        mineFragment = MineFragment.newInstance();
+        fragmentList.add(mainFragment);
+        fragmentList.add(findingFragment);
+        fragmentList.add(messageFragment);
+        fragmentList.add(mineFragment);
+        mainAdapter = new MainAdapter(getSupportFragmentManager(), fragmentList);
+        viewpager.setAdapter(mainAdapter);
+        viewpager.setScroll(false);
+        viewpager.setCurrentItem(MAIN_PAGE_FRAGMENT, false);
     }
 
-    private void hideAll(FragmentTransaction ft) {
-        if (mainFragment != null) {
-            ft.hide(mainFragment);
-        }
-        if (findingFragment != null) {
-            ft.hide(findingFragment);
-        }
-        if (messageFragment != null) {
-            ft.hide(messageFragment);
-        }
-        if (mineFragment != null) {
-            ft.hide(mineFragment);
-        }
-    }
-
-    private void selectTab(int position) {
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        //先隐藏所有的Fragment
-        hideAll(ft);
-        switch (position) {
-            case MAIN_PAGE_FRAGMENT:
-                if (mainFragment == null) {
-                    mainFragment = MainFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, mainFragment, MainFragment.class.getName());
-                    Logger.i("add MAIN");
-                } else {
-                    ft.show(mainFragment);
-                }
-                break;
-            case FINDING_PAGE_FRAGMENT:
-                if (findingFragment == null) {
-                    findingFragment = FindingFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, findingFragment, FindingFragment.class.getName());
-                    Logger.i("add FIND");
-                } else {
-                    ft.show(findingFragment);
-                }
-                break;
-            case MESSAGE_PAGE_FRAGMENT:
-                if (messageFragment == null) {
-                    messageFragment = MessageFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, messageFragment, MessageFragment.class.getName());
-                    Logger.i("add MSG");
-                } else {
-                    ft.show(messageFragment);
-                }
-                break;
-            case MINE_PAGE_FRAGMENT:
-                if (mineFragment == null) {
-                    mineFragment = MineFragment.newInstance();
-                    ft.add(R.id.fragmentContainer, mineFragment, MineFragment.class.getName());
-                    Logger.i("add Mine");
-                } else {
-                    ft.show(mineFragment);
-                }
-                break;
-        }
-        ft.commit();
-    }
 
     @Override
     protected MainPresenter onCreatePresenter() {
@@ -198,19 +140,19 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_main_page:
-                selectTab(MAIN_PAGE_FRAGMENT);
+                viewpager.setCurrentItem(MAIN_PAGE_FRAGMENT, false);
                 mPresenter.changeBottomImg(MAIN_PAGE_FRAGMENT);
                 break;
             case R.id.btn_find:
-                selectTab(FINDING_PAGE_FRAGMENT);
+                viewpager.setCurrentItem(FINDING_PAGE_FRAGMENT, false);
                 mPresenter.changeBottomImg(FINDING_PAGE_FRAGMENT);
                 break;
             case R.id.btn_msg:
-                selectTab(MESSAGE_PAGE_FRAGMENT);
+                viewpager.setCurrentItem(MESSAGE_PAGE_FRAGMENT, false);
                 mPresenter.changeBottomImg(MESSAGE_PAGE_FRAGMENT);
                 break;
             case R.id.btn_mine:
-                selectTab(MINE_PAGE_FRAGMENT);
+                viewpager.setCurrentItem(MINE_PAGE_FRAGMENT, false);
                 mPresenter.changeBottomImg(MINE_PAGE_FRAGMENT);
                 break;
         }
