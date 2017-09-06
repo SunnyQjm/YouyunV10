@@ -1,19 +1,23 @@
 package com.sunny.youyun.activity.main;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.activity.main.adapter.MainAdapter;
 import com.sunny.youyun.activity.main.config.MainActivityConfig;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
@@ -22,11 +26,19 @@ import com.sunny.youyun.fragment.main.finding_fragment.FindingFragment;
 import com.sunny.youyun.fragment.main.main_fragment.MainFragment;
 import com.sunny.youyun.fragment.main.message_fragment.MessageFragment;
 import com.sunny.youyun.fragment.main.mine_fragment.MineFragment;
+import com.sunny.youyun.model.event.MultiSelectEvent;
+import com.sunny.youyun.utils.DensityUtil;
 import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.TimePickerUtils;
+import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.NoScrollViewPager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,6 +54,11 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     private static final int MESSAGE_PAGE_FRAGMENT = 2;
     private static final int MINE_PAGE_FRAGMENT = 3;
 
+    //多选器
+    private static final long MULTI_SELECT_DURATION = 300;
+    private static final int bottom_bar_height = 45;
+
+
     @BindView(R.id.btn_main_page)
     ImageView btnMainPage;
     @BindView(R.id.btn_find)
@@ -52,12 +69,14 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     ImageView btnMine;
     @BindView(R.id.viewpager)
     NoScrollViewPager viewpager;
-
-    private FragmentManager fragmentManager;
-    private MainFragment mainFragment;
-    private FindingFragment findingFragment;
-    private MessageFragment messageFragment;
-    private MineFragment mineFragment;
+    @BindView(R.id.tv_cancel)
+    TextView tvCancel;
+    @BindView(R.id.tv_delete)
+    TextView tvDelete;
+    @BindView(R.id.l_multi_selector_operator)
+    LinearLayout lMultiSelectorOperator;
+    @BindView(R.id.easyBar)
+    EasyBar easyBar;
 
     private List<Fragment> fragmentList = new ArrayList<>();
     private MainAdapter mainAdapter;
@@ -65,8 +84,21 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     @Override
     protected void onResume() {
         super.onResume();
+        //设置显示标记，如果不在上传下载界面，就在状态栏弹窗提示
         MyNotifyUtil.setShowTag(MyNotifyUtil.SHOW_TAG_MAIN);
         TimePickerUtils.bind(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -111,10 +143,33 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
 
     private void initView() {
         System.out.println("initView");
-        mainFragment = MainFragment.newInstance();
-        findingFragment = FindingFragment.newInstance();
-        messageFragment = MessageFragment.newInstance();
-        mineFragment = MineFragment.newInstance();
+
+        easyBar.setDisplayMode(EasyBar.Mode.TEXT);
+        easyBar.setLeftText("");
+        easyBar.setRightText(getString(R.string.select_all));
+        easyBar.setTitle("");
+        easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
+            @Override
+            public void onLeftIconClick(View view) {
+                //TODO cancel
+                EventBus.getDefault()
+                        .post(new MultiSelectEvent(MultiSelectEvent.Operator.HIDE));
+            }
+
+            @Override
+            public void onRightIconClick(View view) {
+                //TODO select all
+                EventBus.getDefault()
+                        .post(new MultiSelectEvent(MultiSelectEvent.Operator.SELECT_ALL));
+            }
+        });
+        //设置消失和透明
+        easyBar.setVisibility(View.GONE);
+        easyBar.setAlpha(0);
+        MainFragment mainFragment = MainFragment.newInstance();
+        FindingFragment findingFragment = FindingFragment.newInstance();
+        MessageFragment messageFragment = MessageFragment.newInstance();
+        MineFragment mineFragment = MineFragment.newInstance();
         fragmentList.add(mainFragment);
         fragmentList.add(findingFragment);
         fragmentList.add(messageFragment);
@@ -136,7 +191,8 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         super.showTip(info);
     }
 
-    @OnClick({R.id.btn_main_page, R.id.btn_find, R.id.btn_msg, R.id.btn_mine})
+    @OnClick({R.id.btn_main_page, R.id.btn_find, R.id.btn_msg, R.id.btn_mine,
+            R.id.tv_cancel, R.id.tv_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_main_page:
@@ -154,6 +210,18 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
             case R.id.btn_mine:
                 viewpager.setCurrentItem(MINE_PAGE_FRAGMENT, false);
                 mPresenter.changeBottomImg(MINE_PAGE_FRAGMENT);
+                break;
+            case R.id.tv_cancel:
+                EventBus.getDefault()
+                        .post(new MultiSelectEvent(MultiSelectEvent.Operator.HIDE));
+                break;
+            case R.id.tv_delete:
+                //发送删除信号
+                EventBus.getDefault()
+                        .post(new MultiSelectEvent(MultiSelectEvent.Operator.DELETE));
+                //发送隐藏多选器信号
+                EventBus.getDefault()
+                        .post(new MultiSelectEvent(MultiSelectEvent.Operator.HIDE));
                 break;
         }
     }
@@ -179,8 +247,53 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         System.out.println("onDestroy");
     }
 
+    /**
+     * 显示多选器
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showMultiSelect(MultiSelectEvent event) {
+        if (event.operator != MultiSelectEvent.Operator.SHOW)
+            return;
+        easyBar.setVisibility(View.VISIBLE);
+        ObjectAnimator.ofFloat(easyBar, "alpha", 0f, 1f)
+                .setDuration(MULTI_SELECT_DURATION)
+                .start();
+
+        lMultiSelectorOperator.setVisibility(View.VISIBLE);
+        ObjectAnimator.ofFloat(lMultiSelectorOperator, "translationY",
+                DensityUtil.dip2px(this, bottom_bar_height), 0)
+                .setDuration(MULTI_SELECT_DURATION)
+                .start();
+    }
+
+    /**
+     * 隐藏多选器
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideMultiSelect(MultiSelectEvent event) {
+        if (event.operator != MultiSelectEvent.Operator.HIDE)
+            return;
+        ObjectAnimator.ofFloat(easyBar, "alpha", 1f, 0f)
+                .setDuration(MULTI_SELECT_DURATION)
+                .start();
+        easyBar.postDelayed(() -> easyBar.setVisibility(View.GONE), MULTI_SELECT_DURATION);
+        ObjectAnimator.ofFloat(lMultiSelectorOperator, "translationY",
+                0, DensityUtil.dip2px(this, bottom_bar_height))
+                .setDuration(MULTI_SELECT_DURATION)
+                .start();
+        lMultiSelectorOperator.postDelayed(() -> {
+            lMultiSelectorOperator.setVisibility(View.GONE);
+        }, MULTI_SELECT_DURATION);
+    }
+
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }

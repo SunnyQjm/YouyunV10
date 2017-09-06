@@ -8,12 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.download.DownloadActivity;
@@ -25,9 +25,15 @@ import com.sunny.youyun.fragment.main.main_fragment.Adapter.RecordTabsAdapter;
 import com.sunny.youyun.fragment.main.main_fragment.DownloadReccordFragment.DownloadRecordFragment;
 import com.sunny.youyun.fragment.main.main_fragment.UploadRecordFragment.UploadRecordFragment;
 import com.sunny.youyun.internet.upload.FileUploadFileParam;
+import com.sunny.youyun.model.event.MultiSelectEvent;
 import com.sunny.youyun.utils.DialogUtils;
 import com.sunny.youyun.utils.RecyclerViewUtils;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.views.NoScrollViewPager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +53,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
-    ViewPager viewpager;
+    NoScrollViewPager viewpager;
     @BindView(R.id.btn_add)
     FloatingActionButton btnAdd;
     private RecordTabsAdapter adapter;
@@ -75,6 +81,18 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -89,8 +107,6 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
         } else {
             unbinder = ButterKnife.bind(this, view);
         }
-
-
         return view;
     }
 
@@ -102,7 +118,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
         adapter = new RecordTabsAdapter(getChildFragmentManager(), fragmentList);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
-
+        viewpager.setScroll(true);
         tabLayout.setupWithViewPager(viewpager);
         //使标题居中且宽度充满全屏
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -117,27 +133,12 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
             closeAdd();
             switch (v.getId()) {
                 case R.id.et_trans:
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                        RouterUtils.openWithAnimation(activity, new Intent(activity, SingleTransMainActivity.class));
-//                    } else {
-//                        RouterUtils.open(activity, IntentRouter.SingleTransMainActivity);
-//                    }
                     RouterUtils.open(activity, IntentRouter.SingleTransMainActivity);
                     break;
                 case R.id.et_download:
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
-//                    } else {
-//                        startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
-//                    }
                     startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
                     break;
                 case R.id.et_upload:
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                        RouterUtils.openForResultWithAnimation(this, new Intent(activity, FileManagerActivity.class), PATH_S);
-//                    } else {
-//                        startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
-//                    }
                     startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
                     break;
             }
@@ -175,16 +176,20 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PATH_S:        //选择文件的结果
-                if (data == null)
+                if (data == null) {
+                    Logger.i("PATH_S: data is null");
                     return;
+                }
                 String[] paths = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
                 Intent intent = new Intent(activity, UploadSettingActivity.class);
                 intent.putExtra("paths", paths);
                 startActivityForResult(intent, UPLOAD_SETTING);
                 break;
             case UPLOAD_SETTING:
-                if (data == null)
+                if (data == null) {
+                    Logger.i("UPLOAD_SETTING: data is null");
                     return;
+                }
                 paths = data.getStringArrayExtra(UploadSettingActivity.PATH);
                 int allowDownloadCount = data.getIntExtra(UploadSettingActivity.ALLOW_DOWNLOAD_COUNT, -1);
                 long expireTime = data.getLongExtra(UploadSettingActivity.EFFECT_DATE, -1);
@@ -223,4 +228,25 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                 .setDuration(DURATION)
                 .start();
     }
+
+
+    /**
+     * 显示多选器
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void MultiSelect(MultiSelectEvent event) {
+        switch (event.operator) {
+            //显示的时候不允许滚动
+            case SHOW:
+                viewpager.setScroll(false);
+                break;
+            //隐藏的时候允许滚动
+            case HIDE:
+                viewpager.setScroll(true);
+                break;
+        }
+    }
+
 }

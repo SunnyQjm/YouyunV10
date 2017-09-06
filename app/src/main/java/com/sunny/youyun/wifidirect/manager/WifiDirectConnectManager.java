@@ -29,7 +29,7 @@ interface WifiDirectConnectManager {
      * will made the current connection disconnect.
      * （该方法用于移除群组，如果调用设备不是群主，则断开当前设备与群主的连接）
      * <p>
-     * ps: User don't care about the result of this operate
+     * ps: User don't care about the stringResult of this operate
      */
     void disConnect();
 
@@ -55,7 +55,7 @@ interface WifiDirectConnectManager {
      * for the purpose of establishing a connection.
      * 开始搜索附近的设备
      * <p>
-     * ps: User don't care about the result of this operate
+     * ps: User don't care about the stringResult of this operate
      */
     void discover();
 
@@ -74,7 +74,7 @@ interface WifiDirectConnectManager {
      * Start a p2p connection to a device with the specified configuration.
      * 连接（用户自定义监听器）
      * <p>
-     * ps: User don't care about the result of this operate
+     * ps: User don't care about the stringResult of this operate
      *
      * @param config options as described in {@link WifiP2pConfig} class
      */

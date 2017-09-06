@@ -119,7 +119,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
                                     public void onComplete(Object o) {
                                         QQLoginResult result = GsonUtil.getInstance()
                                                 .fromJson(GsonUtil.getInstance().toJson(o), QQLoginResult.class);
-                                        Logger.i("result: " + result);
+                                        Logger.i("stringResult: " + result);
                                         YouyunAPI.updateQQLoginResult(result);
                                         e.onNext(result);
                                     }

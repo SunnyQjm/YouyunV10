@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:background="@color/white"
-    android:layout_height="45dp">
+    android:layout_height="@dimen/main_bottom_bar_height">
     <ImageView
         android:id="@+id/btn_main_page"
         android:src="@drawable/icon_mainpage_selected"

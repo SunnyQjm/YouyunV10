@@ -5,5 +5,5 @@ package com.sunny.youyun.activity.scan.config;
  */
 
 public class ScanConfig {
-    public static final String SCAN_RESULT = "scan result";
+    public static final String SCAN_RESULT = "scan stringResult";
 }

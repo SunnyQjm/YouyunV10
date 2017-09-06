@@ -88,4 +88,6 @@
     <string name="mine_share_nickname">mine_share_nickname</string>
     <string name="mine_share_item">mine_share_item</string>
     <string name="click_here_to_login">点此登录</string>
+    <string name="back">返回</string>
+    <string name="select_all">全选</string>
 </resources>

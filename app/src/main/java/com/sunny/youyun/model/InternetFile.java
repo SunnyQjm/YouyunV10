@@ -31,6 +31,7 @@ public class InternetFile extends DataSupport implements Serializable {
     private int progress = 0;
     private String rate;
     private int fileTAG = -1;
+    private int position = 0;
     public static final int TAG_UPLOAD = 0;
     public static final int TAG_DOWNLOAD = 1;
     private final static int MAX_PROGRESS = 100;
@@ -93,6 +94,15 @@ public class InternetFile extends DataSupport implements Serializable {
         setProgress(builder.progress);
         setRate(builder.rate);
         setFileTAG(builder.fileTAG);
+        position = builder.position;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public void setIdentifyCode(String identifyCode) {
@@ -221,6 +231,7 @@ public class InternetFile extends DataSupport implements Serializable {
         private int progress;
         private String rate;
         private int fileTAG;
+        private int position;
         private String identifyCode;
 
         public Builder() {
@@ -319,6 +330,11 @@ public class InternetFile extends DataSupport implements Serializable {
 
         public Builder fileTAG(int val) {
             fileTAG = val;
+            return this;
+        }
+
+        public Builder position(int val) {
+            position = val;
             return this;
         }
 

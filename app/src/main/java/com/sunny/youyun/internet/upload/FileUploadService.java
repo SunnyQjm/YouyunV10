@@ -48,6 +48,7 @@ public class FileUploadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
+            Logger.i("onStartCommand upload");
             String filePath = intent.getStringExtra(PARAM_FILE_PATH);
             boolean isShare = intent.getBooleanExtra(PARAM_IS_SHARE, true);
             int allowDownloadCount = intent.getIntExtra(PARAM_ALLOW_DOWN_COUNT, -1);
@@ -99,11 +100,13 @@ public class FileUploadService extends Service {
                             @Override
                             public void onSuccess(InternetFile internetFile, int position) {
                                 showSuccess(internetFile);
+                                Logger.i("upload success");
                             }
 
                             @Override
                             public void onFinish(InternetFile internetFile, int position) {
                                 dispose(filePath);
+                                Logger.i("upload finish");
                             }
 
                             @Override
@@ -114,6 +117,7 @@ public class FileUploadService extends Service {
                             @Override
                             public void onError(InternetFile internetFile, int position) {
                                 showError(internetFile);
+                                Logger.e("upload err", internetFile);
                             }
                         });
                 break;
