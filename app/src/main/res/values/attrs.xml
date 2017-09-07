@@ -88,5 +88,11 @@
         <attr name="right_icon" format="reference"/>
         <attr name="icon_size" format="dimension"/>
         <attr name="icon_margin" format="dimension"/>
+        <attr name="left_text" format="string"/>
+        <attr name="right_text" format="string"/>
+        <attr name="displayMode">
+            <enum name="ICON" value="0"/>
+            <enum name="TEXT" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

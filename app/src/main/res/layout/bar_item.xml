@@ -12,9 +12,11 @@
         app:title="优云"
         app:icon_size="20dp"
         app:title_size="17sp"
+        app:left_text="@string/back"
+        app:right_text="@string/sure"
         app:title_color="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="@dimen/bar_item_height">
 
     </com.sunny.youyun.views.EasyBar>
 </LinearLayout>

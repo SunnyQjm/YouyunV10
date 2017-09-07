@@ -151,7 +151,7 @@ public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> i
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        int num = CheckStateManager.getInstance().getResultNum();
+        int num = CheckStateManager.getInstance().getStringResultNum();
         if (num == 0) {     //select none
             tvSure.setText(getString(R.string.sure));
         } else {            //select same file
@@ -177,25 +177,10 @@ public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> i
                 break;
             case R.id.tv_sure:
                 Intent intent = new Intent();
-                intent.putExtra(FileManagerRequest.KEY_PATH, CheckStateManager.getInstance().result());
+                intent.putExtra(FileManagerRequest.KEY_PATH, CheckStateManager.getInstance().stringResult());
                 setResult(0, intent);
                 finish();
                 break;
         }
-    }
-
-    @Override
-    public void showSuccess(String info) {
-
-    }
-
-    @Override
-    public void showError(String info) {
-
-    }
-
-    @Override
-    public void showTip(String info) {
-
     }
 }

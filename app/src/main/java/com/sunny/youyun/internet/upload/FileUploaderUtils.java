@@ -56,7 +56,7 @@ public class FileUploaderUtils {
         final FileServices fileServices = APIManager.getInstance().getFileServices(GsonConverterFactory.create());
         fileServices
                 .checkMd5(body)
-                .retry()
+//                .retry(1)
                 .flatMap(stringBaseResponseBody -> {
                     if (stringBaseResponseBody.isSuccess()) {
                         return fileServices.uploadFile(getPartMap(uploadFileParam), getFiles(f, position, internetFile));
@@ -66,11 +66,6 @@ public class FileUploaderUtils {
                         internetFile.setStatus(InternetFile.Status.FINISH);
                         internetFile.setIdentifyCode(stringBaseResponseBody.getMsg());
                         EventBus.getDefault().post(new FileUploadEvent.Builder()
-//                                        .already(0)
-//                                        .total(0)
-//                                        .done(true)
-//                                        .percent(100)
-//                                        .identifyCode(stringBaseResponseBody.getMsg())
                                 .position(position)
                                 .type(FileUploadEvent.Type.FINISH)
                                 .build());
@@ -80,7 +75,7 @@ public class FileUploaderUtils {
                         return Observable.empty();      //do nothing
                     }
                 })
-                .retry()
+//                .retry(2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseResponseBody<String>>() {

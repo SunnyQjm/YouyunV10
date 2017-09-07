@@ -37,10 +37,16 @@ public class EasyBar extends RelativeLayout {
     @Dimension
     private int icon_margin;
 
+    private String leftText;
+    private String rightText;
+    private Mode displayMode;
+
 
     private ImageView img_left;
     private ImageView img_right;
     private TextView tv_title;
+    private TextView tv_left_text;
+    private TextView tv_right_text;
     private OnEasyBarClickListener mListener = null;
 
     public EasyBar(Context context) {
@@ -89,6 +95,42 @@ public class EasyBar extends RelativeLayout {
         tv_title.setLayoutParams(tv_title_param);
         addView(tv_title, tv_title_param);
 
+        //left text
+        tv_left_text = new TextView(context);
+        tv_left_text.setTextSize(title_size);
+        tv_left_text.setTextColor(title_color);
+        LayoutParams tv_left_text_param = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        tv_left_text_param.addRule(ALIGN_PARENT_LEFT);
+        tv_left_text_param.addRule(CENTER_VERTICAL);
+        tv_left_text_param.leftMargin = icon_margin;
+        tv_left_text.setLayoutParams(tv_left_text_param);
+        addView(tv_left_text);
+        tv_left_text.setText(leftText);
+        tv_left_text.setVisibility(INVISIBLE);
+        tv_left_text.setOnClickListener(v -> {
+            if (mListener != null)
+                mListener.onLeftIconClick(v);
+        });
+
+
+        //right text
+        tv_right_text = new TextView(context);
+        tv_right_text.setTextSize(title_size);
+        tv_right_text.setTextColor(title_color);
+        LayoutParams tv_right_text_param = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        tv_right_text_param.addRule(ALIGN_PARENT_RIGHT);
+        tv_right_text_param.addRule(CENTER_VERTICAL);
+        tv_right_text_param.rightMargin = icon_margin;
+        tv_right_text.setLayoutParams(tv_right_text_param);
+        addView(tv_right_text);
+        tv_right_text.setText(rightText);
+        tv_right_text.setVisibility(INVISIBLE);
+        tv_right_text.setOnClickListener(v -> {
+            if (mListener != null)
+                mListener.onRightIconClick(v);
+        });
 
         //right icon
         img_right = new ImageView(context);
@@ -110,6 +152,8 @@ public class EasyBar extends RelativeLayout {
                 mListener.onRightIconClick(img_right);
             }
         });
+
+        setDisplayMode(displayMode);
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
@@ -123,11 +167,33 @@ public class EasyBar extends RelativeLayout {
         rightIcon = ta.getResourceId(R.styleable.EasyBar_right_icon, R.drawable.icon_add);
         icon_size = ta.getDimensionPixelSize(R.styleable.EasyBar_icon_size, DensityUtil.dip2px(context, 24));
         icon_margin = ta.getDimensionPixelOffset(R.styleable.EasyBar_icon_margin, DensityUtil.dip2px(context, 12));
+        leftText = ta.getString(R.styleable.EasyBar_left_text);
+        rightText = ta.getString(R.styleable.EasyBar_right_text);
+        int mode = ta.getInt(R.styleable.EasyBar_displayMode, 0);
+        switch (mode) {
+            case 0:
+                displayMode = Mode.ICON;
+                break;
+            case 1:
+                displayMode = Mode.TEXT;
+                break;
+            default:
+                displayMode = Mode.ICON;
+                break;
+        }
         ta.recycle();
     }
 
     public void setTitle(String title) {
         tv_title.setText(title);
+    }
+
+    public void setLeftText(String text) {
+        tv_left_text.setText(text);
+    }
+
+    public void setRightText(String text) {
+        tv_right_text.setText(text);
     }
 
     public void setOnEasyBarClickListener(OnEasyBarClickListener listener) {
@@ -159,19 +225,50 @@ public class EasyBar extends RelativeLayout {
             img_right.setImageDrawable(drawable);
     }
 
-    public void setRightIcon(Bitmap bitmap){
-        if(img_right != null)
+    public void setRightIcon(Bitmap bitmap) {
+        if (img_right != null)
             img_right.setImageBitmap(bitmap);
     }
 
-    public void setRightIcon(@DrawableRes int res){
-        if(img_right != null)
+    public void setRightIcon(@DrawableRes int res) {
+        if (img_right != null)
             img_right.setImageResource(res);
     }
 
     public interface OnEasyBarClickListener {
+        /**
+         * 如果是图标模式，则响应左图标点击，否则响应左文字点击
+         *
+         * @param view
+         */
         void onLeftIconClick(View view);
 
+        /**
+         * 如果是图标模式，则响应右图标点击，否则响应右文字点击
+         *
+         * @param view
+         */
         void onRightIconClick(View view);
+    }
+
+
+    public enum Mode {
+        ICON, TEXT
+    }
+
+    public void setDisplayMode(Mode mode) {
+        switch (mode) {
+            case ICON:
+                tv_left_text.setVisibility(INVISIBLE);
+                tv_right_text.setVisibility(INVISIBLE);
+                img_left.setVisibility(VISIBLE);
+                break;
+            case TEXT:
+                tv_left_text.setVisibility(VISIBLE);
+                tv_right_text.setVisibility(VISIBLE);
+                img_left.setVisibility(INVISIBLE);
+                img_right.setVisibility(INVISIBLE);
+                break;
+        }
     }
 }

@@ -55,6 +55,7 @@ class MainFragmentModel implements MainFragmentContract.Model {
         //添加文件和获取该文件的位置是一个原子操作
         synchronized (mUploadList) {
             position = mUploadList.size();
+            internetFile.setPosition(position);
             mUploadList.add(internetFile);
         }
 

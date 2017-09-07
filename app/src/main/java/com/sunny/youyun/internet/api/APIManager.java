@@ -41,7 +41,7 @@ public class APIManager {
 
     private static int cacheSize = 20 * 1024 * 1024;
     //    private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
-    private static final int DEFAULT_TIMEOUT = 15;
+    private static final int DEFAULT_TIMEOUT = 5;
     private static OkHttpClient client;
     private UserServices userService;
     private FileServices fileServices;

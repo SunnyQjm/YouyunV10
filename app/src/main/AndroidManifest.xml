@@ -151,7 +151,7 @@
         <activity android:name=".wifidirect.activity.record.WifiDirectRecordActivity" />
         <activity android:name=".activity.person_info.PersonInfoActivity" />
         <activity android:name=".activity.setting.SettingActivity" />
-        <activity android:name=".activity.about_youyun.AboutYouyunActivity"></activity>
+        <activity android:name=".activity.about_youyun.AboutYouyunActivity"/>
     </application>
 
 </manifest>
