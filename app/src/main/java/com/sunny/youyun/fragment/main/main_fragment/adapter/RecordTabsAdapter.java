@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.main_fragment.Adapter;
+package com.sunny.youyun.fragment.main.main_fragment.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

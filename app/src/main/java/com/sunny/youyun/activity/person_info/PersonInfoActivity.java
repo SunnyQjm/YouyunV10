@@ -1,22 +1,26 @@
 package com.sunny.youyun.activity.person_info;
 
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.person_info.adapter.RecordTabsAdapter;
+import com.sunny.youyun.activity.person_info.concern_fragment.ConcernFragment;
+import com.sunny.youyun.activity.person_info.dynamic_fragment.DynamicFragment;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
-import com.sunny.youyun.fragment.main.main_fragment.Adapter.RecordTabsAdapter;
-import com.sunny.youyun.fragment.main.main_fragment.DownloadReccordFragment.DownloadRecordFragment;
-import com.sunny.youyun.fragment.main.main_fragment.UploadRecordFragment.UploadRecordFragment;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.result.GetUserInfoResult;
 import com.sunny.youyun.utils.GlideUtils;
@@ -49,8 +53,8 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
 
     private List<Fragment> fragmentList = new ArrayList<>();
-    private DownloadRecordFragment downloadRecordFragment;
-    private UploadRecordFragment uploadRecordFragment;
+    private ConcernFragment concernFragment;
+    private DynamicFragment dynamicFragment;
     private RecordTabsAdapter adapter;
 
     private static final int TAB_MARGIN_LEFT = 40;
@@ -59,13 +63,24 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setNavigationBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.activity_person_info);
         ButterKnife.bind(this);
         initView();
     }
 
     private void initView() {
-        easyBar.setTitle("我的");
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {
@@ -78,10 +93,10 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
             }
         });
 
-        downloadRecordFragment = DownloadRecordFragment.newInstance();
-        uploadRecordFragment = UploadRecordFragment.newInstance();
-        fragmentList.add(downloadRecordFragment);
-        fragmentList.add(uploadRecordFragment);
+        concernFragment = ConcernFragment.newInstance();
+        dynamicFragment = DynamicFragment.newInstance();
+        fragmentList.add(dynamicFragment);
+        fragmentList.add(concernFragment);
         adapter = new RecordTabsAdapter(getSupportFragmentManager(), fragmentList);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);

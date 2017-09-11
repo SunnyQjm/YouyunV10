@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.main_fragment.Adapter;
+package com.sunny.youyun.fragment.main.main_fragment.adapter;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;

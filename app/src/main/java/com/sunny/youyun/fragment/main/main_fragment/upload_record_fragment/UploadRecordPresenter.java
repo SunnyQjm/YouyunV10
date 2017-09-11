@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.main_fragment.UploadRecordFragment;
+package com.sunny.youyun.fragment.main.main_fragment.upload_record_fragment;
 
 import com.sunny.youyun.mvp.BaseView;
 

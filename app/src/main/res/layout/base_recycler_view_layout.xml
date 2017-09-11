@@ -6,8 +6,8 @@
     android:orientation="vertical"
     tools:context="com.sunny.youyun.base.fragment.BaseRecyclerViewFragment">
     <include layout="@layout/bar_item"/>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <com.sunny.youyun.views.easy_refresh.EasyRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
@@ -16,5 +16,5 @@
             android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.sunny.youyun.views.easy_refresh.EasyRefreshLayout>
 </LinearLayout>

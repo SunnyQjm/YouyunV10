@@ -103,7 +103,7 @@
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
             app:left_margin="18dp"
-            app:left_resource="@drawable/icon_mine_collect"
+            app:left_resource="@drawable/icon_mine_collection"
             app:menu_title="我的收藏"
             app:right_margin="13dp">
 
@@ -118,7 +118,7 @@
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
             app:left_margin="18dp"
-            app:left_resource="@drawable/icon__mine_like"
+            app:left_resource="@drawable/icon_mine_follow"
             app:menu_title="关注的人"
             app:right_margin="13dp">
 
@@ -159,7 +159,7 @@
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
             app:left_margin="18dp"
-            app:left_resource="@drawable/icon_mine_callback"
+            app:left_resource="@drawable/icon_mine_feedback"
             app:menu_title="意见反馈"
             app:right_margin="13dp">
 

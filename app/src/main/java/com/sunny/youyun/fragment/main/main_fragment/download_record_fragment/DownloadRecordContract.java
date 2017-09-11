@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.main_fragment.DownloadReccordFragment;
+package com.sunny.youyun.fragment.main.main_fragment.download_record_fragment;
 
 import com.sunny.youyun.mvp.BaseModel;
 import com.sunny.youyun.mvp.BasePresenter;

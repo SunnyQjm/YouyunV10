@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.main_fragment.DownloadReccordFragment;
+package com.sunny.youyun.fragment.main.main_fragment.download_record_fragment;
 
 import android.content.Intent;
 import android.os.Build;
@@ -21,7 +21,7 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
-import com.sunny.youyun.fragment.main.main_fragment.Adapter.FileRecordAdapter;
+import com.sunny.youyun.fragment.main.main_fragment.adapter.FileRecordAdapter;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.download.FileDownloadPosition;
 import com.sunny.youyun.internet.download.FileDownloader;

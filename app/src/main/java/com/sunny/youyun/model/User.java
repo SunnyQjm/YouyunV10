@@ -26,6 +26,7 @@ public class User extends DataSupport{
     private String phone;
     private String avatar;
     private int score;
+    private String description;
     private int id;
     private long createTime;
     private long updateTime;
@@ -39,6 +40,7 @@ public class User extends DataSupport{
         setPhone(builder.phone);
         setAvatar(builder.avatar);
         setScore(builder.score);
+        setDescription(builder.description);
         setId(builder.id);
         setCreateTime(builder.createTime);
         setUpdateTime(builder.updateTime);
@@ -58,6 +60,15 @@ public class User extends DataSupport{
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getUsername() {
@@ -151,6 +162,7 @@ public class User extends DataSupport{
         private String phone;
         private String avatar;
         private int score;
+        private String description;
         private int id;
         private long createTime;
         private long updateTime;
@@ -185,6 +197,11 @@ public class User extends DataSupport{
 
         public Builder score(int val) {
             score = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
             return this;
         }
 

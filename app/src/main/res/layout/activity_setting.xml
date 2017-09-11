@@ -20,7 +20,7 @@
             android:layout_marginTop="20dp"
             app:left_margin="18dp"
             app:menu_title="Wi-fi下上传下载"
-            app:menu_title_color="@color/gray"
+            app:menu_title_color="@color/text_gray"
             app:right_margin="13dp">
 
         </com.sunny.youyun.views.LineMenuSwitch>
@@ -32,7 +32,7 @@
             style="@style/LineMenuItem"
             app:left_margin="18dp"
             app:menu_title="是否接收消息推送通知"
-            app:menu_title_color="@color/gray"
+            app:menu_title_color="@color/text_gray"
             app:right_margin="13dp">
 
         </com.sunny.youyun.views.LineMenuSwitch>
@@ -44,7 +44,7 @@
             style="@style/LineMenuItem"
             app:left_margin="18dp"
             app:menu_title="Wi-fi下自动更新"
-            app:menu_title_color="@color/gray"
+            app:menu_title_color="@color/text_gray"
             app:right_margin="13dp">
 
         </com.sunny.youyun.views.LineMenuSwitch>
@@ -64,7 +64,7 @@
             android:background="@drawable/ripple_bg_white"
             app:left_margin="18dp"
             app:menu_title="清除缓存"
-            app:menu_title_color="@color/gray"
+            app:menu_title_color="@color/text_gray"
             app:right_margin="13dp">
 
         </com.sunny.youyun.views.LineMenuItem>
@@ -78,7 +78,7 @@
             android:background="@drawable/ripple_bg_white"
             app:left_margin="18dp"
             app:menu_title="关于"
-            app:menu_title_color="@color/gray"
+            app:menu_title_color="@color/text_gray"
             app:right_margin="13dp">
 
         </com.sunny.youyun.views.LineMenuItem>
@@ -98,7 +98,7 @@
             android:background="@color/white"
             android:gravity="center"
             android:text="@string/exit"
-            android:textColor="@color/gray" />
+            android:textColor="@color/text_gray" />
 
         <include layout="@layout/divide_item" />
     </LinearLayout>

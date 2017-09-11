@@ -145,23 +145,18 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_avatar:
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                    RouterUtils.openWithAnimation(activity, new Intent(activity, PersonInfoActivity.class),
-//                            new Pair<>(imgAvatar, getString(R.string.mine_share_avatar)),
-//                            new Pair<>(tvNickname, getString(R.string.mine_share_nickname))
-////                            , new Pair<>(clAvatar, getString(R.string.mine_share_item))
-//                    );
+                RouterUtils.open(activity, IntentRouter.PersonInfoActivity);
+
+//                if(YouyunAPI.isIsLogin()){
+//                    RouterUtils.open(activity, IntentRouter.PersonInfoActivity);
 //                } else {
+//                    RouterUtils.open(activity, IntentRouter.LoginActivity);
 //                }
-                if(YouyunAPI.isIsLogin()){
-                    RouterUtils.open(activity, IntentRouter.PersonInfoActivity);
-                } else {
-                    RouterUtils.open(activity, IntentRouter.LoginActivity);
-                }
                 break;
             case R.id.li_my_collect:
                 break;
             case R.id.li_my_concern:
+                RouterUtils.open(activity, IntentRouter.ConcernActivity);
                 break;
             case R.id.li_callback:
                 break;
@@ -173,7 +168,9 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
             case R.id.li_file_manager:
                 break;
             case R.id.img_edit:
-                showEditDialog(user.getUsername());
+                if(YouyunAPI.isIsLogin()){
+                    showEditDialog(user.getUsername());
+                }
                 break;
             case R.id.img_avatar:
                 RouterUtils.open(activity, IntentRouter.DcimActivity);
@@ -184,9 +181,7 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     private void showEditDialog(String nickname) {
         if (editDialog == null)
             editDialog = YouyunEditDialog.newInstance(getString(R.string.edit_nickname),
-                    nickname, result -> {
-                        System.out.println(result);
-                    });
+                    nickname, System.out::println);
         else {
             editDialog.setHint(nickname);
         }

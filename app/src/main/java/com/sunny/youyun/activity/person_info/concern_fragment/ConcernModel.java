@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.main_fragment.DownloadReccordFragment;
+package com.sunny.youyun.activity.person_info.concern_fragment;
 
 import com.sunny.youyun.utils.FileTransProgressManager;
 
@@ -6,10 +6,10 @@ import com.sunny.youyun.utils.FileTransProgressManager;
  * Created by Sunny on 2017/6/25 0025.
  */
 
-class DownloadRecordModel implements DownloadRecordContract.Model{
-    private DownloadRecordPresenter mPresenter;
+class ConcernModel implements ConcernContract.Model{
+    private ConcernPresenter mPresenter;
     private FileTransProgressManager.OnDownloadListener listener;
-    DownloadRecordModel(DownloadRecordPresenter downloadRecordPresenter) {
+    ConcernModel(ConcernPresenter downloadRecordPresenter) {
         mPresenter = downloadRecordPresenter;
     }
 

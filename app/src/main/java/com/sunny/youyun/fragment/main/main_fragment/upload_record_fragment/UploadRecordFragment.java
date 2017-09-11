@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.main_fragment.UploadRecordFragment;
+package com.sunny.youyun.fragment.main.main_fragment.upload_record_fragment;
 
 import android.content.Intent;
 import android.os.Build;
@@ -21,7 +21,7 @@ import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
-import com.sunny.youyun.fragment.main.main_fragment.Adapter.FileRecordAdapter;
+import com.sunny.youyun.fragment.main.main_fragment.adapter.FileRecordAdapter;
 import com.sunny.youyun.internet.event.FileUploadEvent;
 import com.sunny.youyun.internet.upload.FileUploadPosition;
 import com.sunny.youyun.internet.upload.FileUploader;
@@ -211,6 +211,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
 
 
     private void error(int position) {
+        update(position);
     }
 
     private void updateAll() {
@@ -257,6 +258,9 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
      * @param position
      */
     private void continueOrReUpload(InternetFile file, int position) {
+        file.setStatus(InternetFile.Status.DOWNLOADING);
+        file.setRate("");
+        update(position);
         FileUploader.getInstance()
                 .continueUpload(file.getPath(), position);
     }
@@ -268,6 +272,8 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
      * @param position
      */
     private void pause(InternetFile file, int position) {
+        file.setStatus(InternetFile.Status.PAUSE);
+        update(position);
         FileUploader.getInstance()
                 .pause(file.getPath(), position);
     }
