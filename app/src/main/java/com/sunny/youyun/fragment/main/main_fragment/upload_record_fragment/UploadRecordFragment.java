@@ -1,10 +1,7 @@
 package com.sunny.youyun.fragment.main.main_fragment.upload_record_fragment;
 
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +14,6 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.App;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
 import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
@@ -258,7 +254,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
      * @param position
      */
     private void continueOrReUpload(InternetFile file, int position) {
-        file.setStatus(InternetFile.Status.DOWNLOADING);
+        file.setStatus(DOWNLOADING);
         file.setRate("");
         update(position);
         FileUploader.getInstance()
@@ -272,7 +268,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
      * @param position
      */
     private void pause(InternetFile file, int position) {
-        file.setStatus(InternetFile.Status.PAUSE);
+        file.setStatus(PAUSE);
         update(position);
         FileUploader.getInstance()
                 .pause(file.getPath(), position);
@@ -348,6 +344,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
             adapter.notifyItemChanged(position);
             return;
         }
+
         switch (file.getStatus()) {
             case CANCEL:
             case PAUSE:
@@ -359,14 +356,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
                 break;
             case FINISH:        //如果文件下载成功则可进入详情页
                 ObjectPool.getInstance().put(uuid, file);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    Intent intent = new Intent(activity, FileDetailOffLineActivity.class);
-                    intent.putExtra("uuid", uuid);
-                    intent.putExtra("position", position);
-                    RouterUtils.openWithAnimation(activity, intent, new Pair<>(img_icon, getString(R.string.trans_item_share_icon)));
-                } else {
-                    RouterUtils.open(activity, IntentRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
-                }
+                RouterUtils.open(activity, IntentRouter.FileDetailOffLineActivity, uuid, String.valueOf(position));
                 break;
         }
     }

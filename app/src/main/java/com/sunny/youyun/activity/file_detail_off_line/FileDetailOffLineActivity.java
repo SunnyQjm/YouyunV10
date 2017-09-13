@@ -56,6 +56,8 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
     Button btnDetailFile;
     @BindView(R.id.btn_open_file)
     Button btnOpenFile;
+    @BindView(R.id.tv_detail_into_content)
+    TextView tvDetailIntoContent;
 
     private InternetFile internetFile = null;
     private YouyunTipDialog youyunTipDialog = null;
@@ -221,5 +223,9 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
                 .put(uuid, internetFile);
         RouterUtils.open(this, IntentRouter.FileDetailOnlineActivity, uuid);
         finish();
+    }
+
+    @OnClick(R.id.tv_detail_into_content)
+    public void onViewClicked() {
     }
 }

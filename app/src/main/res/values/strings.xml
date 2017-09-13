@@ -93,4 +93,8 @@
     <string name="loading_">loading</string>
     <string name="dynamic_header">dynamic header</string>
     <string name="my_concern">关注的人</string>
+    <string name="detail_info">详细信息</string>
+    <string name="comment">评论</string>
+    <string name="share_from_youyun">来自优云的分享~</string>
+    <string name="my_collection">我的收藏</string>
 </resources>

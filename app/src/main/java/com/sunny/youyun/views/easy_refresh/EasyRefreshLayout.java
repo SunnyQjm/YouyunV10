@@ -229,7 +229,7 @@ public class EasyRefreshLayout extends ViewGroup {
 
             //部署内容
             if (contentView != null) {
-                contentView.layout(0, 0, getWidth(), getHeight());
+                contentView.layout(0, 0, getWidth(), contentView.getMeasuredHeight());
                 contentViewHeight = contentView.getMeasuredHeight();
             } else {
                 setRefreshAble(false);

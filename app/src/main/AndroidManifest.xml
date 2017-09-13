@@ -155,6 +155,8 @@
         <activity android:name=".activity.setting.SettingActivity" />
         <activity android:name=".activity.about_youyun.AboutYouyunActivity" />
         <activity android:name=".activity.concern.ConcernActivity" />
+        <activity android:name=".activity.person_file_manager.PersonFileManagerActivity" />
+        <activity android:name=".activity.my_collection.MyCollectionActivity"></activity>
     </application>
 
 </manifest>

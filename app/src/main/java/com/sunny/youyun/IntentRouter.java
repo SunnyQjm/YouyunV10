@@ -28,6 +28,6 @@ public class IntentRouter {
     public static final String SettingActivity = Activity + "SettingActivity";
     public static final String AboutYouyunActivity = Activity + "AboutYouyunActivity";
     public static final String ConcernActivity = Activity + "ConcernActivity";
-
+    public static final String PersonFileManagerActivity = Activity + "PersonFileManagerActivity";
 
 }

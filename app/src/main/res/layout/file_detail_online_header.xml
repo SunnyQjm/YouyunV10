@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/light_gray"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
-    <include layout="@layout/bar_item"/>
-
-    <include layout="@layout/file_detail_off_line" />
+    <include layout="@layout/file_detail_online" />
 
     <include layout="@layout/divide_item" />
 
@@ -21,5 +18,13 @@
     <include layout="@layout/file_description_item" />
 
     <include layout="@layout/divide_item" />
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/line_gray" />
+
+    <include layout="@layout/file_detail_comment_tag"/>
 
 </LinearLayout>

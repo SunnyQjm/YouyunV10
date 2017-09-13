@@ -3,6 +3,7 @@ package com.sunny.youyun.base.activity;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.mvp.BasePresenter;
@@ -46,6 +47,17 @@ public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends 
         refreshLayout.setFooter(new EasyRefreshFooter(R.layout.easy_refresh_footer));
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadListener(this);
+        easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
+            @Override
+            public void onLeftIconClick(View view) {
+                onBackPressed();
+            }
+
+            @Override
+            public void onRightIconClick(View view) {
+
+            }
+        });
     }
 
     @Override

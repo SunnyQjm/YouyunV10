@@ -9,8 +9,8 @@ public class ApiInfo {
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
 //    public static final String IP = "http://192.168.1.124";
-//    private static final String IP = "http://172.6.0.186";
-    private static final String IP = "http://192.168.8.37";
+    private static final String IP = "http://172.6.0.186";
+//    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
     public static final String BaseUrl = IP + ":" + port + "/youyun/";
 //    public static final String BaseUrl = IP + "/";

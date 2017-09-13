@@ -57,11 +57,20 @@ public class TimeUtils {
         return sdr_ymd.format(date);
     }
 
+    /**
+     * yyyy/MM/dd
+     * @return
+     */
     public static String returnTime_y4md(long times){
         Date date = new Date(times);
         return sdr_y4md.format(date);
     }
 
+    /**
+     * yyyy/MM/dd
+     * @param date_str
+     * @return
+     */
     public static long returnTimeStamps_y4md(String date_str){
         try {
             return sdr_y4md.parse(date_str).getTime();
@@ -71,6 +80,11 @@ public class TimeUtils {
         }
     }
 
+    /**
+     * 返回 2017-02-03 的格式
+     * @param timestamps
+     * @return
+     */
     public static String returnTime_y4md_line_divide(long timestamps){
         Date date = new Date(timestamps);
         return sdr_y4md_line_divide.format(date);
