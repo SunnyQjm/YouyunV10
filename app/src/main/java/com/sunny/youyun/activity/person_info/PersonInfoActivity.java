@@ -135,7 +135,6 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     @Override
     public void getUserInfoSuccess(GetUserInfoResult result) {
         User user = result.getUser();
-        easyBar.setTitle(user.getUsername());
         tvNickname.setText(user.getUsername());
         GlideUtils.loadUrl(this, imgAvatar, user.getAvatar());
     }
