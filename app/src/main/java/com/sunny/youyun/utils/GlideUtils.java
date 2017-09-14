@@ -1,6 +1,7 @@
 package com.sunny.youyun.utils;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -11,6 +12,7 @@ import com.sunny.youyun.model.InternetFile;
  */
 
 public class GlideUtils {
+
     public static void setImage(Context context, ImageView imageView, InternetFile internetFile){
         int resId  = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(internetFile.getName());
         if (resId == -1) {
@@ -30,9 +32,25 @@ public class GlideUtils {
         }
     }
 
-    public static void loadUrl(Context context, ImageView imageView, String url){
+    /**
+     * 加载url到ImageView中
+     * @param context
+     * @param imageView
+     * @param url
+     */
+    public static void load(Context context, ImageView imageView, String url){
         Glide.with(context)
                 .load(url)
+                .apply(GlideOptions
+                        .getInstance().getAvatarOptions())
+                .transition(GlideOptions
+                        .getInstance().getCrossFadeDrawableTransitionOptions())
+                .into(imageView);
+    }
+
+    public static void load(Context context, ImageView imageView, @DrawableRes int res){
+        Glide.with(context)
+                .load(res)
                 .apply(GlideOptions
                         .getInstance().getAvatarOptions())
                 .transition(GlideOptions

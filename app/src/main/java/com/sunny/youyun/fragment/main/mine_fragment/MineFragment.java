@@ -106,11 +106,11 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
         easyBar.setLeftIconInVisible();
 
         user = UserInfoManager.getInstance().getUserInfo();
-        if(YouyunAPI.isIsLogin())
+        if (YouyunAPI.isIsLogin())
             tvNickname.setText(user.getUsername());
         else
             tvNickname.setText(getString(R.string.click_here_to_login));
-        GlideUtils.loadUrl(activity, imgAvatar, user.getAvatar());
+        GlideUtils.load(activity, imgAvatar, user.getAvatar());
     }
 
     @Override
@@ -145,15 +145,14 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_avatar:
-                RouterUtils.open(activity, IntentRouter.PersonInfoActivity);
-
-//                if(YouyunAPI.isIsLogin()){
-//                    RouterUtils.open(activity, IntentRouter.PersonInfoActivity);
-//                } else {
-//                    RouterUtils.open(activity, IntentRouter.LoginActivity);
-//                }
+                if (YouyunAPI.isIsLogin()) {
+                    RouterUtils.open(activity, IntentRouter.PersonInfoActivity);
+                } else {
+                    RouterUtils.open(activity, IntentRouter.LoginActivity);
+                }
                 break;
             case R.id.li_my_collect:
+                RouterUtils.open(activity, IntentRouter.MyCollectionActivity);
                 break;
             case R.id.li_my_concern:
                 RouterUtils.open(activity, IntentRouter.ConcernActivity);
@@ -166,9 +165,10 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
             case R.id.li_my_share:
                 break;
             case R.id.li_file_manager:
+                RouterUtils.open(activity, IntentRouter.PersonFileManagerActivity);
                 break;
             case R.id.img_edit:
-                if(YouyunAPI.isIsLogin()){
+                if (YouyunAPI.isIsLogin()) {
                     showEditDialog(user.getUsername());
                 }
                 break;

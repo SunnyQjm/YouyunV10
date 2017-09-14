@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import com.sunny.youyun.App;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
@@ -15,7 +16,7 @@ import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
  * Created by Sunny on 2017/8/29 0029.
  */
 
-public class YouyunActivity extends AppCompatActivity{
+public class YouyunActivity extends AppCompatActivity {
 
     protected YouyunTipDialog dialog;
     protected YouyunLoadingView loadingView;
@@ -88,6 +89,7 @@ public class YouyunActivity extends AppCompatActivity{
         super.finish();
         dialog = null;
         loadingView = null;
+        App.finishAnim(this);
 //        //5.0以下用老版本的切换动画
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 //            App.finishAnim(this);

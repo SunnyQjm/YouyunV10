@@ -80,7 +80,7 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                 FileItem fileItem = (FileItem) item;
                 helper.setText(R.id.tv_name, fileItem.getName())
                         .setText(R.id.tv_size, Tool.convertToSize(fileItem.getSize()))
-                        .setText(R.id.tv_time, TimeUtils.returnTime(fileItem.getLastModifiedTime()))
+                        .setText(R.id.tv_description, TimeUtils.returnTime(fileItem.getLastModifiedTime()))
                         .addOnClickListener(R.id.img_delete);
 
                 int resId = ((FileItem) item).getResId();

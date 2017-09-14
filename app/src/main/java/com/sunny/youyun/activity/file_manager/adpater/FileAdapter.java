@@ -12,8 +12,8 @@ import com.sunny.youyun.activity.file_manager.item.FileItem;
 import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
-import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.utils.FileTypeUtil;
 import com.sunny.youyun.utils.GlideOptions;
 import com.sunny.youyun.utils.TimeUtils;
@@ -49,7 +49,7 @@ public class FileAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
                 FileItem fileItem = (FileItem) item;
                 helper.setText(R.id.tv_name, fileItem.getName())
                         .setText(R.id.tv_size, Tool.convertToSize(fileItem.getSize()))
-                        .setText(R.id.tv_time, TimeUtils.returnTime(fileItem.getLastModifiedTime()));
+                        .setText(R.id.tv_description, TimeUtils.returnTime(fileItem.getLastModifiedTime()));
                 CheckBox checkBox = helper.getView(R.id.checkBox);
 
                 String path = fileItem.getPath();
@@ -92,7 +92,7 @@ public class FileAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
                 DirectItem directItem = (DirectItem) item;
                 helper.setText(R.id.tv_name, directItem.getName())
                         .setText(R.id.tv_size, Tool.convertToSize(directItem.getSize()))
-                        .setText(R.id.tv_time, TimeUtils.returnTime(directItem.getLastModifiedTime()));
+                        .setText(R.id.tv_description, TimeUtils.returnTime(directItem.getLastModifiedTime()));
                 helper.getView(R.id.checkBox).setVisibility(View.INVISIBLE);
                 Glide.with(mContext)
                         .load(FileTypeUtil.getDirect())

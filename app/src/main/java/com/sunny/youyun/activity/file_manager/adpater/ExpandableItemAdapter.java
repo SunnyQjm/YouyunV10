@@ -89,7 +89,7 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                 FileItem fileItem = (FileItem) item;
                 helper.setText(R.id.tv_name, fileItem.getName())
                         .setText(R.id.tv_size, Tool.convertToSize(fileItem.getSize()))
-                        .setText(R.id.tv_time, TimeUtils.returnTime(fileItem.getLastModifiedTime()));
+                        .setText(R.id.tv_description, TimeUtils.returnTime(fileItem.getLastModifiedTime()));
                 CheckBox checkBox = helper.getView(R.id.checkBox);
 
                 String path = ((FileItem) item).getPath();
@@ -132,7 +132,7 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                 AppInfo appInfo = (AppInfoItem) item;
                 helper.setText(R.id.tv_name, appInfo.getAppName())
                         .setText(R.id.tv_size, Tool.convertToSize(appInfo.getSize()))
-                        .setText(R.id.tv_time, TimeUtils.returnTime(appInfo.getLastModified()))
+                        .setText(R.id.tv_description, TimeUtils.returnTime(appInfo.getLastModified()))
                         .setImageDrawable(R.id.img_icon, appInfo.getIcon());
                 checkBox = helper.getView(R.id.checkBox);
 

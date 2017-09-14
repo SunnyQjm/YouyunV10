@@ -116,7 +116,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         mCommentList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             mCommentList.add(new Comment.Builder()
-                    .comment("WOOW, WOOW, 好评！WOOW, WOOW, 好评！WOOW, WOOW, 好评！WOOW, WOOW, 好评！WOOW, WOOW, 好评！WOOW, WOOW, 好评！WOOW, WOOW, 好评！")
+                    .comment("WOOW, WOOW, 好评！")
                     .commentDate(System.currentTimeMillis())
                     .user(new User.Builder()
                             .avatar("http://img4.imgtn.bdimg.com/it/u=2880820503,781549093&fm=27&gp=0.jpg")
@@ -136,7 +136,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 //            clUserInfo.setVisibility(View.GONE);
 //        else {
 //            User user = internetFile.getUser();
-//            GlideUtils.loadUrl(this, imgAvatar, user.getAvatar());
+//            GlideUtils.load(this, imgAvatar, user.getAvatar());
 //            tvUserSShare.setText(String.format("%s%s", user.getUsername(), getString(R.string.xxs_share)));
 //        }
         GlideUtils.setImage(this, imgIcon, internetFile);
@@ -152,9 +152,9 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         imgIcon = (ImageView) header.findViewById(R.id.img_icon);
         tvFileNameSize = (TextView) header.findViewById(R.id.tv_file_name_size);
         tvCode = (TextView) header.findViewById(R.id.tv_code);
-        rtViewNum = (RichText) header.findViewById(R.id.rt_view_num);
-        rtLikeNum = (RichText) header.findViewById(R.id.rt_like_num);
-        rtDownNum = (RichText) header.findViewById(R.id.rt_down_num);
+        rtViewNum = (RichText) header.findViewById(R.id.rt_view_count);
+        rtLikeNum = (RichText) header.findViewById(R.id.rt_like_count);
+        rtDownNum = (RichText) header.findViewById(R.id.rt_down_count);
         btnLookComment = (Button) header.findViewById(R.id.btn_look_comment);
         btnDownloadNow = (Button) header.findViewById(R.id.btn_download_now);
         imgIcon.setOnClickListener(this);
@@ -229,12 +229,12 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         switch (v.getId()) {
             case R.id.img_avatar:
                 break;
-            case R.id.rt_view_num:
+            case R.id.rt_view_count:
                 break;
-            case R.id.rt_like_num:
+            case R.id.rt_like_count:
                 rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
                 break;
-            case R.id.rt_down_num:
+            case R.id.rt_down_count:
                 break;
             case R.id.btn_look_comment:
                 break;

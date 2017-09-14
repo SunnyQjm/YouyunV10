@@ -71,7 +71,7 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
         switch (item.getStatus()) {
             case Status.FINISH:
                 helper.setText(R.id.tv_name, item.getName())
-                        .setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
+                        .setText(R.id.tv_description, TimeUtils.returnTime(item.getCreateTime()))
                         .setText(R.id.tv_size, Tool.convertToSize(item.getSize()));
                 progressStyle(helper, Status.FINISH);
                 break;
@@ -83,7 +83,7 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
                 break;
             case Status.ERROR:
                 helper.setText(R.id.tv_name, item.getName())
-                        .setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
+                        .setText(R.id.tv_description, TimeUtils.returnTime(item.getCreateTime()))
                         .setText(R.id.tv_size, mContext.getString(R.string.error));
                 progressStyle(helper, Status.ERROR);
                 break;
@@ -134,7 +134,7 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
             case Status.PAUSE:
                 helper.setVisible(R.id.progressBar, true);
                 helper.setVisible(R.id.tv_rate, true);
-                helper.setVisible(R.id.tv_time, false);
+                helper.setVisible(R.id.tv_description, false);
                 helper.setVisible(R.id.tv_size, false);
 
                 if (status.equals(Status.PAUSE)) {
@@ -148,7 +148,7 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
             case Status.ERROR:
                 helper.setVisible(R.id.progressBar, false);
                 helper.setVisible(R.id.tv_rate, false);
-                helper.setVisible(R.id.tv_time, true);
+                helper.setVisible(R.id.tv_description, true);
                 helper.setVisible(R.id.tv_size, true);
                 if (status.equals(Status.ERROR))
                     helper.setImageResource(R.id.img_arrow, R.drawable.icon_erro);

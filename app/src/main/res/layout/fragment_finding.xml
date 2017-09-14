@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
+    <include layout="@layout/bar_item"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/application_theme_color"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/text_gray"
+        app:tabTextColor="@color/text_gray">
+
+    </android.support.design.widget.TabLayout>
+
+    <include layout="@layout/divide_item"/>
+
+    <com.sunny.youyun.views.NoScrollViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.sunny.youyun.views.NoScrollViewPager>
 </LinearLayout>

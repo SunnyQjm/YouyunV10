@@ -28,7 +28,7 @@
 
     
     <color name="text_red">#ff3a4a</color>
-
+    <color name="btn_red">#e5483e</color>
     <color name="triangle">#aa72d572</color>
     <color name="circle">#aa738ffe</color>
     <color name="rect">#aae84e40</color>

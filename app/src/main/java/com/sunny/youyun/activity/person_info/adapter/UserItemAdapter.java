@@ -24,6 +24,6 @@ public class UserItemAdapter extends BaseQuickAdapter<User, BaseViewHolder>{
     protected void convert(BaseViewHolder helper, User item) {
         helper.setText(R.id.tv_nickname, item.getUsername())
                 .setText(R.id.tv_description, item.getDescription());
-        GlideUtils.loadUrl(mContext, ((ImageView)helper.getView(R.id.img_avatar)), item.getAvatar());
+        GlideUtils.load(mContext, ((ImageView)helper.getView(R.id.img_avatar)), item.getAvatar());
     }
 }

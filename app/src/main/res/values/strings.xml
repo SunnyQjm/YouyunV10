@@ -97,4 +97,21 @@
     <string name="comment">评论</string>
     <string name="share_from_youyun">来自优云的分享~</string>
     <string name="my_collection">我的收藏</string>
+    <string name="file_manager">文件管理</string>
+    <string name="install_package">安装包</string>
+    <string name="compression_pack">压缩包</string>
+    <string name="vedio">视频</string>
+    <string name="music">音乐</string>
+    <string name="picture">图片</string>
+    <string name="document">文档</string>
+    <string name="web_page">网页</string>
+    <string name="other">其他</string>
+    <string name="my_file">我的文件</string>
+    <string name="please_select_operator">请选择操作</string>
+    <string name="share">分享</string>
+    <string name="move">移动</string>
+    <string name="rename">重命名</string>
+    <string name="all">全部</string>
+    <string name="hot">热门</string>
+    <string name="finding_square">发现广场</string>
 </resources>

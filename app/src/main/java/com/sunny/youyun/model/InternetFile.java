@@ -25,6 +25,8 @@ public class InternetFile extends DataSupport implements Serializable {
     private final int lookNum;          //浏览量
     private final int star;             //点赞人数
     private final User user;
+    private final String description;
+    private final boolean isDiretory;
 
     private String status = Status.DOWNLOADING;
     private String path = "";
@@ -75,7 +77,7 @@ public class InternetFile extends DataSupport implements Serializable {
                 '}';
     }
 
-    private InternetFile(Builder builder) {
+    protected InternetFile(Builder builder) {
         setIdentifyCode(builder.identifyCode);
         id = builder.id;
         name = builder.name;
@@ -89,12 +91,14 @@ public class InternetFile extends DataSupport implements Serializable {
         lookNum = builder.lookNum;
         star = builder.star;
         user = builder.user;
+        description = builder.description;
+        isDiretory = builder.isDiretory;
         setStatus(builder.status);
         setPath(builder.path);
         setProgress(builder.progress);
         setRate(builder.rate);
         setFileTAG(builder.fileTAG);
-        position = builder.position;
+        setPosition(builder.position);
     }
 
     public int getPosition() {
@@ -113,6 +117,9 @@ public class InternetFile extends DataSupport implements Serializable {
         return MAX_PROGRESS;
     }
 
+    public boolean isDiretory() {
+        return isDiretory;
+    }
 
     public String getRate() {
         return rate;
@@ -211,6 +218,10 @@ public class InternetFile extends DataSupport implements Serializable {
         this.fileTAG = fileTAG;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public static final class Builder {
         private String indentfyCode;
         private int id;
@@ -225,6 +236,8 @@ public class InternetFile extends DataSupport implements Serializable {
         private int lookNum;
         private int star;
         private User user;
+        private String description;
+        private boolean isDiretory;
         private String status;
         private boolean done;
         private String path;
@@ -300,6 +313,16 @@ public class InternetFile extends DataSupport implements Serializable {
 
         public Builder user(User val) {
             user = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder isDiretory(boolean val) {
+            isDiretory = val;
             return this;
         }
 

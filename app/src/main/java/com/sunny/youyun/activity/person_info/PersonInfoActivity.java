@@ -136,6 +136,6 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     public void getUserInfoSuccess(GetUserInfoResult result) {
         User user = result.getUser();
         tvNickname.setText(user.getUsername());
-        GlideUtils.loadUrl(this, imgAvatar, user.getAvatar());
+        GlideUtils.load(this, imgAvatar, user.getAvatar());
     }
 }

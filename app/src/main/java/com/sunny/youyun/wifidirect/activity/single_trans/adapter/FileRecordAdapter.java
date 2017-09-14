@@ -61,18 +61,18 @@ public class FileRecordAdapter extends BaseQuickAdapter<TransLocalFile, BaseView
     private void updateWithPayloads(BaseViewHolder helper, TransLocalFile item) {
         Logger.i("onBindViewHolder with payloads");
         if (item.isDone()) {
-            helper.setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
+            helper.setText(R.id.tv_description, TimeUtils.returnTime(item.getCreateTime()))
                     .setText(R.id.tv_size, Tool.convertToSize(item.getSize()));
             helper.setVisible(R.id.progressBar, false);
             helper.setVisible(R.id.tv_rate, false);
-            helper.setVisible(R.id.tv_time, true);
+            helper.setVisible(R.id.tv_description, true);
             helper.setVisible(R.id.tv_size, true);
         } else {
             helper.setProgress(R.id.progressBar, item.getProgress())
                     .setText(R.id.tv_rate, item.getRate());
             helper.setVisible(R.id.progressBar, true);
             helper.setVisible(R.id.tv_rate, true);
-            helper.setVisible(R.id.tv_time, false);
+            helper.setVisible(R.id.tv_description, false);
             helper.setVisible(R.id.tv_size, false);
         }
     }
@@ -80,11 +80,11 @@ public class FileRecordAdapter extends BaseQuickAdapter<TransLocalFile, BaseView
     private void update(BaseViewHolder helper, TransLocalFile item) {
         if (item.isDone()) {
             helper.setText(R.id.tv_name, item.getName())
-                    .setText(R.id.tv_time, TimeUtils.returnTime(item.getCreateTime()))
+                    .setText(R.id.tv_description, TimeUtils.returnTime(item.getCreateTime()))
                     .setText(R.id.tv_size, Tool.convertToSize(item.getSize()));
             helper.setVisible(R.id.progressBar, false);
             helper.setVisible(R.id.tv_rate, false);
-            helper.setVisible(R.id.tv_time, true);
+            helper.setVisible(R.id.tv_description, true);
             helper.setVisible(R.id.tv_size, true);
         } else {
             helper.setText(R.id.tv_name, item.getName())
@@ -92,7 +92,7 @@ public class FileRecordAdapter extends BaseQuickAdapter<TransLocalFile, BaseView
                     .setText(R.id.tv_rate, item.getRate());
             helper.setVisible(R.id.progressBar, true);
             helper.setVisible(R.id.tv_rate, true);
-            helper.setVisible(R.id.tv_time, false);
+            helper.setVisible(R.id.tv_description, false);
             helper.setVisible(R.id.tv_size, false);
 
         }
