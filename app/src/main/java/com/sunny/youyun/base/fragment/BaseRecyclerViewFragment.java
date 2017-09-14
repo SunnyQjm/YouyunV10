@@ -53,7 +53,6 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
             unbinder = ButterKnife.bind(this, view);
         }
 
-        initView();
         return view;
     }
 
@@ -83,9 +82,10 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
     @Override
     public void onRefresh() {
         this.onRefreshBegin();
+        linerLayoutManager.setScrollAble(false);
         Observable.create((ObservableOnSubscribe<Integer>) e -> {
-            linerLayoutManager.setScrollAble(false);
             this.OnRefreshBeginSync();
+            Thread.sleep(500);
             e.onNext(0);
         })
                 .subscribeOn(Schedulers.io())
@@ -106,9 +106,10 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
 
     @Override
     public void onLoad() {
+        linerLayoutManager.setScrollAble(false);
         Observable.create((ObservableOnSubscribe<Integer>) e -> {
-            linerLayoutManager.setScrollAble(false);
             this.onLoadBeginSync();
+            Thread.sleep(500);
             e.onNext(0);
         })
                 .subscribeOn(Schedulers.io())

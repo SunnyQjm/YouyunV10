@@ -30,8 +30,8 @@ public class HotFragment extends BaseRecyclerViewFragment<HotPresenter> implemen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = super.onCreateView(inflater, container, savedInstanceState);
-        init();
+            view = super.onCreateView(inflater, container, savedInstanceState);
+            init();
         return view;
     }
 

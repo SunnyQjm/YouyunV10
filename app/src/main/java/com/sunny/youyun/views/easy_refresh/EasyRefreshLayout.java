@@ -179,7 +179,6 @@ public class EasyRefreshLayout extends ViewGroup {
      */
     @Override
     protected void onFinishInflate() {
-        System.out.println("onFinishInflate");
         super.onFinishInflate();
         contentView = getChildAt(0);
         contentView.setPadding(0, 0, 0, 0);
@@ -205,7 +204,6 @@ public class EasyRefreshLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        System.out.println("onMeasure");
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
@@ -217,7 +215,6 @@ public class EasyRefreshLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (contentView != null) {
-            System.out.println("onLayout");
             //将头部署在当前视图之外
             if (header != null) {
                 header.layout(0, -header.getMeasuredHeight(), getWidth(), header.getMeasuredHeight());
@@ -280,8 +277,12 @@ public class EasyRefreshLayout extends ViewGroup {
                 if (isMoveAble() && diff > mTouchSlop && mode != Mode.NONE) {
                     if (mYMove - mYDown > 0 && isRefreshAble &&
                             (mode == Mode.BOTH || mode == Mode.REFRESH_ONLY)) {
+                        if(easyRefreshHeader != null)
+                            easyRefreshHeader.init(header);
                         status = Status.SCROLL_DOWN;
                     } else if (isLoadAble && (mode == Mode.BOTH || mode == Mode.LOAD_ONLY)) {
+                        if(easyRefreshFooter != null)
+                            easyRefreshFooter.init(footer);
                         status = Status.SCROLL_UP;
                         //上拉加载更多的时候显示底部布局
                         footer.setVisibility(VISIBLE);
@@ -298,7 +299,6 @@ public class EasyRefreshLayout extends ViewGroup {
         dealMulTouchEvent(event);
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                System.out.println("ACTION_MOVE：" + status);
 
                 //自按下滚动的距离
                 int scrollDistance = Math.abs(getScrollY());
@@ -319,7 +319,6 @@ public class EasyRefreshLayout extends ViewGroup {
                             easyRefreshHeader.scrolling(header, scrollDistance, headerHeight);
                         }
 
-                        System.out.println("getScrollY: " + getScrollY());
                         if (getScrollY() > 0) {
                             status = Status.NORMAL;
                             if(easyRefreshHeader != null)
@@ -337,7 +336,6 @@ public class EasyRefreshLayout extends ViewGroup {
                         }
                         break;
                     case SCROLL_UP:
-                        System.out.println("getScrollY: " + getScrollY());
                         if (getScrollY() < 0) {
                             status = Status.NORMAL;
                             if(easyRefreshFooter != null)
@@ -359,7 +357,6 @@ public class EasyRefreshLayout extends ViewGroup {
                 mYLastMove = mYMove;
                 break;
             case MotionEvent.ACTION_UP:
-                System.out.println("ACTION_UP");
                 switch (status) {
                     case SCROLL_DOWN_EFFECT:
                         showRefresh();

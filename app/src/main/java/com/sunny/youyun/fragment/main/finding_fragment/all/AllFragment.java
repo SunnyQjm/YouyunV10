@@ -34,8 +34,8 @@ public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implemen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = super.onCreateView(inflater, container, savedInstanceState);
-        init();
+            view = super.onCreateView(inflater, container, savedInstanceState);
+            init();
         return view;
     }
 
