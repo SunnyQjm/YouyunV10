@@ -4,7 +4,6 @@ import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -27,10 +26,11 @@ import retrofit2.http.Url;
 
 public interface FileServices {
     @Multipart
-    @POST("file/upload")
-    Observable<BaseResponseBody<String>> uploadFile(@PartMap Map<String, RequestBody> paramMap, @Part() List<MultipartBody.Part> files);
+    @POST(ApiInfo.UPLOAD_FILE_URL)
+//    Observable<BaseResponseBody<String>> uploadFile(@PartMap Map<String, RequestBody> paramMap, @Part() List<MultipartBody.Part> files);
+    Observable<BaseResponseBody<String>> uploadFile(@PartMap Map<String, RequestBody> paramMap, @Part MultipartBody.Part file);
 
-    @POST("file/uploadCheck")
+    @POST(ApiInfo.UPLOAD_FILE_CHECK_URL)
     Observable<BaseResponseBody<String>> checkMd5(@Body RequestBody body);
 
     @Streaming
@@ -40,8 +40,4 @@ public interface FileServices {
     @GET(ApiInfo.GET_FILE_INFO)
     Observable<BaseResponseBody<InternetFile[]>> getFileInfo(
             @Query(value = ApiInfo.GET_FILE_INFO_IDENTIFY_CODE) String code);
-//    @GET
-//    Observable<BaseResponseBody<InternetFile[]>> getFileInfo(
-//            @Url String url
-//    );
 }

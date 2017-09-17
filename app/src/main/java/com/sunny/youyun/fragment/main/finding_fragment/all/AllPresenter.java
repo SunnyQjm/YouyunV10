@@ -16,4 +16,9 @@ class AllPresenter extends AllContract.Presenter{
     protected void start() throws IOException {
 
     }
+
+    @Override
+    void getForumDataALL(int page) {
+//        APIManager
+    }
 }

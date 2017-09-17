@@ -73,6 +73,6 @@ public interface UserServices {
 //    @POST("bookstore/updateName")
 //    Observable<UpdateNameResponseBody> updateName(@Body RequestBody body);
 //
-    @POST("logout")
-    Observable<String> logout();
+    @GET(ApiInfo.LOGOUT)
+    Observable<BaseResponseBody<String>> logout();
 }

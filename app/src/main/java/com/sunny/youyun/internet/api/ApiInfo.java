@@ -8,11 +8,11 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-//    public static final String IP = "http://192.168.1.124";
-    private static final String IP = "http://172.6.0.186";
+    public static final String IP = "http://192.168.1.106";
+//    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
-    public static final String BaseUrl = IP + ":" + port + "/youyun/";
+    public static final String BaseUrl = IP + ":" + port;
 //    public static final String BaseUrl = IP + "/";
 
     public static final String DOWNLOAD = "file/download/",
@@ -25,11 +25,12 @@ public class ApiInfo {
     ///// UserService
     //////////////////////////////////////////////////////
     public static final String LOGIN_URL = "login",
-            LOGIN_USERNAME = "phone", LOGIN_PASSWORD = "password";
+            LOGIN_USERNAME = "phone", LOGIN_PASSWORD = "password", LOGIN_TYPE = "type";
 
+    public static final int LOGIN_TY_QQ = 1, LOGIN_TYPE_WE_CHAT = 2;
     //QQ一键登录
     public static final String QQ_LOGIN_URL = "otherLogin",
-            QQ_LOGIN_ACCESS_TOKEN = "token", QQ_LOGIN_OPEN_ID = "openId";
+            QQ_LOGIN_ACCESS_TOKEN = "access_token", QQ_LOGIN_OPEN_ID = "openId";
 
     //发送验证码
     public static final String SEND_CODE = "sendCode";
@@ -41,8 +42,29 @@ public class ApiInfo {
     public static final String MODIFY_AVATAR = "authc/user/setAvatar",
             MODIFY_AVATAR_AVATAR = "avatar";
 
+    public static final String LOGOUT = "authc/logout";
+
     public static final String GET_USER_INFO = "authc/user";
 
 
 
+    ///////////////////////////////////////////////////////////
+    ////////FileService
+    ///////////////////////////////////////////////////////////
+    public static final String UPLOAD_FILE_URL = "file/upload", UPLOAD_FILE_PARAM_SHARE = "share",
+            UPLOAD_FILE_PARAM_LEFT_ALLOW_DOWNLOAD_COUNT = "leftAllowDownloadCount",
+            UPLOAD_FILE_PARAM_EXPIRE_TIME = "expireTime", UPLOAD_FILE_PARAM_SCORE = "score",
+            UPLOAD_FILE_PARAM_IS_PRIVATE = "privateOwn", UPLOAD_FILE_PARAM_PARENT_PATH = "test.txt",
+            UPLOAD_FILE_PARAM_DESCRIPTION = "description";
+    public static final String UPLOAD_FILE_CHECK_URL = "file/uploadCheck";
+
+
+
+    ///////////////////////////////////////////////////////////
+    /////////ForumService
+    //////////////////////////////////////////////////////////
+    public static final String GET_FORUM_URL = "forum/files", GET_FORUM_PAGE = "page",
+            GET_FORUM_SIZE = "size", GET_FORUM_SORT_BY_DATE = "createTime",
+            GET_FORUM_SORT_BY_DOWNLOAD_COUNT = "downloadCount";
+    public static final int GET_FORUM_DEFAULT_SIZE = 10;
 }

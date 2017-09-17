@@ -9,4 +9,9 @@ class AllModel implements AllContract.Model{
     AllModel(AllPresenter allPresenter) {
         mPresenter = allPresenter;
     }
+
+    @Override
+    public void getForumDataALL(int page) {
+
+    }
 }

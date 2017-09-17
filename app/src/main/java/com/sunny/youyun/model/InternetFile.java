@@ -26,7 +26,7 @@ public class InternetFile extends DataSupport implements Serializable {
     private final int star;             //点赞人数
     private final User user;
     private final String description;
-    private final boolean isDiretory;
+    private final boolean isDirectory;
 
     private String status = Status.DOWNLOADING;
     private String path = "";
@@ -92,7 +92,7 @@ public class InternetFile extends DataSupport implements Serializable {
         star = builder.star;
         user = builder.user;
         description = builder.description;
-        isDiretory = builder.isDiretory;
+        isDirectory = builder.isDiretory;
         setStatus(builder.status);
         setPath(builder.path);
         setProgress(builder.progress);
@@ -117,8 +117,8 @@ public class InternetFile extends DataSupport implements Serializable {
         return MAX_PROGRESS;
     }
 
-    public boolean isDiretory() {
-        return isDiretory;
+    public boolean isDirectory() {
+        return isDirectory;
     }
 
     public String getRate() {
