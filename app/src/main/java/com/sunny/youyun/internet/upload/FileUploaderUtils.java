@@ -2,6 +2,7 @@ package com.sunny.youyun.internet.upload;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.event.FileUploadEvent;
 import com.sunny.youyun.internet.progress_handle.ProgressRequestBody;
 import com.sunny.youyun.internet.progress_handle.ProgressRequestListener;
@@ -50,16 +51,19 @@ public class FileUploaderUtils {
         File f = new File(uploadFileParam.getFilePath());
         if (!f.exists())
             return;
+
+        //构造检查文件秒传判断的请求
         final RequestBody body = RequestBody.create(
                 MediaType.parse("application/json; charset=utf-8"),
                 getCheckJson(f));
+
         final FileServices fileServices = APIManager.getInstance().getFileServices(GsonConverterFactory.create());
         fileServices
                 .checkMd5(body)
 //                .retry(1)
                 .flatMap(stringBaseResponseBody -> {
                     if (stringBaseResponseBody.isSuccess()) {
-                        return fileServices.uploadFile(getPartMap(uploadFileParam), getFiles(f, position, internetFile));
+                        return fileServices.uploadFile(getPartMap(uploadFileParam), getFile(f, position, internetFile));
                     } else {
                         //when a same file is already upload before, we don't need to do upload operator
                         //just do something on this, do not care the under operator
@@ -141,9 +145,8 @@ public class FileUploaderUtils {
         Logger.i("保存：" + b);
     }
 
-    private static List<MultipartBody.Part> getFiles(final File f, final int position, InternetFile internetFile) {
-        final List<MultipartBody.Part> files = new ArrayList<>();
-        files.add(MultipartBody.Part.createFormData("files", f.getName(),
+    private static MultipartBody.Part getFile(final File f, final int position, InternetFile internetFile) {
+        return MultipartBody.Part.createFormData("file", f.getName(),
                 new ProgressRequestBody(RequestBody.create(MediaType.parse("multipart/form-data"), f),
                         new ProgressRequestListener() {
                             long lastBytes;
@@ -171,30 +174,32 @@ public class FileUploaderUtils {
                                 internetFile.setProgress((int) (bytesWritten * 1.0 / contentLength * 100));
                                 EventBus.getDefault()
                                         .post(new FileUploadEvent.Builder()
-//                                                .already(bytesWritten)
-//                                                .total(contentLength)
-//                                                .done(done)
-//                                                .rate(rate)
-//                                                .percent((int) (bytesWritten * 1.0 / contentLength * 100))
                                                 .position(position)
                                                 .type(FileUploadEvent.Type.PROGRESS)
                                                 .build());
                             }
-                        })));
-        return files;
+                        }));
     }
 
     private static Map<String, RequestBody> getPartMap(FileUploadFileParam uploadFileParam) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("share", RequestBody.create(null, String.valueOf(uploadFileParam.isShare())));
+        map.put(ApiInfo.UPLOAD_FILE_PARAM_SHARE,
+                RequestBody.create(null, String.valueOf(uploadFileParam.isShare())));
         if (uploadFileParam.getAllowDownCount() > 0)
-            map.put("leftAllowDownloadCount", RequestBody.create(null, String.valueOf(uploadFileParam.getAllowDownCount())));
+            map.put(ApiInfo.UPLOAD_FILE_PARAM_LEFT_ALLOW_DOWNLOAD_COUNT
+                    , RequestBody.create(null, String.valueOf(uploadFileParam.getAllowDownCount())));
         if (uploadFileParam.getExpireTime() > 0)
-            map.put("expireTime", RequestBody.create(null, String.valueOf(uploadFileParam.getExpireTime())));
-        map.put("score", RequestBody.create(null, String.valueOf(uploadFileParam.getScore())));
-        map.put("privateOwn", RequestBody.create(null, String.valueOf(uploadFileParam.isPrivate())));
+            map.put(ApiInfo.UPLOAD_FILE_PARAM_EXPIRE_TIME,
+                    RequestBody.create(null, String.valueOf(uploadFileParam.getExpireTime())));
+        map.put(ApiInfo.UPLOAD_FILE_PARAM_SCORE,
+                RequestBody.create(null, String.valueOf(uploadFileParam.getScore())));
+        map.put(ApiInfo.UPLOAD_FILE_PARAM_IS_PRIVATE,
+                RequestBody.create(null, String.valueOf(uploadFileParam.isPrivate())));
+        map.put(ApiInfo.UPLOAD_FILE_PARAM_DESCRIPTION,
+                RequestBody.create(null, String.valueOf(uploadFileParam.getDescription())));
         if (uploadFileParam.getParentId() != null)
-            map.put("test.txt", RequestBody.create(null, uploadFileParam.getParentId()));
+            map.put(ApiInfo.UPLOAD_FILE_PARAM_PARENT_PATH,
+                    RequestBody.create(null, uploadFileParam.getParentId()));
         return map;
     }
 

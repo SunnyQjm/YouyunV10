@@ -7,7 +7,12 @@ public class FileUploadFileParam {
     private final long expireTime;
     private final int score;
     private final boolean isPrivate;
+    private final String description;
     private final String parentId;
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
 
     public String getFilePath() {
         return filePath;
@@ -15,6 +20,10 @@ public class FileUploadFileParam {
 
     public boolean isShare() {
         return isShare;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public int getAllowDownCount() {
@@ -44,6 +53,7 @@ public class FileUploadFileParam {
         expireTime = builder.expireTime;
         score = builder.score;
         isPrivate = builder.isPrivate;
+        description = builder.description;
         parentId = builder.parentId;
     }
 
@@ -55,6 +65,7 @@ public class FileUploadFileParam {
         private long expireTime;
         private int score;
         private boolean isPrivate;
+        private String description;
         private String parentId;
 
         public Builder() {
@@ -87,6 +98,11 @@ public class FileUploadFileParam {
 
         public Builder isPrivate(boolean val) {
             isPrivate = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
             return this;
         }
 

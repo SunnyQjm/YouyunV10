@@ -35,6 +35,7 @@ class LoginModel implements LoginContract.Model{
         try {
             jsonObject.put(ApiInfo.LOGIN_USERNAME, username);
             jsonObject.put(ApiInfo.LOGIN_PASSWORD, password);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -88,6 +89,7 @@ class LoginModel implements LoginContract.Model{
         try {
             jsonObject.put(ApiInfo.QQ_LOGIN_ACCESS_TOKEN, result.nameValuePairs.access_token);
             jsonObject.put(ApiInfo.QQ_LOGIN_OPEN_ID, result.nameValuePairs.openid);
+            jsonObject.put(ApiInfo.LOGIN_TYPE, ApiInfo.LOGIN_TY_QQ);
         } catch (JSONException e) {
             e.printStackTrace();
         }

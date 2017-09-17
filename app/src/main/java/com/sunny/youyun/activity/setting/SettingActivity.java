@@ -132,6 +132,7 @@ public class SettingActivity extends MVPBaseActivity<SettingPresenter> implement
     private void exit() {
         //清空用户数据
         UserInfoManager.getInstance().clear();
+        mPresenter.logout();
         YouyunAPI.updateIsLogin(false);
         RouterUtils.open(this, IntentRouter.LoginActivity);
         finish();

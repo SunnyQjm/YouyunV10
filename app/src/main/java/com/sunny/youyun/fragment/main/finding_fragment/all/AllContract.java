@@ -14,10 +14,10 @@ interface AllContract {
     }
 
     interface Model extends BaseModel {
-
+        void getForumDataALL(int page);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
-
+        abstract void getForumDataALL(int page);
     }
 }

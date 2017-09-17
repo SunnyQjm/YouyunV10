@@ -14,10 +14,10 @@ interface SettingContract {
     }
 
     interface Model extends BaseModel {
-
+        void logout();
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
-
+        abstract void logout();
     }
 }

@@ -16,4 +16,9 @@ class SettingPresenter extends SettingContract.Presenter{
     protected void start() throws IOException {
 
     }
+
+    @Override
+    void logout() {
+        mModel.logout();
+    }
 }
