@@ -9,6 +9,7 @@ import com.sunny.youyun.internet.progress_handle.ProgressRequestListener;
 import com.sunny.youyun.internet.service.FileServices;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
+import com.sunny.youyun.utils.FileTypeUtil;
 import com.sunny.youyun.utils.MD5Util;
 import com.sunny.youyun.utils.Tool;
 
@@ -19,9 +20,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -40,22 +39,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FileUploaderUtils {
 
-    public interface FileUploadCallback{
+    public interface FileUploadCallback {
         void onSuccess(InternetFile internetFile, int position);
+
         void onFinish(InternetFile internetFile, int position);
+
         void onSubscribe(Disposable disposable);
+
         void onError(InternetFile internetFile, int position);
     }
+
     public static void uploadWithCheck(final InternetFile internetFile, final FileUploadFileParam uploadFileParam,
                                        final int position, FileUploadCallback callback) throws IOException {
         File f = new File(uploadFileParam.getFilePath());
         if (!f.exists())
             return;
 
+        String md5 = MD5Util.getFileMD5(new FileInputStream(f));
+        String MIME = FileTypeUtil.getMIME(f.getName());
+        long size = f.length();
         //构造检查文件秒传判断的请求
         final RequestBody body = RequestBody.create(
                 MediaType.parse("application/json; charset=utf-8"),
-                getCheckJson(f));
+                getCheckJson(md5, MIME, size, f.getName(), uploadFileParam));
 
         final FileServices fileServices = APIManager.getInstance().getFileServices(GsonConverterFactory.create());
         fileServices
@@ -63,7 +69,8 @@ public class FileUploaderUtils {
 //                .retry(1)
                 .flatMap(stringBaseResponseBody -> {
                     if (stringBaseResponseBody.isSuccess()) {
-                        return fileServices.uploadFile(getPartMap(uploadFileParam), getFile(f, position, internetFile));
+                        return fileServices.uploadFile(getPartMap(md5, MIME, size, f.getName()
+                                , uploadFileParam), getFile(f, position, internetFile));
                     } else {
                         //when a same file is already upload before, we don't need to do upload operator
                         //just do something on this, do not care the under operator
@@ -73,7 +80,7 @@ public class FileUploaderUtils {
                                 .position(position)
                                 .type(FileUploadEvent.Type.FINISH)
                                 .build());
-                        if(callback != null)
+                        if (callback != null)
                             callback.onSuccess(internetFile, position);
                         save(internetFile);
                         return Observable.empty();      //do nothing
@@ -93,7 +100,7 @@ public class FileUploaderUtils {
                                         .type(FileUploadEvent.Type.ERROR)
                                         .position(position)
                                         .build());
-                        if(callback != null)
+                        if (callback != null)
                             callback.onError(internetFile, position);
                     }
 
@@ -103,7 +110,7 @@ public class FileUploaderUtils {
 
                     @Override
                     public void onSubscribe(Disposable d) {
-                        if(callback != null)
+                        if (callback != null)
                             callback.onSubscribe(d);
                     }
 
@@ -118,7 +125,7 @@ public class FileUploaderUtils {
                                             .type(FileUploadEvent.Type.FINISH)
                                             .position(position)
                                             .build());
-                            if(callback != null)
+                            if (callback != null)
                                 callback.onSuccess(internetFile, position);
                             save(internetFile);
                         } else {
@@ -130,10 +137,10 @@ public class FileUploaderUtils {
                                             .type(FileUploadEvent.Type.ERROR)
                                             .position(position)
                                             .build());
-                            if(callback != null)
+                            if (callback != null)
                                 callback.onError(internetFile, position);
                         }
-                        if(callback != null)
+                        if (callback != null)
                             callback.onFinish(internetFile, position);
                     }
                 });
@@ -181,7 +188,8 @@ public class FileUploaderUtils {
                         }));
     }
 
-    private static Map<String, RequestBody> getPartMap(FileUploadFileParam uploadFileParam) {
+    private static Map<String, RequestBody> getPartMap(String md5, String MIME, long size, String name,
+                                                       FileUploadFileParam uploadFileParam) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put(ApiInfo.UPLOAD_FILE_PARAM_SHARE,
                 RequestBody.create(null, String.valueOf(uploadFileParam.isShare())));
@@ -197,18 +205,50 @@ public class FileUploaderUtils {
                 RequestBody.create(null, String.valueOf(uploadFileParam.isPrivate())));
         map.put(ApiInfo.UPLOAD_FILE_PARAM_DESCRIPTION,
                 RequestBody.create(null, String.valueOf(uploadFileParam.getDescription())));
+
+        if (MIME != null) {
+            map.put(ApiInfo.UPLOAD_FILE_PARAM_MIME,
+                    RequestBody.create(null, MIME));
+        } else {
+            map.put(ApiInfo.UPLOAD_FILE_PARAM_MIME,
+                    RequestBody.create(null, "application/octet-stream"));
+        }
+        map.put(ApiInfo.UPLOAD_FILE_PARAM_MD5,
+                RequestBody.create(null, md5));
+
+        map.put(ApiInfo.UPLOAD_FILE_PARAM_SIZE,
+                RequestBody.create(null, String.valueOf(size)));
+        map.put(ApiInfo.UPLOAD_FILE_PARAM_NAME,
+                RequestBody.create(null, name));
         if (uploadFileParam.getParentId() != null)
             map.put(ApiInfo.UPLOAD_FILE_PARAM_PARENT_PATH,
                     RequestBody.create(null, uploadFileParam.getParentId()));
         return map;
     }
 
-    private static String getCheckJson(File f) throws IOException {
-        String md5 = MD5Util.getFileMD5(new FileInputStream(f));
+    private static String getCheckJson(String md5, String MIME, long size, String name,
+                                       FileUploadFileParam uploadFileParam) throws IOException {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("md5", md5);
-            jsonObject.put("size", f.length());
+            if (uploadFileParam.getAllowDownCount() > 0)
+                jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_LEFT_ALLOW_DOWNLOAD_COUNT
+                        , uploadFileParam.getAllowDownCount());
+            if (uploadFileParam.getExpireTime() > 0)
+                jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_EXPIRE_TIME,
+                        uploadFileParam.getExpireTime());
+            jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_SCORE,
+                    uploadFileParam.getScore());
+            jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_IS_PRIVATE,
+                    uploadFileParam.isPrivate());
+            jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_DESCRIPTION,
+                    uploadFileParam.getDescription());
+            jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_NAME, name);
+            if (uploadFileParam.getParentId() != null)
+                jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_PARENT_PATH,
+                        uploadFileParam.getParentId());
+            jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_MIME, MIME);
+            jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_MD5, md5);
+            jsonObject.put(ApiInfo.UPLOAD_FILE_PARAM_SIZE, size);
         } catch (JSONException e) {
             Logger.e(e, "参数构建错误");
         }

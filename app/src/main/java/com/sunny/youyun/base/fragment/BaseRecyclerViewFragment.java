@@ -28,6 +28,7 @@ import io.reactivex.schedulers.Schedulers;
  * 自定义的一个Fragment
  * 包含一个title和RecyclerView
  * 并且支持下拉刷新和上拉加载更多
+ * 同时支持懒加载
  * Created by Sunny on 2017/8/29 0029.
  */
 
@@ -39,6 +40,13 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
     @BindView(R.id.refreshLayout)
     protected EasyRefreshLayout refreshLayout;
     protected CustomLinerLayoutManager linerLayoutManager;
+
+    //当前Fragment是否可见
+    protected boolean isVisible = false;
+    //标志位，标识Fragment是否已经完成初始化
+    protected boolean isPrepared = false;
+    //是否是第一次
+    protected boolean isFirst = true;
 
     Unbinder unbinder;
 
@@ -55,6 +63,33 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
 
         return view;
     }
+
+
+    /**
+     * 下面的函数由系统调用
+     * 在Fragment可见时加载数据
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+    }
+
+    protected abstract void onInvisible();
+
+    protected void onVisible(){
+        //加载数据
+        loadData();
+    }
+
+    protected abstract void loadData();
 
     private void initView() {
         linerLayoutManager = new CustomLinerLayoutManager(activity);

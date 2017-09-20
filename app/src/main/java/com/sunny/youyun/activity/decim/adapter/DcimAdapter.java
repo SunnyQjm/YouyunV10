@@ -39,7 +39,7 @@ public class DcimAdapter extends BaseQuickAdapter<FileItem, BaseViewHolder> {
         Glide.with(context)
                 .load(item.getPath())
                 .apply(GlideOptions
-                        .getInstance().getTranspantOptions())
+                        .getInstance().getTransparentOptions())
                 .transition(GlideOptions
                         .getInstance().getCrossFadeDrawableTransitionOptions())
                 .into((ImageView) helper.getView(R.id.img_photo));

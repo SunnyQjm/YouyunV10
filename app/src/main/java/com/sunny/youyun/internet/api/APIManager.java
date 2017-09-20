@@ -3,9 +3,11 @@ package com.sunny.youyun.internet.api;
 
 import android.content.Context;
 
+import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.cookie_persisten.CookieJarImpl;
 import com.sunny.youyun.internet.cookie_persisten.PersistentCookieStore;
 import com.sunny.youyun.internet.service.FileServices;
+import com.sunny.youyun.internet.service.ForumServices;
 import com.sunny.youyun.internet.service.UserServices;
 
 import java.io.IOException;
@@ -41,10 +43,11 @@ public class APIManager {
 
     private static int cacheSize = 20 * 1024 * 1024;
     //    private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
-    private static final int DEFAULT_TIMEOUT = 5;
+    private static final int DEFAULT_TIMEOUT = 15;
     private static OkHttpClient client;
     private UserServices userService;
     private FileServices fileServices;
+    private ForumServices forumServices;
 
 
     /**
@@ -75,6 +78,12 @@ public class APIManager {
         if (fileServices == null)
             fileServices = createService(FileServices.class, factory);
         return fileServices;
+    }
+
+    public ForumServices getForumServices(Converter.Factory... factories){
+        if(forumServices == null)
+            forumServices = createService(ForumServices.class, factories);
+        return forumServices;
     }
 
     private <T> T createService(Class<T> serviceClass, Converter.Factory... factory) {
@@ -108,8 +117,9 @@ public class APIManager {
             if (contentType != null) {
                 charset = contentType.charset(UTF8);
             }
+            Logger.i(buffer.clone().readString(charset));
             System.out.println(buffer.clone().readString(charset));
-            System.out.println(request.url());
+            Logger.i(request.url().toString());
 //            BaseResponseBody<Object> baseResponseBody = GsonUtil.getInstance().fromJson(buffer.clone().readString(charset),
 //                    new TypeToken<BaseResponseBody<Object>>() {
 //                    }.getType());

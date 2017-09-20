@@ -8,17 +8,16 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-    public static final String IP = "http://192.168.1.106";
-//    private static final String IP = "http://172.6.0.186";
+    public static final String IP = "http://192.168.41.125";
+    //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
-    public static final String BaseUrl = IP + ":" + port;
+    public static final String BaseUrl = IP + ":" + port + "/";
 //    public static final String BaseUrl = IP + "/";
 
     public static final String DOWNLOAD = "file/download/",
             BASE_DOWNLOAD_URL = BaseUrl + DOWNLOAD;
     public static final String GET_FILE_INFO = "file/message", GET_FILE_INFO_IDENTIFY_CODE = "identifycode";
-
 
 
     ///////////////////////////////////////////////////////
@@ -47,7 +46,6 @@ public class ApiInfo {
     public static final String GET_USER_INFO = "authc/user";
 
 
-
     ///////////////////////////////////////////////////////////
     ////////FileService
     ///////////////////////////////////////////////////////////
@@ -55,9 +53,10 @@ public class ApiInfo {
             UPLOAD_FILE_PARAM_LEFT_ALLOW_DOWNLOAD_COUNT = "leftAllowDownloadCount",
             UPLOAD_FILE_PARAM_EXPIRE_TIME = "expireTime", UPLOAD_FILE_PARAM_SCORE = "score",
             UPLOAD_FILE_PARAM_IS_PRIVATE = "privateOwn", UPLOAD_FILE_PARAM_PARENT_PATH = "test.txt",
-            UPLOAD_FILE_PARAM_DESCRIPTION = "description";
+            UPLOAD_FILE_PARAM_DESCRIPTION = "description", UPLOAD_FILE_PARAM_MD5 = "md5",
+            UPLOAD_FILE_PARAM_SIZE = "size", UPLOAD_FILE_PARAM_NAME = "name",
+            UPLOAD_FILE_PARAM_MIME = "MIME";
     public static final String UPLOAD_FILE_CHECK_URL = "file/uploadCheck";
-
 
 
     ///////////////////////////////////////////////////////////
@@ -67,4 +66,12 @@ public class ApiInfo {
             GET_FORUM_SIZE = "size", GET_FORUM_SORT_BY_DATE = "createTime",
             GET_FORUM_SORT_BY_DOWNLOAD_COUNT = "downloadCount";
     public static final int GET_FORUM_DEFAULT_SIZE = 10;
+
+    public static final String ADD_COMMENT_URL = "authc/forum/comment",
+            ADD_COMMENT_FILE_ID = "fileId", ADD_COMMENT_CONTENT = "content";
+
+    public static final String GET_COMMENTS_URL = "forum/get/comment",
+            GET_COMMENTS_FILE_ID = "fileId";
+    public static final String STAR_URL = "authc/forum/star ",
+            STAR_FILE_ID = "fileId";
 }

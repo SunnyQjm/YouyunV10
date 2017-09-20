@@ -119,7 +119,6 @@ public class FileDownloadService extends Service {
                                     //此处将下载进度放到bus上
                                     EventBus.getDefault()
                                             .post(new FileDownloadEvent.Builder()
-//                                                    .rate(Tool.convertToRate(lastBytes, System.currentTimeMillis() - startTime))
                                                     .type(FileDownloadEvent.Type.FINISH)
                                                     .position(position)
                                                     .build());
@@ -130,11 +129,6 @@ public class FileDownloadService extends Service {
                                     //此处将下载进度放到bus上
                                     EventBus.getDefault()
                                             .post(new FileDownloadEvent.Builder()
-//                                                    .already(downloadStatus.getDownloadSize())
-//                                                    .total(downloadStatus.getTotalSize())
-//                                                    .percent((int) downloadStatus.getPercentNumber())
-//                                                    .rate(rate)
-//                                                    .done(downloadStatus.getPercentNumber() == 100)
                                                     .type(FileDownloadEvent.Type.PROGRESS)
                                                     .position(position)
                                                     .build());

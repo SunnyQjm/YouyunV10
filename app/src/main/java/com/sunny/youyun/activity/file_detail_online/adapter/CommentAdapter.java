@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Sunny on 2017/9/13 0013.
  */
 
-public class CommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder>{
+public class CommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder> {
     public CommentAdapter(@Nullable List<Comment> data) {
         super(R.layout.file_detail_comment_item, data);
     }
@@ -27,10 +27,13 @@ public class CommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder>{
         if(item.getUser() == null)
             return;
         helper.setText(R.id.tv_nickname, item.getUser().getUsername())
-                .setText(R.id.tv_date, TimeUtils.returnTime_y4md(item.getCommentDate()))
+                .setText(R.id.tv_date, TimeUtils.returnTime_y4md(item.getCreateTime()))
                 .setText(R.id.tv_comment, item.getComment());
 
         GlideUtils.load(mContext, ((ImageView)helper.getView(R.id.img_avatar)), item.getUser().getAvatar());
 
+//        helper.setText(R.id.tv_date, TimeUtils.returnTime_y4md(System.currentTimeMillis()))
+//                .setText(R.id.tv_comment, item.getComment());
+//        GlideUtils.load(mContext, ((ImageView) helper.getView(R.id.img_avatar)), item.getAvatar());
     }
 }

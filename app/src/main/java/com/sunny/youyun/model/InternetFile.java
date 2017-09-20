@@ -24,6 +24,7 @@ public class InternetFile extends DataSupport implements Serializable {
     private final int userId;
     private final int lookNum;          //浏览量
     private final int star;             //点赞人数
+    private final int canStar;      //是否已点赞
     private final User user;
     private final String description;
     private final boolean isDirectory;
@@ -77,7 +78,7 @@ public class InternetFile extends DataSupport implements Serializable {
                 '}';
     }
 
-    protected InternetFile(Builder builder) {
+    public InternetFile(Builder builder) {
         setIdentifyCode(builder.identifyCode);
         id = builder.id;
         name = builder.name;
@@ -90,15 +91,20 @@ public class InternetFile extends DataSupport implements Serializable {
         userId = builder.userId;
         lookNum = builder.lookNum;
         star = builder.star;
+        canStar = builder.canStar;
         user = builder.user;
         description = builder.description;
-        isDirectory = builder.isDiretory;
+        isDirectory = builder.isDirectory;
         setStatus(builder.status);
         setPath(builder.path);
         setProgress(builder.progress);
         setRate(builder.rate);
         setFileTAG(builder.fileTAG);
         setPosition(builder.position);
+    }
+
+    public int getCanStar() {
+        return canStar;
     }
 
     public int getPosition() {
@@ -235,8 +241,10 @@ public class InternetFile extends DataSupport implements Serializable {
         private int userId = -1;
         private int lookNum;
         private int star;
+        private int canStar;
         private User user;
         private String description;
+        private boolean isDirectory;
         private boolean isDiretory;
         private String status;
         private boolean done;
@@ -311,6 +319,11 @@ public class InternetFile extends DataSupport implements Serializable {
             return this;
         }
 
+        public Builder canStar(int val) {
+            canStar = val;
+            return this;
+        }
+
         public Builder user(User val) {
             user = val;
             return this;
@@ -318,6 +331,11 @@ public class InternetFile extends DataSupport implements Serializable {
 
         public Builder description(String val) {
             description = val;
+            return this;
+        }
+
+        public Builder isDirectory(boolean val) {
+            isDirectory = val;
             return this;
         }
 

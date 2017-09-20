@@ -5,19 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.orhanobut.logger.Logger;
+import com.sunny.youyun.IntentRouter;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
-import com.sunny.youyun.model.FindingItem;
 import com.sunny.youyun.model.InternetFile;
-import com.sunny.youyun.model.User;
+import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.UUIDUtil;
+import com.sunny.youyun.utils.bus.ObjectPool;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implements AllContract.View {
+public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implements AllContract.View, BaseQuickAdapter.OnItemClickListener {
 
     private View view = null;
     private FindingItemAdapter adapter;
+    private int page = 1;
 
     public static AllFragment newInstance() {
         AllFragment fragment = new AllFragment();
@@ -34,53 +36,88 @@ public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implemen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("onCreateView");
+        if(view == null){
             view = super.onCreateView(inflater, container, savedInstanceState);
             init();
+        } else {
+            super.onCreateView(inflater, container, savedInstanceState);
+        }
+        isPrepared = true;
         return view;
     }
 
-    private void init() {
-        List<FindingItem> findingItemList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            findingItemList.add(new FindingItem.Builder()
-                    .internetFile(new InternetFile.Builder()
-                            .name("刚好遇见你.mp3")
-                            .description("来自优云的分享")
-                            .createTime(System.currentTimeMillis())
-                            .build())
-                    .user(new User.Builder()
-                            .username("Sunny")
-                            .avatar("http://img4.imgtn.bdimg.com/it/u=2880820503,781549093&fm=27&gp=0.jpg")
-                            .build())
-                    .build());
+    @Override
+    protected void onInvisible() {
+
+    }
+
+    @Override
+    protected void loadData() {
+        if(!isVisible || !isPrepared)
+            return;
+        if(isFirst){
+            page = 1;
+            mPresenter.getForumDataALL(page, true);
+            isFirst = false;
         }
-        adapter = new FindingItemAdapter(findingItemList);
+    }
+
+    private void init() {
+        adapter = new FindingItemAdapter(mPresenter.getDatas());
         adapter.bindToRecyclerView(recyclerView);
+        adapter.setOnItemClickListener(this);
+        mPresenter.getForumDataALL(page, true);
     }
 
     @Override
     protected void onRefreshBegin() {
-
+        page = 1;
     }
 
     @Override
     protected void OnRefreshBeginSync() {
-
+        mPresenter.getForumDataALL(page, true);
     }
 
     @Override
     protected void OnRefreshFinish() {
-
+        getForumDataSuccess();
     }
 
     @Override
     protected void onLoadBeginSync() {
-
+        page++;
+        mPresenter.getForumDataALL(page, false);
     }
 
     @Override
     protected void onLoadFinish() {
+        getForumDataSuccess();
+    }
+
+    @Override
+    public void getForumDataSuccess() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        } else {
+            Logger.i("adapter is null!");
+        }
+    }
+
+    @Override
+    public void allDataLoadFinish() {
 
     }
 
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        InternetFile internetFile = (InternetFile) adapter.getItem(position);
+        if(internetFile == null)
+            return;
+        String uuid = UUIDUtil.getUUID();
+        ObjectPool.getInstance()
+                .put(uuid, internetFile);
+        RouterUtils.open(activity, IntentRouter.FileDetailOnlineActivity, uuid);
+    }
 }

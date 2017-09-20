@@ -2,17 +2,23 @@ package com.sunny.youyun.activity.file_detail_online;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.App;
@@ -22,12 +28,13 @@ import com.sunny.youyun.activity.file_detail_online.adapter.CommentAdapter;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.download.FileDownloader;
-import com.sunny.youyun.model.Comment;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.ShareContent;
-import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.utils.FileUtils;
 import com.sunny.youyun.utils.GlideUtils;
+import com.sunny.youyun.utils.InputMethodUtil;
+import com.sunny.youyun.utils.MyClickText;
 import com.sunny.youyun.utils.RxPermissionUtil;
 import com.sunny.youyun.utils.Tool;
 import com.sunny.youyun.utils.WindowUtil;
@@ -37,17 +44,23 @@ import com.sunny.youyun.views.RichText;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
 import com.sunny.youyun.views.youyun_dialog.share.ShareDialog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 @Router(value = IntentRouter.FileDetailOnlineActivity + "/:uuid", stringParams = "uuid")
 public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePresenter> implements FileDetailOnlineContract.View, EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener, View.OnClickListener {
 
     @BindView(R.id.easyBar)
     EasyBar easyBar;
+    @BindView(R.id.refreshLayout)
+    EasyRefreshLayout refreshLayout;
+    @BindView(R.id.et_comment_content)
+    EditText etCommentContent;
+    @BindView(R.id.btn_send)
+    Button btnSend;
 
     private ImageView imgIcon;
     private TextView tvFileNameSize;
@@ -57,10 +70,10 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     private RichText rtDownNum;
     private Button btnLookComment;
     private Button btnDownloadNow;
+    private TextView tvDescription;
 
     private View header;
     private CommentAdapter adapter;
-    private List<Comment> mCommentList;
     @BindView(R.id.recyclerView_comment)
     RecyclerView recyclerViewComment;
 //    @BindView(R.id.refreshLayout)
@@ -69,6 +82,12 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     private InternetFile internetFile = null;
     private final List<InternetFile> mFileList = App.mList_DownloadRecord;
     private ShareDialog shareDialog = null;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,22 +128,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         });
         createHeader();
 
-//        refreshLayout.setHeader(new ArrowRefreshHeader(R.layout.easy_refresh_header));
-//        refreshLayout.setFooter(new EasyRefreshFooter(R.layout.easy_refresh_footer));
-//        refreshLayout.setOnRefreshListener(this);
-//        refreshLayout.setOnLoadListener(this);
-        mCommentList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            mCommentList.add(new Comment.Builder()
-                    .comment("WOOW, WOOW, 好评！")
-                    .commentDate(System.currentTimeMillis())
-                    .user(new User.Builder()
-                            .avatar("http://img4.imgtn.bdimg.com/it/u=2880820503,781549093&fm=27&gp=0.jpg")
-                            .username("GaoSQ" + i)
-                            .build())
-                    .build());
-        }
-        adapter = new CommentAdapter(mCommentList);
+
+        adapter = new CommentAdapter(mPresenter.getCommentList());
         recyclerViewComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewComment.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerViewComment);
@@ -132,13 +137,31 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
         String uuid = getIntent().getStringExtra("uuid");
         internetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
-//        if (internetFile.getUser() == null)
-//            clUserInfo.setVisibility(View.GONE);
-//        else {
+        fillData();
+
+        mPresenter.getFileInfo(internetFile.getIdentifyCode());
+
+        mPresenter.getComments(internetFile.getId(), true);
+    }
+
+    /**
+     * 填充数据
+     */
+    private void fillData() {
+        if (internetFile.getUser() == null)
+            tvDescription.setText(internetFile.getDescription());
+        else {
+            SpannableString spannableString = buildDescription();
 //            User user = internetFile.getUser();
 //            GlideUtils.load(this, imgAvatar, user.getAvatar());
+            tvDescription.setText(spannableString);
 //            tvUserSShare.setText(String.format("%s%s", user.getUsername(), getString(R.string.xxs_share)));
-//        }
+        }
+        if(internetFile.getCanStar() > 0){
+            rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
+        } else {
+            rtLikeNum.setDrawableRes(R.drawable.icon_zan);
+        }
         GlideUtils.setImage(this, imgIcon, internetFile);
         tvCode.setText(String.format("%s: %s", getString(R.string.code), internetFile.getIdentifyCode()));
         tvFileNameSize.setText(String.format("%s(%s)", internetFile.getName(), Tool.convertToSize(internetFile.getSize())));
@@ -146,6 +169,24 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         rtLikeNum.setText(String.valueOf(internetFile.getStar()));
         rtDownNum.setText(String.valueOf(internetFile.getDownloadCount()));
     }
+
+    private SpannableString buildDescription() {
+        StringBuilder stringBuilder = new StringBuilder();
+        String uploader = getString(R.string.uploader) + " : ";
+        String result = stringBuilder.append(uploader)
+                .append(internetFile.getUser().getUsername())
+                .append("\n")
+                .append(internetFile.getDescription())
+                .toString();
+        SpannableString spannableString = new SpannableString(result);
+        spannableString.setSpan(new MyClickText(this, v -> {
+                    Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                }),
+                uploader.length(), internetFile.getUser().getUsername().length() + uploader.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
 
     private void createHeader() {
         header = LayoutInflater.from(this).inflate(R.layout.file_detail_online_header, null, false);
@@ -157,6 +198,9 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         rtDownNum = (RichText) header.findViewById(R.id.rt_down_count);
         btnLookComment = (Button) header.findViewById(R.id.btn_look_comment);
         btnDownloadNow = (Button) header.findViewById(R.id.btn_download_now);
+        tvDescription = (TextView) header.findViewById(R.id.tv_detail_info_content);
+        tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
+        tvDescription.setHighlightColor(Color.TRANSPARENT);
         imgIcon.setOnClickListener(this);
         tvFileNameSize.setOnClickListener(this);
         tvCode.setOnClickListener(this);
@@ -198,6 +242,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             mFileList.add(internetFile);
         }
         internetFile.setPath(FileUtils.getDownloadPath() + internetFile.getName());
+
         FileDownloader.getInstance()
                 .download(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + identifyCode, internetFile.getName(), position);
         finish();
@@ -232,7 +277,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             case R.id.rt_view_count:
                 break;
             case R.id.rt_like_count:
-                rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
+//                rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
+                mPresenter.star(internetFile.getId());
                 break;
             case R.id.rt_down_count:
                 break;
@@ -255,5 +301,47 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                 finish();
                 break;
         }
+    }
+
+    @OnClick(R.id.btn_send)
+    public void onViewClicked() {
+        //TODO 发表评论
+        if (YouyunAPI.isIsLogin()) {
+            mPresenter.addComment(internetFile.getId(), etCommentContent.getText().toString());
+            etCommentContent.setText("");
+            InputMethodUtil.hide(this);
+        } else {
+            showTip(getString(R.string.login_first));
+        }
+    }
+
+    @Override
+    public void commentSuccess() {
+        mPresenter.getComments(internetFile.getId(), false);
+    }
+
+    @Override
+    public void getCommentsSuccess(boolean isFirst) {
+        if(adapter == null)
+            return;
+        if (!isFirst) {
+            adapter.notifyDataSetChanged();
+            //滚动到最后一条，因为有头布局，所以position要加1
+            recyclerViewComment.scrollToPosition(mPresenter.getCommentList().size());
+        }else {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void getFileInfoSuccess(InternetFile internetFile) {
+        this.internetFile = internetFile;
+        fillData();
+    }
+
+    @Override
+    public void starSuccess() {
+        //点赞成功后重新获取文件信息
+        mPresenter.getFileInfo(internetFile.getIdentifyCode());
     }
 }

@@ -114,4 +114,8 @@
     <string name="all">全部</string>
     <string name="hot">热门</string>
     <string name="finding_square">发现广场</string>
+    <string name="uploader">上传者</string>
+    <string name="send">发送</string>
+    <string name="add_comment">添加评论</string>
+    <string name="login_first">请先登陆</string>
 </resources>

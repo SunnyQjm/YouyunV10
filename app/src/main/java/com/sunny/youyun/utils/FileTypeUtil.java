@@ -40,6 +40,7 @@ public class FileTypeUtil {
 
     public static int getIconByFileNameWithoutVideoPhoto(String finaName) {
         int result = getIconIdByFileName(finaName);
+
         if (result == photo || result == video) {
             return -1;
         }
@@ -60,22 +61,24 @@ public class FileTypeUtil {
         int type = file;
         if(fileName == null)
             return type;
+        String MIME = getMIME(fileName);
+        if (MIME == null || MIME.equals("")) return type;
+
+        type = returnIconIdByStringType(MIME);
+        return type;
+    }
+
+
+    public static String getMIME(String fileName){
         //获取后缀名前的分隔符"."在fName中的位置。
         int dotIndex = fileName.lastIndexOf(".");
         if (dotIndex < 0) {
-            return type;
+            return "";
         }
         /* 获取文件的后缀名 */
         String end = fileName.substring(dotIndex + 1, fileName.length()).toLowerCase();
-        if (end.equals("")) return type;
-
-        type = returnIconIdByStringType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(end));
-//        //在MIME和文件类型的匹配表中找到对应的MIME类型。
-//        for (String[] aMIME_MapTable : MIME_MapTable) {
-//            if (end.equals(aMIME_MapTable[0]))
-//                type = returnIconIdByStringType(aMIME_MapTable[1]);
-//        }
-        return type;
+        if (end.equals("")) return "";
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(end);
     }
 
 

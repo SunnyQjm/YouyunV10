@@ -21,13 +21,14 @@ public enum GlideOptions {
             .error(R.drawable.icon_logo_round)
             .placeholder(new ColorDrawable(0x00ffffff));
 
-    private final RequestOptions transpantOptions = new RequestOptions()
+    private final RequestOptions transparentOptions = new RequestOptions()
             .centerCrop()
             .error(new ColorDrawable(0x00ffffff))
             .placeholder(new ColorDrawable(0x00ffffff));
     private final DrawableTransitionOptions crossFadeDrawableTransitionOptions = new DrawableTransitionOptions()
             .crossFade();
-    public static GlideOptions getInstance(){
+
+    public static GlideOptions getInstance() {
         return INSTANCE;
     }
 
@@ -43,7 +44,7 @@ public enum GlideOptions {
         return avatarOptions;
     }
 
-    public RequestOptions getTranspantOptions() {
-        return transpantOptions;
+    public RequestOptions getTransparentOptions() {
+        return transparentOptions;
     }
 }

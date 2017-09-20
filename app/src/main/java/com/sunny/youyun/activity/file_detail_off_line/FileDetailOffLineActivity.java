@@ -56,7 +56,7 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
     Button btnDetailFile;
     @BindView(R.id.btn_open_file)
     Button btnOpenFile;
-    @BindView(R.id.tv_detail_into_content)
+    @BindView(R.id.tv_detail_info_content)
     TextView tvDetailIntoContent;
 
     private InternetFile internetFile = null;
@@ -143,7 +143,8 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_detail_file:
-                mPresenter.getFileInfo(internetFile.getIdentifyCode());
+                showDetail(internetFile);
+//                mPresenter.getFileInfo(internetFile.getIdentifyCode());
                 break;
             case R.id.btn_open_file:
                 //TODO open current internetFile
@@ -193,7 +194,7 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
         internetFile.setFileTAG(InternetFile.TAG_DOWNLOAD);
         internetFile.setPath(FileUtils.getDownloadPath() + internetFile.getName());
         FileDownloader.getInstance()
-                .download(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + internetFile.getIdentifyCode(),
+                .download(ApiInfo.BaseUrl + "/" + ApiInfo.DOWNLOAD + internetFile.getIdentifyCode(),
                         internetFile.getName(), position);
         finish();
     }
@@ -222,10 +223,9 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
         ObjectPool.getInstance()
                 .put(uuid, internetFile);
         RouterUtils.open(this, IntentRouter.FileDetailOnlineActivity, uuid);
-        finish();
     }
 
-    @OnClick(R.id.tv_detail_into_content)
+    @OnClick(R.id.tv_detail_info_content)
     public void onViewClicked() {
     }
 }
