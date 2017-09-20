@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.file_manager.base;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.adpater.ExpandableItemAdapter;
 import com.sunny.youyun.base.entity.MultiItemEntity;
-import com.sunny.youyun.base.entity.MyDecoration;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.mvp.BaseView;
@@ -116,6 +116,7 @@ public abstract class BaseFileManagerFragment<P extends BasePresenter> extends M
         if (parent != null)
             parent.removeView(view);
         isPrepared = true;
+        onVisible();
         return view;
     }
 
@@ -129,7 +130,7 @@ public abstract class BaseFileManagerFragment<P extends BasePresenter> extends M
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ExpandableItemAdapter(activity, getData(), mListener);
-        recyclerView.addItemDecoration(new MyDecoration(activity, MyDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
 
