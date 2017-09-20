@@ -15,6 +15,19 @@ public class VideoFragment extends BaseFileManagerFragment<VideoPresenter> imple
 
     }
 
+    @Override
+    protected void onInvisible() {
+
+    }
+
+    @Override
+    protected void loadData() {
+        if(isFirst && isVisible && isPrepared){
+            refreshData();
+            isFirst = false;
+        }
+    }
+
     // TODO: Rename and change types and number of parameters
     public static VideoFragment newInstance() {
         Bundle args = new Bundle();

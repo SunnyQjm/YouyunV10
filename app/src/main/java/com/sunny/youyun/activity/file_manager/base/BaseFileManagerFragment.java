@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.adpater.ExpandableItemAdapter;
-import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.base.entity.MyDecoration;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.mvp.BaseView;
+import com.sunny.youyun.utils.EasyPermission;
 
 import java.util.List;
 
@@ -40,6 +41,13 @@ public abstract class BaseFileManagerFragment<P extends BasePresenter> extends M
     private ExpandableItemAdapter adapter;
     private View view = null;
 
+    //当前Fragment是否可见
+    protected boolean isVisible = false;
+    //标志位，标识Fragment是否已经完成初始化
+    protected boolean isPrepared = false;
+    //是否是第一次
+    protected boolean isFirst = true;
+
     public BaseFileManagerFragment(){
 
     }
@@ -50,6 +58,44 @@ public abstract class BaseFileManagerFragment<P extends BasePresenter> extends M
         if (adapter != null)
             adapter.notifyDataSetChanged();
     }
+
+    /**
+     * 下面的函数由系统调用
+     * 在Fragment可见时加载数据
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+    }
+
+    protected abstract void onInvisible();
+
+    protected void onVisible(){
+        if(!isPrepared)
+            return;
+        EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(activity, new EasyPermission.OnPermissionRequestListener() {
+            @Override
+            public void success() {
+                //加载数据
+                loadData();
+            }
+
+            @Override
+            public void fail() {
+
+            }
+        });
+    }
+
+    protected abstract void loadData();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +115,7 @@ public abstract class BaseFileManagerFragment<P extends BasePresenter> extends M
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null)
             parent.removeView(view);
+        isPrepared = true;
         return view;
     }
 
@@ -85,7 +132,7 @@ public abstract class BaseFileManagerFragment<P extends BasePresenter> extends M
         recyclerView.addItemDecoration(new MyDecoration(activity, MyDecoration.VERTICAL_LIST));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
-        refreshData();
+
     }
 
 

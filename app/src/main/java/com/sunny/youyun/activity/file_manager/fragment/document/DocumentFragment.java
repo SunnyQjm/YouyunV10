@@ -14,6 +14,19 @@ public class DocumentFragment extends BaseFileManagerFragment<DocumentPresenter>
 
     }
 
+    @Override
+    protected void onInvisible() {
+
+    }
+
+    @Override
+    protected void loadData() {
+        if(isFirst && isVisible && isPrepared){
+            refreshData();
+            isFirst = false;
+        }
+    }
+
     public static DocumentFragment newInstance() {
         Bundle args = new Bundle();
         args.putInt(LAYOUT_RES, R.layout.fragment_document);

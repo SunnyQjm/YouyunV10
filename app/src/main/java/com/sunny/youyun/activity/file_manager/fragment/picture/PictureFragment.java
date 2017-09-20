@@ -15,6 +15,19 @@ public class PictureFragment extends BaseFileManagerFragment<PicturePresenter> i
 
     }
 
+    @Override
+    protected void onInvisible() {
+
+    }
+
+    @Override
+    protected void loadData() {
+        if(isFirst && isVisible && isPrepared){
+            refreshData();
+            isFirst = false;
+        }
+    }
+
     public static PictureFragment newInstance() {
         Bundle args = new Bundle();
         args.putInt(LAYOUT_RES, R.layout.fragment_picture);

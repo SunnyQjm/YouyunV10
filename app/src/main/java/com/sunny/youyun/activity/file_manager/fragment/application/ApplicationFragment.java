@@ -14,6 +14,19 @@ public class ApplicationFragment extends BaseFileManagerFragment<ApplicationPres
 
     }
 
+    @Override
+    protected void onInvisible() {
+
+    }
+
+    @Override
+    protected void loadData() {
+        if(isFirst && isVisible && isPrepared){
+            refreshData();
+            isFirst = false;
+        }
+    }
+
 
     public static ApplicationFragment newInstance() {
         Bundle args = new Bundle();

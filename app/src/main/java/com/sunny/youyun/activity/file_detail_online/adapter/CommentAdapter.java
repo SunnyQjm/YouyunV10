@@ -13,6 +13,8 @@ import com.sunny.youyun.utils.TimeUtils;
 import java.util.List;
 
 /**
+ * 评论Item适配器
+ *
  * Created by Sunny on 2017/9/13 0013.
  */
 
@@ -31,9 +33,5 @@ public class CommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder> {
                 .setText(R.id.tv_comment, item.getComment());
 
         GlideUtils.load(mContext, ((ImageView)helper.getView(R.id.img_avatar)), item.getUser().getAvatar());
-
-//        helper.setText(R.id.tv_date, TimeUtils.returnTime_y4md(System.currentTimeMillis()))
-//                .setText(R.id.tv_comment, item.getComment());
-//        GlideUtils.load(mContext, ((ImageView) helper.getView(R.id.img_avatar)), item.getAvatar());
     }
 }

@@ -99,7 +99,6 @@ public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> i
     }
 
     private void initView() {
-        EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(this);
         easyBar.setTitle(getString(R.string.device_file));
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
