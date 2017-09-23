@@ -13,11 +13,8 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_file_manager.adapter.ClassificationAdapter;
 import com.sunny.youyun.activity.person_file_manager.adapter.FileAdapter;
 import com.sunny.youyun.activity.person_file_manager.config.ClassificationNumber;
-import com.sunny.youyun.activity.person_file_manager.item.DirectItem;
-import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
-import com.sunny.youyun.base.entity.MultiItemEntity;
-import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.nodes.ClassificationNode;
 import com.sunny.youyun.utils.WindowUtil;
 import com.sunny.youyun.views.EasyBar;
@@ -40,7 +37,6 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
     RecyclerView filerecyclerView;
 
     private ClassificationAdapter classificationAdapter;
-    private List<MultiItemEntity> files;
     private FileAdapter fileAdapter;
 
     private FileManagerOptionsPopupwindow popupwindow;
@@ -108,33 +104,9 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
     }
 
     private void initFileList() {
-        files = new ArrayList<>();
-        files.add(new DirectItem(new InternetFile.Builder()
-                .createTime(System.currentTimeMillis())
-                .size(1024000000)
-                .description("来自优云的分享")
-                .name("电子书")
-                .isDiretory(true)
-        ));
-        files.add(new DirectItem(new InternetFile.Builder()
-                .createTime(System.currentTimeMillis())
-                .size(1024000000)
-                .description("来自优云的分享")
-                .name("电影")
-                .isDiretory(true)
-        ));
-
-        files.add(new FileItem(new InternetFile.Builder()
-                .createTime(System.currentTimeMillis())
-                .size(1024000000)
-                .description("来自优云的分享")
-                .name("青春正好.jpg")
-                .isDiretory(false)
-        ));
-
         filerecyclerView.setLayoutManager(new LinearLayoutManager(this));
         filerecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        fileAdapter = new FileAdapter(files);
+        fileAdapter = new FileAdapter(mPresenter.getData());
         fileAdapter.bindToRecyclerView(filerecyclerView);
         fileAdapter.setOnItemClickListener((adapter, view, position) -> {
 
@@ -144,6 +116,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
             WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 0.7f);
             return false;
         });
+        mPresenter.getUploadFilesOnline(ApiInfo.GET_UPLOAD_FILES_ROOT_PATH);
     }
 
     private void initClassification() {
@@ -212,5 +185,20 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
     @Override
     protected PersonFileManagerPresenter onCreatePresenter() {
         return new PersonFileManagerPresenter(this);
+    }
+
+    @Override
+    public void getUploadFilesSuccess() {
+        updateAll();
+    }
+
+    @Override
+    public void createDirectorySuccess() {
+        updateAll();
+    }
+
+    private void updateAll(){
+        if(fileAdapter != null)
+            fileAdapter.notifyDataSetChanged();
     }
 }

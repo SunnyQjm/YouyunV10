@@ -28,6 +28,7 @@ public class User extends DataSupport{
     private int score;
     private String description;
     private int id;
+    private String loginToken;
     private long createTime;
     private long updateTime;
     public static final int INSTANCE_TAG = 0;
@@ -42,6 +43,7 @@ public class User extends DataSupport{
         setScore(builder.score);
         setDescription(builder.description);
         setId(builder.id);
+        setLoginToken(builder.loginToken);
         setCreateTime(builder.createTime);
         setUpdateTime(builder.updateTime);
     }
@@ -62,6 +64,14 @@ public class User extends DataSupport{
                 '}';
     }
 
+
+    public String getLoginToken() {
+        return loginToken;
+    }
+
+    public void setLoginToken(String loginToken) {
+        this.loginToken = loginToken;
+    }
 
     public String getDescription() {
         return description;
@@ -164,6 +174,7 @@ public class User extends DataSupport{
         private int score;
         private String description;
         private int id;
+        private String loginToken;
         private long createTime;
         private long updateTime;
 
@@ -207,6 +218,11 @@ public class User extends DataSupport{
 
         public Builder id(int val) {
             id = val;
+            return this;
+        }
+
+        public Builder loginToken(String val) {
+            loginToken = val;
             return this;
         }
 

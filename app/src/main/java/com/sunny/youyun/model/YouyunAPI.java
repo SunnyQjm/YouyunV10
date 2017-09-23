@@ -24,6 +24,7 @@ public enum YouyunAPI {
     public static final String QQ_EXPIRES_IN = "QQ_EXPIRES_IN";
 
     public static final String LOGIN_MODE = "LOGIN_MODE";
+    public static final String LOGIN_TOKEN = "LOGIN_TOKEN";
     public static final String IS_ONLY_WIFI_DOWNLOAD = "IS_ONLY_WIFI_DOWNLOAD";
     public static final String IS_ACCEPT_NOTIFY = "IS_ACCEPT_NOTIFY";
     public static final String IS_WIFI_AUTO_UPDATE = "IS_WIFI_AUTO_UPDATE";
@@ -59,6 +60,9 @@ public enum YouyunAPI {
         if(SpUtils.contains(context, IS_WIFI_AUTO_UPDATE)){
             isWifiAutoUpdate = SpUtils.get(context, IS_WIFI_AUTO_UPDATE, true);
         }
+        if(SpUtils.contains(context, LOGIN_TOKEN)){
+            loginToken = SpUtils.get(context, LOGIN_TOKEN, "loginToken");
+        }
     }
 
     public void unBind() {
@@ -78,6 +82,8 @@ public enum YouyunAPI {
     private static boolean isAcceptNotify = true;
     //Wifi下自动更新
     private static boolean isWifiAutoUpdate = true;
+    //登录令牌
+    private static String loginToken = "";
 
     public static void updateIsLogin(boolean isLogin) {
         YouyunAPI.isLogin = isLogin;
@@ -102,6 +108,11 @@ public enum YouyunAPI {
         SpUtils.put(getInstance().getContext(), LOGIN_MODE, loginMode);
     }
 
+    public static void updateLoginToken(String loginToken){
+        YouyunAPI.loginToken = loginToken;
+        SpUtils.put(getInstance().getContext(), LOGIN_TOKEN, loginToken);
+    }
+
     public static void updateIsWifiAutoUpdate(boolean change){
         YouyunAPI.isWifiAutoUpdate = change;
         SpUtils.put(getInstance().getContext(), IS_WIFI_AUTO_UPDATE, change);
@@ -117,6 +128,9 @@ public enum YouyunAPI {
         SpUtils.put(getInstance().getContext(), IS_ONLY_WIFI_DOWNLOAD, change);
     }
 
+    public static String getLoginToken() {
+        return LOGIN_TOKEN;
+    }
 
     public static boolean isIsWifiAutoUpdate() {
         return isWifiAutoUpdate;

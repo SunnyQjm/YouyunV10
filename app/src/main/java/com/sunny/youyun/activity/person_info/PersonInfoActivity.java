@@ -22,6 +22,7 @@ import com.sunny.youyun.activity.person_info.dynamic_fragment.DynamicFragment;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.result.GetUserInfoResult;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RecyclerViewUtils;
@@ -135,7 +136,11 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     @Override
     public void getUserInfoSuccess(GetUserInfoResult result) {
         User user = result.getUser();
+        //更新本地的用户信息
+        UserInfoManager.getInstance()
+                .setUserInfo(user);
         tvNickname.setText(user.getUsername());
+        tvSignature.setText(user.getDescription());
         GlideUtils.load(this, imgAvatar, user.getAvatar());
     }
 }

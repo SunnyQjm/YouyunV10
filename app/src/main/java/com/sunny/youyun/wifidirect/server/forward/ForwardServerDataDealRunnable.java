@@ -1,4 +1,4 @@
-package com.sunny.youyun.wifidirect.server;
+package com.sunny.youyun.wifidirect.server.forward;
 
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;

@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.register;
 import android.util.Log;
 
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
 import com.sunny.youyun.utils.GsonUtil;
@@ -75,15 +76,15 @@ class RegisterModel implements RegisterContract.Model{
     public void register(String phone, String nickname, String password, String code) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("phone", phone);
-            jsonObject.put("username", nickname);
-            jsonObject.put("password", password);
-            jsonObject.put("code", code);
+            jsonObject.put(ApiInfo.REGISTER_PHONE, phone);
+            jsonObject.put(ApiInfo.REGISTER_NICKNAME, nickname);
+            jsonObject.put(ApiInfo.REGISTER_PASSWORD, password);
+            jsonObject.put(ApiInfo.REGISTER_CODE, code);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        RequestBody body = RequestBody.create(MediaType.parse("Application/json; charset=utf-8"), jsonObject.toString());
+        RequestBody body = RequestBody.create(MediaType.parse(ApiInfo.MEDIA_TYPE_JSON), jsonObject.toString());
 
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())

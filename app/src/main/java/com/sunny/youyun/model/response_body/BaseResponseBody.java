@@ -16,6 +16,7 @@ public class BaseResponseBody<T> implements Serializable {
 
     private boolean success;
     private int status;
+    private int code = 0;
     private String msg;
     private T data;
 
@@ -24,6 +25,7 @@ public class BaseResponseBody<T> implements Serializable {
         return "BaseResponseBody{" +
                 "success=" + success +
                 ", status=" + status +
+                ", code=" + code +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +
                 '}';
@@ -59,5 +61,9 @@ public class BaseResponseBody<T> implements Serializable {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

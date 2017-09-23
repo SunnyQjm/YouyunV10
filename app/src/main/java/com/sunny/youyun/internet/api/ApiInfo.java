@@ -8,7 +8,7 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-    private static final String IP = "http://192.168.1.101";
+    private static final String IP = "http://192.168.107.225";
     //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
@@ -23,6 +23,7 @@ public class ApiInfo {
     ///////////////////////////////////////////////////////
     ///// UserService
     //////////////////////////////////////////////////////
+    //登录
     public static final String LOGIN_URL = "login",
             LOGIN_USERNAME = "phone", LOGIN_PASSWORD = "password", LOGIN_TYPE = "type";
 
@@ -35,20 +36,30 @@ public class ApiInfo {
     public static final String SEND_CODE = "sendCode";
 
     //注册
-    public static final String REGISTER = "register";
+    public static final String REGISTER_URL = "register", REGISTER_PHONE = "phone",
+            REGISTER_NICKNAME = "username", REGISTER_PASSWORD = "password",
+            REGISTER_CODE = "code";
 
     //修改头像
     public static final String MODIFY_AVATAR = "authc/user/setAvatar",
             MODIFY_AVATAR_AVATAR = "avatar";
 
+    //登出
     public static final String LOGOUT = "authc/logout";
 
+    //获取用户信息
     public static final String GET_USER_INFO = "authc/user";
+
+    public static final String GET_USER_DYNAMIC_URL = "authc/file/event",
+            GET_USER_DYNAMIC_PAGE = "page", GET_USER_DYNAMIC_SIZE = "size",
+            GET_USER_DYNAMIC_TYPE = "type";
 
 
     ///////////////////////////////////////////////////////////
     ////////FileService
     ///////////////////////////////////////////////////////////
+
+    //上传
     public static final String UPLOAD_FILE_URL = "file/upload", UPLOAD_FILE_PARAM_SHARE = "share",
             UPLOAD_FILE_PARAM_LEFT_ALLOW_DOWNLOAD_COUNT = "leftAllowDownloadCount",
             UPLOAD_FILE_PARAM_EXPIRE_TIME = "expireTime", UPLOAD_FILE_PARAM_SCORE = "score",
@@ -56,8 +67,24 @@ public class ApiInfo {
             UPLOAD_FILE_PARAM_DESCRIPTION = "description", UPLOAD_FILE_PARAM_MD5 = "md5",
             UPLOAD_FILE_PARAM_SIZE = "size", UPLOAD_FILE_PARAM_NAME = "name",
             UPLOAD_FILE_PARAM_MIME = "MIME";
+    //上传冗余检测
     public static final String UPLOAD_FILE_CHECK_URL = "file/uploadCheck";
+    //收藏文件
+    public static final String FILE_COLLECT_URL = "authc/file/store", FILE_COLLECT_FILE_ID = "fileId",
+            FILE_COLLECT_TYPE = "type";
 
+    /**
+     * 5.获取路径信息 method: get /authc/file/dir
+     {
+     parentId: //当为null时返回根目录/下的所有文件
+     }
+     */
+    public static final String GET_UPLOAD_FILES_URL = "authc/file/dir",
+            GET_UPLOAD_FILES_PARENT_ID = "parentId", GET_UPLOAD_FILES_ROOT_PATH = "/";
+
+
+    public static final String CREATE_DIRECTORY_URL = "authc/file/createDirectory",
+            CREATE_DIRECTORY_PARENT_ID = "parentId", CREATE_DIRECTORY_NAME = "name";
 
     ///////////////////////////////////////////////////////////
     /////////ForumService
@@ -74,4 +101,19 @@ public class ApiInfo {
             GET_COMMENTS_FILE_ID = "fileId";
     public static final String STAR_URL = "authc/forum/star ",
             STAR_FILE_ID = "fileId";
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////TokenService
+    ///////////////////////////////////////////////////////////////////////////
+    public static final String UPDATE_COOKIE_BY_TOKEN_URL = "updateToken",
+            UPDATE_COOKIE_BY_TOKEN_TOKEN = "token";
+
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    ////////////MediaType
+    //////////////////////////////////////////////////////////////////////////
+
+    public static final String MEDIA_TYPE_JSON = "Application/json; charset=utf-8";
 }

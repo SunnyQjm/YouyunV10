@@ -11,10 +11,6 @@ import android.view.ViewGroup;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_info.adapter.DynamicAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
-import com.sunny.youyun.model.Dynamic;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +26,7 @@ public class DynamicFragment extends MVPBaseFragment<DynamicPresenter> implement
     RecyclerView recyclerView;
     Unbinder unbinder;
     private DynamicAdapter adapter;
-    private List<Dynamic> mList = null;
-
+    private int page = 1;
     private View view = null;
 
     @Override
@@ -70,45 +65,22 @@ public class DynamicFragment extends MVPBaseFragment<DynamicPresenter> implement
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_upload_record, container, false);
             unbinder = ButterKnife.bind(this, view);
-            initView(container);
+            initView();
         } else {
             unbinder = ButterKnife.bind(this, view);
         }
         return view;
     }
 
-    private void initView(ViewGroup container) {
-        mList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            mList.add(new Dynamic.Builder()
-                    .avatar("http://img4.imgtn.bdimg.com/it/u=2880820503,781549093&fm=27&gp=0.jpg")
-                    .date(System.currentTimeMillis())
-                    .fileName("谁的青春不迷茫")
-                    .mode(0)
-                    .build());
-        }
-        adapter = new DynamicAdapter(mList);
+    private void initView() {
+        adapter = new DynamicAdapter(mPresenter.getData());
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
-
+        mPresenter.getDynamic(page, true);
     }
 
-    @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
-    }
-
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
-
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
-    }
 
     @Override
     protected DynamicPresenter onCreatePresenter() {
@@ -120,5 +92,12 @@ public class DynamicFragment extends MVPBaseFragment<DynamicPresenter> implement
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void getDynamicSuccess() {
+        if(adapter != null){
+            adapter.notifyDataSetChanged();
+        }
     }
 }

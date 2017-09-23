@@ -1,5 +1,6 @@
 package com.sunny.youyun.internet.service;
 
+import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
@@ -40,4 +41,15 @@ public interface FileServices {
     @GET(ApiInfo.GET_FILE_INFO)
     Observable<BaseResponseBody<InternetFile[]>> getFileInfo(
             @Query(value = ApiInfo.GET_FILE_INFO_IDENTIFY_CODE) String code);
+
+    @GET(ApiInfo.GET_UPLOAD_FILES_URL)
+    Observable<BaseResponseBody<FileItem[]>> getUploadFiles(
+            @Query(ApiInfo.GET_UPLOAD_FILES_PARENT_ID) String parentId
+    );
+
+    @GET(ApiInfo.GET_UPLOAD_FILES_URL)
+    Observable<BaseResponseBody<FileItem[]>> getUploadFiles();
+
+    @POST(ApiInfo.CREATE_DIRECTORY_URL)
+    Observable<BaseResponseBody<FileItem[]>> createDirectory(@Body RequestBody body);
 }

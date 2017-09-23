@@ -123,10 +123,6 @@
                     android:layout_marginTop="2dp"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="简介：普天之下，莫非王土，率土之滨，莫非王臣
-普天之下，莫非王土，率土之滨，莫非王臣
-普天之下，莫非王土，率土之滨，莫非王臣
-普天之下，莫非王土，率土之滨，莫非王臣"
                     android:textColor="@color/white"
                     android:textSize="11sp"
                     app:layout_constraintTop_toBottomOf="@id/divide_line" />

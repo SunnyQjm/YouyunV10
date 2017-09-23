@@ -106,11 +106,14 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
         easyBar.setLeftIconInVisible();
 
         user = UserInfoManager.getInstance().getUserInfo();
-        if (YouyunAPI.isIsLogin())
+        if (YouyunAPI.isIsLogin()){
             tvNickname.setText(user.getUsername());
-        else
+            GlideUtils.load(activity, imgAvatar, user.getAvatar());
+        }
+        else {
             tvNickname.setText(getString(R.string.click_here_to_login));
-        GlideUtils.load(activity, imgAvatar, user.getAvatar());
+            GlideUtils.load(activity, imgAvatar, R.drawable.icon_logo_round);
+        }
     }
 
     @Override

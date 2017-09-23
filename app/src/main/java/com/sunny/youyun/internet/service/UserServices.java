@@ -2,6 +2,7 @@ package com.sunny.youyun.internet.service;
 
 
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.Dynamic;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
@@ -15,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  *
@@ -36,15 +38,8 @@ public interface UserServices {
 
     @POST(ApiInfo.QQ_LOGIN_URL)
     Observable<LoginResponseBody> qqLogin(@Body RequestBody body);
-//
-//    @FormUrlEncoded
-//    @POST(ApiInfo.LOGIN_URL)
-//    Observable<User> login(
-//            @Field(ApiInfo.LOGIN_USERNAME) String username,
-//            @Field(ApiInfo.LOGIN_PASSWORD) String password
-//    );
 
-    @POST(ApiInfo.REGISTER)
+    @POST(ApiInfo.REGISTER_URL)
     Observable<RegisterResponseBody> register(@Body RequestBody body);
 
     @GET(ApiInfo.GET_USER_INFO)
@@ -53,26 +48,13 @@ public interface UserServices {
     @Multipart
     @POST(ApiInfo.MODIFY_AVATAR)
     Observable<BaseResponseBody<String>> modifyAvatar(@Part MultipartBody.Part avatar);
-//
-//    @POST("login")
-//    Observable<LoginResponseBody> login(@Body RequestBody body);
-//
-//    @POST("logout")
-//    String logut();
-//
-//    @Multipart
-//    @POST("user/setAvatar")
-//    Observable<ModifyAvatarResponseBody> modifyAvatar(@Part MultipartBody.Part avatar);
-//
-//    @POST("user/update")
-//    Observable<StringResponseBody> modifyInfo(@Body RequestBody body);
-//
-//    @POST("bookstore/updateDescription")
-//    Observable<UpdateDescriptionResponseBody> updateDescription(@Body RequestBody body);
-//
-//    @POST("bookstore/updateName")
-//    Observable<UpdateNameResponseBody> updateName(@Body RequestBody body);
-//
+
     @GET(ApiInfo.LOGOUT)
     Observable<BaseResponseBody<String>> logout();
+
+    @GET(ApiInfo.GET_USER_DYNAMIC_URL)
+    Observable<BaseResponseBody<Dynamic[]>> getUserDynamic(
+            @Query(ApiInfo.GET_USER_DYNAMIC_PAGE) int page,
+            @Query(ApiInfo.GET_USER_DYNAMIC_SIZE) int size
+    );
 }

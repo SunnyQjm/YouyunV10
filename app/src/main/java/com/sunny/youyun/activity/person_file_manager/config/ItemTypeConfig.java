@@ -5,8 +5,6 @@ package com.sunny.youyun.activity.person_file_manager.config;
  */
 
 public class ItemTypeConfig {
-    public static final int TYPE_LEVEL_0 = 0;
     public static final int TYPE_FILE_INFO = 1;
-    public static final int TYPE_APPLICATION_INFO = 2;
     public static final int TYPE_DIRECT_INFO = 3;
 }

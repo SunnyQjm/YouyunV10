@@ -27,7 +27,7 @@ public class main {
 //        };
 //
 //
-//        ServerSocketManager serverSocketManager = new ServerSocketManager.Builder()
+//        ServerSocketImpl serverSocketManager = new ServerSocketImpl.Builder()
 //                .strategy(new SingleTransMode(App.mList_ReceiveRecord))
 //                .port(SocketConfig.FileListenPort)
 //                .build();

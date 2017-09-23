@@ -16,7 +16,6 @@ class WifiDirectConnectManagerImpl implements WifiDirectConnectManager {
     private WifiDirectConnectManagerImpl(Builder builder) {
         manager = builder.manager;
         channel = builder.channel;
-
     }
 
 

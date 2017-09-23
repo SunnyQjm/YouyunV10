@@ -8,7 +8,16 @@ import com.sunny.youyun.internet.cookie_persisten.CookieJarImpl;
 import com.sunny.youyun.internet.cookie_persisten.PersistentCookieStore;
 import com.sunny.youyun.internet.service.FileServices;
 import com.sunny.youyun.internet.service.ForumServices;
+import com.sunny.youyun.internet.service.TokenServices;
 import com.sunny.youyun.internet.service.UserServices;
+import com.sunny.youyun.model.StatusCode;
+import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.response_body.BaseResponseBody;
+import com.sunny.youyun.model.response_body.LoginTokenResponseBody;
+import com.sunny.youyun.utils.GsonUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -18,13 +27,16 @@ import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 import okio.BufferedSource;
+import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Administrator on 2017/3/18 0018.
@@ -47,6 +59,7 @@ public class APIManager {
     private static OkHttpClient client;
     private UserServices userService;
     private FileServices fileServices;
+    private TokenServices tokenServices;
     private ForumServices forumServices;
 
 
@@ -80,8 +93,14 @@ public class APIManager {
         return fileServices;
     }
 
-    public ForumServices getForumServices(Converter.Factory... factories){
-        if(forumServices == null)
+    public TokenServices getTokenServices(Converter.Factory... factory) {
+        if (tokenServices == null)
+            tokenServices = createService(TokenServices.class, factory);
+        return tokenServices;
+    }
+
+    public ForumServices getForumServices(Converter.Factory... factories) {
+        if (forumServices == null)
             forumServices = createService(ForumServices.class, factories);
         return forumServices;
     }
@@ -117,12 +136,36 @@ public class APIManager {
             if (contentType != null) {
                 charset = contentType.charset(UTF8);
             }
-            Logger.i(buffer.clone().readString(charset));
-            System.out.println(buffer.clone().readString(charset));
+            String responseString = buffer.clone().readString(charset);
+            Logger.i(responseString);
+            System.out.println(responseString);
             Logger.i(request.url().toString());
-//            BaseResponseBody<Object> baseResponseBody = GsonUtil.getInstance().fromJson(buffer.clone().readString(charset),
-//                    new TypeToken<BaseResponseBody<Object>>() {
-//                    }.getType());
+            BaseResponseBody result = GsonUtil.json2Bean(responseString, BaseResponseBody.class);
+            //如果现在保存的登录状态是已登录，并且报未登录错误，则说明是cookie失效了，此时用
+            // LoginToken重新请求
+            if (result.getCode() == StatusCode.CODE_NOT_LOGIN &&
+                    YouyunAPI.isIsLogin() && YouyunAPI.getLoginToken() != null &&
+                    !YouyunAPI.getLoginToken().equals("")) {
+                TokenServices tokenServices = APIManager.getInstance()
+                        .getTokenServices(GsonConverterFactory.create());
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put(ApiInfo.UPDATE_COOKIE_BY_TOKEN_TOKEN, YouyunAPI.getLoginToken());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8")
+                        , jsonObject.toString());
+                Call<LoginTokenResponseBody> tokenCall = tokenServices
+                            .updateCookieByToken(body);
+                LoginTokenResponseBody loginTokenResponseBody =
+                        tokenCall.execute().body();
+                System.out.println(GsonUtil.bean2Json(loginTokenResponseBody));
+
+                Request newRequest = request.newBuilder()
+                        .build();
+                
+            }
 
 //            //对下载文件的Response拦截处理
 //            if (request.url().toString().startsWith(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD)) {

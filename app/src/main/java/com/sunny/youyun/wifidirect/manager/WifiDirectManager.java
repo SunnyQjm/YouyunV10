@@ -43,7 +43,7 @@ public enum WifiDirectManager implements WifiDirectConnectManager, SocketManager
 
 
     public enum Mode {
-        SINGLE, GROUP;
+        SINGLE, GROUP
     }
 
     /**
@@ -65,7 +65,8 @@ public enum WifiDirectManager implements WifiDirectConnectManager, SocketManager
         WifiP2pManager manager = (WifiP2pManager) c.getApplicationContext().getSystemService(Context.WIFI_P2P_SERVICE);
         if (manager == null)
             return;
-        WifiP2pManager.Channel channel = manager.initialize(c.getApplicationContext(), c.getApplicationContext().getMainLooper(), null);
+        WifiP2pManager.Channel channel = manager.initialize(
+                c.getApplicationContext(), c.getApplicationContext().getMainLooper(), null);
 
         INSTANCE.wifiDirectConnectManager = new WifiDirectConnectManagerImpl.Builder()
                 .manager(manager)
@@ -78,40 +79,6 @@ public enum WifiDirectManager implements WifiDirectConnectManager, SocketManager
     }
 
 
-    //-------------------------------------回调相关操作--------------------------------------//
-
-//    public ReadFileCallback getReadFileCallback() {
-//        return readFileCallback;
-//    }
-//
-//    public SendFileCallBack getSendFileCallBack() {
-//        return sendFileCallBack;
-//    }
-//
-//    /**
-//     * 绑定文件接收回调
-//     * @param readFileCallback
-//     */
-//    public static void bindReadFileCallback(ReadFileCallback readFileCallback){
-//        getInstance().readFileCallback = readFileCallback;
-//    }
-//
-//    /**
-//     * 接收文件回调
-//     * @param sendFileCallBack
-//     */
-//    public static void bindSendFileCallBack(SendFileCallBack sendFileCallBack){
-//        getInstance().sendFileCallBack = sendFileCallBack;
-//    }
-//
-//    /**
-//     * 取消绑定接收文件回调
-//     */
-//    public static void unBindReadFileCallback(){
-//        getInstance().readFileCallback = null;
-//    }
-//
-//    public static void unBindSendFileCallback(){ getInstance().sendFileCallBack = null; }
 
     //--------------------------------------Socket相关操作------------------------------------------//
 
@@ -121,7 +88,6 @@ public enum WifiDirectManager implements WifiDirectConnectManager, SocketManager
     @Override
     public void startServer(@NonNull ServerSocketStrategy strategy) {
         socketManager.startServer(strategy);
-
     }
 
 
@@ -186,6 +152,9 @@ public enum WifiDirectManager implements WifiDirectConnectManager, SocketManager
     }
 
 
+    //////////////////////////////////////////////////////////////////////
+    //////////WifiDirect 接口封装
+    //////////////////////////////////////////////////////////////////////
     @Override
     public void createGroup(WifiP2pManager.ActionListener createGroupListener) {
         wifiDirectConnectManager.createGroup(createGroupListener);

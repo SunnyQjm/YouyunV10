@@ -69,6 +69,7 @@ class LoginModel implements LoginContract.Model{
                             UserInfoManager.getInstance().setUserInfo(loginResponseBody.getData());
                             YouyunAPI.updateIsLogin(true);
                             YouyunAPI.updateLoginMode(YouyunAPI.LOGIN_MODE_NORMAL);
+                            YouyunAPI.updateLoginToken(loginResponseBody.getData().getLoginToken());
                             mPresenter.loginSuccess();
                         }else{
                             YouyunAPI.updateIsLogin(false);

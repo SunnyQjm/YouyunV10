@@ -12,12 +12,12 @@ import java.net.Socket;
  * need a Strategy to service for each socket
  * Created by Sunny on 2017/4/21 0021.
  */
-public class ServerSocketManager extends BaseRunnable {
+public class ServerSocketImpl extends BaseRunnable {
 
     private final ServerSocket serverSocket;
     private volatile ServerSocketStrategy strategy;
 
-    private ServerSocketManager(Builder builder) throws IOException {
+    private ServerSocketImpl(Builder builder) throws IOException {
         serverSocket = new ServerSocket(builder.port);
         strategy = builder.strategy;
     }
@@ -25,6 +25,10 @@ public class ServerSocketManager extends BaseRunnable {
     public void run() {
         System.out.println("服务器启动，开始接收文件或者文字");
         ServerSocketThreadSupport serverSocketThreadSupport = new ServerSocketThreadSupport(strategy);
+        /**
+         * 循环监听来自客户端的请求，每接收到一个请求就扔给另一个线程处理
+         * 自己继续监听请求
+         */
         while(!isStop()){
             try {
                 Socket socket = serverSocket.accept();
@@ -70,8 +74,8 @@ public class ServerSocketManager extends BaseRunnable {
             return this;
         }
 
-        public ServerSocketManager build() throws IOException {
-            return new ServerSocketManager(this);
+        public ServerSocketImpl build() throws IOException {
+            return new ServerSocketImpl(this);
         }
     }
 }

@@ -11,8 +11,8 @@ import com.sunny.youyun.wifidirect.client.ForwardClientStrategyImpl;
 import com.sunny.youyun.wifidirect.config.SocketConfig;
 import com.sunny.youyun.wifidirect.model.DeviceInfo;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
-import com.sunny.youyun.wifidirect.server.ForwardServer;
-import com.sunny.youyun.wifidirect.server.ServerSocketManager;
+import com.sunny.youyun.wifidirect.server.forward.ForwardServer;
+import com.sunny.youyun.wifidirect.server.ServerSocketImpl;
 import com.sunny.youyun.wifidirect.server.ServerSocketStrategy;
 import com.sunny.youyun.wifidirect.utils.MyThreadPool;
 
@@ -26,7 +26,7 @@ import java.util.List;
 class SocketManagerImpl implements SocketManager {
 
     private Context context;
-    private ServerSocketManager startFileServerSocket = null;
+    private ServerSocketImpl startFileServerSocket = null;
     private ForwardClient forwardClient = null;
     private ForwardServer forwardServer = null;
 
@@ -139,7 +139,7 @@ class SocketManagerImpl implements SocketManager {
         if (startFileServerSocket != null && startFileServerSocket.isAlive())
             return;
         try {
-            startFileServerSocket = new ServerSocketManager.Builder()
+            startFileServerSocket = new ServerSocketImpl.Builder()
                     .port(SocketConfig.FileListenPort)
                     .strategy(strategy)
                     .build();

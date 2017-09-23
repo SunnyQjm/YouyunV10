@@ -6,11 +6,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_file_manager.config.ItemTypeConfig;
-import com.sunny.youyun.activity.person_file_manager.item.DirectItem;
 import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.utils.FileTypeUtil;
 import com.sunny.youyun.utils.GlideOptions;
 import com.sunny.youyun.utils.TimeUtils;
@@ -42,13 +42,14 @@ public class FileAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
         switch (helper.getItemViewType()) {
             case ItemTypeConfig.TYPE_FILE_INFO:
                 FileItem fileItem = (FileItem) item;
-                helper.setText(R.id.tv_name, fileItem.getName())
-                        .setText(R.id.tv_size, Tool.convertToSize(fileItem.getSize()))
-                        .setText(R.id.tv_description, TimeUtils.returnTime(fileItem.getCreateTime()));
-                int resId = fileItem.getResId();
+                InternetFile file = fileItem.getFile();
+                helper.setText(R.id.tv_name, file.getName())
+                        .setText(R.id.tv_size, Tool.convertToSize(file.getSize()))
+                        .setText(R.id.tv_description, TimeUtils.returnTime(file.getCreateTime()));
+                int resId = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(fileItem.getPathName());
                 if (resId == -1) {
                     Glide.with(mContext)
-                            .load(fileItem.getPath())
+                            .load(file.getPath())
                             .apply(GlideOptions
                                     .getInstance().getRequestOptions())
                             .transition(GlideOptions
@@ -63,9 +64,8 @@ public class FileAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
                 }
                 break;
             case ItemTypeConfig.TYPE_DIRECT_INFO:
-                DirectItem directItem = (DirectItem) item;
-                helper.setText(R.id.tv_name, directItem.getName())
-                        .setText(R.id.tv_size, Tool.convertToSize(directItem.getSize()))
+                FileItem directItem = (FileItem) item;
+                helper.setText(R.id.tv_name, directItem.getPathName())
                         .setText(R.id.tv_description, TimeUtils.returnTime(directItem.getCreateTime()));
                 Glide.with(mContext)
                         .load(FileTypeUtil.getDirect())

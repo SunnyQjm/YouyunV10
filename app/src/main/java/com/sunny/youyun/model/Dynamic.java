@@ -5,32 +5,44 @@ package com.sunny.youyun.model;
  */
 
 public class Dynamic {
-    private final String avatar;
-    private final int mode;
-    private final String fileName;
-    private final long date;
+    private final int id;
+    private final int userId;
+    private final int fileId;
+    private final int type;
+    private final InternetFile File;
+    private final long createTime;
 
     private Dynamic(Builder builder) {
-        avatar = builder.avatar;
-        mode = builder.mode;
-        fileName = builder.fileName;
-        date = builder.date;
+        id = builder.id;
+        userId = builder.userId;
+        fileId = builder.fileId;
+        type = builder.type;
+        File = builder.File;
+        createTime = builder.createTime;
     }
 
-    public String getFileName() {
-        return fileName;
+    public int getId() {
+        return id;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public int getUserId() {
+        return userId;
     }
 
-    public int getMode() {
-        return mode;
+    public int getFileId() {
+        return fileId;
     }
 
-    public long getDate() {
-        return date;
+    public int getType() {
+        return type;
+    }
+
+    public InternetFile getFile() {
+        return File;
+    }
+
+    public long getCreateTime() {
+        return createTime;
     }
 
     public static final class Builder {
@@ -38,6 +50,12 @@ public class Dynamic {
         private int mode;
         private String fileName;
         private long date;
+        private int id;
+        private int userId;
+        private int fileId;
+        private int type;
+        private InternetFile File;
+        private long createTime;
 
         public Builder() {
         }
@@ -64,6 +82,36 @@ public class Dynamic {
 
         public Dynamic build() {
             return new Dynamic(this);
+        }
+
+        public Builder id(int val) {
+            id = val;
+            return this;
+        }
+
+        public Builder userId(int val) {
+            userId = val;
+            return this;
+        }
+
+        public Builder fileId(int val) {
+            fileId = val;
+            return this;
+        }
+
+        public Builder type(int val) {
+            type = val;
+            return this;
+        }
+
+        public Builder File(InternetFile val) {
+            File = val;
+            return this;
+        }
+
+        public Builder createTime(long val) {
+            createTime = val;
+            return this;
         }
     }
 }

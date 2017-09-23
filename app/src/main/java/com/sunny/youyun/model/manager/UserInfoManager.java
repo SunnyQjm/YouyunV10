@@ -1,5 +1,6 @@
 package com.sunny.youyun.model.manager;
 
+import com.orhanobut.logger.Logger;
 import com.sunny.youyun.model.User;
 
 import org.litepal.crud.DataSupport;
@@ -22,9 +23,11 @@ public enum UserInfoManager {
     public static void init() {
         List<User> list = DataSupport.where("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG))
                 .find(User.class);
-        if(list == null || list.size() == 0)
+        if(list == null || list.size() == 0) {
             return;
+        }
         User user = list.get(0);
+        Logger.i("找到一条User信息：" + user);
         getInstance().user.setUserInfo(user);
     }
 
@@ -44,7 +47,7 @@ public enum UserInfoManager {
     }
 
     public void clear(){
-        user.delete();
+        user.deleteAsync();
         user = new User.Builder().build();
     }
 
