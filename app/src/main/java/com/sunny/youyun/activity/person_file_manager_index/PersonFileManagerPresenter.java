@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_file_manager;
+package com.sunny.youyun.activity.person_file_manager_index;
 
 import com.sunny.youyun.base.entity.MultiItemEntity;
 

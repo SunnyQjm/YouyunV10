@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_file_manager;
+package com.sunny.youyun.activity.person_file_manager_index;
 
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,9 +10,9 @@ import android.view.View;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.person_file_manager.adapter.ClassificationAdapter;
-import com.sunny.youyun.activity.person_file_manager.adapter.FileAdapter;
-import com.sunny.youyun.activity.person_file_manager.config.ClassificationNumber;
+import com.sunny.youyun.activity.person_file_manager_index.adapter.ClassificationAdapter;
+import com.sunny.youyun.activity.person_file_manager_index.adapter.FileAdapter;
+import com.sunny.youyun.activity.person_file_manager_index.config.ClassificationNumber;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.nodes.ClassificationNode;

@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -124,18 +123,16 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
                 .getFileInfo(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<InternetFile[]>>() {
+                .subscribe(new Observer<BaseResponseBody<InternetFile>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<InternetFile[]> baseResponseBody) {
-                        System.out.println("onNext: " + Arrays.toString(baseResponseBody.getData()));
-                        if(baseResponseBody.isSuccess() && baseResponseBody.getData() != null &&
-                                baseResponseBody.getData().length > 0){
-                            mPresenter.getFileInfoSuccess(baseResponseBody.getData()[0]);
+                    public void onNext(BaseResponseBody<InternetFile> baseResponseBody) {
+                        if(baseResponseBody.isSuccess() && baseResponseBody.getData() != null){
+                            mPresenter.getFileInfoSuccess(baseResponseBody.getData());
                         } else {
                             Logger.i("获取文件信息失败");
                         }
@@ -143,6 +140,7 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         mPresenter.showError("获取文件信息失败：" + e);
                         Logger.e("获取文件信息失败", e);
                     }

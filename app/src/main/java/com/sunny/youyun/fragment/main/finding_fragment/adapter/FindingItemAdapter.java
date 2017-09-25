@@ -32,7 +32,7 @@ public class FindingItemAdapter extends BaseQuickAdapter<InternetFile, BaseViewH
                 .setText(R.id.rt_like_count, String.valueOf(item.getStar()));
 
         RichText rtLikeNum = helper.getView(R.id.rt_like_count);
-        if(item.getCanStar() > 0){
+        if(!item.isCanStar()){
             rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
         } else {
             rtLikeNum.setDrawableRes(R.drawable.icon_zan);

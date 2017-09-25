@@ -55,7 +55,7 @@ public class APIManager {
 
     private static int cacheSize = 20 * 1024 * 1024;
     //    private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
-    private static final int DEFAULT_TIMEOUT = 15;
+    private static final int DEFAULT_TIMEOUT = 20;
     private static OkHttpClient client;
     private UserServices userService;
     private FileServices fileServices;
@@ -138,9 +138,9 @@ public class APIManager {
             }
             String responseString = buffer.clone().readString(charset);
             Logger.i(responseString);
-            System.out.println(responseString);
             Logger.i(request.url().toString());
             BaseResponseBody result = GsonUtil.json2Bean(responseString, BaseResponseBody.class);
+            Logger.i(result.toString());
             //如果现在保存的登录状态是已登录，并且报未登录错误，则说明是cookie失效了，此时用
             // LoginToken重新请求
             if (result.getCode() == StatusCode.CODE_NOT_LOGIN &&

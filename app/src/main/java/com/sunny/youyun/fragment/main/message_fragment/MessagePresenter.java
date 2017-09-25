@@ -1,6 +1,9 @@
 package com.sunny.youyun.fragment.main.message_fragment;
 
+import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.mvp.BaseView;
+
+import java.util.List;
 
 /**
  * Created by Sunny on 2017/6/25 0025.
@@ -16,5 +19,10 @@ public class MessagePresenter extends MessageContract.Presenter{
     @Override
     protected void start() {
 
+    }
+
+    @Override
+    List<MultiItemEntity> getData() {
+        return mModel.getData();
     }
 }

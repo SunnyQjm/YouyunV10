@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_file_manager.adapter;
+package com.sunny.youyun.activity.person_file_manager_index.adapter;
 
 import android.support.annotation.Nullable;
 import android.widget.ImageView;

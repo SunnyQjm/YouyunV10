@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/message_header"
+        app:left_icon_size="44dp"
+        app:left_resource="@drawable/icon_message_zan"
+        app:is_left_icon_visible="true"
+        app:menu_title="@string/zan"
+        app:menu_title_color="@color/text_gray"
+        app:menu_title_size="14sp"
+        app:left_icon_text_span="16dp"
+        app:left_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+    </com.sunny.youyun.views.LineMenuItem>
+</LinearLayout>

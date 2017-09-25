@@ -12,8 +12,8 @@ import java.util.Objects;
  */
 
 public class InternetFile extends DataSupport implements Serializable {
-    private String identifyCode;
     private final int id;
+    private String identifyCode;
     private final String name;
     private final long size;
     private final long expireTime;
@@ -24,7 +24,7 @@ public class InternetFile extends DataSupport implements Serializable {
     private final int userId;
     private final int lookNum;          //浏览量
     private final int star;             //点赞人数
-    private final int canStar;      //是否已点赞
+    private final boolean canStar;      //是否已点赞
     private final User user;
     private final String description;
     private final boolean isDirectory;
@@ -78,9 +78,9 @@ public class InternetFile extends DataSupport implements Serializable {
                 '}';
     }
 
-    public InternetFile(Builder builder) {
-        setIdentifyCode(builder.identifyCode);
+    private InternetFile(Builder builder) {
         id = builder.id;
+        setIdentifyCode(builder.identifyCode);
         name = builder.name;
         size = builder.size;
         expireTime = builder.expireTime;
@@ -103,7 +103,7 @@ public class InternetFile extends DataSupport implements Serializable {
         setPosition(builder.position);
     }
 
-    public int getCanStar() {
+    public boolean isCanStar() {
         return canStar;
     }
 
@@ -241,7 +241,7 @@ public class InternetFile extends DataSupport implements Serializable {
         private int userId = -1;
         private int lookNum;
         private int star;
-        private int canStar;
+        private boolean canStar;
         private User user;
         private String description;
         private boolean isDirectory;
@@ -319,7 +319,7 @@ public class InternetFile extends DataSupport implements Serializable {
             return this;
         }
 
-        public Builder canStar(int val) {
+        public Builder canStar(boolean val) {
             canStar = val;
             return this;
         }

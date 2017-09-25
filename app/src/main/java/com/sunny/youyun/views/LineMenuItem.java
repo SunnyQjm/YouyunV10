@@ -41,6 +41,7 @@ public class LineMenuItem extends RelativeLayout {
 
     private int leftMargin;
     private int rightMargin;
+    private int leftIconTextSpan;
 
     private ImageView left_icon;
     private ImageView right_icon;
@@ -91,10 +92,14 @@ public class LineMenuItem extends RelativeLayout {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LineMenuItem);
         menuTitle = ta.getString(R.styleable.LineMenuItem_menu_title);
         menuValue = ta.getString(R.styleable.LineMenuItem_menu_value);
-        menuTitleSize = ta.getFloat(R.styleable.LineMenuItem_menu_title_size, DEFAULT_TEXT_SIZE);
+        menuTitleSize = DensityUtil.px2sp(context,
+                ta.getDimensionPixelSize(R.styleable.LineMenuItem_menu_title_size,
+                        DensityUtil.sp2px(context, DEFAULT_TEXT_SIZE)));
         menuTitleColor = ta.getColor(R.styleable.LineMenuItem_menu_title_color,
                 getResources().getColor(DEFAULT_TITLE_COLOR));
-        menuValueSize = ta.getFloat(R.styleable.LineMenuItem_menu_value_size, DEFAULT_TEXT_SIZE);
+        menuValueSize = DensityUtil.px2sp(context,
+                ta.getDimension(R.styleable.LineMenuItem_menu_value_size,
+                        DensityUtil.sp2px(context, DEFAULT_TEXT_SIZE)));
         menuValueColor = ta.getColor(R.styleable.LineMenuItem_menu_value_color,
                 getResources().getColor(DEFAULT_TITLE_COLOR));
         leftResource = ta.getResourceId(R.styleable.LineMenuItem_left_resource, DEFAULT_LEFT_RESOURCE);
@@ -109,6 +114,8 @@ public class LineMenuItem extends RelativeLayout {
                 .getBoolean(R.styleable.LineMenuItem_is_left_icon_visible, false);
         leftMargin = ta.getDimensionPixelSize(R.styleable.LineMenuItem_left_margin, DensityUtil.dip2px(context, DEFAULT_MARGIN));
         rightMargin = ta.getDimensionPixelOffset(R.styleable.LineMenuItem_right_margin, DensityUtil.dip2px(context, DEFAULT_MARGIN));
+        leftIconTextSpan = ta.getDimensionPixelOffset(R.styleable.LineMenuItem_left_icon_text_span,
+                DensityUtil.dip2px(context, DEFAULT_MARGIN));
         ta.recycle();
     }
 
@@ -125,7 +132,7 @@ public class LineMenuItem extends RelativeLayout {
         left_icon_param.leftMargin = leftMargin;
         left_icon.setLayoutParams(left_icon_param);
         addView(left_icon, left_icon_param);
-        if(!isLeftIconVisible){
+        if (!isLeftIconVisible) {
             left_icon.setVisibility(GONE);
         }
         int left_icon_id = GeneratedId.generateViewId();
@@ -139,13 +146,10 @@ public class LineMenuItem extends RelativeLayout {
         LayoutParams title_param = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         title_param.addRule(CENTER_VERTICAL);
-        title_param.leftMargin = leftMargin;
+        title_param.leftMargin = leftIconTextSpan;
         title_param.addRule(RIGHT_OF, left_icon_id);
         tv_title.setLayoutParams(title_param);
         addView(tv_title, title_param);
-
-
-
 
 
         right_icon = new ImageView(context);
@@ -186,6 +190,19 @@ public class LineMenuItem extends RelativeLayout {
             setRightIconInVisible();
     }
 
+    public void setLeftIcon(@DrawableRes int res) {
+        this.post(() -> {
+            leftResource = res;
+            left_icon.setImageResource(leftResource);
+        });
+    }
+
+    public void setRightIcon(@DrawableRes int res) {
+        this.post(() -> {
+            rightResource = res;
+            right_icon.setImageResource(rightResource);
+        });
+    }
 
     public void setRightIconVisible() {
         if (right_icon != null)

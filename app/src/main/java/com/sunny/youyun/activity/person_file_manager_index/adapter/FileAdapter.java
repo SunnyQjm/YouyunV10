@@ -1,12 +1,12 @@
-package com.sunny.youyun.activity.person_file_manager.adapter;
+package com.sunny.youyun.activity.person_file_manager_index.adapter;
 
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.person_file_manager.config.ItemTypeConfig;
-import com.sunny.youyun.activity.person_file_manager.item.FileItem;
+import com.sunny.youyun.activity.person_file_manager_index.config.ItemTypeConfig;
+import com.sunny.youyun.activity.person_file_manager_index.item.FileItem;
 import com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.base.entity.MultiItemEntity;

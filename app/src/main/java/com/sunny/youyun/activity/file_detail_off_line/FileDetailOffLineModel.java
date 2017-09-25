@@ -5,8 +5,6 @@ import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
-import java.util.Arrays;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -30,18 +28,16 @@ class FileDetailOffLineModel implements FileDetailOffLineContract.Model{
                 .getFileInfo(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<InternetFile[]>>() {
+                .subscribe(new Observer<BaseResponseBody<InternetFile>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<InternetFile[]> baseResponseBody) {
-                        System.out.println("onNext: " + Arrays.toString(baseResponseBody.getData()));
-                        if(baseResponseBody.isSuccess() && baseResponseBody.getData() != null &&
-                                baseResponseBody.getData().length > 0){
-                            mPresenter.showDetail(baseResponseBody.getData()[0]);
+                    public void onNext(BaseResponseBody<InternetFile> baseResponseBody) {
+                        if(baseResponseBody.isSuccess() && baseResponseBody.getData() != null){
+                            mPresenter.showDetail(baseResponseBody.getData());
                         } else {
                             mPresenter.showTip("提取码错误");
                         }

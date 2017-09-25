@@ -157,7 +157,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             tvDescription.setText(spannableString);
 //            tvUserSShare.setText(String.format("%s%s", user.getUsername(), getString(R.string.xxs_share)));
         }
-        if(internetFile.getCanStar() > 0){
+        if(!internetFile.isCanStar()){
             rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
         } else {
             rtLikeNum.setDrawableRes(R.drawable.icon_zan);

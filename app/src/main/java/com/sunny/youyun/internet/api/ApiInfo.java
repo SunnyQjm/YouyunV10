@@ -8,7 +8,7 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-    private static final String IP = "http://192.168.107.225";
+    private static final String IP = "http://192.168.84.39";
     //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
@@ -54,6 +54,10 @@ public class ApiInfo {
             GET_USER_DYNAMIC_PAGE = "page", GET_USER_DYNAMIC_SIZE = "size",
             GET_USER_DYNAMIC_TYPE = "type";
 
+    public static final String GET_USER_FILE_BY_TYPE_URL = "authc/file/type",
+            GET_USER_FILE_BY_TYPE_MIME = "MIME", GET_USER_FILE_BY_TYPE_PAGE = "page",
+            GET_USER_FILE_BY_TYPE_SIZE = "size";
+
 
     ///////////////////////////////////////////////////////////
     ////////FileService
@@ -92,7 +96,7 @@ public class ApiInfo {
     public static final String GET_FORUM_URL = "forum/files", GET_FORUM_PAGE = "page",
             GET_FORUM_SIZE = "size", GET_FORUM_SORT_BY_DATE = "createTime",
             GET_FORUM_SORT_BY_DOWNLOAD_COUNT = "downloadCount";
-    public static final int GET_FORUM_DEFAULT_SIZE = 10;
+    public static final int GET_FORUM_DEFAULT_SIZE = 5;
 
     public static final String ADD_COMMENT_URL = "authc/forum/comment",
             ADD_COMMENT_FILE_ID = "fileId", ADD_COMMENT_CONTENT = "content";

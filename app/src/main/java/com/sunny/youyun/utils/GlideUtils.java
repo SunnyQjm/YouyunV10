@@ -5,6 +5,7 @@ import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.sunny.youyun.model.FindingModel;
 import com.sunny.youyun.model.InternetFile;
 
 /**
@@ -13,8 +14,17 @@ import com.sunny.youyun.model.InternetFile;
 
 public class GlideUtils {
 
-    public static void setImage(Context context, ImageView imageView, InternetFile internetFile){
-        int resId  = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(internetFile.getName());
+    public static void setImage(Context context, ImageView imageView, FindingModel findingModel) {
+        int resId = FileTypeUtil.getIconIdByFileName(findingModel.getName());
+        Glide.with(context)
+                .load(resId)
+                .apply(GlideOptions
+                        .getInstance().getRequestOptions())
+                .into(imageView);
+    }
+
+    public static void setImage(Context context, ImageView imageView, InternetFile internetFile) {
+        int resId = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(internetFile.getName());
         if (resId == -1) {
             Glide.with(context)
                     .load(internetFile.getPath())
@@ -34,11 +44,12 @@ public class GlideUtils {
 
     /**
      * 加载url到ImageView中
+     *
      * @param context
      * @param imageView
      * @param url
      */
-    public static void load(Context context, ImageView imageView, String url){
+    public static void load(Context context, ImageView imageView, String url) {
         Glide.with(context)
                 .load(url)
                 .apply(GlideOptions
@@ -48,7 +59,7 @@ public class GlideUtils {
                 .into(imageView);
     }
 
-    public static void load(Context context, ImageView imageView, @DrawableRes int res){
+    public static void load(Context context, ImageView imageView, @DrawableRes int res) {
         Glide.with(context)
                 .load(res)
                 .apply(GlideOptions

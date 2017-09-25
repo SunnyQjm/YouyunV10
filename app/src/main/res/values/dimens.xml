@@ -46,4 +46,5 @@
     <dimen name="file_detail_online_icon_margin_top">20dp</dimen>
     <dimen name="collection_item_icon_size">60dp</dimen>
     <dimen name="finding_item_icon_size">12dp</dimen>
+    <dimen name="message_icon_size">44dp</dimen>
 </resources>
