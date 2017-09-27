@@ -1,12 +1,12 @@
-package com.sunny.youyun.activity.person_file_manager_index.adapter;
+package com.sunny.youyun.activity.person_file_manager.adapter;
 
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.person_file_manager_index.config.ItemTypeConfig;
-import com.sunny.youyun.activity.person_file_manager_index.item.FileItem;
+import com.sunny.youyun.activity.person_file_manager.config.ItemTypeConfig;
+import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.base.entity.MultiItemEntity;
@@ -34,19 +34,42 @@ public class FileAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
         super(data);
         addItemType(ItemTypeConfig.TYPE_FILE_INFO, R.layout.file_info_item);
         addItemType(ItemTypeConfig.TYPE_DIRECT_INFO, R.layout.file_info_item);
+        addItemType(ItemTypeConfig.TYPE_BASE_FILE_INFO, R.layout.file_info_item);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, MultiItemEntity item) {
         helper.getView(R.id.checkBox).setVisibility(View.INVISIBLE);
         switch (helper.getItemViewType()) {
-            case ItemTypeConfig.TYPE_FILE_INFO:
-                FileItem fileItem = (FileItem) item;
-                InternetFile file = fileItem.getFile();
+            case ItemTypeConfig.TYPE_BASE_FILE_INFO:
+                InternetFile file = (InternetFile) item;
                 helper.setText(R.id.tv_name, file.getName())
                         .setText(R.id.tv_size, Tool.convertToSize(file.getSize()))
                         .setText(R.id.tv_description, TimeUtils.returnTime(file.getCreateTime()));
-                int resId = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(fileItem.getPathName());
+                int resId = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(file.getName());
+                if (resId == -1) {
+                    Glide.with(mContext)
+                            .load(file.getPath())
+                            .apply(GlideOptions
+                                    .getInstance().getRequestOptions())
+                            .transition(GlideOptions
+                                    .getInstance().getCrossFadeDrawableTransitionOptions())
+                            .into((ImageView) helper.getView(R.id.img_icon));
+                } else {
+                    Glide.with(mContext)
+                            .load(resId)
+                            .apply(GlideOptions
+                                    .getInstance().getRequestOptions())
+                            .into((ImageView) helper.getView(R.id.img_icon));
+                }
+                break;
+            case ItemTypeConfig.TYPE_FILE_INFO:
+                FileItem fileItem = (FileItem) item;
+                file = fileItem.getFile();
+                helper.setText(R.id.tv_name, file.getName())
+                        .setText(R.id.tv_size, Tool.convertToSize(file.getSize()))
+                        .setText(R.id.tv_description, TimeUtils.returnTime(file.getCreateTime()));
+                resId = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(fileItem.getPathName());
                 if (resId == -1) {
                     Glide.with(mContext)
                             .load(file.getPath())

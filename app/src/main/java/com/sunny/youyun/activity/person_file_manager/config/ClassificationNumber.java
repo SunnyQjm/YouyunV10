@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_file_manager_index.config;
+package com.sunny.youyun.activity.person_file_manager.config;
 
 /**
  * Created by Sunny on 2017/9/13 0013.

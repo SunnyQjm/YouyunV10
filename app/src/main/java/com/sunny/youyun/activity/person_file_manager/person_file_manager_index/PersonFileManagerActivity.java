@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_file_manager_index;
+package com.sunny.youyun.activity.person_file_manager.person_file_manager_index;
 
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,12 +10,12 @@ import android.view.View;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.person_file_manager_index.adapter.ClassificationAdapter;
-import com.sunny.youyun.activity.person_file_manager_index.adapter.FileAdapter;
-import com.sunny.youyun.activity.person_file_manager_index.config.ClassificationNumber;
+import com.sunny.youyun.activity.person_file_manager.adapter.ClassificationAdapter;
+import com.sunny.youyun.activity.person_file_manager.adapter.FileAdapter;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.nodes.ClassificationNode;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.WindowUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.popupwindow.FileManagerOptionsPopupwindow;
@@ -62,6 +62,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
             @Override
             public void onRightIconClick(View view) {
                 //TODO create new directory
+                mPresenter.createDirectory(null, "新建文件夹");
             }
         });
 
@@ -161,24 +162,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
         classificationAdapter = new ClassificationAdapter(classificationNodes);
         classificationAdapter.bindToRecyclerView(classificationRecyclerView);
         classificationAdapter.setOnItemClickListener((adapter, view, position) -> {
-            switch (position) {
-                case ClassificationNumber.apk:
-                    break;
-                case ClassificationNumber.zip:
-                    break;
-                case ClassificationNumber.vedio:
-                    break;
-                case ClassificationNumber.music:
-                    break;
-                case ClassificationNumber.picture:
-                    break;
-                case ClassificationNumber.document:
-                    break;
-                case ClassificationNumber.webPage:
-                    break;
-                case ClassificationNumber.other:
-                    break;
-            }
+            RouterUtils.open(this, IntentRouter.PersonFileListActivity, String.valueOf(position));
         });
     }
 

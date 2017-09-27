@@ -6,11 +6,11 @@ import android.content.Context;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.cookie_persisten.CookieJarImpl;
 import com.sunny.youyun.internet.cookie_persisten.PersistentCookieStore;
+import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
 import com.sunny.youyun.internet.service.FileServices;
 import com.sunny.youyun.internet.service.ForumServices;
 import com.sunny.youyun.internet.service.TokenServices;
 import com.sunny.youyun.internet.service.UserServices;
-import com.sunny.youyun.model.StatusCode;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.LoginTokenResponseBody;
@@ -125,9 +125,9 @@ public class APIManager {
             Request request = chain.request();
             //begin deal request before request
 
-            Response response = chain.proceed(request);
+            Response originResponse = chain.proceed(request);
             //deal response after receive response
-            ResponseBody responseBody = response.body();
+            ResponseBody responseBody = originResponse.body();
             BufferedSource source = responseBody.source();
             source.request(Long.MAX_VALUE); // Buffer the entire body.
             Buffer buffer = source.buffer();
@@ -143,11 +143,9 @@ public class APIManager {
             Logger.i(result.toString());
             //如果现在保存的登录状态是已登录，并且报未登录错误，则说明是cookie失效了，此时用
             // LoginToken重新请求
-            if (result.getCode() == StatusCode.CODE_NOT_LOGIN &&
+            if (result.getCode() == ApiInfo.STATUS_CODE_NOT_LOGIN &&
                     YouyunAPI.isIsLogin() && YouyunAPI.getLoginToken() != null &&
                     !YouyunAPI.getLoginToken().equals("")) {
-                TokenServices tokenServices = APIManager.getInstance()
-                        .getTokenServices(GsonConverterFactory.create());
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put(ApiInfo.UPDATE_COOKIE_BY_TOKEN_TOKEN, YouyunAPI.getLoginToken());
@@ -156,15 +154,32 @@ public class APIManager {
                 }
                 RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8")
                         , jsonObject.toString());
-                Call<LoginTokenResponseBody> tokenCall = tokenServices
-                            .updateCookieByToken(body);
-                LoginTokenResponseBody loginTokenResponseBody =
-                        tokenCall.execute().body();
-                System.out.println(GsonUtil.bean2Json(loginTokenResponseBody));
+                TokenServices tokenServices = APIManager.getInstance()
+                        .getTokenServices(GsonConverterFactory.create());
+                Call<LoginTokenResponseBody> call = tokenServices
+                        .updateCookieByToken(body);
+                LoginTokenResponseBody loginTokenResponseBody = call.execute().body();
 
-                Request newRequest = request.newBuilder()
-                        .build();
-                
+                //如果LoginToken还有效，就可以请求到用户的信息以及新token
+                if(loginTokenResponseBody.isSuccess() && loginTokenResponseBody.getData() != null){
+                    YouyunAPI.updateIsLogin(true);
+                    YouyunAPI.updateLoginToken(loginTokenResponseBody.getData().getLoginToken());
+                    Request newRequest = request.newBuilder()
+                            .build();
+                    //重新发起之前的请求
+                    if(loginTokenResponseBody.isSuccess() && loginTokenResponseBody.getStatus() == 0){
+                        originResponse.close();
+                        return chain.proceed(newRequest);
+                    }
+                }
+
+            }
+
+            //如果LoginToken失效了，就抛出异常
+            if(result.getCode() == ApiInfo.STATUS_CODE_LOGIN_INVALID &&
+                    YouyunAPI.isIsLogin()){
+                System.out.println("抛出LoginToken失效异常");
+                throw new LoginTokenInvalidException("LoginToken Invalid!!");
             }
 
 //            //对下载文件的Response拦截处理
@@ -174,7 +189,7 @@ public class APIManager {
 //                        .body(new ProgressResponseBody(response.body()))
 //                        .build();
 //            }
-            return response;
+            return originResponse;
         }
     }
 }

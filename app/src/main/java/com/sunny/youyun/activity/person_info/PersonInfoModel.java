@@ -4,7 +4,6 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.result.GetUserInfoResult;
-import com.sunny.youyun.utils.GsonUtil;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,8 +37,9 @@ class PersonInfoModel implements PersonInfoContract.Model {
 
                     @Override
                     public void onNext(BaseResponseBody<GetUserInfoResult> getUserInfoResultBaseResponseBody) {
-                        Logger.i(GsonUtil.getInstance().toJson(getUserInfoResultBaseResponseBody));
-                        mPresenter.getUserInfoSuccess(getUserInfoResultBaseResponseBody.getData());
+                        if(getUserInfoResultBaseResponseBody.isSuccess()){
+                            mPresenter.getUserInfoSuccess(getUserInfoResultBaseResponseBody.getData());
+                        }
                     }
 
                     @Override

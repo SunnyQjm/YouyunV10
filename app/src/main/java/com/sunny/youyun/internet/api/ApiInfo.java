@@ -8,7 +8,7 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-    private static final String IP = "http://192.168.84.39";
+    private static final String IP = "http://192.168.66.195";
     //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
@@ -18,6 +18,18 @@ public class ApiInfo {
     public static final String DOWNLOAD = "file/download/",
             BASE_DOWNLOAD_URL = BaseUrl + DOWNLOAD;
     public static final String GET_FILE_INFO = "file/message", GET_FILE_INFO_IDENTIFY_CODE = "identifycode";
+
+
+    ////////////////////////////////////////////////////////
+    /////Status Code
+    ///////////////////////////////////////////////////////
+
+    //未登录错误
+    public static final int STATUS_CODE_NOT_LOGIN = -1;
+    //参数缺失
+    public static final int STATUS_CODE_PARAM_NOT_COMPLETE = -2;
+    //登录失效
+    public static final int STATUS_CODE_LOGIN_INVALID = -3;
 
 
     ///////////////////////////////////////////////////////
@@ -50,10 +62,12 @@ public class ApiInfo {
     //获取用户信息
     public static final String GET_USER_INFO = "authc/user";
 
+    //获取用户动态
     public static final String GET_USER_DYNAMIC_URL = "authc/file/event",
             GET_USER_DYNAMIC_PAGE = "page", GET_USER_DYNAMIC_SIZE = "size",
             GET_USER_DYNAMIC_TYPE = "type";
 
+    //分类获取用户上传的文件
     public static final String GET_USER_FILE_BY_TYPE_URL = "authc/file/type",
             GET_USER_FILE_BY_TYPE_MIME = "MIME", GET_USER_FILE_BY_TYPE_PAGE = "page",
             GET_USER_FILE_BY_TYPE_SIZE = "size";

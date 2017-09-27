@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.sunny.youyun.activity.person_file_manager_index.PersonFileManagerActivity">
+    tools:context=".activity.person_file_manager.person_file_manager_index.PersonFileManagerActivity">
 
     <include layout="@layout/bar_item"/>
 

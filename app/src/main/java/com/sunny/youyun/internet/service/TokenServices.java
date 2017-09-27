@@ -12,7 +12,13 @@ import retrofit2.http.POST;
  */
 
 public interface TokenServices {
-    @POST
+
+    /**
+     * 利用token获取cookie
+     * @param requestBody
+     * @return
+     */
+    @POST("updateToken")
     Call<LoginTokenResponseBody> updateCookieByToken(
             @Body RequestBody requestBody
     );

@@ -78,7 +78,7 @@ public class InternetFile extends DataSupport implements Serializable {
                 '}';
     }
 
-    private InternetFile(Builder builder) {
+    protected InternetFile(Builder builder) {
         id = builder.id;
         setIdentifyCode(builder.identifyCode);
         name = builder.name;

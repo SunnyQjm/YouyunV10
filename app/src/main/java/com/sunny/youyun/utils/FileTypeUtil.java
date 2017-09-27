@@ -25,6 +25,14 @@ public class FileTypeUtil {
     private static final int code = R.drawable.code;
     private static final int apk = R.drawable.apk;
 
+    private static final String MIME_APPLICATION = "apk";
+    private static final String MIME_ZIP = "zip";
+    private static final String MIME_VIDEO = "video";
+    private static final String MIME_MUSIC = "music";
+    private static final String MIME_PICTURE = "img";
+    private static final String MIME_DOCUMENT = "doc";
+    private static final String MIME_HTML = "html";
+    private static final String MIME_OTHER = "other";
 
     public static int getVideo() {
         return video;
@@ -82,6 +90,36 @@ public class FileTypeUtil {
     }
 
 
+    public static String getMyMIME(String fileName){
+        String type = getMIME(fileName);
+        if (type == null)
+            return MIME_OTHER;
+        if (type.startsWith("image/")) {
+            return MIME_PICTURE;
+        }
+        if (type.startsWith("audio")) {
+            return MIME_MUSIC;
+        }
+        if (type.startsWith("video")) {
+            return MIME_VIDEO;
+        }
+        switch (type) {
+            case "application/zip":
+                return MIME_ZIP;
+            case "application/msword":
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            case "application/vnd.ms-powerpoint":
+            case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+            case "application/vnd.ms-excel":
+            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            case "application/pdf":
+                return MIME_DOCUMENT;
+            case "application/vnd.android.package-archive":
+                return MIME_APPLICATION;
+            default:
+                return MIME_OTHER;
+        }
+    }
     private static int returnIconIdByStringType(String type) {
         if (type == null)
             return file;

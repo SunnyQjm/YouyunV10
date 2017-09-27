@@ -129,7 +129,7 @@ public enum YouyunAPI {
     }
 
     public static String getLoginToken() {
-        return LOGIN_TOKEN;
+        return loginToken;
     }
 
     public static boolean isIsWifiAutoUpdate() {

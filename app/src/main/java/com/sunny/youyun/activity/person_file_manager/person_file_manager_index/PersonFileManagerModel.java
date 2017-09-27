@@ -1,9 +1,10 @@
-package com.sunny.youyun.activity.person_file_manager_index;
+package com.sunny.youyun.activity.person_file_manager.person_file_manager_index;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class PersonFileManagerModel implements PersonFileManagerContract.Model {
     private final PersonFileManagerPresenter mPresenter;
     private final List<MultiItemEntity> mList = new ArrayList<>();
+
     PersonFileManagerModel(PersonFileManagerPresenter personFileManagerPresenter) {
         mPresenter = personFileManagerPresenter;
     }
@@ -42,7 +44,7 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                 .getFileServices(GsonConverterFactory.create())
                 .getUploadFiles()
                 .map(baseResponseBody -> {
-                    if(baseResponseBody.isSuccess()){
+                    if (baseResponseBody.isSuccess()) {
                         mList.clear();
                         Collections.addAll(mList, baseResponseBody.getData());
                         return true;
@@ -59,14 +61,17 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        if(aBoolean){
+                        if (aBoolean) {
                             mPresenter.getUploadFilesSuccess();
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                            Logger.e("获取上传文件列表失败", e);
+                        Logger.e("获取上传文件列表失败: " + e.getMessage(), e);
+                        if(e.getClass() == LoginTokenInvalidException.class){
+                            mPresenter.showError("登录失效，请重新登录");
+                        }
                     }
 
                     @Override
@@ -91,7 +96,7 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                 .getFileServices(GsonConverterFactory.create())
                 .createDirectory(body)
                 .map(baseResponseBody -> {
-                    if(baseResponseBody.isSuccess()){
+                    if (baseResponseBody.isSuccess()) {
                         mList.clear();
                         Collections.addAll(mList, baseResponseBody.getData());
                         return true;
@@ -106,7 +111,7 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        if(aBoolean){
+                        if (aBoolean) {
                             mPresenter.createDirectorySuccess();
                         }
                     }

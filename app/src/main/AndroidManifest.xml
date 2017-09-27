@@ -130,15 +130,15 @@
 
         <service android:name=".internet.download.FileDownloadService" />
 
-        <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="优云.fileprovider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/filepaths" />-->
-        <!--</provider>-->
+        <!-- <provider -->
+        <!-- android:name="android.support.v4.content.FileProvider" -->
+        <!-- android:authorities="优云.fileprovider" -->
+        <!-- android:exported="false" -->
+        <!-- android:grantUriPermissions="true"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
+        <!-- android:resource="@xml/filepaths" /> -->
+        <!-- </provider> -->
 
         <service
             android:name=".internet.upload.FileUploadService"
@@ -155,8 +155,9 @@
         <activity android:name=".activity.setting.SettingActivity" />
         <activity android:name=".activity.about_youyun.AboutYouyunActivity" />
         <activity android:name=".activity.concern.ConcernActivity" />
-        <activity android:name=".activity.person_file_manager_index.PersonFileManagerActivity" />
-        <activity android:name=".activity.my_collection.MyCollectionActivity"></activity>
+        <activity android:name=".activity.person_file_manager.person_file_manager_index.PersonFileManagerActivity" />
+        <activity android:name=".activity.my_collection.MyCollectionActivity" />
+        <activity android:name=".activity.person_file_manager.person_file_list.PersonFileListActivity"></activity>
     </application>
 
 </manifest>

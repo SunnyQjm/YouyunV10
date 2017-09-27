@@ -56,7 +56,7 @@ public class FileUploaderUtils {
             return;
 
         String md5 = MD5Util.getFileMD5(new FileInputStream(f));
-        String MIME = FileTypeUtil.getMIME(f.getName());
+        String MIME = FileTypeUtil.getMyMIME(f.getName());
         long size = f.length();
         //构造检查文件秒传判断的请求
         final RequestBody body = RequestBody.create(

@@ -1,9 +1,9 @@
 package com.sunny.youyun.internet.service;
 
 
+import com.sunny.youyun.activity.person_file_manager.item.BaseFileItem;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.Dynamic;
-import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
@@ -101,7 +101,7 @@ public interface UserServices {
      * @return
      */
     @GET(ApiInfo.GET_USER_FILE_BY_TYPE_URL)
-    Observable<BaseResponseBody<InternetFile[]>> getUserFileByType(
+    Observable<BaseResponseBody<BaseFileItem[]>> getUserFileByType(
             @Query(ApiInfo.GET_USER_FILE_BY_TYPE_MIME) String MIME,
             @Query(ApiInfo.GET_USER_FILE_BY_TYPE_PAGE) int page,
             @Query(ApiInfo.GET_USER_FILE_BY_TYPE_SIZE) int size

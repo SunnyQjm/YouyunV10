@@ -90,6 +90,7 @@ public class SettingActivity extends MVPBaseActivity<SettingPresenter> implement
      */
     @OnClick(R.id.setting_clear_cache)
     public void onSettingClearCacheClicked() {
+        mPresenter.logout();
     }
 
     /**

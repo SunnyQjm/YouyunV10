@@ -1,6 +1,6 @@
-package com.sunny.youyun.activity.person_file_manager_index.item;
+package com.sunny.youyun.activity.person_file_manager.item;
 
-import com.sunny.youyun.activity.person_file_manager_index.config.ItemTypeConfig;
+import com.sunny.youyun.activity.person_file_manager.config.ItemTypeConfig;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.model.FileManageItem;
 
@@ -15,10 +15,9 @@ public class FileItem extends FileManageItem implements MultiItemEntity {
 
     @Override
     public int getItemType() {
-        if (getFile() == null) {
+        if(getFile() == null){
             return ItemTypeConfig.TYPE_DIRECT_INFO;
-        } else {
-            return ItemTypeConfig.TYPE_FILE_INFO;
         }
+        return ItemTypeConfig.TYPE_FILE_INFO;
     }
 }
