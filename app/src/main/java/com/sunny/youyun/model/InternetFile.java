@@ -103,6 +103,21 @@ public class InternetFile extends DataSupport implements Serializable {
         setPosition(builder.position);
     }
 
+    public InternetFile copy(){
+        return new Builder()
+                .createTime(createTime)
+                .description(description)
+                .id(id)
+                .identifyCode(identifyCode)
+                .star(star)
+                .isDirectory(isDirectory)
+                .name(name)
+                .size(size)
+                .downloadCount(downloadCount)
+                .lookNum(lookNum)
+                .build();
+
+    }
     public boolean isCanStar() {
         return canStar;
     }
