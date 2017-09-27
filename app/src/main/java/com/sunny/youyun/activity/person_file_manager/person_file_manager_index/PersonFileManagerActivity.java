@@ -65,6 +65,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
                 mPresenter.createDirectory(null, "新建文件夹");
             }
         });
+        showLoading();
 
         //初始化分类View
         initClassification();
@@ -173,11 +174,13 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
     @Override
     public void getUploadFilesSuccess() {
+        dismissDialog();
         updateAll();
     }
 
     @Override
     public void createDirectorySuccess() {
+        dismissDialog();
         updateAll();
     }
 

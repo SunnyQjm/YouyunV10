@@ -8,4 +8,5 @@ public interface BaseView {
     void showSuccess(String info);
     void showError(String info);
     void showTip(String info);
+    void dismissDialog();
 }

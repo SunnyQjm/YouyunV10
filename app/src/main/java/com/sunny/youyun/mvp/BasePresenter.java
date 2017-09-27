@@ -64,4 +64,7 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
     public void showTip(String info){
         mView.showTip(info);
     }
+    public void dismissDialog(){
+        mView.dismissDialog();
+    }
 }

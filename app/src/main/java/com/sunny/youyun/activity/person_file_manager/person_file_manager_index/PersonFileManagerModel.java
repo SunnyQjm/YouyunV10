@@ -63,6 +63,8 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
                             mPresenter.getUploadFilesSuccess();
+                        } else {
+                            mPresenter.dismissDialog();
                         }
                     }
 

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.mvp.BasePresenter;
+import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
@@ -18,7 +19,7 @@ import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
  * Created by Administrator on 2017/3/18 0018.
  */
 
-public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment {
+public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment implements BaseView{
     protected P mPresenter;
     protected AppCompatActivity activity;
     protected OnFragmentInteractionListener mListener;
@@ -136,7 +137,8 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
         loadingView = EasyDialog.showLoading(activity);
     }
 
-    protected void dismissDialog() {
+    @Override
+    public void dismissDialog() {
         if (dialog != null && !dialog.isHidden())
             dialog.dismiss();
         if (loadingView != null && loadingView.isShowing())
