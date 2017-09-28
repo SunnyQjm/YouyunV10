@@ -12,7 +12,9 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_file_manager.adapter.ClassificationAdapter;
 import com.sunny.youyun.activity.person_file_manager.adapter.FileAdapter;
+import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
+import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.nodes.ClassificationNode;
 import com.sunny.youyun.utils.RouterUtils;
@@ -88,7 +90,13 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
             @Override
             public void onDeleteClick(int position) {
+                MultiItemEntity multiItemEntity = fileAdapter.getItem(position);
+                if(multiItemEntity == null)
+                    return;
+                FileItem fileItem = (FileItem) multiItemEntity;
+                mPresenter.delete(fileItem.getSelfId(), position);
 
+                popupwindow.dismiss(position);
             }
 
             @Override
@@ -201,6 +209,12 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
         updateAll();
     }
 
+    @Override
+    public void deleteSuccess(int position) {
+        dismissDialog();
+        if(fileAdapter != null)
+            fileAdapter.notifyItemRemoved(position);
+    }
     private void updateAll() {
         if (fileAdapter != null)
             fileAdapter.notifyDataSetChanged();

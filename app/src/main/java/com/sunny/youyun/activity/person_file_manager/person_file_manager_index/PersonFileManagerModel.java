@@ -5,6 +5,7 @@ import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
+import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -125,6 +126,49 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         Logger.e("创建文件夹失败", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void delete(final String id, final int position) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(ApiInfo.DELETE_FILE_OR_DIRECTORY_ID, id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        RequestBody body = RequestBody.create(
+                MediaType.parse(ApiInfo.MEDIA_TYPE_JSON), jsonObject.toString()
+        );
+        APIManager.getInstance()
+                .getFileServices(GsonConverterFactory.create())
+                .deleteFileOrDirectory(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mPresenter.addSubscription(d);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponseBody baseResponseBody) {
+                        if(baseResponseBody.isSuccess()) {
+                            mPresenter.deleteSuccess(position);
+                            mList.remove(position);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.e("删除文件夹或文件失败", e);
                     }
 
                     @Override

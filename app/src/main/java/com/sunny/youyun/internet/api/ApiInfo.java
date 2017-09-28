@@ -120,6 +120,9 @@ public class ApiInfo {
     public static final String STAR_URL = "authc/forum/star ",
             STAR_FILE_ID = "fileId";
 
+    //删除文件或文件夹
+    public static final String DELETE_FILE_OR_DIRECTORY_URL = "authc/file/delete",
+            DELETE_FILE_OR_DIRECTORY_ID = "selfId";
 
     ////////////////////////////////////////////////////////////////////////////
     /////////////TokenService

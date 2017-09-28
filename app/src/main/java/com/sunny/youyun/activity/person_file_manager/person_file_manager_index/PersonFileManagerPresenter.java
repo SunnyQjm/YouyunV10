@@ -45,4 +45,14 @@ class PersonFileManagerPresenter extends PersonFileManagerContract.Presenter{
     void createDirectorySuccess() {
         mView.createDirectorySuccess();
     }
+
+    @Override
+    void delete(String id, int position) {
+        mModel.delete(id, position);
+    }
+
+    @Override
+    void deleteSuccess(int position) {
+        mView.deleteSuccess(position);
+    }
 }

@@ -15,12 +15,14 @@ interface PersonFileManagerContract {
     interface View extends BaseView {
         void getUploadFilesSuccess();
         void createDirectorySuccess();
+        void deleteSuccess(int position);
     }
 
     interface Model extends BaseModel {
         List<MultiItemEntity> getData();
         void getUploadFilesOnline(String parent);
         void createDirectory(String parentId, String name);
+        void delete(String id, int position);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
@@ -29,5 +31,7 @@ interface PersonFileManagerContract {
         abstract void getUploadFilesSuccess();
         abstract void createDirectory(String parentId, String name);
         abstract void createDirectorySuccess();
+        abstract void delete(String id, int position);
+        abstract void deleteSuccess(int position);
     }
 }
