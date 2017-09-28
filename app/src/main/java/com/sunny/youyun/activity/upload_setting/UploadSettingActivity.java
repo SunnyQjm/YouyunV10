@@ -21,8 +21,8 @@ import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
 import com.sunny.youyun.views.LineMenuSwitch;
-import com.sunny.youyun.views.YouyunDatePickerDialog;
-import com.sunny.youyun.views.YouyunEditDialog;
+import com.sunny.youyun.views.youyun_dialog.data_picker.YouyunDatePickerDialog;
+import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 

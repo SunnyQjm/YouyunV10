@@ -54,7 +54,6 @@
         android:id="@+id/tv_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2.4MB"
         app:layout_constraintLeft_toRightOf="@+id/tv_description"
         android:layout_marginLeft="20dp"
         android:textSize="12sp"

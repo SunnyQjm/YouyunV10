@@ -120,4 +120,6 @@
     <string name="login_first">请先登陆</string>
     <string name="message">消息</string>
     <string name="zan">赞</string>
+    <string name="create_new_directory">新建文件夹</string>
+    <string name="not_alow_empty">不允许为空</string>
 </resources>

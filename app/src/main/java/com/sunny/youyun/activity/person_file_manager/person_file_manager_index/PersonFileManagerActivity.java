@@ -19,6 +19,7 @@ import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.WindowUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.popupwindow.FileManagerOptionsPopupwindow;
+import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,11 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
     @BindView(R.id.classification_recycler_view)
     RecyclerView classificationRecyclerView;
     @BindView(R.id.filerecycler_view)
-    RecyclerView filerecyclerView;
+    RecyclerView fileRecyclerView;
 
     private ClassificationAdapter classificationAdapter;
     private FileAdapter fileAdapter;
+    private YouyunEditDialog createDirectoryDialog = null;
 
     private FileManagerOptionsPopupwindow popupwindow;
 
@@ -62,7 +64,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
             @Override
             public void onRightIconClick(View view) {
                 //TODO create new directory
-                mPresenter.createDirectory(null, "新建文件夹");
+                createNewDirectory();
             }
         });
         showLoading();
@@ -101,15 +103,30 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
             @Override
             public void onDismiss() {
-                WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);            }
+                WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);
+            }
         });
     }
 
+    private void createNewDirectory() {
+        if (createDirectoryDialog == null) {
+            createDirectoryDialog = YouyunEditDialog.newInstance(getString(R.string.create_new_directory),
+                    "", result -> {
+                        if (result == null || result.equals(""))
+                            showTip(getString(R.string.not_alow_empty));
+                        else
+                            mPresenter.createDirectory("/", result);
+                    });
+        }
+        createDirectoryDialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()),
+                "");
+    }
+
     private void initFileList() {
-        filerecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        filerecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        fileRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        fileRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         fileAdapter = new FileAdapter(mPresenter.getData());
-        fileAdapter.bindToRecyclerView(filerecyclerView);
+        fileAdapter.bindToRecyclerView(fileRecyclerView);
         fileAdapter.setOnItemClickListener((adapter, view, position) -> {
 
         });
@@ -184,8 +201,8 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
         updateAll();
     }
 
-    private void updateAll(){
-        if(fileAdapter != null)
+    private void updateAll() {
+        if (fileAdapter != null)
             fileAdapter.notifyDataSetChanged();
     }
 }

@@ -19,7 +19,7 @@ import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
-import com.sunny.youyun.views.YouyunEditDialog;
+import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

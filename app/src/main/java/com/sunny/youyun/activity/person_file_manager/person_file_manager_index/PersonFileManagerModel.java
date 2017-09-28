@@ -99,12 +99,14 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                 .createDirectory(body)
                 .map(baseResponseBody -> {
                     if (baseResponseBody.isSuccess()) {
-                        mList.clear();
-                        Collections.addAll(mList, baseResponseBody.getData());
+//                        mList.clear();
+//                        Collections.addAll(mList, baseResponseBody.getData());
                         return true;
                     }
                     return false;
                 })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -115,11 +117,13 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
                             mPresenter.createDirectorySuccess();
+                            mPresenter.getUploadFilesOnline(null);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         Logger.e("创建文件夹失败", e);
                     }
 

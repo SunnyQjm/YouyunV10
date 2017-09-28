@@ -1,8 +1,9 @@
-package com.sunny.youyun.views;
+package com.sunny.youyun.views.youyun_dialog.edit;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,7 @@ public class YouyunEditDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        //去掉标题
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (view == null) {
             view = inflater.inflate(R.layout.youyun_edit_dialog, container, false);
@@ -123,5 +125,12 @@ public class YouyunEditDialog extends DialogFragment {
 
     public interface OnYouyunEditDialogClickListener {
         void onResult(String result);
+    }
+
+    public void show(FragmentManager manager, String tag, String newValue) {
+        this.hint = newValue;
+        if(this.editText != null)
+            this.editText.setText(hint);
+        super.show(manager, tag);
     }
 }
