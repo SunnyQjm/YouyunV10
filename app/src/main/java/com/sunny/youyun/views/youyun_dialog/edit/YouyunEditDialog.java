@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class YouyunEditDialog extends DialogFragment {
 
     private String title = "";
     private String hint = "";
+    private int inputType = InputType.TYPE_CLASS_TEXT;
+
     private OnYouyunEditDialogClickListener listener;
 
     public YouyunEditDialog() {
@@ -44,6 +47,16 @@ public class YouyunEditDialog extends DialogFragment {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * 设置允许输入的类型
+     * @param inputType
+     */
+    public void setInputType(int inputType) {
+        this.inputType = inputType;
+        if(editText != null)
+            editText.setInputType(inputType);
     }
 
     public void setHint(String hint) {
@@ -68,7 +81,6 @@ public class YouyunEditDialog extends DialogFragment {
 
     public static YouyunEditDialog newInstance(String title, String hint, OnYouyunEditDialogClickListener listener) {
         Bundle args = new Bundle();
-
         YouyunEditDialog fragment = new YouyunEditDialog();
         fragment.setArguments(args);
         fragment.setTitle(title);
@@ -100,6 +112,7 @@ public class YouyunEditDialog extends DialogFragment {
     private void initView() {
         tvTitle.setText(title);
         editText.setText(hint);
+        editText.setInputType(inputType);
     }
 
     @Override
