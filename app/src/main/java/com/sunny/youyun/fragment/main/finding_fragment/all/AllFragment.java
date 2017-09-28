@@ -107,7 +107,7 @@ public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implemen
 
     @Override
     public void allDataLoadFinish() {
-
+        refreshLayout.setLoadAble(false);
     }
 
     @Override

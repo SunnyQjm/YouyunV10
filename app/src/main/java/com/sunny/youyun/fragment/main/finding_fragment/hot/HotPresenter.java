@@ -24,4 +24,19 @@ class HotPresenter extends HotContract.Presenter{
     List<InternetFile> getDatas() {
         return mModel.getDatas();
     }
+
+    @Override
+    void getForumDataHot(int page, boolean isRefresh) {
+        mModel.getForumDataHot(page, isRefresh);
+    }
+
+    @Override
+    void getDataSuccess() {
+        mView.getDataSuccess();
+    }
+
+    @Override
+    void allDataLoadFinish() {
+        mView.allDataLoadFinish();
+    }
 }
