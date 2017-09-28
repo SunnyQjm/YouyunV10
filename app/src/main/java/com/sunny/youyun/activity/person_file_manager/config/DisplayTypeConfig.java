@@ -37,7 +37,7 @@ public class DisplayTypeConfig {
                 return FileTypeUtil.getMyMIME("1.html");
             case TYPE_DIVIDE_OTHER:
             default:
-                return FileTypeUtil.getMyMIME("1.html");
+                return FileTypeUtil.getMyMIME(null);
         }
     }
 }

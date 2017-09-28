@@ -78,6 +78,8 @@ public class FileTypeUtil {
 
 
     public static String getMIME(String fileName){
+        if(fileName == null)
+            return null;
         //获取后缀名前的分隔符"."在fName中的位置。
         int dotIndex = fileName.lastIndexOf(".");
         if (dotIndex < 0) {

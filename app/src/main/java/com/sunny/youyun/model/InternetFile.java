@@ -23,8 +23,8 @@ public class InternetFile extends DataSupport implements Serializable {
     private final int downloadCount;
     private final int userId;
     private final int lookNum;          //浏览量
-    private final int star;             //点赞人数
-    private final boolean canStar;      //是否已点赞
+    private int star;             //点赞人数
+    private boolean canStar;      //是否已点赞
     private final User user;
     private final String description;
     private final boolean isDirectory;
@@ -158,6 +158,13 @@ public class InternetFile extends DataSupport implements Serializable {
         return progress;
     }
 
+    public void setCanStar(boolean canStar) {
+        this.canStar = canStar;
+    }
+
+    public void setStar(int star) {
+        this.star = star;
+    }
 
     public void setPath(String path) {
         this.path = path;

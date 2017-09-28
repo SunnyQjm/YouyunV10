@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:left_margin="@dimen/mine_item_margin_left"
+        app:right_margin="@dimen/mine_margin_right"
+        app:is_left_icon_visible="true"
+        app:left_icon_size="45dp"
+        app:left_resource="@drawable/avatar_circle_bg"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        />
+    <include layout="@layout/divide_item"/>
+
+
+</LinearLayout>

@@ -102,10 +102,10 @@
             android:layout_height="@dimen/mine_item_height"
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
-            app:left_margin="18dp"
+            app:left_margin="@dimen/mine_item_margin_left"
             app:left_resource="@drawable/icon_mine_collection"
             app:menu_title="我的收藏"
-            app:right_margin="13dp">
+            app:right_margin="@dimen/mine_margin_right">
 
         </com.sunny.youyun.views.LineMenuItem>
 
@@ -117,10 +117,10 @@
             android:layout_height="@dimen/mine_item_height"
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
-            app:left_margin="18dp"
+            app:left_margin="@dimen/mine_item_margin_left"
             app:left_resource="@drawable/icon_mine_follow"
             app:menu_title="关注的人"
-            app:right_margin="13dp">
+            app:right_margin="@dimen/mine_margin_right">
 
         </com.sunny.youyun.views.LineMenuItem>
         <include layout="@layout/divide_item" />
@@ -139,10 +139,10 @@
             android:layout_height="@dimen/mine_item_height"
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
-            app:left_margin="18dp"
+            app:left_margin="@dimen/mine_item_margin_left"
             app:left_resource="@drawable/icon_mine_file_manager"
             app:menu_title="文件管理"
-            app:right_margin="13dp" />
+            app:right_margin="@dimen/mine_margin_right" />
         <include layout="@layout/divide_item" />
 
         <View xmlns:android="http://schemas.android.com/apk/res/android"
@@ -158,10 +158,10 @@
             android:layout_height="@dimen/mine_item_height"
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
-            app:left_margin="18dp"
+            app:left_margin="@dimen/mine_item_margin_left"
             app:left_resource="@drawable/icon_mine_feedback"
             app:menu_title="意见反馈"
-            app:right_margin="13dp">
+            app:right_margin="@dimen/mine_margin_right">
 
         </com.sunny.youyun.views.LineMenuItem>
 
@@ -173,10 +173,10 @@
             android:layout_height="@dimen/mine_item_height"
             android:background="@drawable/ripple_bg_white"
             app:is_left_icon_visible="true"
-            app:left_margin="18dp"
+            app:left_margin="@dimen/mine_item_margin_left"
             app:left_resource="@drawable/icon_mine_share"
             app:menu_title="我的分享"
-            app:right_margin="13dp">
+            app:right_margin="@dimen/mine_margin_right">
 
         </com.sunny.youyun.views.LineMenuItem>
 
@@ -197,10 +197,10 @@
             android:gravity="center"
             android:textSize="14sp"
             app:is_left_icon_visible="true"
-            app:left_margin="18dp"
+            app:left_margin="@dimen/mine_item_margin_left"
             app:left_resource="@drawable/icon_mine_setting"
             app:menu_title="@string/setting"
-            app:right_margin="13dp">
+            app:right_margin="@dimen/mine_margin_right">
 
         </com.sunny.youyun.views.LineMenuItem>
 

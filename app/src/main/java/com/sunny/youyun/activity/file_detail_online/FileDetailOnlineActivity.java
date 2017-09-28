@@ -76,8 +76,6 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     private CommentAdapter adapter;
     @BindView(R.id.recyclerView_comment)
     RecyclerView recyclerViewComment;
-//    @BindView(R.id.refreshLayout)
-//    EasyRefreshLayout refreshLayout;
 
     private InternetFile internetFile = null;
     private final List<InternetFile> mFileList = App.mList_DownloadRecord;
@@ -152,10 +150,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             tvDescription.setText(internetFile.getDescription());
         else {
             SpannableString spannableString = buildDescription();
-//            User user = internetFile.getUser();
-//            GlideUtils.load(this, imgAvatar, user.getAvatar());
             tvDescription.setText(spannableString);
-//            tvUserSShare.setText(String.format("%s%s", user.getUsername(), getString(R.string.xxs_share)));
         }
         if(!internetFile.isCanStar()){
             rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
@@ -341,7 +336,17 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
     @Override
     public void starSuccess() {
-        //点赞成功后重新获取文件信息
-        mPresenter.getFileInfo(internetFile.getIdentifyCode());
+//        //点赞成功后重新获取文件信息
+//        mPresenter.getFileInfo(internetFile.getIdentifyCode());
+
+        //点赞成功后直接
+        if(internetFile.isCanStar()){
+            internetFile.setCanStar(false);
+            internetFile.setStar(internetFile.getStar() + 1);
+        } else {
+            internetFile.setCanStar(true);
+            internetFile.setStar(internetFile.getStar() - 1);
+        }
+        fillData();
     }
 }
