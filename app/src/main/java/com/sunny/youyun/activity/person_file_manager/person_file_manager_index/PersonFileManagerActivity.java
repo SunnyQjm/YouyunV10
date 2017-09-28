@@ -41,7 +41,6 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
     private ClassificationAdapter classificationAdapter;
     private FileAdapter fileAdapter;
-    private YouyunEditDialog createDirectoryDialog = null;
 
     private FileManagerOptionsPopupwindow popupwindow;
 
@@ -91,7 +90,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
             @Override
             public void onDeleteClick(int position) {
                 MultiItemEntity multiItemEntity = fileAdapter.getItem(position);
-                if(multiItemEntity == null)
+                if (multiItemEntity == null)
                     return;
                 FileItem fileItem = (FileItem) multiItemEntity;
                 mPresenter.delete(fileItem.getSelfId(), position);
@@ -117,16 +116,13 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
     }
 
     private void createNewDirectory() {
-        if (createDirectoryDialog == null) {
-            createDirectoryDialog = YouyunEditDialog.newInstance(getString(R.string.create_new_directory),
-                    "", result -> {
-                        if (result == null || result.equals(""))
-                            showTip(getString(R.string.not_alow_empty));
-                        else
-                            mPresenter.createDirectory("/", result);
-                    });
-        }
-        createDirectoryDialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()),
+        YouyunEditDialog.newInstance(getString(R.string.create_new_directory),
+                "", result -> {
+                    if (result == null || result.equals(""))
+                        showTip(getString(R.string.not_alow_empty));
+                    else
+                        mPresenter.createDirectory("/", result);
+                }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),
                 "");
     }
 
@@ -212,9 +208,10 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
     @Override
     public void deleteSuccess(int position) {
         dismissDialog();
-        if(fileAdapter != null)
+        if (fileAdapter != null)
             fileAdapter.notifyItemRemoved(position);
     }
+
     private void updateAll() {
         if (fileAdapter != null)
             fileAdapter.notifyDataSetChanged();

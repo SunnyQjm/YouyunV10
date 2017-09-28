@@ -97,11 +97,10 @@ public class YouyunEditDialog extends DialogFragment {
         if (view == null) {
             view = inflater.inflate(R.layout.youyun_edit_dialog, container, false);
             unbinder = ButterKnife.bind(this, view);
-            initView();
         } else {
             unbinder = ButterKnife.bind(this, view);
         }
-
+        initView();
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null) {
             parent.removeView(view);
@@ -136,14 +135,16 @@ public class YouyunEditDialog extends DialogFragment {
         }
     }
 
+    public void clear() {
+        hint = "";
+    }
+
     public interface OnYouyunEditDialogClickListener {
         void onResult(String result);
     }
 
     public void show(FragmentManager manager, String tag, String newValue) {
         this.hint = newValue;
-        if(this.editText != null)
-            this.editText.setText(hint);
         super.show(manager, tag);
     }
 }
