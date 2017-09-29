@@ -43,7 +43,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
             view = super.onCreateView(inflater, container, savedInstanceState);
-            initView(container);
+            initView();
         } else {
             super.onCreateView(inflater, container, savedInstanceState);
         }
@@ -67,14 +67,15 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         }
     }
 
-    private void initView(ViewGroup container) {
+    private void initView() {
         adapter = new UserItemAdapter(mPresenter.getData());
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         mPresenter.beginListen();
-
+        refreshLayout.setLoadAble(false);
+        refreshLayout.setRefreshAble(false);
     }
 
     @Override
