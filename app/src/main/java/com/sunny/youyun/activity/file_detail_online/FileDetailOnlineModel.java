@@ -3,7 +3,7 @@ package com.sunny.youyun.activity.file_detail_online;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
-import com.sunny.youyun.model.Comment;
+import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.utils.GsonUtil;

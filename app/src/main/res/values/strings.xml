@@ -122,4 +122,6 @@
     <string name="zan">赞</string>
     <string name="create_new_directory">新建文件夹</string>
     <string name="not_alow_empty">不允许为空</string>
+    <string name="concern_num">关注%1$s%2$d</string>
+    <string name="fans_num">粉丝%1$s%2$d</string>
 </resources>

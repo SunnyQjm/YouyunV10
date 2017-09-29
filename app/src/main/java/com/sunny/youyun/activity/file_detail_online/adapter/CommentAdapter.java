@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
-import com.sunny.youyun.model.Comment;
+import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
 

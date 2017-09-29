@@ -1,4 +1,7 @@
-package com.sunny.youyun.model;
+package com.sunny.youyun.model.data_item;
+
+import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.model.User;
 
 /**
  * Created by Sunny on 2017/9/14 0014.

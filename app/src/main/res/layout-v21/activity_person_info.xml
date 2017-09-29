@@ -91,6 +91,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
 
                 <TextView
+                    android:id="@+id/following_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -104,6 +105,7 @@
                     app:layout_constraintTop_toBottomOf="@id/divide_line" />
 
                 <TextView
+                    android:id="@+id/fans_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

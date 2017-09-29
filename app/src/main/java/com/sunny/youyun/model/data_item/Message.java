@@ -1,4 +1,6 @@
-package com.sunny.youyun.model;
+package com.sunny.youyun.model.data_item;
+
+import com.sunny.youyun.model.User;
 
 /**
  * 消息Model

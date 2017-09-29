@@ -8,7 +8,7 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-    private static final String IP = "http://192.168.79.179";
+    private static final String IP = "http://192.168.59.111";
     //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
@@ -72,6 +72,9 @@ public class ApiInfo {
             GET_USER_FILE_BY_TYPE_MIME = "MIME", GET_USER_FILE_BY_TYPE_PAGE = "page",
             GET_USER_FILE_BY_TYPE_SIZE = "size";
 
+    //获取关注的人列表
+    public static final String GET_FOLLOWING_LIST_URL = "authc/get/follow",
+            GET_FOLLOWING_LIST_PAGE = "page", GET_FOLLOWING_LIST_SIZE = "size";
 
     ///////////////////////////////////////////////////////////
     ////////FileService

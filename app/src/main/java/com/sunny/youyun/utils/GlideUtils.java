@@ -5,7 +5,7 @@ import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.sunny.youyun.model.FindingModel;
+import com.sunny.youyun.model.data_item.FindingModel;
 import com.sunny.youyun.model.InternetFile;
 
 /**

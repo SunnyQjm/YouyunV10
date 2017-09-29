@@ -51,6 +51,10 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    @BindView(R.id.following_num)
+    TextView followingNum;
+    @BindView(R.id.fans_num)
+    TextView fansNum;
 
 
     private List<Fragment> fragmentList = new ArrayList<>();
@@ -65,7 +69,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -139,8 +143,14 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         //更新本地的用户信息
         UserInfoManager.getInstance()
                 .setUserInfo(user);
+        fillData(user);
+        GlideUtils.load(this, imgAvatar, user.getAvatar());
+    }
+
+    private void fillData(User user) {
         tvNickname.setText(user.getUsername());
         tvSignature.setText(user.getDescription());
-        GlideUtils.load(this, imgAvatar, user.getAvatar());
+        fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFolloweds()));
+        followingNum.setText(String.format(getString(R.string.concern_num), " ", user.getFollowers()));
     }
 }

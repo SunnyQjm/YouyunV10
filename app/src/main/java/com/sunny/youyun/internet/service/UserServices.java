@@ -3,7 +3,8 @@ package com.sunny.youyun.internet.service;
 
 import com.sunny.youyun.activity.person_file_manager.item.BaseFileItem;
 import com.sunny.youyun.internet.api.ApiInfo;
-import com.sunny.youyun.model.Dynamic;
+import com.sunny.youyun.model.data_item.ConcernItem;
+import com.sunny.youyun.model.data_item.Dynamic;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
@@ -105,5 +106,15 @@ public interface UserServices {
             @Query(ApiInfo.GET_USER_FILE_BY_TYPE_MIME) String MIME,
             @Query(ApiInfo.GET_USER_FILE_BY_TYPE_PAGE) int page,
             @Query(ApiInfo.GET_USER_FILE_BY_TYPE_SIZE) int size
+    );
+
+    /**
+     * 获取关注的人列表
+     * @return
+     */
+    @GET(ApiInfo.GET_FOLLOWING_LIST_URL)
+    Observable<BaseResponseBody<ConcernItem[]>> getFollowingList(
+            @Query(ApiInfo.GET_FOLLOWING_LIST_PAGE) int page,
+            @Query(ApiInfo.GET_FOLLOWING_LIST_SIZE) int size
     );
 }

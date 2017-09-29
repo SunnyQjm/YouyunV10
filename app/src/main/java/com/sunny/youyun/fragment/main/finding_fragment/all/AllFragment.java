@@ -108,6 +108,14 @@ public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implemen
     @Override
     public void allDataLoadFinish() {
         refreshLayout.setLoadAble(false);
+        addDataLoadFinishFooter();
+    }
+
+    /**
+     * 已经没有更多数据可以加载了，在最后添加一个布局
+     */
+    private void addDataLoadFinishFooter() {
+
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.my_collection.adapter.CollectionAdapter;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
-import com.sunny.youyun.model.Collection;
+import com.sunny.youyun.model.data_item.Collection;
 import com.sunny.youyun.model.InternetFile;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
-import com.sunny.youyun.model.Dynamic;
+import com.sunny.youyun.model.data_item.Dynamic;
 import com.sunny.youyun.mvp.BaseView;
 
 import java.util.List;

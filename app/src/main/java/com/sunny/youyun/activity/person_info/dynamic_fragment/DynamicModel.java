@@ -2,7 +2,7 @@ package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
-import com.sunny.youyun.model.Dynamic;
+import com.sunny.youyun.model.data_item.Dynamic;
 
 import java.util.ArrayList;
 import java.util.Collections;

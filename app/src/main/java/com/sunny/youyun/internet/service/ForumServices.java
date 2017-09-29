@@ -1,7 +1,7 @@
 package com.sunny.youyun.internet.service;
 
 import com.sunny.youyun.internet.api.ApiInfo;
-import com.sunny.youyun.model.Comment;
+import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 

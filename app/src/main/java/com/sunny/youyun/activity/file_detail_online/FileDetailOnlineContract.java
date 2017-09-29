@@ -1,6 +1,6 @@
 package com.sunny.youyun.activity.file_detail_online;
 
-import com.sunny.youyun.model.Comment;
+import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.mvp.BaseModel;
 import com.sunny.youyun.mvp.BasePresenter;

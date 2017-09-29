@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
-import com.sunny.youyun.model.Dynamic;
+import com.sunny.youyun.model.data_item.Dynamic;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;

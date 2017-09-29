@@ -15,7 +15,7 @@ import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.message_fragment.adapter.MessageAdapter;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
 import com.sunny.youyun.fragment.main.message_fragment.item.MessageItem;
-import com.sunny.youyun.model.Message;
+import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;

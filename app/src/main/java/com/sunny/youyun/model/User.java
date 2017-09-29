@@ -16,6 +16,8 @@ public class User extends DataSupport{
      * avatar : http://123.206.80.54:8080/avatar/WiTe-a.jpg
      * score : 10
      * id : 1001
+     * "followers": 0,
+     * "followeds": 0,
      * createTime : 1496584061628
      * updateTime : 1496630108830
      */
@@ -30,6 +32,8 @@ public class User extends DataSupport{
     private int id;
     private String loginToken;
     private long createTime;
+    private int followers;
+    private int followeds;
     private long updateTime;
     public static final int INSTANCE_TAG = 0;
     private final int INSTANCE = INSTANCE_TAG;
@@ -45,6 +49,8 @@ public class User extends DataSupport{
         setId(builder.id);
         setLoginToken(builder.loginToken);
         setCreateTime(builder.createTime);
+        followers = builder.followers;
+        followeds = builder.followeds;
         setUpdateTime(builder.updateTime);
     }
 
@@ -64,6 +70,22 @@ public class User extends DataSupport{
                 '}';
     }
 
+
+    public int getFolloweds() {
+        return followeds;
+    }
+
+    public void setFolloweds(int followeds) {
+        this.followeds = followeds;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
 
     public String getLoginToken() {
         return loginToken;
@@ -163,6 +185,8 @@ public class User extends DataSupport{
         this.id = user.id;
         this.createTime = user.createTime;
         this.updateTime = user.updateTime;
+        this.followeds = user.followeds;
+        this.followers = user.followers;
     }
 
     public static final class Builder {
@@ -176,6 +200,8 @@ public class User extends DataSupport{
         private int id;
         private String loginToken;
         private long createTime;
+        private int followers;
+        private int followeds;
         private long updateTime;
 
         public Builder() {
@@ -228,6 +254,16 @@ public class User extends DataSupport{
 
         public Builder createTime(long val) {
             createTime = val;
+            return this;
+        }
+
+        public Builder followers(int val) {
+            followers = val;
+            return this;
+        }
+
+        public Builder followeds(int val) {
+            followeds = val;
             return this;
         }
 
