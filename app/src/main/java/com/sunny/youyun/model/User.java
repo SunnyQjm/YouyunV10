@@ -35,6 +35,7 @@ public class User extends DataSupport{
     private int followers;
     private int followeds;
     private long updateTime;
+    private boolean isFollow;
     public static final int INSTANCE_TAG = 0;
     private final int INSTANCE = INSTANCE_TAG;
 
@@ -73,6 +74,14 @@ public class User extends DataSupport{
 
     public int getFolloweds() {
         return followeds;
+    }
+
+    public boolean isFollow() {
+        return isFollow;
+    }
+
+    public void setFollow(boolean follow) {
+        isFollow = follow;
     }
 
     public void setFolloweds(int followeds) {

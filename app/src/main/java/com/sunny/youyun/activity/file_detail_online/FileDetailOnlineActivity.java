@@ -26,15 +26,18 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_detail_online.adapter.CommentAdapter;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.ShareContent;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.utils.FileUtils;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.InputMethodUtil;
 import com.sunny.youyun.utils.MyClickText;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.RxPermissionUtil;
 import com.sunny.youyun.utils.Tool;
 import com.sunny.youyun.utils.WindowUtil;
@@ -51,7 +54,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @Router(value = IntentRouter.FileDetailOnlineActivity + "/:uuid", stringParams = "uuid")
-public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePresenter> implements FileDetailOnlineContract.View, EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener, View.OnClickListener {
+public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePresenter> implements FileDetailOnlineContract.View, EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     @BindView(R.id.easyBar)
     EasyBar easyBar;
@@ -132,13 +135,13 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         recyclerViewComment.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerViewComment);
         adapter.addHeaderView(header);
+        adapter.setOnItemChildClickListener(this);
 
         String uuid = getIntent().getStringExtra("uuid");
         internetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
         fillData();
 
         mPresenter.getFileInfo(internetFile.getIdentifyCode());
-
         mPresenter.getComments(internetFile.getId(), true);
     }
 
@@ -267,8 +270,6 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_avatar:
-                break;
             case R.id.rt_view_count:
                 break;
             case R.id.rt_like_count:
@@ -348,5 +349,18 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             internetFile.setStar(internetFile.getStar() - 1);
         }
         fillData();
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        System.out.println("click");
+        if(view.getId() == R.id.img_avatar){        //头像被点击
+            System.out.println("cli");
+            Comment comment = (Comment) adapter.getItem(position);
+            if(comment == null)
+                return;
+            RouterUtils.open(this, IntentRouter.PersonInfoActivity,
+                    String.valueOf(comment.getUserId()));
+        }
     }
 }

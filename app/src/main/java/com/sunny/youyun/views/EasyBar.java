@@ -253,7 +253,7 @@ public class EasyBar extends RelativeLayout {
 
 
     public enum Mode {
-        ICON, TEXT
+        ICON, TEXT, ICON_TEXT, TEXT_ICON
     }
 
     public void setDisplayMode(Mode mode) {
@@ -268,6 +268,18 @@ public class EasyBar extends RelativeLayout {
                 tv_right_text.setVisibility(VISIBLE);
                 img_left.setVisibility(INVISIBLE);
                 img_right.setVisibility(INVISIBLE);
+                break;
+            case ICON_TEXT:
+                tv_left_text.setVisibility(INVISIBLE);
+                tv_right_text.setVisibility(VISIBLE);
+                img_left.setVisibility(VISIBLE);
+                img_right.setVisibility(INVISIBLE);
+                break;
+            case TEXT_ICON:
+                tv_left_text.setVisibility(VISIBLE);
+                tv_right_text.setVisibility(INVISIBLE);
+                img_left.setVisibility(INVISIBLE);
+                img_right.setVisibility(VISIBLE);
                 break;
         }
     }

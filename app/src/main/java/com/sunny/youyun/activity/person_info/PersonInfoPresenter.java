@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.person_info;
 
+import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.result.GetUserInfoResult;
 
 import java.io.IOException;
@@ -28,5 +29,25 @@ class PersonInfoPresenter extends PersonInfoContract.Presenter{
     @Override
     void getUserInfoSuccess(GetUserInfoResult result) {
         mView.getUserInfoSuccess(result);
+    }
+
+    @Override
+    void concern(int otherId) {
+        mModel.concern(otherId);
+    }
+
+    @Override
+    void concernSuccess() {
+        mView.concernSuccess();
+    }
+
+    @Override
+    void getOtherUserInfoOnline(int otherId) {
+        mModel.getOtherUserInfoOnline(otherId);
+    }
+
+    @Override
+    void getOtherUserInfoSuccess(User user) {
+        mView.getOtherUserInfoSuccess(user);
     }
 }

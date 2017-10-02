@@ -30,7 +30,8 @@ public class CommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder> {
             return;
         helper.setText(R.id.tv_nickname, item.getUser().getUsername())
                 .setText(R.id.tv_date, TimeUtils.returnTime_y4md(item.getCreateTime()))
-                .setText(R.id.tv_comment, item.getComment());
+                .setText(R.id.tv_comment, item.getComment())
+                .addOnClickListener(R.id.img_avatar);
 
         GlideUtils.load(mContext, ((ImageView)helper.getView(R.id.img_avatar)), item.getUser().getAvatar());
     }

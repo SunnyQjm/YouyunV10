@@ -35,7 +35,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IntentRouter.PersonInfoActivity)
+@Router(value = {IntentRouter.PersonInfoActivity, IntentRouter.PersonInfoActivity + "/:otherId"},
+        intParams = "otherId")
 public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> implements PersonInfoContract.View,
         MVPBaseFragment.OnFragmentInteractionListener {
 
@@ -61,10 +62,13 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     private ConcernFragment concernFragment;
     private DynamicFragment dynamicFragment;
     private RecordTabsAdapter adapter;
+    //用来标识是否访问的是别人的主页
+    private int otherId = -1;
+
 
     private static final int TAB_MARGIN_LEFT = 40;
     private static final int TAB_MARGIN_RIGHT = 40;
-
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,9 +98,18 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
             @Override
             public void onRightIconClick(View view) {
-
+                //TODO 关注
+                if(otherId < 0)
+                    return;
+                mPresenter.concern(otherId);
             }
         });
+        otherId = getIntent().getIntExtra("otherId", -1);
+        System.out.println("otherId: " + otherId);
+        easyBar.setDisplayMode(EasyBar.Mode.ICON_TEXT);
+        if(otherId > 0){
+            easyBar.setRightText(getString(R.string.concern));
+        }
 
         concernFragment = ConcernFragment.newInstance();
         dynamicFragment = DynamicFragment.newInstance();
@@ -112,7 +125,11 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         RecyclerViewUtils.setIndicator(this, tabLayout, TAB_MARGIN_LEFT, TAB_MARGIN_RIGHT);
 
-        mPresenter.getUserInfoOnline();
+        if(otherId > 0){ //查看别人的信息
+            mPresenter.getOtherUserInfoOnline(otherId);
+        } else {  //查看自己的信息
+            mPresenter.getUserInfoOnline();
+        }
     }
 
     @Override
@@ -140,17 +157,44 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     @Override
     public void getUserInfoSuccess(GetUserInfoResult result) {
         User user = result.getUser();
-        //更新本地的用户信息
-        UserInfoManager.getInstance()
-                .setUserInfo(user);
+        getOtherUserInfoSuccess(user);
+    }
+
+    @Override
+    public void getOtherUserInfoSuccess(User user) {
+        if(otherId < 0){ //如果获取的是自己的信息则保存到本地
+            //更新本地的用户信息
+            UserInfoManager.getInstance()
+                    .setUserInfo(user);
+        }
         fillData(user);
         GlideUtils.load(this, imgAvatar, user.getAvatar());
     }
 
+    @Override
+    public void concernSuccess() {
+        if(user == null)
+            return;
+        if(user.isFollow()){
+            user.setFollow(false);
+        } else {
+            user.setFollow(true);
+        }
+        fillData(user);
+    }
+
     private void fillData(User user) {
+        this.user = user;
         tvNickname.setText(user.getUsername());
         tvSignature.setText(user.getSignature());
         fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFolloweds()));
         followingNum.setText(String.format(getString(R.string.concern_num), " ", user.getFollowers()));
+        if(otherId > 0){
+            if(user.isFollow()){
+                easyBar.setRightText(getString(R.string.already_concern));
+            } else {
+                easyBar.setRightText(getString(R.string.concern));
+            }
+        }
     }
 }
