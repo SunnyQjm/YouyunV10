@@ -27,7 +27,7 @@ public class UserItemAdapter extends BaseQuickAdapter<ConcernItem, BaseViewHolde
         if(user == null)
             return;
         helper.setText(R.id.tv_nickname, user.getUsername())
-                .setText(R.id.tv_description, user.getDescription());
+                .setText(R.id.tv_description, user.getSignature());
         GlideUtils.load(mContext, ((ImageView)helper.getView(R.id.img_avatar)), user.getAvatar());
     }
 }

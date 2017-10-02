@@ -149,7 +149,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
     private void fillData(User user) {
         tvNickname.setText(user.getUsername());
-        tvSignature.setText(user.getDescription());
+        tvSignature.setText(user.getSignature());
         fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFolloweds()));
         followingNum.setText(String.format(getString(R.string.concern_num), " ", user.getFollowers()));
     }

@@ -1,8 +1,12 @@
 package com.sunny.youyun.activity.setting;
 
+import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.model.response_body.BaseResponseBody;
 
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,6 +27,26 @@ class SettingModel implements SettingContract.Model {
                 .logout()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new Observer<BaseResponseBody<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mPresenter.addSubscription(d);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponseBody<String> stringBaseResponseBody) {
+                        Logger.i("Login: " + stringBaseResponseBody.isSuccess());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.e("退出登录失败", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

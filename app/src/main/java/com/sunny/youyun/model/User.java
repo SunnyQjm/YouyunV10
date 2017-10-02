@@ -28,7 +28,7 @@ public class User extends DataSupport{
     private String phone;
     private String avatar;
     private int score;
-    private String description;
+    private String signature;
     private int id;
     private String loginToken;
     private long createTime;
@@ -45,7 +45,7 @@ public class User extends DataSupport{
         setPhone(builder.phone);
         setAvatar(builder.avatar);
         setScore(builder.score);
-        setDescription(builder.description);
+        setSignature(builder.description);
         setId(builder.id);
         setLoginToken(builder.loginToken);
         setCreateTime(builder.createTime);
@@ -95,12 +95,12 @@ public class User extends DataSupport{
         this.loginToken = loginToken;
     }
 
-    public String getDescription() {
-        return description;
+    public String getSignature() {
+        return signature;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     public String getUsername() {
