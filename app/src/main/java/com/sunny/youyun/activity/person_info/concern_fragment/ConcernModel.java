@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.person_info.concern_fragment;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.data_item.ConcernItem;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
@@ -51,12 +52,14 @@ class ConcernModel implements ConcernContract.Model{
 
                     @Override
                     public void onNext(BaseResponseBody<ConcernItem[]> baseResponseBody) {
-                        if(baseResponseBody.isSuccess()){
+                        if(baseResponseBody.isSuccess() && baseResponseBody.getData() != null){
                             if(isRefresh){
                                 mList.clear();
                             }
                             Collections.addAll(mList, baseResponseBody.getData());
                             mPresenter.getFollowingListSuccess();
+                            if(baseResponseBody.getData().length < ApiInfo.GET_FORUM_DEFAULT_SIZE)
+                                mPresenter.allDataGetFinish();
                         }
                     }
 

@@ -125,4 +125,5 @@
     <string name="concern_num">关注%1$s%2$d</string>
     <string name="fans_num">粉丝%1$s%2$d</string>
     <string name="already_concern">已关注</string>
+    <string name="cancel_concern">取消关注</string>
 </resources>

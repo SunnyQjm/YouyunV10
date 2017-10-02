@@ -14,6 +14,7 @@ import java.util.List;
 public interface ConcernContract {
     interface View extends BaseView {
         void getFollowingListSuccess();
+        void allDataGetFinish();
     }
     interface Model extends BaseModel {
         void beginListen();
@@ -26,5 +27,6 @@ public interface ConcernContract {
         abstract List<ConcernItem> getData();
         abstract void getFollowingList(int page, boolean isRefresh);
         abstract void getFollowingListSuccess();
+        abstract void allDataGetFinish();
     }
 }

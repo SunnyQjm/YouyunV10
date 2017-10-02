@@ -8,15 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_info.adapter.UserItemAdapter;
+import com.sunny.youyun.base.RecyclerViewDividerItem;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
+import com.sunny.youyun.model.data_item.ConcernItem;
+import com.sunny.youyun.utils.RouterUtils;
 
 
 /**
  * Created by Sunny on 2017/6/25 0025.
  */
-public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> implements ConcernContract.View {
+public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> implements ConcernContract.View, BaseQuickAdapter.OnItemClickListener {
 
     private UserItemAdapter adapter = null;
     private View view = null;
@@ -70,9 +75,11 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     private void initView() {
         adapter = new UserItemAdapter(mPresenter.getData());
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new RecyclerViewDividerItem(activity,
+                DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
+        adapter.setOnItemClickListener(this);
         mPresenter.beginListen();
         refreshLayout.setLoadAble(false);
         refreshLayout.setRefreshAble(false);
@@ -86,6 +93,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     @Override
     protected void onRefreshBegin() {
         page = 1;
+        endView.setVisibility(View.GONE);
     }
 
     @Override
@@ -114,8 +122,32 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         updateAll();
     }
 
+    @Override
+    public void allDataGetFinish() {
+        if(endView == null) {
+            endView = LayoutInflater.from(activity)
+                    .inflate(R.layout.easy_refresh_end, null, false);
+            if(adapter != null){
+                adapter.addFooterView(endView);
+            }
+        }
+        else
+            endView.setVisibility(View.VISIBLE);
+        //设置不可加载更多
+        refreshLayout.setLoadAble(false);
+    }
+
     private void updateAll() {
         if(adapter != null)
             adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        ConcernItem concernItem = (ConcernItem) adapter.getItem(position);
+        if(concernItem == null || concernItem.getUser() == null)
+            return;
+        RouterUtils.open(activity, IntentRouter.PersonInfoActivity,
+                String.valueOf(concernItem.getUser().getId()));
     }
 }

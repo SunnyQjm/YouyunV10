@@ -41,4 +41,9 @@ public class ConcernPresenter extends ConcernContract.Presenter{
     void getFollowingListSuccess() {
         mView.getFollowingListSuccess();
     }
+
+    @Override
+    void allDataGetFinish() {
+        mView.allDataGetFinish();
+    }
 }

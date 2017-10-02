@@ -56,6 +56,8 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     TextView followingNum;
     @BindView(R.id.fans_num)
     TextView fansNum;
+    @BindView(R.id.img_edit)
+    ImageView imgEdit;
 
 
     private List<Fragment> fragmentList = new ArrayList<>();
@@ -69,6 +71,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     private static final int TAB_MARGIN_LEFT = 40;
     private static final int TAB_MARGIN_RIGHT = 40;
     private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,16 +102,17 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
             @Override
             public void onRightIconClick(View view) {
                 //TODO 关注
-                if(otherId < 0)
+                if (otherId < 0)
                     return;
                 mPresenter.concern(otherId);
             }
         });
         otherId = getIntent().getIntExtra("otherId", -1);
-        System.out.println("otherId: " + otherId);
-        easyBar.setDisplayMode(EasyBar.Mode.ICON_TEXT);
-        if(otherId > 0){
+        if (otherId > 0 && otherId != UserInfoManager.getInstance()
+                .getUserInfo().getId()) {  //如果查看的是别人的信息
+            easyBar.setDisplayMode(EasyBar.Mode.ICON_TEXT);
             easyBar.setRightText(getString(R.string.concern));
+            imgEdit.setVisibility(View.INVISIBLE);
         }
 
         concernFragment = ConcernFragment.newInstance();
@@ -125,7 +129,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         RecyclerViewUtils.setIndicator(this, tabLayout, TAB_MARGIN_LEFT, TAB_MARGIN_RIGHT);
 
-        if(otherId > 0){ //查看别人的信息
+        if (otherId > 0) { //查看别人的信息
             mPresenter.getOtherUserInfoOnline(otherId);
         } else {  //查看自己的信息
             mPresenter.getUserInfoOnline();
@@ -146,6 +150,9 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
                 break;
             case R.id.tv_signature:
                 break;
+            case R.id.img_edit:
+
+                break;
         }
     }
 
@@ -162,7 +169,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
     @Override
     public void getOtherUserInfoSuccess(User user) {
-        if(otherId < 0){ //如果获取的是自己的信息则保存到本地
+        if (otherId < 0) { //如果获取的是自己的信息则保存到本地
             //更新本地的用户信息
             UserInfoManager.getInstance()
                     .setUserInfo(user);
@@ -173,9 +180,9 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
     @Override
     public void concernSuccess() {
-        if(user == null)
+        if (user == null)
             return;
-        if(user.isFollow()){
+        if (user.isFollow()) {
             user.setFollow(false);
         } else {
             user.setFollow(true);
@@ -189,9 +196,9 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         tvSignature.setText(user.getSignature());
         fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFolloweds()));
         followingNum.setText(String.format(getString(R.string.concern_num), " ", user.getFollowers()));
-        if(otherId > 0){
-            if(user.isFollow()){
-                easyBar.setRightText(getString(R.string.already_concern));
+        if (otherId > 0) {
+            if (user.isFollow()) {
+                easyBar.setRightText(getString(R.string.cancel_concern));
             } else {
                 easyBar.setRightText(getString(R.string.concern));
             }

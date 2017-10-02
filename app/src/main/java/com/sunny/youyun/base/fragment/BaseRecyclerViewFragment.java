@@ -47,6 +47,7 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
     protected boolean isPrepared = false;
     //是否是第一次
     protected boolean isFirst = true;
+    protected View endView = null;
 
     Unbinder unbinder;
 

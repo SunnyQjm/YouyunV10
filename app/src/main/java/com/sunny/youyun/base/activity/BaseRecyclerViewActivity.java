@@ -30,6 +30,7 @@ public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends 
     protected EasyRefreshLayout refreshLayout;
 
     protected CustomLinerLayoutManager linerLayoutManager;
+    protected View endView = null;
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
