@@ -26,6 +26,7 @@ import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.result.GetUserInfoResult;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RecyclerViewUtils;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
             case R.id.tv_signature:
                 break;
             case R.id.img_edit:
-
+                RouterUtils.open(this, IntentRouter.PersonSettingActivity);
                 break;
         }
     }

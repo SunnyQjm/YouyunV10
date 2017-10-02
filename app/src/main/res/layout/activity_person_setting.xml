@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/light_gray"
+    tools:context="com.sunny.youyun.activity.person_setting.PersonSettingActivity">
+
+    <include layout="@layout/bar_item"/>
+
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/text_gray_light"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="@string/person_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp" />
+    <include layout="@layout/divide_item"/>
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_change_avatar"
+        app:right_resource="@drawable/avatar_circle_bg"
+        app:is_right_icon_visible="true"
+        app:right_icon_size="30dp"
+        app:menu_title="@string/change_avatar"
+        app:menu_title_size="14sp"
+        app:menu_title_color="@color/text_gray"
+        app:left_margin="@dimen/mine_item_margin_left"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_item_height">
+
+    </com.sunny.youyun.views.LineMenuItem>
+    <include layout="@layout/divide_item"/>
+    <com.sunny.youyun.views.LineMenuItem
+        android:id="@+id/li_change_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_item_height"
+        app:menu_title="@string/change_nickname"
+        app:menu_title_size="14sp"
+        app:menu_title_color="@color/text_gray"
+        app:menu_value="GaoSQ"
+        app:left_margin="@dimen/mine_item_margin_left">
+    </com.sunny.youyun.views.LineMenuItem>
+    <include layout="@layout/divide_item"/>
+
+    <EditText
+        android:id="@+id/et_signature"
+        android:background="@drawable/et_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="点此编辑个签"
+        android:gravity="top"
+        android:textSize="14sp"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:minHeight="100dp"/>
+
+
+</LinearLayout>

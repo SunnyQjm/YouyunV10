@@ -172,7 +172,8 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                 break;
             case R.id.img_edit:
                 if (YouyunAPI.isIsLogin()) {
-                    showEditDialog(user.getUsername());
+//                    showEditDialog(user.getUsername());
+                    RouterUtils.open(activity, IntentRouter.PersonSettingActivity);
                 }
                 break;
             case R.id.img_avatar:

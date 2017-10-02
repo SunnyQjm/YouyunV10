@@ -83,6 +83,12 @@ public class ApiInfo {
     public static final String GET_OTHER_USER_INFO_URL = "otherUser",
             GET_OTHER_USER_INFO_OTHER_ID = "otherId";
 
+    //修改用户的基本信息
+    public static final String MODIFY_USER_INFO_URL = "authc/user/update",
+            MODIFY_USER_INFO_NICKNAME = "username", MODIFY_USER_INFO_SEX = "sex",
+            MODIFY_USER_INFO_SIGNATURE = "signature", MODIFY_USER_INFO_OLD_PASSWORD = "oldpassword",
+            MODIFY_USER_INFO_NEW_PASSWORD = "newpassword";
+
     ///////////////////////////////////////////////////////////
     ////////FileService
     ///////////////////////////////////////////////////////////

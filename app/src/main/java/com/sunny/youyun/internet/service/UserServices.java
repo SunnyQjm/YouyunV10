@@ -138,4 +138,12 @@ public interface UserServices {
     Observable<BaseResponseBody<User>> getOtherUserInfo(
             @Query(ApiInfo.GET_OTHER_USER_INFO_OTHER_ID) int otherId
     );
+
+    /**
+     * 修改用户的基本信息
+     * @param body
+     * @return
+     */
+    @POST(ApiInfo.MODIFY_USER_INFO_URL)
+    Observable<BaseResponseBody> modifyUserInfo(@Body RequestBody body);
 }
