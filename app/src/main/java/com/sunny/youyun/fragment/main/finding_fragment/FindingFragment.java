@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.sunny.youyun.fragment.main.finding_fragment.concern.ConcernFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.hot.HotFragment;
 import com.sunny.youyun.utils.RecyclerViewUtils;
 import com.sunny.youyun.views.EasyBar;
+import com.sunny.youyun.views.MyPopupWindow;
 import com.sunny.youyun.views.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter> implement
     private RecordTabsAdapter recordTabsAdapter;
     private static final int TAB_MARGIN_LEFT = 40;
     private static final int TAB_MARGIN_RIGHT = 40;
+    private MyPopupWindow searchPopupWindow = null;
 
     public static FindingFragment newInstance() {
         Bundle args = new Bundle();
@@ -70,8 +73,23 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter> implement
     }
 
     private void initView() {
-        easyBar.setLeftIconInVisible();
         easyBar.setTitle(getString(R.string.finding_square));
+        easyBar.setDisplayMode(EasyBar.Mode.ICON);
+        easyBar.setLeftIconInVisible();
+        easyBar.setRightIconVisible();
+        easyBar.setRightIcon(R.drawable.icon_search);
+        easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
+            @Override
+            public void onLeftIconClick(View view) {
+
+            }
+
+            @Override
+            public void onRightIconClick(View view) {
+                //TODO Open search window
+                showSearchWindow(view);
+            }
+        });
         allFragment = AllFragment.newInstance();
         concernFragment = ConcernFragment.newInstance();
         hotFragment = HotFragment.newInstance();
@@ -91,21 +109,27 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter> implement
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         RecyclerViewUtils.setIndicator(activity, tabLayout, TAB_MARGIN_LEFT, TAB_MARGIN_RIGHT);
+
+        //创建搜索window
+        createSearchWindow();
     }
 
-    @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
+    /**
+     * 显示搜索窗口
+     * @param view
+     */
+    private void showSearchWindow(View view) {
+        if(!searchPopupWindow.isShowing()){
+            searchPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        }
     }
 
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
+    private void createSearchWindow() {
+        View view = LayoutInflater.from(activity)
+                .inflate(R.layout.finding_search_view_window, null, false);
+        searchPopupWindow = new MyPopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
 
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
     }
 
     @Override

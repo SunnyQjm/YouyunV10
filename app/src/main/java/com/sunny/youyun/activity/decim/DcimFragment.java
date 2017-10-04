@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.decim;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +23,7 @@ import com.sunny.youyun.activity.file_manager.item.FileItem;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.RxPermissionUtil;
 import com.sunny.youyun.views.DividerGridItemDecoration;
 import com.sunny.youyun.views.EasyBar;
 
@@ -84,7 +86,15 @@ public class DcimFragment extends MVPBaseFragment<DcimPresenter> implements Dcim
         });
 
         showLoading();
-        mPresenter.getData(activity);
+        //解决android6.0权限动态申请问题
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            RxPermissionUtil.getInstance(activity)
+                    .request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .subscribe(aBoolean -> {
+                        if(aBoolean)
+                            mPresenter.getData(activity);
+                    });
+        }
         dcimAdapter = new DcimAdapter(activity, mPresenter.getFileItems());
         recyclerView.setLayoutManager(new GridLayoutManager(activity, 3));
         recyclerView.addItemDecoration(new DividerGridItemDecoration(getContext()));
