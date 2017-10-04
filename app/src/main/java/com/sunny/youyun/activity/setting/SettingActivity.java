@@ -10,6 +10,7 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
+import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
@@ -135,6 +136,7 @@ public class SettingActivity extends MVPBaseActivity<SettingPresenter> implement
         UserInfoManager.getInstance().clear();
         mPresenter.logout();
         YouyunAPI.updateIsLogin(false);
+        JPushUtil.setTag(this, "0000");
         RouterUtils.open(this, IntentRouter.LoginActivity);
         finish();
     }

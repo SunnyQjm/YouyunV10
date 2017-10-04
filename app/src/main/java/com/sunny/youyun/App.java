@@ -12,6 +12,7 @@ import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
+import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.MyThreadPool;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
@@ -19,9 +20,7 @@ import com.sunny.youyun.wifidirect.model.TransLocalFile;
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.jpush.android.api.BasicPushNotificationBuilder;
@@ -75,12 +74,7 @@ public class App extends Application {
                 | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
         JPushInterface.setPushNotificationBuilder(1, builder);
         JPushInterface.init(this);
-        Set<String> tags = new HashSet<>();
-        tags.add("1001");
-        JPushInterface.setTags(this, tags, (i, s, set) -> {
-            System.out.println(s);
-            System.out.println(set);
-        });
+        JPushUtil.setTag(this, "0000");
     }
 
     public static void startAnim(Activity activity) {

@@ -18,8 +18,10 @@ import com.sunny.youyun.activity.BaseUiListener;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.model.QQLoginResult;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.AccountValidatorUtil;
 import com.sunny.youyun.utils.GsonUtil;
+import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.share.TencentUtil;
 import com.sunny.youyun.views.EasyBar;
@@ -86,24 +88,13 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
     }
 
     @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
-    }
-
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
-
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
-    }
-
-    @Override
     public void loginSuccess() {
         dismissDialog();
         onBackPressed();
+        //登录成功以后设置本机的tag为用户的id
+        JPushUtil.setTag(this, String.valueOf(UserInfoManager.getInstance()
+                .getUserInfo()
+                .getId()));
     }
 
     @OnClick({R.id.tv_forget_pass, R.id.btn_login, R.id.btn_register, R.id.img_qq_login, R.id.img_we_chat_login})
