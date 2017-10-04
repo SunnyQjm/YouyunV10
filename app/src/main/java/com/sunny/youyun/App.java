@@ -74,7 +74,10 @@ public class App extends Application {
                 | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
         JPushInterface.setPushNotificationBuilder(1, builder);
         JPushInterface.init(this);
-        JPushUtil.setTag(this, "0000");
+        //设置设备的推送标识
+        JPushUtil.setTag(this, String.valueOf(UserInfoManager.getInstance()
+                .getUserInfo()
+                .getId()));
     }
 
     public static void startAnim(Activity activity) {

@@ -27,7 +27,7 @@
 
     <include layout="@layout/divide_item"/>
 
-    <include layout="@layout/comment_view"/>
+    <include layout="@layout/send_view"/>
 
 
 </LinearLayout>

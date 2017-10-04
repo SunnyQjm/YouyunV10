@@ -158,7 +158,8 @@
         <activity android:name=".activity.person_file_manager.person_file_manager_index.PersonFileManagerActivity" />
         <activity android:name=".activity.my_collection.MyCollectionActivity" />
         <activity android:name=".activity.person_file_manager.person_file_list.PersonFileListActivity" />
-        <activity android:name=".activity.person_setting.PersonSettingActivity"></activity>
+        <activity android:name=".activity.person_setting.PersonSettingActivity" />
+        <activity android:name=".activity.chat.ChatActivity"></activity>
     </application>
 
 </manifest>

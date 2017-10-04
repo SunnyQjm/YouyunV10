@@ -39,6 +39,9 @@ public class MyJPushReceiver extends BroadcastReceiver {
         //收到了通知 Push。
         else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(action)) {
             Log.e(TAG, "收到了通知");
+            Log.e(TAG, "收到了通知。消息标题是：" + bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE));
+            Log.e(TAG, "收到了通知。附加字段是：" + bundle.getString(JPushInterface.EXTRA_ALERT));
+            Log.e(TAG, "收到了通知。附加字段是：" + bundle.getString(JPushInterface.EXTRA_EXTRA));
             // 在这里可以做些统计，或者做些其他工作
         }
         // 用户点击了通知以后的响应

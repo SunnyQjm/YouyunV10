@@ -60,7 +60,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     EasyBar easyBar;
     @BindView(R.id.refreshLayout)
     EasyRefreshLayout refreshLayout;
-    @BindView(R.id.et_comment_content)
+    @BindView(R.id.et_content)
     EditText etCommentContent;
     @BindView(R.id.btn_send)
     Button btnSend;
