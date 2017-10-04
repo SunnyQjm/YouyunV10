@@ -132,4 +132,7 @@
     <string name="change_signature">更改个签</string>
     <string name="person_info_edit">个人资料编辑</string>
     <string name="save">保存</string>
+    <string name="search_hint">文件名/用户名/手机号/邮箱</string>
+    <string name="file">文件</string>
+    <string name="user">用户</string>
 </resources>

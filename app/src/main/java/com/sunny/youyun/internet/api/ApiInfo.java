@@ -109,9 +109,9 @@ public class ApiInfo {
 
     /**
      * 5.获取路径信息 method: get /authc/file/dir
-     {
-     parentId: //当为null时返回根目录/下的所有文件
-     }
+     * {
+     * parentId: //当为null时返回根目录/下的所有文件
+     * }
      */
     public static final String GET_UPLOAD_FILES_URL = "authc/file/dir",
             GET_UPLOAD_FILES_PARENT_ID = "parentId", GET_UPLOAD_FILES_ROOT_PATH = "/";
@@ -136,6 +136,10 @@ public class ApiInfo {
     public static final String STAR_URL = "authc/forum/star ",
             STAR_FILE_ID = "fileId";
 
+    //搜索
+    public static final String SEARCH_URL = "forum/search",
+            SEARCH_STR = "str";
+
     //删除文件或文件夹
     public static final String DELETE_FILE_OR_DIRECTORY_URL = "authc/file/delete",
             DELETE_FILE_OR_DIRECTORY_ID = "selfId";
@@ -145,7 +149,6 @@ public class ApiInfo {
     ///////////////////////////////////////////////////////////////////////////
     public static final String UPDATE_COOKIE_BY_TOKEN_URL = "updateToken",
             UPDATE_COOKIE_BY_TOKEN_TOKEN = "token";
-
 
 
     ///////////////////////////////////////////////////////////////////////////

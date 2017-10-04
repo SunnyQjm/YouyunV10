@@ -55,14 +55,10 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
             @Override
             public void onRightIconClick(View view) {
                 //TODO Save
-
+                mPresenter.modifySignature(etSignature.getText().toString());
             }
         });
-        user = UserInfoManager.getInstance()
-                .getUserInfo();
-        GlideUtils.load(this, liChangeAvatar.getRight_icon(), user.getAvatar());
-        liChangeNickname.setValue(user.getUsername());
-        etSignature.setText(user.getSignature());
+        fillData();
     }
 
     @Override
@@ -92,6 +88,14 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
 
     @Override
     public void modifyUserInfoSuccess() {
+        fillData();
+    }
 
+    private void fillData() {
+        user = UserInfoManager.getInstance()
+                .getUserInfo();
+        GlideUtils.load(this, liChangeAvatar.getRight_icon(), user.getAvatar());
+        liChangeNickname.setValue(user.getUsername());
+        etSignature.setText(user.getSignature());
     }
 }

@@ -47,7 +47,6 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:textSize="14sp"
-        android:text="简介：普天之下"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

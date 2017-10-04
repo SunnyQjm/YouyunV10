@@ -25,6 +25,6 @@
         android:layout_marginTop="10dp"
         android:background="@color/line_gray" />
 
-    <include layout="@layout/file_detail_comment_tag"/>
+    <include layout="@layout/tag"/>
 
 </LinearLayout>

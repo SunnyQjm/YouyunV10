@@ -41,11 +41,29 @@ public enum UserInfoManager {
      * 更新用户头像
      * @param avatar
      */
-    public void updateAvatar(String avatar){
+    public UserInfoManager updateAvatar(String avatar){
         this.user.setAvatar(avatar);
         this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        return this;
     }
 
+    public UserInfoManager updateNickname(String nickname){
+        this.user.setUsername(nickname);
+        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        return this;
+    }
+
+    public UserInfoManager updateSignature(String signature){
+        this.user.setSignature(signature);
+        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        return this;
+    }
+
+    public UserInfoManager updateSex(int sex){
+        this.user.setSex(sex);
+        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        return this;
+    }
     public void clear(){
         user.deleteAsync();
         user = new User.Builder().build();

@@ -42,11 +42,11 @@ public class FindingItemAdapter extends BaseQuickAdapter<InternetFile, BaseViewH
         if(item.getUser() == null){
             helper.setText(R.id.tv_uploader, "佚名上传于" +
                     TimeUtils.returnTime_y4md_line_divide(item.getCreateTime()));
-            GlideUtils.load(mContext, helper.getView(R.id.img_avatar), R.drawable.icon_logo_round);
+            GlideUtils.load(mContext, helper.getView(R.id.img_icon), R.drawable.icon_logo_round);
         } else {    //登陆后上传
             helper.setText(R.id.tv_uploader, item.getUser().getUsername() + "上传于" +
                     TimeUtils.returnTime_y4md_line_divide(item.getCreateTime()));
-            GlideUtils.load(mContext, helper.getView(R.id.img_avatar), item.getUser().getAvatar());
+            GlideUtils.load(mContext, helper.getView(R.id.img_icon), item.getUser().getAvatar());
         }
     }
 }

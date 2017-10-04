@@ -12,6 +12,7 @@
         app:title="优云"
         app:icon_size="20dp"
         app:title_size="17sp"
+        app:icon_margin="12dp"
         app:left_text="@string/back"
         app:right_text="@string/sure"
         app:title_color="@color/white"

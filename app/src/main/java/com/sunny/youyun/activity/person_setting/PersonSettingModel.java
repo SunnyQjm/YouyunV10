@@ -3,6 +3,9 @@ package com.sunny.youyun.activity.person_setting;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import org.json.JSONException;
@@ -31,15 +34,15 @@ class PersonSettingModel implements PersonSettingContract.Model {
     public void modifyUserInfo(String username, int sex, String signature, String oldPassword, String newPassword) {
         JSONObject jsonObject = new JSONObject();
         try {
-            if(sex > 0)
+            if (sex > 0)
                 jsonObject.put(ApiInfo.MODIFY_USER_INFO_SEX, sex);
-            if(username != null)
+            if (username != null)
                 jsonObject.put(ApiInfo.MODIFY_USER_INFO_NICKNAME, username);
-            if(signature != null)
+            if (signature != null)
                 jsonObject.put(ApiInfo.MODIFY_USER_INFO_SIGNATURE, signature);
-            if(oldPassword != null)
+            if (oldPassword != null)
                 jsonObject.put(ApiInfo.MODIFY_USER_INFO_OLD_PASSWORD, oldPassword);
-            if(newPassword != null)
+            if (newPassword != null)
                 jsonObject.put(ApiInfo.MODIFY_USER_INFO_NEW_PASSWORD, newPassword);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -51,15 +54,24 @@ class PersonSettingModel implements PersonSettingContract.Model {
                 .modifyUserInfo(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody>() {
+                .subscribe(new Observer<BaseResponseBody<User>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody baseResponseBody) {
-                        if(baseResponseBody.isSuccess()){
+                    public void onNext(BaseResponseBody<User> baseResponseBody) {
+                        if (baseResponseBody.isSuccess()) {
+                            YouyunAPI.updateLoginToken(baseResponseBody.getData()
+                                    .getLoginToken());
+                            //返回的用户信息不为空，就更新用户信息
+                            if (baseResponseBody.getData() != null) {
+                                UserInfoManager.getInstance()
+                                        .updateNickname(baseResponseBody.getData().getUsername())
+                                        .updateSignature(baseResponseBody.getData().getSignature())
+                                        .updateSex(baseResponseBody.getData().getSex());
+                            }
                             mPresenter.modifyUserInfoSuccess();
                         }
                     }

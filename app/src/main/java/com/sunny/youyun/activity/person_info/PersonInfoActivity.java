@@ -43,9 +43,9 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
     @BindView(R.id.easyBar)
     EasyBar easyBar;
-    @BindView(R.id.img_avatar)
+    @BindView(R.id.img_icon)
     ImageView imgAvatar;
-    @BindView(R.id.tv_nickname)
+    @BindView(R.id.tv_name)
     TextView tvNickname;
     @BindView(R.id.tv_signature)
     TextView tvSignature;
@@ -142,12 +142,12 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         return new PersonInfoPresenter(this);
     }
 
-    @OnClick({R.id.img_avatar, R.id.tv_nickname, R.id.tv_signature})
+    @OnClick({R.id.img_icon, R.id.tv_name, R.id.tv_signature})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_avatar:
+            case R.id.img_icon:
                 break;
-            case R.id.tv_nickname:
+            case R.id.tv_name:
                 break;
             case R.id.tv_signature:
                 break;

@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/img_avatar"
+        android:id="@+id/img_icon"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginStart="10dp"
@@ -19,15 +19,15 @@
         android:layout_marginLeft="10dp" />
 
     <TextView
-        android:id="@+id/tv_nickname"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textSize="11sp"
         android:textColor="@color/gray"
         android:text="用户名"
-        app:layout_constraintStart_toEndOf="@+id/img_avatar"
-        app:layout_constraintTop_toTopOf="@+id/img_avatar"
+        app:layout_constraintStart_toEndOf="@+id/img_icon"
+        app:layout_constraintTop_toTopOf="@+id/img_icon"
         android:layout_marginLeft="10dp" />
 
     <TextView
@@ -38,8 +38,8 @@
         android:text="2017/7/2"
         android:textColor="@color/gray"
         android:textSize="9sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_nickname"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
+        app:layout_constraintStart_toStartOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <TextView
         android:id="@+id/tv_comment"
@@ -51,5 +51,5 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/img_icon" />
 </android.support.constraint.ConstraintLayout>

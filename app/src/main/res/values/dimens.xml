@@ -47,4 +47,5 @@
     <dimen name="collection_item_icon_size">60dp</dimen>
     <dimen name="finding_item_icon_size">12dp</dimen>
     <dimen name="message_icon_size">44dp</dimen>
+    <dimen name="finding_search_et_height">25dp</dimen>
 </resources>

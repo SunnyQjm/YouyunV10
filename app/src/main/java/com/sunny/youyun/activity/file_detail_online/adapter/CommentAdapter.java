@@ -28,11 +28,11 @@ public class CommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder> {
         //如果评论用户不存在
         if(item.getUser() == null)
             return;
-        helper.setText(R.id.tv_nickname, item.getUser().getUsername())
+        helper.setText(R.id.tv_name, item.getUser().getUsername())
                 .setText(R.id.tv_date, TimeUtils.returnTime_y4md(item.getCreateTime()))
                 .setText(R.id.tv_comment, item.getComment())
-                .addOnClickListener(R.id.img_avatar);
+                .addOnClickListener(R.id.img_icon);
 
-        GlideUtils.load(mContext, ((ImageView)helper.getView(R.id.img_avatar)), item.getUser().getAvatar());
+        GlideUtils.load(mContext, ((ImageView)helper.getView(R.id.img_icon)), item.getUser().getAvatar());
     }
 }

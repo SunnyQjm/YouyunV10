@@ -145,5 +145,5 @@ public interface UserServices {
      * @return
      */
     @POST(ApiInfo.MODIFY_USER_INFO_URL)
-    Observable<BaseResponseBody> modifyUserInfo(@Body RequestBody body);
+    Observable<BaseResponseBody<User>> modifyUserInfo(@Body RequestBody body);
 }

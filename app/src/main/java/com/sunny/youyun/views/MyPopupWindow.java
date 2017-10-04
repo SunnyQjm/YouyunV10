@@ -13,21 +13,27 @@ import com.sunny.youyun.R;
  */
 
 public class MyPopupWindow extends PopupWindow {
+    private int width = ViewGroup.LayoutParams.MATCH_PARENT;
+    private int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
     public MyPopupWindow(View contentView, int width, int height) {
         this(contentView, width, height, true);
     }
 
-    public MyPopupWindow(View contentView, int width, int height, boolean focusable) {
+    private MyPopupWindow(View contentView, int width, int height, boolean focusable) {
         super(contentView, width, height, focusable);
+        this.width = width;
+        this.height = height;
         init();
     }
 
     private void init() {
-        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        this.setAnimationStyle(R.style.PopupWindowStyle);
+        this.setWidth(width);
+        this.setHeight(height);
+        this.setAnimationStyle(R.style.BottomPopupWindowStyle);
         this.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.setFocusable(true);
         this.setOutsideTouchable(false);
     }
+
 }

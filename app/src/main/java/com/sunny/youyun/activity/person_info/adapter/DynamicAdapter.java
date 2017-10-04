@@ -27,7 +27,7 @@ public class DynamicAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
             return;
         helper.setText(R.id.tv_content, "分享了" + item.getFile().getName())
                 .setText(R.id.tv_date, TimeUtils.returnTime_ymd(item.getCreateTime()));
-        GlideUtils.load(mContext, helper.getView(R.id.img_avatar), UserInfoManager.getInstance().getUserInfo()
+        GlideUtils.load(mContext, helper.getView(R.id.img_icon), UserInfoManager.getInstance().getUserInfo()
                 .getAvatar());
     }
 }

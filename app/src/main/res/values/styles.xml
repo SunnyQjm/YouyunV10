@@ -83,9 +83,14 @@
         <item name="android:layout_height">@dimen/mine_item_height</item>
     </style>
 
-    <style name="PopupWindowStyle">
+    <style name="BottomPopupWindowStyle">
         <item name="android:windowEnterAnimation">@anim/popupwindow_enter</item>
         <item name="android:windowExitAnimation">@anim/popupwindow_exit</item>
+    </style>
+
+    <style name="RightPopupWindowStyle">
+        <item name="android:windowEnterAnimation">@anim/right_popupwindow_enter</item>
+        <item name="android:windowExitAnimation">@anim/right_popupwindow_exit</item>
     </style>
 
     <style name="RecyclerDefault">

@@ -45,9 +45,9 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     LineMenuItem liCallback;
     @BindView(R.id.li_setting)
     LineMenuItem liSetting;
-    @BindView(R.id.img_avatar)
+    @BindView(R.id.img_icon)
     ImageView imgAvatar;
-    @BindView(R.id.tv_nickname)
+    @BindView(R.id.tv_name)
     TextView tvNickname;
     @BindView(R.id.img_qr_code)
     ImageView imgQrCode;
@@ -144,7 +144,7 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
 
     @OnClick({R.id.cl_avatar, R.id.li_my_collect, R.id.li_my_concern, R.id.li_callback,
             R.id.li_setting, R.id.li_my_share, R.id.li_file_manager, R.id.img_edit,
-            R.id.img_avatar})
+            R.id.img_icon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_avatar:
@@ -176,7 +176,7 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                     RouterUtils.open(activity, IntentRouter.PersonSettingActivity);
                 }
                 break;
-            case R.id.img_avatar:
+            case R.id.img_icon:
                 RouterUtils.open(activity, IntentRouter.DcimActivity);
                 break;
         }

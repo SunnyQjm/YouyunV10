@@ -39,7 +39,7 @@ public class User extends DataSupport{
     public static final int INSTANCE_TAG = 0;
     private final int INSTANCE = INSTANCE_TAG;
 
-    private User(Builder builder) {
+    protected User(Builder builder) {
         setUsername(builder.username);
         setEmail(builder.email);
         setSex(builder.sex);

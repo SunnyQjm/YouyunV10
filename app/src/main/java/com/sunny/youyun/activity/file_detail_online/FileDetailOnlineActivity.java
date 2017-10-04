@@ -354,7 +354,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         System.out.println("click");
-        if(view.getId() == R.id.img_avatar){        //头像被点击
+        if(view.getId() == R.id.img_icon){        //头像被点击
             System.out.println("cli");
             Comment comment = (Comment) adapter.getItem(position);
             if(comment == null)
