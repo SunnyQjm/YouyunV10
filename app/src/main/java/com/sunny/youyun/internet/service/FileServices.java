@@ -89,6 +89,19 @@ public interface FileServices {
     @POST(ApiInfo.CREATE_DIRECTORY_URL)
     Observable<BaseResponseBody<FileItem[]>> createDirectory(@Body RequestBody body);
 
+    /**
+     * 删除文件或目录
+     * @param body
+     * @return
+     */
     @POST(ApiInfo.DELETE_FILE_OR_DIRECTORY_URL)
     Observable<BaseResponseBody> deleteFileOrDirectory(@Body RequestBody body);
+
+    /**
+     * 收藏
+     * @param body
+     * @return
+     */
+    @POST(ApiInfo.FILE_COLLECT_URL)
+    Observable<BaseResponseBody> collect(@Body RequestBody body);
 }

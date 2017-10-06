@@ -217,9 +217,20 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                             .shareImageUrl("http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif")
                             .shareTitle(internetFile.getName())
                             .shareSummary("")
+                            .canStore(internetFile.isCanStore())
                             .identifyCode(internetFile.getIdentifyCode())
                             .shareUrl(ApiInfo.BASE_DOWNLOAD_URL + internetFile.getIdentifyCode())
-                            .build());
+                            .build(), new ShareDialog.OnCollectionListener() {
+                @Override
+                public void onCollectionSuccess() {
+                    Toast.makeText(FileDetailOnlineActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCollectionFailed() {
+
+                }
+            });
         shareDialog.show(parent, null);
         shareDialog.setOnDismissListener(() -> WindowUtil.changeWindowAlpha(this, 1.0f));
         WindowUtil.changeWindowAlpha(this, 0.7f);

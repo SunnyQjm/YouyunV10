@@ -1,6 +1,5 @@
 package com.sunny.youyun.activity.upload_setting;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +19,7 @@ import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
+import com.sunny.youyun.views.ExpandableLineMenuItem;
 import com.sunny.youyun.views.LineMenuItem;
 import com.sunny.youyun.views.LineMenuSwitch;
 import com.sunny.youyun.views.youyun_dialog.data_picker.YouyunDatePickerDialog;
@@ -43,9 +43,9 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     @BindView(R.id.upload_setting_is_public)
     LineMenuSwitch uploadSettingIsPublic;
     @BindView(R.id.upload_setting_effect_date)
-    LineMenuItem uploadSettingEffectDate;
+    ExpandableLineMenuItem uploadSettingEffectDate;
     @BindView(R.id.upload_setting_allow_down_count)
-    LineMenuItem uploadSettingAllowDownCount;
+    ExpandableLineMenuItem uploadSettingAllowDownCount;
     @BindView(R.id.tv_cancel)
     TextView tvCancel;
     @BindView(R.id.tv_sure)
@@ -74,8 +74,6 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     private int allowDownloadCount = MAX;
     private long expireTime = MAX;
 
-    private boolean isExpireTimeOptionVisible = false;
-    private boolean isAllowDownCountOptionVisible = false;
     private static final int REQUEST_PATH = 0;
 
     @Override
@@ -101,7 +99,8 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         });
 
         uploadSettingIsPublic.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
+            //切换是否公开
+            isPublic = isChecked;
         });
 
 
@@ -120,17 +119,11 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         return new UploadSettingPresenter(this);
     }
 
-    @OnClick({R.id.upload_setting_effect_date, R.id.upload_setting_allow_down_count, R.id.tv_cancel, R.id.tv_sure, R.id.img_add,
+    @OnClick({R.id.tv_cancel, R.id.tv_sure, R.id.img_add,
             R.id.upload_setting_effect_date_forever, R.id.upload_setting_effect_date_select,
             R.id.upload_setting_allow_down_count_infinite, R.id.upload_setting_allow_down_count_edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.upload_setting_effect_date:
-                changeExpireDataOption();
-                break;
-            case R.id.upload_setting_allow_down_count:
-                changeAllowDownCountOption();
-                break;
             case R.id.tv_cancel:
                 showCancelTipDialog();
                 break;
@@ -147,19 +140,22 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 finish();
                 break;
             case R.id.upload_setting_effect_date_forever:
-                if (uploadSettingEffectDate != null)
+                if (uploadSettingEffectDate != null) {
                     uploadSettingEffectDate.setValue(getString(R.string.forever));
+                    uploadSettingEffectDate.close();
+                }
                 expireTime = MAX;
-                changeExpireDataOption();
+
                 break;
             case R.id.upload_setting_effect_date_select:
                 showSelectDateDialog();
                 break;
             case R.id.upload_setting_allow_down_count_infinite:
-                if (uploadSettingAllowDownCount != null)
+                if (uploadSettingAllowDownCount != null) {
                     uploadSettingAllowDownCount.setValue(getString(R.string.infinite));
+                    uploadSettingAllowDownCount.close();
+                }
                 allowDownloadCount = -1;
-                changeAllowDownCountOption();
                 break;
             case R.id.upload_setting_allow_down_count_edit:
                 showEditDownCountDialog();
@@ -190,11 +186,13 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
             editDialog = YouyunEditDialog.newInstance("请输入可下载次数",
                     result -> {
                         allowDownloadCount = Integer.parseInt(result);
-                        if (uploadSettingAllowDownCount != null)
+                        if (uploadSettingAllowDownCount != null) {
                             uploadSettingAllowDownCount.setValue(String.valueOf(result));
-                        if (uploadSettingAllowDownCountEdit != null)
+                            uploadSettingAllowDownCount.close();
+                        }
+                        if (uploadSettingAllowDownCountEdit != null) {
                             uploadSettingAllowDownCountEdit.setValue(String.valueOf(result));
-                        changeAllowDownCountOption();
+                        }
                     });
             //设置只允许输入数字
             editDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -218,47 +216,10 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                                 uploadSettingEffectDateSelect.setValue(result);
                             if (uploadSettingEffectDate != null)
                                 uploadSettingEffectDate.setValue(result);
-                            changeExpireDataOption();
                         }
                     });
 
         datePickerDialog.show(getFragmentManager(), "tag");
-    }
-
-    private void changeAllowDownCountOption() {
-        if (!isAllowDownCountOptionVisible) {
-            ObjectAnimator.ofFloat(uploadSettingAllowDownCount.getRight_icon(), "rotation", 0f, 90f)
-                    .setDuration(300)
-                    .start();
-            uploadSettingAllowDownCountInfinite.setVisibility(View.VISIBLE);
-            uploadSettingAllowDownCountEdit.setVisibility(View.VISIBLE);
-            isAllowDownCountOptionVisible = true;
-        } else {
-            ObjectAnimator.ofFloat(uploadSettingAllowDownCount.getRight_icon(), "rotation", 90f, 0f)
-                    .setDuration(300)
-                    .start();
-            uploadSettingAllowDownCountInfinite.setVisibility(View.GONE);
-            uploadSettingAllowDownCountEdit.setVisibility(View.GONE);
-            isAllowDownCountOptionVisible = false;
-        }
-    }
-
-    private void changeExpireDataOption() {
-        if (!isExpireTimeOptionVisible) {
-            ObjectAnimator.ofFloat(uploadSettingEffectDate.getRight_icon(), "rotation", 0f, 90f)
-                    .setDuration(300)
-                    .start();
-            uploadSettingEffectDateForever.setVisibility(View.VISIBLE);
-            uploadSettingEffectDateSelect.setVisibility(View.VISIBLE);
-            isExpireTimeOptionVisible = true;
-        } else {
-            ObjectAnimator.ofFloat(uploadSettingEffectDate.getRight_icon(), "rotation", 90f, 0f)
-                    .setDuration(300)
-                    .start();
-            uploadSettingEffectDateForever.setVisibility(View.GONE);
-            uploadSettingEffectDateSelect.setVisibility(View.GONE);
-            isExpireTimeOptionVisible = false;
-        }
     }
 
     @Override

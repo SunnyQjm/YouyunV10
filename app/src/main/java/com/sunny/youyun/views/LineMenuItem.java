@@ -13,12 +13,13 @@ import android.widget.TextView;
 import com.sunny.youyun.R;
 import com.sunny.youyun.utils.DensityUtil;
 import com.sunny.youyun.utils.GeneratedId;
+import com.sunny.youyun.views.interfaces.LineMenu;
 
 /**
  * Created by Sunny on 2017/8/16 0016.
  */
 
-public class LineMenuItem extends RelativeLayout {
+public class LineMenuItem extends RelativeLayout implements LineMenu {
 
     private Context context = null;
     private String menuTitle;
@@ -70,22 +71,6 @@ public class LineMenuItem extends RelativeLayout {
         this.context = context;
         getAttr(context, attrs, defStyleAttr);
         initView();
-    }
-
-    public ImageView getLeft_icon() {
-        return left_icon;
-    }
-
-    public ImageView getRight_icon() {
-        return right_icon;
-    }
-
-    public TextView getTv_title() {
-        return tv_title;
-    }
-
-    public TextView getTv_value() {
-        return tv_value;
     }
 
     private void getAttr(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -185,11 +170,32 @@ public class LineMenuItem extends RelativeLayout {
         addView(tv_value, tv_value_param);
 
         if (isRightIconVisible)
-            setRightIconVisible();
+            setRightIconVisible(VISIBLE);
         else
-            setRightIconInVisible();
+            setRightIconVisible(INVISIBLE);
     }
 
+    @Override
+    public ImageView getLeft_icon() {
+        return left_icon;
+    }
+
+    @Override
+    public ImageView getRight_icon() {
+        return right_icon;
+    }
+
+    @Override
+    public TextView getTv_title() {
+        return tv_title;
+    }
+
+    @Override
+    public TextView getTv_value() {
+        return tv_value;
+    }
+
+    @Override
     public void setLeftIcon(@DrawableRes int res) {
         this.post(() -> {
             leftResource = res;
@@ -197,6 +203,7 @@ public class LineMenuItem extends RelativeLayout {
         });
     }
 
+    @Override
     public void setRightIcon(@DrawableRes int res) {
         this.post(() -> {
             rightResource = res;
@@ -204,54 +211,37 @@ public class LineMenuItem extends RelativeLayout {
         });
     }
 
-    public void setRightIconVisible() {
+    @Override
+    public void setRightIconVisible(int visible) {
         if (right_icon != null)
-            right_icon.setVisibility(VISIBLE);
+            right_icon.setVisibility(visible);
     }
 
-    public void setRightIconInVisible() {
-        if (right_icon != null) {
-            right_icon.setVisibility(INVISIBLE);
-        }
-    }
-
-
-    public void setLeftIconVisible() {
+    @Override
+    public void setLeftIconVisible(int visible) {
         if (left_icon != null)
-            left_icon.setVisibility(VISIBLE);
+            left_icon.setVisibility(visible);
     }
 
-    public void setLeftIconInVisible() {
-        if (left_icon != null)
-            left_icon.setVisibility(INVISIBLE);
-    }
-
-    public void setTitleVisible() {
+    @Override
+    public void setTitleIconVisible(int visible) {
         if (tv_title != null)
-            tv_title.setVisibility(VISIBLE);
+            tv_title.setVisibility(visible);
     }
 
-    public void setTitleInVisible() {
-        if (tv_title != null)
-            tv_title.setVisibility(INVISIBLE);
-    }
-
-    public void setValueVisible() {
+    @Override
+    public void setValueIconVisible(int visible) {
         if (tv_value != null)
-            tv_value.setVisibility(VISIBLE);
+            tv_value.setVisibility(visible);
     }
 
-    public void setValueInvVsible() {
-        if (tv_value != null)
-            tv_value.setVisibility(INVISIBLE);
-    }
-
-
+    @Override
     public void setTitle(String title) {
         if (tv_title != null)
             tv_title.setText(title);
     }
 
+    @Override
     public void setValue(String value) {
         if (tv_value != null)
             tv_value.setText(value);

@@ -10,7 +10,8 @@
 
     <include layout="@layout/bar_item" />
 
-    <ScrollView
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -41,94 +42,95 @@
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView"
                 app:srcCompat="@drawable/icon_setting_add" />
 
-            <com.sunny.youyun.views.LineMenuSwitch xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.sunny.youyun.views.LineMenuSwitch
                 android:id="@+id/upload_setting_is_public"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 style="@style/LineMenuItem"
-                app:menu_title="是否公开"
-                app:menu_title_color="@color/gray">
+                app:menu_title="是否公开">
 
             </com.sunny.youyun.views.LineMenuSwitch>
 
             <include layout="@layout/divide_item" />
-            <include layout="@layout/divide_item" />
-            <include layout="@layout/divide_item" />
 
-            <com.sunny.youyun.views.LineMenuItem
+            <com.sunny.youyun.views.ExpandableLineMenuItem
                 android:id="@+id/upload_setting_effect_date"
-                style="@style/LineMenuItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:menu_height="@dimen/mine_item_height"
                 app:menu_title="有效日期"
                 app:menu_value="永久"
                 app:menu_value_color="@color/gray">
 
-            </com.sunny.youyun.views.LineMenuItem>
+                <include layout="@layout/divide_item" />
 
-            <include layout="@layout/divide_item"/>
+                <com.sunny.youyun.views.LineMenuItem
+                    android:id="@+id/upload_setting_effect_date_forever"
+                    style="@style/LineMenuItem"
+                    android:background="@color/transparent"
+                    app:is_right_icon_visible="false"
+                    app:menu_title="永久"
+                    app:menu_value_color="@color/gray">
 
-            <com.sunny.youyun.views.LineMenuItem
-                android:id="@+id/upload_setting_effect_date_forever"
-                android:background="@color/transparent"
-                style="@style/LineMenuItem"
-                app:menu_title="永久"
-                android:visibility="gone"
-                app:is_right_icon_visible="false"
-                app:menu_value_color="@color/gray">
+                </com.sunny.youyun.views.LineMenuItem>
 
-            </com.sunny.youyun.views.LineMenuItem>
+                <include layout="@layout/divide_item" />
 
-            <include layout="@layout/divide_item" />
+                <com.sunny.youyun.views.LineMenuItem
+                    android:id="@+id/upload_setting_effect_date_select"
+                    style="@style/LineMenuItem"
+                    android:background="@color/transparent"
+                    app:is_right_icon_visible="false"
+                    app:menu_title="截止日期"
+                    app:menu_value="2017-8-18"
+                    app:menu_value_color="@color/gray">
 
-            <com.sunny.youyun.views.LineMenuItem
-                android:id="@+id/upload_setting_effect_date_select"
-                style="@style/LineMenuItem"
-                android:background="@color/transparent"
-                app:menu_title="截止日期"
-                android:visibility="gone"
-                app:menu_value="2017-8-18"
-                app:is_right_icon_visible="false"
-                app:menu_value_color="@color/gray">
-
-            </com.sunny.youyun.views.LineMenuItem>
+                </com.sunny.youyun.views.LineMenuItem>
+            </com.sunny.youyun.views.ExpandableLineMenuItem>
 
             <include layout="@layout/divide_item" />
 
-            <com.sunny.youyun.views.LineMenuItem
+            <com.sunny.youyun.views.ExpandableLineMenuItem
                 android:id="@+id/upload_setting_allow_down_count"
-                style="@style/LineMenuItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:menu_height="@dimen/mine_item_height"
                 app:menu_title="可下载次数"
                 app:menu_value="无限次"
                 app:menu_value_color="@color/gray">
 
-            </com.sunny.youyun.views.LineMenuItem>
+                <include layout="@layout/divide_item" />
+
+                <com.sunny.youyun.views.LineMenuItem
+                    android:id="@+id/upload_setting_allow_down_count_infinite"
+                    style="@style/LineMenuItem"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    app:is_right_icon_visible="false"
+                    app:menu_title="无限次"
+                    app:menu_value_color="@color/gray">
+
+                </com.sunny.youyun.views.LineMenuItem>
+
+                <include layout="@layout/divide_item" />
+
+                <com.sunny.youyun.views.LineMenuItem
+                    android:id="@+id/upload_setting_allow_down_count_edit"
+                    style="@style/LineMenuItem"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    app:is_right_icon_visible="false"
+                    app:menu_title="自定义"
+                    app:menu_value="MAX"
+                    app:menu_value_color="@color/gray">
+
+                </com.sunny.youyun.views.LineMenuItem>
+            </com.sunny.youyun.views.ExpandableLineMenuItem>
 
             <include layout="@layout/divide_item" />
 
-            <com.sunny.youyun.views.LineMenuItem
-                android:id="@+id/upload_setting_allow_down_count_infinite"
-                android:background="@color/transparent"
-                style="@style/LineMenuItem"
-                app:menu_title="无限次"
-                android:visibility="gone"
-                app:is_right_icon_visible="false"
-                app:menu_value_color="@color/gray">
-
-            </com.sunny.youyun.views.LineMenuItem>
-
-            <include layout="@layout/divide_item" />
-
-            <com.sunny.youyun.views.LineMenuItem
-                android:id="@+id/upload_setting_allow_down_count_edit"
-                style="@style/LineMenuItem"
-                android:background="@color/transparent"
-                app:menu_title="自定义"
-                android:visibility="gone"
-                app:menu_value="MAX"
-                app:is_right_icon_visible="false"
-                app:menu_value_color="@color/gray">
-
-            </com.sunny.youyun.views.LineMenuItem>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <include layout="@layout/divide_item" />
 

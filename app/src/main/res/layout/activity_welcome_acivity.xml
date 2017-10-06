@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/welcome"
     android:fitsSystemWindows="true"
-    tools:context="com.sunny.youyun.activity.welcome.WelcomeActivity">
+    tools:context="com.sunny.youyun.activity.welcome.WelcomeActivity"
+    >
 
 </android.support.constraint.ConstraintLayout>

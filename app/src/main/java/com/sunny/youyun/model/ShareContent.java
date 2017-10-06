@@ -57,6 +57,12 @@ public class ShareContent {
 
     private final Bitmap thumb;
 
+    /**
+     * 是否可收藏
+     */
+    private final boolean canStore;
+    private final int fileId;
+
 
     private ShareContent(Builder builder) {
         shareType = builder.shareType;
@@ -68,8 +74,18 @@ public class ShareContent {
         shareExtra = builder.shareExtra;
         identifyCode = builder.identifyCode;
         thumb = builder.thumb;
+        canStore = builder.canStore;
+        fileId = builder.fileId;
     }
 
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public boolean isCanStore() {
+        return canStore;
+    }
 
     public int getShareType() {
         return shareType;
@@ -117,6 +133,8 @@ public class ShareContent {
         private int shareExtra;
         private String identifyCode;
         private Bitmap thumb;
+        private boolean canStore = true;
+        private int fileId;
 
         public Builder() {
         }
@@ -163,6 +181,16 @@ public class ShareContent {
 
         public Builder thumb(Bitmap val) {
             thumb = val;
+            return this;
+        }
+
+        public Builder canStore(boolean val) {
+            canStore = val;
+            return this;
+        }
+
+        public Builder fileId(int val) {
+            fileId = val;
             return this;
         }
 

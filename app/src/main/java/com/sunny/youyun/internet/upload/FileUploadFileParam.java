@@ -57,6 +57,19 @@ public class FileUploadFileParam {
         parentId = builder.parentId;
     }
 
+    @Override
+    public String toString() {
+        return "FileUploadFileParam{" +
+                "filePath='" + filePath + '\'' +
+                ", isShare=" + isShare +
+                ", allowDownCount=" + allowDownCount +
+                ", expireTime=" + expireTime +
+                ", score=" + score +
+                ", isPrivate=" + isPrivate +
+                ", description='" + description + '\'' +
+                ", parentId='" + parentId + '\'' +
+                '}';
+    }
 
     public static final class Builder {
         private String filePath;

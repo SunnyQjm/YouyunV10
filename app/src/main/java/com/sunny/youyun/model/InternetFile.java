@@ -25,6 +25,7 @@ public class InternetFile extends DataSupport implements Serializable {
     private final int lookNum;          //浏览量
     private int star;             //点赞人数
     private boolean canStar;      //是否已点赞
+    private boolean canStore;     //是否可收藏
     private final User user;
     private final String description;
     private final boolean isDirectory;
@@ -90,8 +91,9 @@ public class InternetFile extends DataSupport implements Serializable {
         downloadCount = builder.downloadCount;
         userId = builder.userId;
         lookNum = builder.lookNum;
-        star = builder.star;
-        canStar = builder.canStar;
+        setStar(builder.star);
+        setCanStar(builder.canStar);
+        canStore = builder.canStore;
         user = builder.user;
         description = builder.description;
         isDirectory = builder.isDirectory;
@@ -113,11 +115,18 @@ public class InternetFile extends DataSupport implements Serializable {
                 .isDirectory(isDirectory)
                 .name(name)
                 .size(size)
+                .canStore(canStore)
+                .canStar(canStar)
                 .downloadCount(downloadCount)
                 .lookNum(lookNum)
                 .build();
 
     }
+
+    public boolean isCanStore() {
+        return canStore;
+    }
+
     public boolean isCanStar() {
         return canStar;
     }
@@ -264,6 +273,7 @@ public class InternetFile extends DataSupport implements Serializable {
         private int lookNum;
         private int star;
         private boolean canStar;
+        private boolean canStore;
         private User user;
         private String description;
         private boolean isDirectory;
@@ -343,6 +353,11 @@ public class InternetFile extends DataSupport implements Serializable {
 
         public Builder canStar(boolean val) {
             canStar = val;
+            return this;
+        }
+
+        public Builder canStore(boolean val) {
+            canStore = val;
             return this;
         }
 

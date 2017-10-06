@@ -8,7 +8,7 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-    private static final String IP = "http://172.6.0.189";
+    private static final String IP = "http://192.168.1.100";
     //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
@@ -103,6 +103,7 @@ public class ApiInfo {
             UPLOAD_FILE_PARAM_MIME = "MIME";
     //上传冗余检测
     public static final String UPLOAD_FILE_CHECK_URL = "file/uploadCheck";
+
     //收藏文件
     public static final String FILE_COLLECT_URL = "authc/file/store", FILE_COLLECT_FILE_ID = "fileId",
             FILE_COLLECT_TYPE = "type";

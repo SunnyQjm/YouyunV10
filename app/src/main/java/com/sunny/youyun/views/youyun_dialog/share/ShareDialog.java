@@ -17,15 +17,29 @@ import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.R;
+import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.ShareContent;
+import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.utils.share.TencentUtil;
 import com.sunny.youyun.utils.share.WechatUtil;
 import com.sunny.youyun.views.MyPopupWindow;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Sunny on 2017/8/25 0025.
@@ -49,10 +63,20 @@ public class ShareDialog {
     private static final int SHARE_TO_WE_CHAT = 3;
     private static final int SHARE_FRIEND_CIRCLE = 4;
     private static final int SHARE_COPY_CODE = 5;
+    private static final int SHARE_COLLECT = 6;
 
     public ShareDialog(@NonNull final Activity context, ShareContent shareContent) {
         this.context = context;
         this.shareContent = shareContent;
+        initMsg();
+        initView();
+    }
+
+    public ShareDialog(@NonNull final Activity context, ShareContent shareContent,
+                       OnCollectionListener listener) {
+        this.context = context;
+        this.shareContent = shareContent;
+        this.onCollectionListener = listener;
         initMsg();
         initView();
     }
@@ -80,6 +104,13 @@ public class ShareDialog {
                 .icon(R.drawable.icon_friend_circle)
                 .name(context.getString(R.string.FRIEND_CIRCLE))
                 .id(SHARE_FRIEND_CIRCLE)
+                .build());
+
+        shareNodes.add(new ShareNode.Builder()
+                .icon(R.drawable.icon_share_collect)
+                .name(shareContent.isCanStore() ? context.getString(R.string.collection) :
+                        context.getString(R.string.cancel_collection))
+                .id(SHARE_COLLECT)
                 .build());
         shareAdapter = new ShareAdapter(shareNodes);
 
@@ -120,6 +151,50 @@ public class ShareDialog {
                 case SHARE_FRIEND_CIRCLE:
                     WechatUtil.getInstance(context)
                             .shareToWechatTimeline(shareContent);
+                    break;
+                case SHARE_COLLECT:
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put(ApiInfo.FILE_COLLECT_FILE_ID, shareContent.getFileId());
+                        jsonObject.put(ApiInfo.FILE_COLLECT_TYPE, shareContent.isCanStore() ? 1 : 2);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    RequestBody body = RequestBody.create(MediaType.parse(ApiInfo.MEDIA_TYPE_JSON),
+                            jsonObject.toString());
+                    APIManager.getInstance()
+                            .getFileServices(GsonConverterFactory.create())
+                            .collect(body)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<BaseResponseBody>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+                                }
+
+                                @Override
+                                public void onNext(BaseResponseBody baseResponseBody) {
+                                    if(baseResponseBody.isSuccess()){
+                                        if(onCollectionListener != null){
+                                            onCollectionListener.onCollectionSuccess();
+                                        }
+                                    } else {
+                                        if(onCollectionListener != null) {
+                                            onCollectionListener.onCollectionFailed();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.e("收藏失败", e);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+                            });
                     break;
             }
             myPopupWindow.dismiss();
@@ -249,5 +324,13 @@ public class ShareDialog {
                 return new ShareNode(this);
             }
         }
+    }
+
+
+    private OnCollectionListener onCollectionListener = null;
+
+    public interface OnCollectionListener{
+        void onCollectionSuccess();
+        void onCollectionFailed();
     }
 }

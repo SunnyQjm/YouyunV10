@@ -34,14 +34,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 return;
             }
         }
-//        int flag = 0;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-//            flag = View.SYSTEM_UI_FLAG_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-//        }
-//        getWindow().getDecorView().setSystemUiVisibility(flag);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -56,7 +48,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_welcome_acivity);
-//        StatusBarCompat.setStatusBarColor(this, Color.TRANSPARENT);
         ButterKnife.bind(this);
 
     }
