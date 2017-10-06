@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.sunny.youyun.activity.upload_setting.adapter.ExpandableItemAdapter;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.internet.upload.config.UploadConfig;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.ExpandableLineMenuItem;
@@ -59,20 +61,29 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     LineMenuItem uploadSettingAllowDownCountInfinite;
     @BindView(R.id.upload_setting_allow_down_count_edit)
     LineMenuItem uploadSettingAllowDownCountEdit;
+    @BindView(R.id.upload_setting_score_zero)
+    LineMenuItem uploadSettingScoreZero;
+    @BindView(R.id.upload_setting_score_edit)
+    LineMenuItem uploadSettingScoreEdit;
+    @BindView(R.id.upload_setting_score)
+    ExpandableLineMenuItem uploadSettingScore;
+    @BindView(R.id.upload_setting_description_edit)
+    EditText uploadSettingDescriptionEdit;
+    @BindView(R.id.upload_setting_description)
+    ExpandableLineMenuItem uploadSettingDescription;
     private ExpandableItemAdapter adapter;
     private YouyunDatePickerDialog datePickerDialog = null;
-    private YouyunEditDialog editDialog = null;
     private YouyunTipDialog tipDialog = null;
 
-    private String[] paths = null;
-    public static final String IS_PUBLIC = "is public";
-    public static final String ALLOW_DOWNLOAD_COUNT = "allow download count";
-    public static final String EFFECT_DATE = "effect date";
-    public static final String PATH = "path";
+    //    public static final String IS_PUBLIC = "is public";
+//    public static final String ALLOW_DOWNLOAD_COUNT = "allow download count";
+//    public static final String EFFECT_DATE = "effect date";
+//    public static final String PATH = "path";
     private static final int MAX = -1;
 
     private boolean isPublic = true;
     private int allowDownloadCount = MAX;
+    private int downloadScore = 0;
     private long expireTime = MAX;
 
     private static final int REQUEST_PATH = 0;
@@ -106,7 +117,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
 
 
         Intent intent = getIntent();
-        paths = intent.getStringArrayExtra("paths");
+        String[] paths = intent.getStringArrayExtra("paths");
         adapter = new ExpandableItemAdapter(this, mPresenter.getData(paths));
         adapter.setOnItemChildClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -123,7 +134,8 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
 
     @OnClick({R.id.tv_cancel, R.id.tv_sure, R.id.img_add,
             R.id.upload_setting_effect_date_forever, R.id.upload_setting_effect_date_select,
-            R.id.upload_setting_allow_down_count_infinite, R.id.upload_setting_allow_down_count_edit})
+            R.id.upload_setting_allow_down_count_infinite, R.id.upload_setting_allow_down_count_edit,
+            R.id.upload_setting_score_zero, R.id.upload_setting_score_edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
@@ -134,10 +146,13 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 break;
             case R.id.tv_sure:
                 Intent intent = new Intent();
-                intent.putExtra(IS_PUBLIC, isPublic);
-                intent.putExtra(ALLOW_DOWNLOAD_COUNT, allowDownloadCount);
-                intent.putExtra(EFFECT_DATE, expireTime);
-                intent.putExtra(PATH, mPresenter.getPaths());
+                intent.putExtra(UploadConfig.IS_PUBLIC, isPublic);
+                intent.putExtra(UploadConfig.ALLOW_DOWNLOAD_COUNT, allowDownloadCount);
+                intent.putExtra(UploadConfig.EFFECT_DATE, expireTime);
+                intent.putExtra(UploadConfig.PATH, mPresenter.getPaths());
+                intent.putExtra(UploadConfig.DOWNLOAD_SCORE, downloadScore);
+                intent.putExtra(UploadConfig.DESCRIPTION, uploadSettingDescriptionEdit.getText()
+                        .toString());
                 setResult(0, intent);
                 finish();
                 break;
@@ -161,6 +176,16 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
             case R.id.upload_setting_allow_down_count_edit:
                 showEditDownCountDialog();
                 break;
+            case R.id.upload_setting_score_zero:
+                if (uploadSettingScore != null) {
+                    uploadSettingScore.setValue(String.valueOf(0));
+                    uploadSettingScore.close();
+                }
+                downloadScore = 0;
+                break;
+            case R.id.upload_setting_score_edit:
+                showEditDownScoreDialog();
+                break;
         }
     }
 
@@ -183,22 +208,33 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     }
 
     private void showEditDownCountDialog() {
-        if (editDialog == null) {
-            editDialog = YouyunEditDialog.newInstance("请输入可下载次数",
-                    result -> {
-                        allowDownloadCount = Integer.parseInt(result);
-                        if (uploadSettingAllowDownCount != null) {
-                            uploadSettingAllowDownCount.setValue(String.valueOf(result));
-                            uploadSettingAllowDownCount.close();
-                        }
-                        if (uploadSettingAllowDownCountEdit != null) {
-                            uploadSettingAllowDownCountEdit.setValue(String.valueOf(result));
-                        }
-                    });
-            //设置只允许输入数字
-            editDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
-        }
-        editDialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
+        YouyunEditDialog.newInstance(getString(R.string.please_input_allow_download_count),
+                allowDownloadCount == MAX ? "" : String.valueOf(allowDownloadCount), result -> {
+                    allowDownloadCount = Integer.parseInt(result);
+                    if (uploadSettingAllowDownCount != null) {
+                        uploadSettingAllowDownCount.setValue(String.valueOf(result));
+                        uploadSettingAllowDownCount.close();
+                    }
+                    if (uploadSettingAllowDownCountEdit != null) {
+                        uploadSettingAllowDownCountEdit.setValue(String.valueOf(result));
+                    }
+                }).setInputType(InputType.TYPE_CLASS_NUMBER)
+                .show(getSupportFragmentManager(), String.valueOf(this.getClass()));
+    }
+
+    private void showEditDownScoreDialog() {
+        YouyunEditDialog.newInstance(getString(R.string.please_input_allow_download_count),
+                downloadScore == 0 ? "" : String.valueOf(downloadScore), result -> {
+                    downloadScore = Integer.parseInt(result);
+                    if (uploadSettingScore != null) {
+                        uploadSettingScore.setValue(String.valueOf(result));
+                        uploadSettingScore.close();
+                    }
+                    if (uploadSettingScoreEdit != null) {
+                        uploadSettingScoreEdit.setValue(String.valueOf(result));
+                    }
+                }).setInputType(InputType.TYPE_CLASS_NUMBER)
+                .show(getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
     public void showSelectDateDialog() {
@@ -215,8 +251,10 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                             final String result = year + "-" + month + "-" + day;
                             if (uploadSettingEffectDateSelect != null)
                                 uploadSettingEffectDateSelect.setValue(result);
-                            if (uploadSettingEffectDate != null)
+                            if (uploadSettingEffectDate != null) {
                                 uploadSettingEffectDate.setValue(result);
+                                uploadSettingEffectDate.close();
+                            }
                         }
                     });
 
@@ -247,6 +285,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         }
     }
 
+
     @Override
     public void updateUI() {
         if (adapter == null)
@@ -257,6 +296,4 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
             adapter.expand(0);
         }
     }
-
-
 }

@@ -30,6 +30,7 @@ public class FileUploadService extends Service {
     public static final String PARAM_IS_PRIVATE = "is_private";
     public static final String PARAM_PARENT_ID = "parent_id";               //父路径
     public static final String PARAM_POSITION = "position";
+    public static final String PARAM_DESCRIPTION = "description";
 
     public static final String ACTION_UPLOAD = "upload";
     public static final String ACTION_PAUSE = "pause";
@@ -55,11 +56,13 @@ public class FileUploadService extends Service {
             long expireTime = intent.getLongExtra(PARAM_EXPIRE_TIME, -1);
             int score = intent.getIntExtra(PARAM_SCORE, 0);
             boolean isPrivate = intent.getBooleanExtra(PARAM_IS_PRIVATE, !isShare);
+            String description = intent.getStringExtra(PARAM_DESCRIPTION);
             String parentId = intent.getStringExtra(PARAM_PARENT_ID);
             String action = intent.getAction();
             int position = intent.getIntExtra(PARAM_POSITION, 0);
             try {
-                upload(filePath, isShare, allowDownloadCount, expireTime, score, isPrivate, parentId, action, position);
+                upload(filePath, isShare, allowDownloadCount, expireTime, score,
+                        isPrivate, parentId, action, position, description);
             } catch (IOException e) {
                 Logger.e("上传文件错误", e);
                 EventBus.getDefault()
@@ -72,7 +75,9 @@ public class FileUploadService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void upload(String filePath, boolean isShare, int allowDownloadCount, long expireTime, int score, boolean isPrivate, String parentId, String action, int position) throws IOException {
+    private void upload(String filePath, boolean isShare, int allowDownloadCount, long expireTime,
+                        int score, boolean isPrivate, String parentId, String action,
+                        int position, String description) throws IOException {
         if (position >= mList.size())
             return;
         InternetFile internetFile = mList.get(position);
@@ -91,6 +96,7 @@ public class FileUploadService extends Service {
                         .allowDownCount(allowDownloadCount)
                         .isPrivate(isPrivate)
                         .expireTime(expireTime)
+                        .description(description)
                         .score(score)
                         .isShare(isShare)
                         .parentId(parentId)

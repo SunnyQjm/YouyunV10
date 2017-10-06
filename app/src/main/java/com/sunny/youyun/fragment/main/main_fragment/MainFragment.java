@@ -25,6 +25,7 @@ import com.sunny.youyun.fragment.main.main_fragment.adapter.RecordTabsAdapter;
 import com.sunny.youyun.fragment.main.main_fragment.download_record_fragment.DownloadRecordFragment;
 import com.sunny.youyun.fragment.main.main_fragment.upload_record_fragment.UploadRecordFragment;
 import com.sunny.youyun.internet.upload.FileUploadFileParam;
+import com.sunny.youyun.internet.upload.config.UploadConfig;
 import com.sunny.youyun.model.event.MultiSelectEvent;
 import com.sunny.youyun.utils.DialogUtils;
 import com.sunny.youyun.utils.RecyclerViewUtils;
@@ -190,10 +191,12 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                     Logger.i("UPLOAD_SETTING: data is null");
                     return;
                 }
-                paths = data.getStringArrayExtra(UploadSettingActivity.PATH);
-                int allowDownloadCount = data.getIntExtra(UploadSettingActivity.ALLOW_DOWNLOAD_COUNT, -1);
-                long expireTime = data.getLongExtra(UploadSettingActivity.EFFECT_DATE, -1);
-                boolean isPublic = data.getBooleanExtra(UploadSettingActivity.IS_PUBLIC, true);
+                paths = data.getStringArrayExtra(UploadConfig.PATH);
+                int allowDownloadCount = data.getIntExtra(UploadConfig.ALLOW_DOWNLOAD_COUNT, -1);
+                long expireTime = data.getLongExtra(UploadConfig.EFFECT_DATE, -1);
+                boolean isPublic = data.getBooleanExtra(UploadConfig.IS_PUBLIC, true);
+                int score = data.getIntExtra(UploadConfig.DOWNLOAD_SCORE, 0);
+                String description = data.getStringExtra(UploadConfig.DESCRIPTION);
                 for (String path : paths) {
                     mPresenter.uploadFile(new FileUploadFileParam
                             .Builder()
@@ -202,7 +205,8 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                             .expireTime(expireTime)
                             .isPrivate(!isPublic)
                             .isShare(isPublic)
-                            .score(0)
+                            .description(description)
+                            .score(score)
                             .build());
                 }
                 break;

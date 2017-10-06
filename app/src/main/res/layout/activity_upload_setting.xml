@@ -28,7 +28,7 @@
                 android:background="@color/white">
 
             </android.support.v7.widget.RecyclerView>
-
+            <include layout="@layout/divide_item"/>
 
             <ImageView
                 android:id="@+id/img_add"
@@ -45,7 +45,7 @@
             <com.sunny.youyun.views.LineMenuSwitch
                 android:id="@+id/upload_setting_is_public"
                 style="@style/LineMenuItem"
-                app:menu_title="是否公开">
+                app:menu_title="@string/is_public">
 
             </com.sunny.youyun.views.LineMenuSwitch>
 
@@ -57,8 +57,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:menu_height="@dimen/mine_item_height"
-                app:menu_title="有效日期"
-                app:menu_value="永久"
+                app:menu_title="@string/effect_date"
+                app:menu_value="@string/forever"
                 app:menu_value_color="@color/gray">
 
                 <include layout="@layout/divide_item" />
@@ -68,7 +68,7 @@
                     style="@style/LineMenuItem"
                     android:background="@color/transparent"
                     app:is_right_icon_visible="false"
-                    app:menu_title="永久"
+                    app:menu_title="@string/forever"
                     app:menu_value_color="@color/gray">
 
                 </com.sunny.youyun.views.LineMenuItem>
@@ -80,7 +80,7 @@
                     style="@style/LineMenuItem"
                     android:background="@color/transparent"
                     app:is_right_icon_visible="false"
-                    app:menu_title="截止日期"
+                    app:menu_title="@string/expire_time"
                     app:menu_value="2017-8-18"
                     app:menu_value_color="@color/gray">
 
@@ -95,8 +95,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:menu_height="@dimen/mine_item_height"
-                app:menu_title="可下载次数"
-                app:menu_value="无限次"
+                app:menu_title="@string/allow_download_count"
+                app:menu_value="@string/max"
                 app:menu_value_color="@color/gray">
 
                 <include layout="@layout/divide_item" />
@@ -107,7 +107,7 @@
                     android:background="@color/transparent"
                     android:visibility="gone"
                     app:is_right_icon_visible="false"
-                    app:menu_title="无限次"
+                    app:menu_title="@string/max"
                     app:menu_value_color="@color/gray">
 
                 </com.sunny.youyun.views.LineMenuItem>
@@ -120,13 +120,74 @@
                     android:background="@color/transparent"
                     android:visibility="gone"
                     app:is_right_icon_visible="false"
-                    app:menu_title="自定义"
+                    app:menu_title="@string/custom"
                     app:menu_value="MAX"
                     app:menu_value_color="@color/gray">
 
                 </com.sunny.youyun.views.LineMenuItem>
             </com.sunny.youyun.views.ExpandableLineMenuItem>
 
+            <include layout="@layout/divide_item" />
+
+            <com.sunny.youyun.views.ExpandableLineMenuItem
+                android:id="@+id/upload_setting_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:menu_height="@dimen/mine_item_height"
+                app:menu_title="@string/download_score"
+                app:menu_value="@string/none"
+                app:menu_value_color="@color/gray">
+
+                <include layout="@layout/divide_item" />
+
+                <com.sunny.youyun.views.LineMenuItem
+                    android:id="@+id/upload_setting_score_zero"
+                    style="@style/LineMenuItem"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    app:is_right_icon_visible="false"
+                    app:menu_title="@string/none"
+                    app:menu_value_color="@color/gray">
+
+                </com.sunny.youyun.views.LineMenuItem>
+
+                <include layout="@layout/divide_item" />
+
+                <com.sunny.youyun.views.LineMenuItem
+                    android:id="@+id/upload_setting_score_edit"
+                    style="@style/LineMenuItem"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    app:is_right_icon_visible="false"
+                    app:menu_title="@string/custom"
+                    app:menu_value="0"
+                    app:menu_value_color="@color/gray">
+                </com.sunny.youyun.views.LineMenuItem>
+            </com.sunny.youyun.views.ExpandableLineMenuItem>
+            <include layout="@layout/divide_item" />
+            <com.sunny.youyun.views.ExpandableLineMenuItem
+                android:id="@+id/upload_setting_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:menu_height="@dimen/mine_item_height"
+                app:menu_title="@string/add_description"
+                app:menu_value_color="@color/gray">
+
+                <include layout="@layout/divide_item" />
+                <EditText
+                    android:background="@drawable/et_bg_white"
+                    android:id="@+id/upload_setting_description_edit"
+                    android:hint="@string/add_your_description"
+                    android:gravity="top"
+                    android:textSize="14sp"
+                    android:padding="10dp"
+                    android:minHeight="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.sunny.youyun.views.ExpandableLineMenuItem>
             <include layout="@layout/divide_item" />
 
         </LinearLayout>

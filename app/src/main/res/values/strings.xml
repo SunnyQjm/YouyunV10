@@ -31,7 +31,6 @@
     <string name="exit_tip">退出将中断传输，确定退出？</string>
     <string name="upload_setting">上传设置</string>
     <string name="device_file">本机文件</string>
-    <string name="forever">永久</string>
     <string name="please_input_allow_download_count">请输入可下载次数</string>
     <string name="infinite">无限次</string>
     <string name="cancelTip">确定取消？</string>
@@ -137,4 +136,15 @@
     <string name="user">用户</string>
     <string name="collection">收藏</string>
     <string name="cancel_collection">取消收藏</string>
+    <string name="is_public">是否公开</string>
+    <string name="effect_date">有效日期</string>
+    <string name="forever">永久</string>
+    <string name="expire_time">截止日期</string>
+    <string name="allow_download_count">可下载次数</string>
+    <string name="max">无限次</string>
+    <string name="custom">自定义</string>
+    <string name="download_score">下载积分</string>
+    <string name="none">无</string>
+    <string name="add_your_description">添加你的描述</string>
+    <string name="add_description">添加描述</string>
 </resources>

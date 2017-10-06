@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 
+import com.orhanobut.logger.Logger;
+
 import static com.sunny.youyun.internet.upload.FileUploadService.*;
 
 /**
@@ -69,6 +71,7 @@ public enum FileUploader {
     }
 
     private void action2Upload(FileUploadFileParam uploadFileParam, int position, String action) {
+        Logger.i("upload Param: " + uploadFileParam);
         Intent intent = new Intent(context, FileUploadService.class);
         intent.setAction(action);
         intent.putExtra(PARAM_ALLOW_DOWN_COUNT, uploadFileParam.getAllowDownCount());
@@ -76,6 +79,7 @@ public enum FileUploader {
         intent.putExtra(PARAM_FILE_PATH, uploadFileParam.getFilePath());
         intent.putExtra(PARAM_IS_PRIVATE, uploadFileParam.isPrivate());
         intent.putExtra(PARAM_IS_SHARE, uploadFileParam.isShare());
+        intent.putExtra(PARAM_DESCRIPTION, uploadFileParam.getDescription());
         intent.putExtra(PARAM_PARENT_ID, uploadFileParam.getParentId());
         intent.putExtra(PARAM_POSITION, position);
         intent.putExtra(PARAM_SCORE, uploadFileParam.getScore());

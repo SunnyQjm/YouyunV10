@@ -53,10 +53,11 @@ public class YouyunEditDialog extends DialogFragment {
      * 设置允许输入的类型
      * @param inputType
      */
-    public void setInputType(int inputType) {
+    public YouyunEditDialog setInputType(int inputType) {
         this.inputType = inputType;
         if(editText != null)
             editText.setInputType(inputType);
+        return this;
     }
 
     public void setHint(String hint) {
