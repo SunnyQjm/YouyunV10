@@ -50,6 +50,17 @@ class UploadSettingModel implements UploadSettingContract.Model {
     }
 
     @Override
+    public String[] getPaths() {
+        return dataList.toArray(new String[]{});
+    }
+
+    @Override
+    public void remove(int position) {
+        //移除一个路径
+        dataList.remove(position);
+    }
+
+    @Override
     public void addData(String[] paths) {
         if (mList.size() == 0)
             mList.add(new MenuItem<>("已选择", null));
@@ -60,6 +71,8 @@ class UploadSettingModel implements UploadSettingContract.Model {
         for (String path : paths) {
             if(dataList.contains(path))
                 continue;
+            //如果是新的路径，则添加
+            dataList.add(path);
             File f = new File(path);
             if (!f.exists())
                 continue;

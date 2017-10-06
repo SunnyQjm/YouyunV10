@@ -18,6 +18,11 @@ interface UploadSettingContract {
 
     interface Model extends BaseModel {
         List<MultiItemEntity> getData(String[] paths);
+
+        String[] getPaths();
+
+        void remove(int position);
+
         void addData(String[] paths);
     }
 
@@ -25,6 +30,10 @@ interface UploadSettingContract {
         abstract List<MultiItemEntity> getData(String[] paths);
 
         abstract void updateUI();
+
+        abstract String[] getPaths();
+
+        abstract void remove(int path);
 
         abstract void addData(String[] paths);
     }

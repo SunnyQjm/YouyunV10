@@ -15,6 +15,7 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
 import com.sunny.youyun.activity.upload_setting.adapter.ExpandableItemAdapter;
+import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.utils.RouterUtils;
@@ -109,7 +110,8 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         adapter = new ExpandableItemAdapter(this, mPresenter.getData(paths));
         adapter.setOnItemChildClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
+                DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         uploadSettingIsPublic.setChecked(isPublic);
     }
@@ -135,7 +137,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 intent.putExtra(IS_PUBLIC, isPublic);
                 intent.putExtra(ALLOW_DOWNLOAD_COUNT, allowDownloadCount);
                 intent.putExtra(EFFECT_DATE, expireTime);
-                intent.putExtra(PATH, paths);
+                intent.putExtra(PATH, mPresenter.getPaths());
                 setResult(0, intent);
                 finish();
                 break;
@@ -145,7 +147,6 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                     uploadSettingEffectDate.close();
                 }
                 expireTime = MAX;
-
                 break;
             case R.id.upload_setting_effect_date_select:
                 showSelectDateDialog();
@@ -240,6 +241,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         System.out.println(adapter.getData().size());
         switch (view.getId()) {
             case R.id.img_delete:
+                mPresenter.remove(position);
                 adapter.removeItem(position);
                 break;
         }

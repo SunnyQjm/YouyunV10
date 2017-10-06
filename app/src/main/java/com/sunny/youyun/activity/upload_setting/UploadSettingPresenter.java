@@ -31,6 +31,16 @@ class UploadSettingPresenter extends UploadSettingContract.Presenter{
     }
 
     @Override
+    String[] getPaths() {
+        return mModel.getPaths();
+    }
+
+    @Override
+    void remove(int position) {
+        mModel.remove(position);
+    }
+
+    @Override
     void addData(String[] paths) {
         mModel.addData(paths);
     }
