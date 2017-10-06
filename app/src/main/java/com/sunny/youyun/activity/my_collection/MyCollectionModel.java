@@ -53,6 +53,8 @@ class MyCollectionModel implements MyCollectionContract.Model{
                             }
                             Collections.addAll(mList, baseResponseBody.getData());
                             mPresenter.getCollectionsSuccess();
+                            if(baseResponseBody.getData().length< ApiInfo.GET_FORUM_DEFAULT_SIZE)
+                                mPresenter.allDataLoadFinish();
                         } else {
                             mPresenter.showError("获取失败");
                         }

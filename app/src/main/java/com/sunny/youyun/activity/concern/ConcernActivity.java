@@ -2,7 +2,6 @@ package com.sunny.youyun.activity.concern;
 
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
@@ -96,17 +95,7 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
 
     @Override
     public void allDataGetFinish() {
-        if(endView == null) {
-            endView = LayoutInflater.from(this)
-                    .inflate(R.layout.easy_refresh_end, null, false);
-            if(adapter != null){
-                adapter.addFooterView(endView);
-            }
-        }
-        else
-            endView.setVisibility(View.VISIBLE);
-        //设置不可加载更多
-        refreshLayout.setLoadAble(false);
+        super.allDataGetFinish(adapter);
     }
 
     private void updateAll() {

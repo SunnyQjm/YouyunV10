@@ -67,6 +67,11 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
         updateAll();
     }
 
+    @Override
+    public void allDataLoadFinish() {
+        super.allDataGetFinish(adapter);
+    }
+
     private void updateAll() {
         if(adapter != null)
             adapter.notifyDataSetChanged();

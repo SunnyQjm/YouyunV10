@@ -3,9 +3,11 @@ package com.sunny.youyun.base.activity;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.sunny.youyun.R;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
@@ -104,4 +106,18 @@ public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends 
     protected abstract void onLoadBeginSync();
 
     protected abstract void onLoadFinish();
+
+    public void allDataGetFinish(BaseQuickAdapter adapter) {
+        if(endView == null) {
+            endView = LayoutInflater.from(this)
+                    .inflate(R.layout.easy_refresh_end, null, false);
+            if(adapter != null){
+                adapter.addFooterView(endView);
+            }
+        }
+        else
+            endView.setVisibility(View.VISIBLE);
+        //设置不可加载更多
+        refreshLayout.setLoadAble(false);
+    }
 }
