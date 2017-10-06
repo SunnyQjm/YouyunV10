@@ -112,6 +112,7 @@ public class YouyunEditDialog extends DialogFragment {
     private void initView() {
         tvTitle.setText(title);
         editText.setText(hint);
+        editText.setSelection(hint.length());
         editText.setInputType(inputType);
     }
 

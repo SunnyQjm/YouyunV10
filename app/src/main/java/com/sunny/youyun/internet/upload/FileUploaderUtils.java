@@ -66,7 +66,6 @@ public class FileUploaderUtils {
         final FileServices fileServices = APIManager.getInstance().getFileServices(GsonConverterFactory.create());
         fileServices
                 .checkMd5(body)
-//                .retry(1)
                 .flatMap(stringBaseResponseBody -> {
                     if (stringBaseResponseBody.isSuccess()) {
                         return fileServices.uploadFile(getPartMap(md5, MIME, size, f.getName()

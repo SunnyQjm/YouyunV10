@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.person_setting;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
@@ -13,6 +14,7 @@ import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
+import com.sunny.youyun.views.ExpandableLineMenuItem;
 import com.sunny.youyun.views.LineMenuItem;
 import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
@@ -30,8 +32,12 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
     LineMenuItem liChangeAvatar;
     @BindView(R.id.li_change_nickname)
     LineMenuItem liChangeNickname;
-    @BindView(R.id.et_signature)
+    @BindView(R.id.person_setting_signature_et)
     EditText etSignature;
+    @BindView(R.id.person_setting_signature_img_sure)
+    ImageView personSettingSignatureImgSure;
+    @BindView(R.id.person_setting_signature)
+    ExpandableLineMenuItem personSettingSignature;
     private User user;
 
     @Override
@@ -44,8 +50,6 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
 
     private void initView() {
         easyBar.setTitle(getString(R.string.person_info_edit));
-        easyBar.setDisplayMode(EasyBar.Mode.ICON_TEXT);
-        easyBar.setRightText(getString(R.string.save));
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {
@@ -54,11 +58,10 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
 
             @Override
             public void onRightIconClick(View view) {
-                //TODO Save
-                mPresenter.modifySignature(etSignature.getText().toString());
             }
         });
         fillData();
+        etSignature.setSelection(etSignature.getText().toString().length());
     }
 
     @Override
@@ -88,6 +91,7 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
 
     @Override
     public void modifyUserInfoSuccess() {
+        showSuccess(getString(R.string.edit_signature_success));
         fillData();
     }
 
@@ -97,5 +101,13 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
         GlideUtils.load(this, liChangeAvatar.getRight_icon(), user.getAvatar());
         liChangeNickname.setValue(user.getUsername());
         etSignature.setText(user.getSignature());
+    }
+
+    /**
+     * 修改个签
+     */
+    @OnClick(R.id.person_setting_signature_img_sure)
+    public void onViewClicked() {
+        mPresenter.modifySignature(etSignature.getText().toString());
     }
 }

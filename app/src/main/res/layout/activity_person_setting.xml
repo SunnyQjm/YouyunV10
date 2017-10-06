@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp" />
     <include layout="@layout/divide_item"/>
+
     <com.sunny.youyun.views.LineMenuItem
         android:id="@+id/li_change_avatar"
         app:right_resource="@drawable/avatar_circle_bg"
@@ -29,6 +30,7 @@
         app:menu_title="@string/change_avatar"
         app:menu_title_size="14sp"
         app:menu_title_color="@color/text_gray"
+        android:background="@color/white"
         app:left_margin="@dimen/mine_item_margin_left"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mine_item_height">
@@ -38,6 +40,7 @@
     <com.sunny.youyun.views.LineMenuItem
         android:id="@+id/li_change_nickname"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="@dimen/mine_item_height"
         app:menu_title="@string/change_nickname"
         app:menu_title_size="14sp"
@@ -47,19 +50,36 @@
     </com.sunny.youyun.views.LineMenuItem>
     <include layout="@layout/divide_item"/>
 
-    <EditText
-        android:id="@+id/et_signature"
-        android:background="@drawable/et_bg"
+    <com.sunny.youyun.views.ExpandableLineMenuItem
+        android:id="@+id/person_setting_signature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="点此编辑个签"
-        android:gravity="top"
-        android:textSize="14sp"
-        android:padding="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:minHeight="100dp"/>
+        android:orientation="vertical"
+        app:menu_height="@dimen/mine_item_height"
+        android:background="@color/white"
+        app:menu_title="@string/edit_signature"
+        app:menu_value_color="@color/gray"
+        app:open="true">
 
+        <include layout="@layout/divide_item" />
+
+        <EditText
+            android:id="@+id/person_setting_signature_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_bg_white"
+            android:gravity="top"
+            android:hint="@string/click_it_to_edit_signature"
+            android:minHeight="100dp"
+            android:padding="10dp"
+            android:textSize="14sp" />
+        <ImageView
+            android:id="@+id/person_setting_signature_img_sure"
+            android:padding="5dp"
+            android:src="@drawable/icon_sure_circle"
+            android:layout_gravity="right"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+    </com.sunny.youyun.views.ExpandableLineMenuItem>
 
 </LinearLayout>

@@ -71,6 +71,8 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     EditText uploadSettingDescriptionEdit;
     @BindView(R.id.upload_setting_description)
     ExpandableLineMenuItem uploadSettingDescription;
+    @BindView(R.id.upload_setting_description_img_sure)
+    ImageView uploadSettingDescriptionImgSure;
     private ExpandableItemAdapter adapter;
     private YouyunDatePickerDialog datePickerDialog = null;
     private YouyunTipDialog tipDialog = null;
@@ -135,7 +137,8 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     @OnClick({R.id.tv_cancel, R.id.tv_sure, R.id.img_add,
             R.id.upload_setting_effect_date_forever, R.id.upload_setting_effect_date_select,
             R.id.upload_setting_allow_down_count_infinite, R.id.upload_setting_allow_down_count_edit,
-            R.id.upload_setting_score_zero, R.id.upload_setting_score_edit})
+            R.id.upload_setting_score_zero, R.id.upload_setting_score_edit,
+            R.id.upload_setting_description_img_sure})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
@@ -185,6 +188,9 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 break;
             case R.id.upload_setting_score_edit:
                 showEditDownScoreDialog();
+                break;
+            case R.id.upload_setting_description_img_sure:
+                uploadSettingDescription.close();
                 break;
         }
     }

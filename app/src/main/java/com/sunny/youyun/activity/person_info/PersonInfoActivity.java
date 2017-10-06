@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.person_info;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +23,7 @@ import com.sunny.youyun.activity.person_info.dynamic_fragment.DynamicFragment;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.result.GetUserInfoResult;
 import com.sunny.youyun.utils.GlideUtils;
@@ -68,10 +70,11 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     //用来标识是否访问的是别人的主页
     private int otherId = -1;
 
-
     private static final int TAB_MARGIN_LEFT = 40;
     private static final int TAB_MARGIN_RIGHT = 40;
     private User user;
+
+    private static final int REQUEST_EDIT_INFO = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +145,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         return new PersonInfoPresenter(this);
     }
 
-    @OnClick({R.id.img_icon, R.id.tv_name, R.id.tv_signature})
+    @OnClick({R.id.img_icon, R.id.tv_name, R.id.tv_signature, R.id.img_edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_icon:
@@ -152,8 +155,20 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
             case R.id.tv_signature:
                 break;
             case R.id.img_edit:
-                RouterUtils.open(this, IntentRouter.PersonSettingActivity);
+                if (YouyunAPI.isIsLogin()) {
+                    RouterUtils.openForResult(this, IntentRouter.PersonSettingActivity,
+                            REQUEST_EDIT_INFO);
+                }
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_EDIT_INFO) {
+            fillData(UserInfoManager.getInstance()
+                    .getUserInfo());
         }
     }
 
@@ -176,7 +191,6 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
                     .setUserInfo(user);
         }
         fillData(user);
-        GlideUtils.load(this, imgAvatar, user.getAvatar());
     }
 
     @Override
@@ -193,6 +207,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
     private void fillData(User user) {
         this.user = user;
+        GlideUtils.load(this, imgAvatar, user.getAvatar());
         tvNickname.setText(user.getUsername());
         tvSignature.setText(user.getSignature());
         fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFolloweds()));

@@ -28,7 +28,8 @@
                 android:background="@color/white">
 
             </android.support.v7.widget.RecyclerView>
-            <include layout="@layout/divide_item"/>
+
+            <include layout="@layout/divide_item" />
 
             <ImageView
                 android:id="@+id/img_add"
@@ -162,34 +163,49 @@
                     app:is_right_icon_visible="false"
                     app:menu_title="@string/custom"
                     app:menu_value="0"
-                    app:menu_value_color="@color/gray">
-                </com.sunny.youyun.views.LineMenuItem>
+                    app:menu_value_color="@color/gray"/>
             </com.sunny.youyun.views.ExpandableLineMenuItem>
+
             <include layout="@layout/divide_item" />
+
             <com.sunny.youyun.views.ExpandableLineMenuItem
                 android:id="@+id/upload_setting_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:menu_height="@dimen/mine_item_height"
+                android:background="@color/white"
                 app:menu_title="@string/add_description"
-                app:menu_value_color="@color/gray">
+                app:menu_value_color="@color/gray"
+                android:layout_gravity="right"
+                app:open="true">
 
                 <include layout="@layout/divide_item" />
-                <EditText
-                    android:background="@drawable/et_bg_white"
-                    android:id="@+id/upload_setting_description_edit"
-                    android:hint="@string/add_your_description"
-                    android:gravity="top"
-                    android:textSize="14sp"
-                    android:padding="10dp"
-                    android:minHeight="100dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
 
+                <EditText
+                    android:id="@+id/upload_setting_description_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/et_bg_white"
+                    android:gravity="top"
+                    android:hint="@string/add_your_description"
+                    android:minHeight="100dp"
+                    android:padding="10dp"
+                    android:textSize="14sp" />
+                <ImageView
+                    android:id="@+id/upload_setting_description_img_sure"
+                    android:padding="5dp"
+                    android:src="@drawable/icon_sure_circle"
+                    android:layout_gravity="right"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
             </com.sunny.youyun.views.ExpandableLineMenuItem>
+
             <include layout="@layout/divide_item" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

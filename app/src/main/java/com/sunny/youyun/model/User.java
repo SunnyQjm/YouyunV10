@@ -191,6 +191,7 @@ public class User extends DataSupport{
         this.phone = user.phone;
         this.avatar = user.avatar;
         this.score = user.score;
+        this.signature = user.signature;
         this.id = user.id;
         this.createTime = user.createTime;
         this.updateTime = user.updateTime;

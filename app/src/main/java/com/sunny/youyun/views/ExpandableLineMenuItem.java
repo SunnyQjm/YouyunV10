@@ -135,7 +135,9 @@ public class ExpandableLineMenuItem extends LinearLayout implements LineMenu {
         //部署包含的View
         for (int i = 0; i < getChildCount() - 1; i++) {
             View childView = getChildAt(i);
-            childView.layout(0, totalHeight, getWidth(),
+            int left = childView.getMeasuredWidth() != getWidth() ?
+                    getWidth() - childView.getMeasuredWidth() : 0;
+            childView.layout(left, totalHeight, left + childView.getMeasuredWidth(),
                     totalHeight + childView.getMeasuredHeight());
             totalHeight += childView.getMeasuredHeight();
         }

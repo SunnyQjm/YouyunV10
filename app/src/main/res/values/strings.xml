@@ -147,4 +147,7 @@
     <string name="none">无</string>
     <string name="add_your_description">添加你的描述</string>
     <string name="add_description">添加描述</string>
+    <string name="click_it_to_edit_signature">点此编辑个签</string>
+    <string name="edit_signature">编辑个签</string>
+    <string name="edit_signature_success">修改个签成功</string>
 </resources>
