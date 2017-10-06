@@ -7,18 +7,14 @@ import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.my_collection.adapter.CollectionAdapter;
+import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
-import com.sunny.youyun.model.data_item.Collection;
-import com.sunny.youyun.model.InternetFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Router(IntentRouter.MyCollectionActivity)
 public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionPresenter> implements MyCollectionContract.View {
 
     private CollectionAdapter adapter;
-    private List<Collection> mList;
+    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,39 +23,33 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
     }
 
     private void init() {
-        mList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            mList.add(new Collection.Builder()
-                    .internetFile(new InternetFile.Builder()
-                            .description("来自优云的分享")
-                            .name("梦想天空分外蓝.mp3")
-                            .build())
-                    .build());
-        }
-        adapter = new CollectionAdapter(mList);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        adapter = new CollectionAdapter(mPresenter.getData());
+        recyclerView.addItemDecoration(new RecyclerViewDividerItem(
+                this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
+        adapter.setEmptyView(R.layout.recycler_empty_view);
         easyBar.setTitle(getString(R.string.my_collection));
+        mPresenter.getCollections(page, true);
     }
 
     @Override
     protected void onRefreshBegin() {
-
+        page = 1;
     }
 
     @Override
     protected void OnRefreshBeginSync() {
-
+        mPresenter.getCollections(page, true);
     }
 
     @Override
     protected void OnRefreshFinish() {
-
     }
 
     @Override
     protected void onLoadBeginSync() {
-
+        page++;
+        mPresenter.getCollections(page, false);
     }
 
     @Override
@@ -70,5 +60,15 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
     @Override
     protected MyCollectionPresenter onCreatePresenter() {
         return new MyCollectionPresenter(this);
+    }
+
+    @Override
+    public void getCollectionsSuccess() {
+        updateAll();
+    }
+
+    private void updateAll() {
+        if(adapter != null)
+            adapter.notifyDataSetChanged();
     }
 }

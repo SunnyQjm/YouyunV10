@@ -22,8 +22,8 @@ public class CollectionAdapter extends BaseQuickAdapter<Collection, BaseViewHold
 
     @Override
     protected void convert(BaseViewHolder helper, Collection item) {
-        helper.setText(R.id.tv_name, item.getInternetFile().getName())
-                .setText(R.id.tv_description, item.getInternetFile().getDescription());
-        GlideUtils.setImage(mContext, ((ImageView)helper.getView(R.id.img_icon)), item.getInternetFile());
+        helper.setText(R.id.tv_name, item.getFile().getName())
+                .setText(R.id.tv_description, item.getFile().getDescription());
+        GlideUtils.setImage(mContext, ((ImageView)helper.getView(R.id.img_icon)), item.getFile());
     }
 }

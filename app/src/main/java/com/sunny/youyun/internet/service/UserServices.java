@@ -4,6 +4,7 @@ package com.sunny.youyun.internet.service;
 import com.sunny.youyun.activity.person_file_manager.item.BaseFileItem;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.data_item.Collection;
 import com.sunny.youyun.model.data_item.ConcernItem;
 import com.sunny.youyun.model.data_item.Dynamic;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
@@ -146,4 +147,19 @@ public interface UserServices {
      */
     @POST(ApiInfo.MODIFY_USER_INFO_URL)
     Observable<BaseResponseBody<User>> modifyUserInfo(@Body RequestBody body);
+
+
+    /**
+     * 获取用户动态
+     * @param page
+     * @param size
+     * @return
+     */
+    @GET(ApiInfo.GET_USER_DYNAMIC_URL)
+    Observable<BaseResponseBody<Collection[]>> getUserCollections(
+            @Query(ApiInfo.GET_USER_DYNAMIC_PAGE) int page,
+            @Query(ApiInfo.GET_USER_DYNAMIC_SIZE) int size,
+            @Query(ApiInfo.GET_USER_DYNAMIC_TYPE) int type
+    );
+
 }

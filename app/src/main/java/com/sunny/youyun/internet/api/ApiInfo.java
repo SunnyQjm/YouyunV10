@@ -66,6 +66,9 @@ public class ApiInfo {
     public static final String GET_USER_DYNAMIC_URL = "authc/file/event",
             GET_USER_DYNAMIC_PAGE = "page", GET_USER_DYNAMIC_SIZE = "size",
             GET_USER_DYNAMIC_TYPE = "type";
+    public static final int GET_USER_DYNAMIC_TYPE_COLLECT = 1,
+            GET_USER_DYNAMIC_TYPE_SHARE = 2, GET_USER_DYNAMIC_TYPE_UPLOAD = 3,
+            GET_USER_DYNAMIC_TYPE_DOWNLOAD = 4;
 
     //分类获取用户上传的文件
     public static final String GET_USER_FILE_BY_TYPE_URL = "authc/file/type",

@@ -14,7 +14,7 @@ public class Dynamic {
     private final InternetFile File;
     private final long createTime;
 
-    private Dynamic(Builder builder) {
+    Dynamic(Builder builder) {
         id = builder.id;
         userId = builder.userId;
         fileId = builder.fileId;
