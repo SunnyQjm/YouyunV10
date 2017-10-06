@@ -32,6 +32,7 @@ class PersonSettingModel implements PersonSettingContract.Model {
 
     @Override
     public void modifyUserInfo(String username, int sex, String signature, String oldPassword, String newPassword) {
+        mPresenter.showLoading();
         JSONObject jsonObject = new JSONObject();
         try {
             if (sex > 0)
@@ -73,11 +74,14 @@ class PersonSettingModel implements PersonSettingContract.Model {
                                         .updateSex(baseResponseBody.getData().getSex());
                             }
                             mPresenter.modifyUserInfoSuccess();
+                        } else {
+                            mPresenter.dismissDialog();
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        mPresenter.dismissDialog();
                         Logger.e("修改用户信息失败", e);
                     }
 

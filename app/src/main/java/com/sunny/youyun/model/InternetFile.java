@@ -20,9 +20,9 @@ public class InternetFile extends DataSupport implements Serializable {
     private final long createTime;
     private final boolean share;
     private final int score;
-    private final int downloadCount;
+    private int downloadCount;
     private final int userId;
-    private final int lookNum;          //浏览量
+    private int lookNum;          //浏览量
     private int star;             //点赞人数
     private boolean canStar;      //是否已点赞
     private boolean canStore;     //是否可收藏
@@ -121,6 +121,14 @@ public class InternetFile extends DataSupport implements Serializable {
                 .lookNum(lookNum)
                 .build();
 
+    }
+
+    public void setLookNum(int lookNum) {
+        this.lookNum = lookNum;
+    }
+
+    public void setDownloadCount(int downloadCount) {
+        this.downloadCount = downloadCount;
     }
 
     public boolean isCanStore() {

@@ -139,6 +139,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
         String uuid = getIntent().getStringExtra("uuid");
         internetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
+        //浏览量+1
+        internetFile.setLookNum(internetFile.getLookNum() + 1);
         fillData();
 
         mPresenter.getFileInfo(internetFile.getIdentifyCode());
@@ -155,7 +157,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             SpannableString spannableString = buildDescription();
             tvDescription.setText(spannableString);
         }
-        if(!internetFile.isCanStar()){
+        if (!internetFile.isCanStar()) {
             rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
         } else {
             rtLikeNum.setDrawableRes(R.drawable.icon_zan);
@@ -258,6 +260,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
         FileDownloader.getInstance()
                 .download(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + identifyCode, internetFile.getName(), position);
+        internetFile.setDownloadCount(internetFile.getDownloadCount() + 1);
         finish();
     }
 
@@ -288,7 +291,6 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             case R.id.rt_view_count:
                 break;
             case R.id.rt_like_count:
-//                rtLikeNum.setDrawableRes(R.drawable.icon_zan_selected);
                 mPresenter.star(internetFile.getId());
                 break;
             case R.id.rt_down_count:
@@ -333,13 +335,13 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
     @Override
     public void getCommentsSuccess(boolean isFirst) {
-        if(adapter == null)
+        if (adapter == null)
             return;
         if (!isFirst) {
             adapter.notifyDataSetChanged();
             //滚动到最后一条，因为有头布局，所以position要加1
             recyclerViewComment.scrollToPosition(mPresenter.getCommentList().size());
-        }else {
+        } else {
             adapter.notifyDataSetChanged();
         }
     }
@@ -356,7 +358,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 //        mPresenter.getFileInfo(internetFile.getIdentifyCode());
 
         //点赞成功后直接
-        if(internetFile.isCanStar()){
+        if (internetFile.isCanStar()) {
             internetFile.setCanStar(false);
             internetFile.setStar(internetFile.getStar() + 1);
         } else {
@@ -369,10 +371,10 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         System.out.println("click");
-        if(view.getId() == R.id.img_icon){        //头像被点击
+        if (view.getId() == R.id.img_icon) {        //头像被点击
             System.out.println("cli");
             Comment comment = (Comment) adapter.getItem(position);
-            if(comment == null)
+            if (comment == null)
                 return;
             RouterUtils.open(this, IntentRouter.PersonInfoActivity,
                     String.valueOf(comment.getUserId()));

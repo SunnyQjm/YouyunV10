@@ -52,15 +52,19 @@ public class RouterUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @SafeVarargs
-    public static void openForResultWithAnimation(Activity activity, Intent intent, int requestCode, Pair<View, String>... shares){
+    public static void openForResultWithAnimation(Activity activity, Intent intent, int requestCode, Pair<View, String>... shares) {
         activity.startActivityForResult(intent, requestCode,
                 ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shares).toBundle());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @SafeVarargs
-    public static void openForResultWithAnimation(Fragment fragment, Intent intent, int requestCode, Pair<View, String>... shares){
+    public static void openForResultWithAnimation(Fragment fragment, Intent intent, int requestCode, Pair<View, String>... shares) {
         fragment.startActivityForResult(intent, requestCode,
                 ActivityOptionsCompat.makeSceneTransitionAnimation(fragment.getActivity(), shares).toBundle());
+    }
+
+    public static void openForResult(Fragment fragment, Intent intent, int requestCode) {
+        fragment.startActivityForResult(intent, requestCode);
     }
 }

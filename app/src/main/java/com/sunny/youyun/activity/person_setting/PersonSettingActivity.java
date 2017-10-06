@@ -91,7 +91,7 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
 
     @Override
     public void modifyUserInfoSuccess() {
-        showSuccess(getString(R.string.edit_signature_success));
+        showSuccess(getString(R.string.modify_success));
         fillData();
     }
 

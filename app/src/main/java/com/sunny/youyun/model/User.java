@@ -1,5 +1,7 @@
 package com.sunny.youyun.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.litepal.crud.DataSupport;
 
 /**
@@ -17,11 +19,13 @@ public class User extends DataSupport{
      * score : 10
      * id : 1001
      * "followers": 0,
-     * "followeds": 0,
+     * "fans": 0,
      * createTime : 1496584061628
      * updateTime : 1496630108830
      */
 
+    @SerializedName("id")
+    private int userId;
     private String username;
     private String email;
     private int sex;
@@ -29,11 +33,11 @@ public class User extends DataSupport{
     private String avatar;
     private int score;
     private String signature;
-    private int id;
     private String loginToken;
     private long createTime;
     private int followers;
-    private int followeds;
+    @SerializedName("followeds")
+    private int fans;
     private long updateTime;
     private boolean isFollow;
     public static final int INSTANCE_TAG = 0;
@@ -51,7 +55,7 @@ public class User extends DataSupport{
         setLoginToken(builder.loginToken);
         setCreateTime(builder.createTime);
         followers = builder.followers;
-        followeds = builder.followeds;
+        fans = builder.fans;
         setUpdateTime(builder.updateTime);
     }
 
@@ -65,15 +69,15 @@ public class User extends DataSupport{
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", score=" + score +
-                ", id=" + id +
+                ", id=" + userId +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
     }
 
 
-    public int getFolloweds() {
-        return followeds;
+    public int getFans() {
+        return fans;
     }
 
     public boolean isFollow() {
@@ -84,8 +88,8 @@ public class User extends DataSupport{
         isFollow = follow;
     }
 
-    public void setFolloweds(int followeds) {
-        this.followeds = followeds;
+    public void setFans(int fans) {
+        this.fans = fans;
     }
 
     public int getFollowers() {
@@ -161,11 +165,11 @@ public class User extends DataSupport{
     }
 
     public int getId() {
-        return id;
+        return userId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public long getCreateTime() {
@@ -192,10 +196,10 @@ public class User extends DataSupport{
         this.avatar = user.avatar;
         this.score = user.score;
         this.signature = user.signature;
-        this.id = user.id;
+        this.userId = user.userId;
         this.createTime = user.createTime;
         this.updateTime = user.updateTime;
-        this.followeds = user.followeds;
+        this.fans = user.fans;
         this.followers = user.followers;
     }
 
@@ -211,7 +215,7 @@ public class User extends DataSupport{
         private String loginToken;
         private long createTime;
         private int followers;
-        private int followeds;
+        private int fans;
         private long updateTime;
 
         public Builder() {
@@ -273,7 +277,7 @@ public class User extends DataSupport{
         }
 
         public Builder followeds(int val) {
-            followeds = val;
+            fans = val;
             return this;
         }
 

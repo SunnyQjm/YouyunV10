@@ -210,7 +210,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         GlideUtils.load(this, imgAvatar, user.getAvatar());
         tvNickname.setText(user.getUsername());
         tvSignature.setText(user.getSignature());
-        fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFolloweds()));
+        fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFans()));
         followingNum.setText(String.format(getString(R.string.concern_num), " ", user.getFollowers()));
         if (otherId > 0) {
             if (user.isFollow()) {

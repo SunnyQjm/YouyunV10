@@ -47,14 +47,19 @@ public class App extends Application {
         WifiDirectManager.init(this);
         //load user info from local
         UserInfoManager.init();
-
+        int id = UserInfoManager.getInstance()
+                .getUserInfo()
+                .getId();
+        System.out.println("id: " + id);
+        //设置设备的 推送标识
+        JPushUtil.setTag(this, String.valueOf(id));
         YouyunAPI.getInstance().bind(this);
         FileDownloader.bind(this);
         FileUploader.bind(this);
         MyThreadPool.getInstance().submit(() -> {
-            initList();
             JPushInit();
             LoggerInit();
+            initList();
         });
     }
 
@@ -74,10 +79,7 @@ public class App extends Application {
                 | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
         JPushInterface.setPushNotificationBuilder(1, builder);
         JPushInterface.init(this);
-        //设置设备的推送标识
-        JPushUtil.setTag(this, String.valueOf(UserInfoManager.getInstance()
-                .getUserInfo()
-                .getId()));
+
     }
 
     public static void startAnim(Activity activity) {

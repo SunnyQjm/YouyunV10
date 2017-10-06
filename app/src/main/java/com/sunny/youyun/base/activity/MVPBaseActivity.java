@@ -47,4 +47,5 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends YouyunAct
     public void dismissDialog() {
         super.dismissDialog();
     }
+
 }

@@ -9,4 +9,5 @@ public interface BaseView {
     void showError(String info);
     void showTip(String info);
     void dismissDialog();
+    void showLoading();
 }

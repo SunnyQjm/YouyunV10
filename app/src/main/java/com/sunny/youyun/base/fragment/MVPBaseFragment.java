@@ -132,7 +132,7 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
             dialog.show(activity.getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
-    protected void showLoading() {
+    public void showLoading() {
         dismissDialog();
         loadingView = EasyDialog.showLoading(activity);
     }

@@ -154,4 +154,5 @@
     <string name="already_share">分享了</string>
     <string name="already_upload">上传了</string>
     <string name="already_download">下载了</string>
+    <string name="modify_success">修改成功</string>
 </resources>

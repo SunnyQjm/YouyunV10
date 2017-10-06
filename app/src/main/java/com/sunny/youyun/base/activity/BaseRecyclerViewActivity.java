@@ -66,6 +66,8 @@ public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends 
     @Override
     public void onRefresh() {
         this.onRefreshBegin();
+        if(endView != null)
+            endView.setVisibility(View.GONE);
         Observable.create((ObservableOnSubscribe<Integer>) e -> {
             linerLayoutManager.setScrollAble(false);
             this.OnRefreshBeginSync();

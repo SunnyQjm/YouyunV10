@@ -33,8 +33,7 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
     @Override
     protected void onRefreshBegin() {
         page = 1;
-        if(endView != null)
-            endView.setVisibility(View.GONE);
+        refreshLayout.setLoadAble(true);
     }
 
     @Override

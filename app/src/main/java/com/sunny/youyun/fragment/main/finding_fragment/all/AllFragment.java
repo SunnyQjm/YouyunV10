@@ -1,12 +1,13 @@
 package com.sunny.youyun.fragment.main.finding_fragment.all;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.IntentRouter;
+import com.sunny.youyun.activity.file_detail_online.FileDetailOnlineActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
@@ -126,6 +127,16 @@ public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implemen
         String uuid = UUIDUtil.getUUID();
         ObjectPool.getInstance()
                 .put(uuid, internetFile);
-        RouterUtils.open(activity, IntentRouter.FileDetailOnlineActivity, uuid);
+        Intent intent = new Intent(activity, FileDetailOnlineActivity.class);
+        intent.putExtra("uuid", uuid);
+        RouterUtils.openForResult(this, intent, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 0 && adapter != null){
+            adapter.notifyDataSetChanged();
+        }
     }
 }

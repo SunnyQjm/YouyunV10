@@ -71,12 +71,12 @@ public class YouyunActivity extends AppCompatActivity {
             dialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
-    protected void showLoading() {
+    public void showLoading() {
         dismissDialog();
         loadingView = EasyDialog.showLoading(this);
     }
 
-    protected void dismissDialog() {
+    public void dismissDialog() {
         if (dialog != null && !dialog.isHidden())
             dialog.dismiss();
         if (loadingView != null && loadingView.isShowing())

@@ -67,4 +67,7 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
     public void dismissDialog(){
         mView.dismissDialog();
     }
+    public void showLoading(){
+        mView.showLoading();
+    }
 }

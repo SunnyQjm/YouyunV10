@@ -35,6 +35,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
     @Override
     protected void onRefreshBegin() {
         page = 1;
+        refreshLayout.setLoadAble(true);
     }
 
     @Override

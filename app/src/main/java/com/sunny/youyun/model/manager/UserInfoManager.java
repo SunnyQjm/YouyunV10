@@ -2,7 +2,6 @@ package com.sunny.youyun.model.manager;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.model.User;
-import com.sunny.youyun.utils.JPushUtil;
 
 import org.litepal.crud.DataSupport;
 
@@ -35,7 +34,8 @@ public enum UserInfoManager {
     public void setUserInfo(User userInfo) {
         this.user.setUserInfo(userInfo);
         //单例化保存
-        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        boolean result = this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        System.out.println("更新本地用户信息：" + result);
     }
 
     /**
