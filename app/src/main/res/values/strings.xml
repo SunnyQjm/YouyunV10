@@ -150,4 +150,8 @@
     <string name="click_it_to_edit_signature">点此编辑个签</string>
     <string name="edit_signature">编辑个签</string>
     <string name="edit_signature_success">修改个签成功</string>
+    <string name="already_collect">收藏了</string>
+    <string name="already_share">分享了</string>
+    <string name="already_upload">上传了</string>
+    <string name="already_download">下载了</string>
 </resources>

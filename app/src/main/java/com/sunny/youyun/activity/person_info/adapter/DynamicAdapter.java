@@ -25,9 +25,23 @@ public class DynamicAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, Dynamic item) {
         if (item.getFile() == null)
             return;
-        helper.setText(R.id.tv_content, "分享了" + item.getFile().getName())
+        helper.setText(R.id.tv_content, getString(item.getType()) + item.getFile().getName())
                 .setText(R.id.tv_date, TimeUtils.returnTime_ymd(item.getCreateTime()));
         GlideUtils.load(mContext, helper.getView(R.id.img_icon), UserInfoManager.getInstance().getUserInfo()
                 .getAvatar());
+    }
+
+    private String getString(int type) {
+        switch (type) {
+            case 1:
+                return mContext.getString(R.string.already_collect);
+            case 3:
+                return mContext.getString(R.string.already_upload);
+            case 4:
+                return mContext.getString(R.string.already_download);
+            default:
+            case 2:
+                return mContext.getString(R.string.already_share);
+        }
     }
 }

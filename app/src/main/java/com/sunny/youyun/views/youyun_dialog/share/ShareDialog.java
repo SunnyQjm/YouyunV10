@@ -128,6 +128,12 @@ public class ShareDialog {
         otherFunctionAdapter = new ShareAdapter(otherFunctionNodes);
     }
 
+    public void setCollectName(String name){
+        ShareNode shareNode = shareAdapter.getItem(shareAdapter.getData().size() - 1);
+        if(shareNode != null)
+            shareNode.setName(name);
+    }
+
     private void initView() {
         View view = LayoutInflater.from(context).inflate(R.layout.share_content_layout, null);
         shareRecyclerView = (RecyclerView) view.findViewById(R.id.first_line_share_item);
@@ -274,7 +280,7 @@ public class ShareDialog {
 
     public static class ShareNode {
         private final int id;
-        private final String name;
+        private String name;
         @DrawableRes
         private final int icon;
 
@@ -284,6 +290,9 @@ public class ShareDialog {
             icon = builder.icon;
         }
 
+        public void setName(String name) {
+            this.name = name;
+        }
 
         public int getId() {
             return id;

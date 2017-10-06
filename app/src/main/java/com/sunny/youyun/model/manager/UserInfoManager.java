@@ -2,6 +2,7 @@ package com.sunny.youyun.model.manager;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.utils.JPushUtil;
 
 import org.litepal.crud.DataSupport;
 
