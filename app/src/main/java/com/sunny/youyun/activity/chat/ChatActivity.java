@@ -18,6 +18,7 @@ import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.InputMethodUtil;
+import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.bus.MessageEventBus;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowPullLoadHeader;
@@ -41,6 +42,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
     @Override
     protected void onStart() {
         super.onStart();
+        MyNotifyUtil.setShowTag(MyNotifyUtil.SHOW_TAG_CHATTING);
         MessageEventBus.getInstance()
                 .register(this);
     }
@@ -62,6 +64,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
     private void init() {
         userId = getIntent().getIntExtra(ChatConfig.PARAM_USER_ID, -1);
         String nickname = getIntent().getStringExtra(ChatConfig.PARAM_USER_NICKNAME);
+        MyNotifyUtil.setChattingId(userId);
 
         etContent = (EditText) findViewById(R.id.et_content);
         btnSend = (Button) findViewById(R.id.btn_send);

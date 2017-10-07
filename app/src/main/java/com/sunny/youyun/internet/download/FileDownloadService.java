@@ -195,11 +195,11 @@ public class FileDownloadService extends Service {
     }
 
     private void showError(String name) {
-        MyNotifyUtil.showNotify(mContext, name, getString(R.string.file_download_error), getString(R.string.file_download_error));
+        MyNotifyUtil.showNotifyExceptMain(mContext, name, getString(R.string.file_download_error), getString(R.string.file_download_error));
     }
 
     private void showSuccess(String fileName) {
-        MyNotifyUtil.showNotify(mContext, fileName, getString(R.string.file_download_success), getString(R.string.file_download_success));
+        MyNotifyUtil.showNotifyExceptMain(mContext, fileName, getString(R.string.file_download_success), getString(R.string.file_download_success));
     }
 
     @Nullable

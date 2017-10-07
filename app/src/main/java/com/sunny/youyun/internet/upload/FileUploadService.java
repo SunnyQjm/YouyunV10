@@ -131,12 +131,12 @@ public class FileUploadService extends Service {
     }
 
     private void showError(InternetFile internetFile) {
-        MyNotifyUtil.showNotify(mContext, internetFile.getName(), getString(R.string.upload_error),
+        MyNotifyUtil.showNotifyExceptMain(mContext, internetFile.getName(), getString(R.string.upload_error),
                 getString(R.string.upload_error));
     }
 
     private void showSuccess(InternetFile internetFile) {
-        MyNotifyUtil.showNotify(mContext, internetFile.getName(), getString(R.string.upload_success),
+        MyNotifyUtil.showNotifyExceptMain(mContext, internetFile.getName(), getString(R.string.upload_success),
                 getString(R.string.upload_success));
     }
 

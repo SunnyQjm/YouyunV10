@@ -12,8 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.chat.ChatActivity;
+import com.sunny.youyun.activity.chat.config.ChatConfig;
 import com.sunny.youyun.activity.main.MainActivity;
 import com.sunny.youyun.activity.main.config.MainActivityConfig;
+import com.sunny.youyun.model.event.JPushEvent;
 
 
 /**
@@ -30,6 +33,16 @@ public class MyNotifyUtil {
     private static int SHOW_TAG = -1;
     public static final int SHOW_TAG_MAIN = 0;
     public static final int SHOW_TAG_OTHER = 1;
+    public static final int SHOW_TAG_CHATTING = 2;
+    public static int chattingId = -1;
+
+    public static void setChattingId(int chattingId) {
+        MyNotifyUtil.chattingId = chattingId;
+    }
+
+    public static int getChattingId() {
+        return chattingId;
+    }
 
     public static void setShowTag(int showTag) {
         SHOW_TAG = showTag;
@@ -39,10 +52,11 @@ public class MyNotifyUtil {
         return SHOW_TAG;
     }
 
-    public static MyNotifyUtil newInstance(@NonNull final Context context){
+    public static MyNotifyUtil newInstance(@NonNull final Context context) {
         default_notifyId = (default_notifyId + 1) % 100;
         return new MyNotifyUtil(context, default_notifyId);
     }
+
     public static MyNotifyUtil newInstance(@NonNull final Context context, int notifyId) {
         return new MyNotifyUtil(context, notifyId);
     }
@@ -61,22 +75,27 @@ public class MyNotifyUtil {
 
 
     public void show() {
-        if(builder == null || SHOW_TAG == SHOW_TAG_MAIN)
+        if (builder == null || SHOW_TAG == SHOW_TAG_MAIN)
             return;
         manager.notify(notifyId, builder.build());
     }
 
 
-    public static void showNotify(Context context, String title, String ticker, String content) {
-        if(SHOW_TAG == SHOW_TAG_MAIN)
+    public static void showNotifyExceptMain(Context context, String title, String ticker, String content) {
+        if (SHOW_TAG == SHOW_TAG_MAIN)
             return;
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MainActivityConfig.LUNCH_TAG, MainActivityConfig.LUNCH_TAG_UPLOAD_DOWNLOAD);
+        showNotify(context, title, ticker, content, PendingIntent.getActivity(
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+    }
+
+    private static void showNotify(Context context, String title, String ticker, String content,
+                                   PendingIntent pendingIntent) {
         MyNotifyUtil.newInstance(context)
                 .setCompatBuilder(new MyNotifyUtil.NormalNotificationBuilder(context)
                         .autoCancel(true)
-                        .contentIntent(PendingIntent.getActivity(
-                                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT))
+                        .contentIntent(pendingIntent)
                         .largerIcon(R.drawable.logo)
                         .smallIcon(R.drawable.logo)
                         .ticker(ticker)
@@ -84,6 +103,23 @@ public class MyNotifyUtil {
                         .title(title)
                         .build())
                 .show();
+    }
+
+    public static void showChatNotify(Context context, JPushEvent jPushEvent) {
+        if (jPushEvent.getFromUser() == null)
+            return;
+        //如果正在与发送信息的人聊天，或就在主界面就不在通知栏显示通知
+        if (SHOW_TAG == SHOW_TAG_MAIN || (SHOW_TAG == SHOW_TAG_CHATTING &&
+                jPushEvent.getType().equals(JPushEvent.INSTANTCONTACT) &&
+                jPushEvent.getFromUser() != null && jPushEvent.getFromUser().getId() == chattingId))
+            return;
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, jPushEvent.getTitle());
+        intent.putExtra(ChatConfig.PARAM_USER_ID, jPushEvent.getFromUser().getId());
+        showNotify(context, jPushEvent.getTitle(),
+                context.getString(R.string.have_new_message), jPushEvent.getContent(),
+                PendingIntent.getActivity(
+                        context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     public static final class NormalNotificationBuilder {
@@ -177,9 +213,9 @@ public class MyNotifyUtil {
          * @param ticker
          */
         private NotificationCompat.Builder
-            createCompatBuilder(final Context context, final PendingIntent pendingIntent, final @DrawableRes int smallIcon, String ticker,
-                                final String title, final String content, final boolean sound, final boolean vibrate,
-                                final boolean lights) {
+        createCompatBuilder(final Context context, final PendingIntent pendingIntent, final @DrawableRes int smallIcon, String ticker,
+                            final String title, final String content, final boolean sound, final boolean vibrate,
+                            final boolean lights) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
             builder.setContentIntent(pendingIntent);// 该通知要启动的Intent
             builder.setSmallIcon(R.mipmap.ic_launcher);// 设置顶部状态栏的小图标

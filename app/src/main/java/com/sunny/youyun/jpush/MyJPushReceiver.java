@@ -9,6 +9,7 @@ import android.util.Log;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.utils.GsonUtil;
+import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.bus.MessageEventBus;
 
 import org.json.JSONException;
@@ -58,16 +59,17 @@ public class MyJPushReceiver extends BroadcastReceiver {
                 }
                 String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
                 String type = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
+                JPushEvent jPushEvent = new JPushEvent.Builder()
+                        .content(content)
+                        .fromUser(user)
+                        .title(title)
+                        .type(type)
+                        .push_id(id)
+                        .build();
                 //推送一个Event
                 MessageEventBus.getInstance()
-                        .post(new JPushEvent.Builder()
-                                .content(content)
-                                .fromUser(user)
-                                .title(title)
-                                .type(type)
-                                .push_id(id)
-                                .build()
-                        );
+                        .post(jPushEvent);
+                MyNotifyUtil.showChatNotify(context, jPushEvent);
             } catch (JSONException e) {
                 e.printStackTrace();
                 return;

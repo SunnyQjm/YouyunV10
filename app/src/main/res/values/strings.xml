@@ -161,4 +161,5 @@
     <string name="pull_down_load">下拉加载</string>
     <string name="star_record">点赞记录</string>
     <string name="comment_record">评论记录</string>
+    <string name="have_new_message">有新消息</string>
 </resources>
