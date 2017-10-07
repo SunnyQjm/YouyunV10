@@ -1,7 +1,5 @@
 package com.sunny.youyun.model.data_item;
 
-import com.sunny.youyun.model.User;
-
 /**
  * 消息Model
  *
@@ -9,39 +7,74 @@ import com.sunny.youyun.model.User;
  */
 
 public class Message {
-    private final User user;
+
+    /**
+     * fromUserId : 1010
+     * toUserId : 1001
+     * content : 18340857280
+     * id : 1004
+     * createTime : 1507356322261
+     * updateTime : 1507356322261
+     */
+
+    private final int fromUserId;
+    private final int toUserId;
     private final String content;
+    private final int id;
     private final long createTime;
+    private final long updateTime;
 
     protected Message(Builder builder) {
-        user = builder.user;
+        fromUserId = builder.fromUserId;
+        toUserId = builder.toUserId;
         content = builder.content;
+        id = builder.id;
         createTime = builder.createTime;
+        updateTime = builder.updateTime;
     }
 
-
-    public long getCreateTime() {
-        return createTime;
+    public int getFromUserId() {
+        return fromUserId;
     }
 
-    public User getUser() {
-        return user;
+    public int getToUserId() {
+        return toUserId;
     }
 
     public String getContent() {
         return content;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public long getUpdateTime() {
+        return updateTime;
+    }
+
     public static final class Builder {
-        private User user;
+        private int fromUserId;
+        private int toUserId;
         private String content;
+        private int id;
         private long createTime;
+        private long updateTime;
 
         public Builder() {
         }
 
-        public Builder user(User val) {
-            user = val;
+        public Builder fromUserId(int val) {
+            fromUserId = val;
+            return this;
+        }
+
+        public Builder toUserId(int val) {
+            toUserId = val;
             return this;
         }
 
@@ -50,8 +83,18 @@ public class Message {
             return this;
         }
 
+        public Builder id(int val) {
+            id = val;
+            return this;
+        }
+
         public Builder createTime(long val) {
             createTime = val;
+            return this;
+        }
+
+        public Builder updateTime(long val) {
+            updateTime = val;
             return this;
         }
 

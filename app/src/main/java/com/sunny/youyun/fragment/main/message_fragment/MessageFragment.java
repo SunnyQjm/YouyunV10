@@ -14,10 +14,8 @@ import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.message_fragment.adapter.MessageAdapter;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
-import com.sunny.youyun.fragment.main.message_fragment.item.MessageItem;
-import com.sunny.youyun.model.data_item.Message;
-import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.views.EasyBar;
+import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
 
 import butterknife.BindView;
@@ -28,7 +26,8 @@ import butterknife.Unbinder;
  * Created by Sunny on 2017/6/25 0025.
  */
 
-public class MessageFragment extends MVPBaseFragment<MessagePresenter> implements MessageContract.View, BaseQuickAdapter.OnItemClickListener {
+public class MessageFragment extends MVPBaseFragment<MessagePresenter>
+        implements MessageContract.View, BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.easyBar)
     EasyBar easyBar;
@@ -39,6 +38,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter> implement
     Unbinder unbinder;
     private View view = null;
     private MessageAdapter adapter;
+    private int page = 1;
 
     public static MessageFragment newInstance() {
         Bundle args = new Bundle();
@@ -66,9 +66,20 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter> implement
         create_header_view();
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+        refreshLayout.setHeader(new ArrowRefreshHeader(R.layout.easy_refresh_header));
+        refreshLayout.setOnRefreshListener(() -> {
+            page = 1;
+            mPresenter.getPrivateLetterList(page, true);
+        });
+
+        refreshLayout.setOnLoadListener(() -> {
+            page++;
+            mPresenter.getPrivateLetterList(page, false);
+        });
         adapter = new MessageAdapter(mPresenter.getData());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
+        mPresenter.getPrivateLetterList(page, true);
     }
 
     private void create_header_view() {
@@ -76,26 +87,8 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter> implement
                 R.drawable.icon_message_zan));
         mPresenter.getData().add(new HeaderItem(getString(R.string.comment),
                 R.drawable.icon_message_comment));
-        mPresenter.getData().add(new MessageItem(new Message.Builder()
-                .content("balabalabala")
-                .createTime(System.currentTimeMillis())
-                .user(UserInfoManager.getInstance().getUserInfo())));
     }
 
-    @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
-    }
-
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
-
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
-    }
 
     @Override
     protected MessagePresenter onCreatePresenter() {
@@ -112,4 +105,15 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter> implement
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
     }
+
+    @Override
+    public void getPrivateLetterListSuccess() {
+        updateAll();
+    }
+
+    private void updateAll() {
+        if(adapter != null)
+            adapter.notifyDataSetChanged();
+    }
+
 }

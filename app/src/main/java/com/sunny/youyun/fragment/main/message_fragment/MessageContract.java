@@ -13,14 +13,17 @@ import java.util.List;
 
 public interface MessageContract {
     interface View extends BaseView {
-
+        void getPrivateLetterListSuccess();
     }
 
     interface Model extends BaseModel {
         List<MultiItemEntity> getData();
+        void getPrivateLetterList(int page, int size, boolean isRefresh);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
         abstract List<MultiItemEntity> getData();
+        abstract void getPrivateLetterList(int page, boolean isRefresh);
+        abstract void getPrivateLetterListSuccess();
     }
 }

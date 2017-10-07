@@ -58,10 +58,12 @@ public class FileUploaderUtils {
         String md5 = MD5Util.getFileMD5(new FileInputStream(f));
         String MIME = FileTypeUtil.getMyMIME(f.getName());
         long size = f.length();
+        String checkJson = getCheckJson(md5, MIME, size, f.getName(), uploadFileParam);
+        System.out.println(checkJson);
         //构造检查文件秒传判断的请求
         final RequestBody body = RequestBody.create(
-                MediaType.parse("application/json; charset=utf-8"),
-                getCheckJson(md5, MIME, size, f.getName(), uploadFileParam));
+                MediaType.parse("application/json; charset=utf-8"), checkJson
+        );
 
         final FileServices fileServices = APIManager.getInstance().getFileServices(GsonConverterFactory.create());
         fileServices

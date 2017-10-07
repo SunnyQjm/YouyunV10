@@ -33,6 +33,7 @@ class FindingModel implements FindingContract.Model {
 
     @Override
     public void search(String str) {
+        mPresenter.showLoading();
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .search(str)
@@ -61,10 +62,12 @@ class FindingModel implements FindingContract.Model {
                             }
                             mPresenter.searchSuccess();
                         }
+                        mPresenter.dismissDialog();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        mPresenter.dismissDialog();
                         Logger.e("搜索失败", e);
                     }
 

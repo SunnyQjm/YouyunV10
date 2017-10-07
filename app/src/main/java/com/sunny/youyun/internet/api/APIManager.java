@@ -7,6 +7,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.cookie_persisten.CookieJarImpl;
 import com.sunny.youyun.internet.cookie_persisten.PersistentCookieStore;
 import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
+import com.sunny.youyun.internet.service.ChatServices;
 import com.sunny.youyun.internet.service.FileServices;
 import com.sunny.youyun.internet.service.ForumServices;
 import com.sunny.youyun.internet.service.TokenServices;
@@ -61,6 +62,7 @@ public class APIManager {
     private FileServices fileServices;
     private TokenServices tokenServices;
     private ForumServices forumServices;
+    private ChatServices chatServices;
 
 
     /**
@@ -103,6 +105,12 @@ public class APIManager {
         if (forumServices == null)
             forumServices = createService(ForumServices.class, factories);
         return forumServices;
+    }
+
+    public ChatServices getChatServices(Converter.Factory... factories){
+        if(chatServices == null)
+            chatServices = createService(ChatServices.class, factories);
+        return chatServices;
     }
 
     private <T> T createService(Class<T> serviceClass, Converter.Factory... factory) {

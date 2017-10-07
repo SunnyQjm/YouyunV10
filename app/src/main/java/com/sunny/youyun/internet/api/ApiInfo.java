@@ -8,7 +8,7 @@ public class ApiInfo {
     //    public static final String IP = "http://123.206.80.54";
 //    public static final String IP = "http://123.207.96.66";
 //    public static final String IP = "http://192.168.1.3";
-    private static final String IP = "http://192.168.1.100";
+    private static final String IP = "http://172.6.0.186";
     //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
@@ -153,6 +153,23 @@ public class ApiInfo {
     ///////////////////////////////////////////////////////////////////////////
     public static final String UPDATE_COOKIE_BY_TOKEN_URL = "updateToken",
             UPDATE_COOKIE_BY_TOKEN_TOKEN = "token";
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    ////////////ChatService
+    ///////////////////////////////////////////////////////////////////////////
+
+    //获取聊天记录
+    public static final String GET_CHAT_RECORD_URL = "authc/chat/get",
+            GET_CHAT_RECORD_USER_ID = "userId", GET_CHAT_RECORD_JOIN_CODE = "joinCode",
+            GET_CHAT_RECORD_PAGE = "page", GET_CHAT_RECORD_SIZE = "size";
+
+    public static final String SEND_MESSAGE_URL = "authc/chat/send",
+            SEND_MESSAGE_CONTENT = "content", SEND_MESSAGE_USER_ID = "userId",
+            SEND_MESSAGE_JOIN_CODE = "joinCode";
+
+    public static final String GET_PRIVATE_LETTER_LIST_URL = "authc/chat/get/list",
+            GET_PRIVATE_LETTER_LIST_PAGE = "page", GET_PRIVATE_LETTER_LIST_SIZE = "size";
 
 
     ///////////////////////////////////////////////////////////////////////////

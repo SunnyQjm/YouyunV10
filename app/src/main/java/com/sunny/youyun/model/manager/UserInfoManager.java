@@ -65,6 +65,10 @@ public enum UserInfoManager {
         this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
         return this;
     }
+
+    public int getUserId(){
+        return INSTANCE.getUserInfo().getId();
+    }
     public void clear(){
         user.deleteAsync();
         user = new User.Builder().build();

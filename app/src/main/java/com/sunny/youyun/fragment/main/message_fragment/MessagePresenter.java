@@ -1,6 +1,7 @@
 package com.sunny.youyun.fragment.main.message_fragment;
 
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.mvp.BaseView;
 
 import java.util.List;
@@ -24,5 +25,15 @@ public class MessagePresenter extends MessageContract.Presenter{
     @Override
     List<MultiItemEntity> getData() {
         return mModel.getData();
+    }
+
+    @Override
+    void getPrivateLetterList(int page, boolean isRefresh) {
+        mModel.getPrivateLetterList(page, ApiInfo.GET_FORUM_DEFAULT_SIZE, isRefresh);
+    }
+
+    @Override
+    void getPrivateLetterListSuccess() {
+        mView.getPrivateLetterListSuccess();
     }
 }
