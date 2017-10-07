@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.message_fragment.adapter.MessageAdapter;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
+import com.sunny.youyun.model.data_item.PrivateLetter;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
@@ -105,7 +108,13 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        if(position >= 2){
+            PrivateLetter letter = (PrivateLetter) adapter.getItem(position);
+            if(letter == null)
+                return;
+            RouterUtils.open(activity, IntentRouter.ChatActivity, String.valueOf(letter.getId()),
+                    letter.getUsername());
+        }
     }
 
     @Override

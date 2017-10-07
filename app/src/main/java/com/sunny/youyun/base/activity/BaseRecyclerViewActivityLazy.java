@@ -15,13 +15,17 @@ import com.sunny.youyun.views.easy_refresh.EasyRefreshFooter;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends MVPBaseActivity<P> implements EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener {
+/**
+ * Created by Sunny on 2017/10/7 0007.
+ */
+
+public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> extends MVPBaseActivity<P>
+        implements EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener {
 
     @BindView(R.id.easyBar)
     protected EasyBar easyBar;
@@ -36,9 +40,6 @@ public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_recycler_view);
-        ButterKnife.bind(this);
-        initView();
     }
 
     protected void initView() {

@@ -1,9 +1,10 @@
 package com.sunny.youyun.internet.service;
 
 
-import com.sunny.youyun.activity.chat.item.MessageItem;
+import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import io.reactivex.Observable;
@@ -27,7 +28,7 @@ public interface ChatServices {
      * @return
      */
     @GET(ApiInfo.GET_CHAT_RECORD_URL)
-    Observable<BaseResponseBody<MessageItem>> getChatRecordSingle(
+    Observable<BaseResponseBody<Message[]>> getChatRecordSingle(
             @Query(ApiInfo.GET_CHAT_RECORD_USER_ID) int userId,
             @Query(ApiInfo.GET_CHAT_RECORD_PAGE) int page,
             @Query(ApiInfo.GET_CHAT_RECORD_SIZE) int size
@@ -41,7 +42,7 @@ public interface ChatServices {
      * @return
      */
     @GET(ApiInfo.GET_CHAT_RECORD_URL)
-    Observable<BaseResponseBody<MessageItem>> getChatRecordGroup(
+    Observable<BaseResponseBody<MessageItemOther>> getChatRecordGroup(
             @Query(ApiInfo.GET_CHAT_RECORD_JOIN_CODE) int joinCode,
             @Query(ApiInfo.GET_CHAT_RECORD_PAGE) int page,
             @Query(ApiInfo.GET_CHAT_RECORD_SIZE) int size

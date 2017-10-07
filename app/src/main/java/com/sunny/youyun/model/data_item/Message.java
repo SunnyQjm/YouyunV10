@@ -1,5 +1,7 @@
 package com.sunny.youyun.model.data_item;
 
+import com.sunny.youyun.model.User;
+
 /**
  * 消息Model
  *
@@ -21,6 +23,7 @@ public class Message {
     private final int toUserId;
     private final String content;
     private final int id;
+    private final User user;
     private final long createTime;
     private final long updateTime;
 
@@ -29,8 +32,13 @@ public class Message {
         toUserId = builder.toUserId;
         content = builder.content;
         id = builder.id;
+        user = builder.user;
         createTime = builder.createTime;
         updateTime = builder.updateTime;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public int getFromUserId() {
@@ -62,6 +70,7 @@ public class Message {
         private int toUserId;
         private String content;
         private int id;
+        private User user;
         private long createTime;
         private long updateTime;
 
@@ -85,6 +94,11 @@ public class Message {
 
         public Builder id(int val) {
             id = val;
+            return this;
+        }
+
+        public Builder user(User val) {
+            user = val;
             return this;
         }
 

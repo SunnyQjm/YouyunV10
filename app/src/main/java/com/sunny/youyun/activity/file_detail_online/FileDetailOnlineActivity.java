@@ -322,7 +322,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         if (YouyunAPI.isIsLogin()) {
             mPresenter.addComment(internetFile.getId(), etCommentContent.getText().toString());
             etCommentContent.setText("");
-            InputMethodUtil.hide(this);
+            InputMethodUtil.change(this);
         } else {
             showTip(getString(R.string.login_first));
         }

@@ -2,49 +2,65 @@ package com.sunny.youyun.activity.chat;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.github.mzule.activityrouter.annotation.Router;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.chat.adapter.ChatAdapter;
-import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
-import com.sunny.youyun.model.User;
+import com.sunny.youyun.activity.chat.config.ChatConfig;
+import com.sunny.youyun.activity.chat.item.MessageItemMy;
+import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
+import com.sunny.youyun.model.data_item.Message;
+import com.sunny.youyun.model.manager.UserInfoManager;
+import com.sunny.youyun.utils.InputMethodUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowPullLoadHeader;
+import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+@Router(value = {IntentRouter.ChatActivity + "/:" + ChatConfig.PARAM_USER_ID
+        + "/:" + ChatConfig.PARAM_USER_NICKNAME},
+        intParams = {ChatConfig.PARAM_USER_ID})
+public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> implements ChatContract.View, View.OnClickListener {
 
-public class ChatActivity extends BaseRecyclerViewActivity<ChatPresenter> implements ChatContract.View {
-
-    @BindView(R.id.easyBar)
-    EasyBar easyBar;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.et_content)
     EditText etContent;
-    @BindView(R.id.btn_send)
     Button btnSend;
 
     private ChatAdapter adapter = null;
     private int page = 1;
-    private User userInfo;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        ButterKnife.bind(this);
-        initView();
+        init();
     }
 
-    private void initView() {
+    private void init() {
+        userId = getIntent().getIntExtra(ChatConfig.PARAM_USER_ID, -1);
+        String nickname = getIntent().getStringExtra(ChatConfig.PARAM_USER_NICKNAME);
+
+        etContent = (EditText) findViewById(R.id.et_content);
+        btnSend = (Button) findViewById(R.id.btn_send);
+        easyBar = (EasyBar) findViewById(R.id.easyBar);
+        btnSend.setOnClickListener(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        refreshLayout = (EasyRefreshLayout) findViewById(R.id.refreshLayout);
+        initView();
+//        //倒叙显示
+//        linerLayoutManager.setReverseLayout(true);
+        easyBar.setTitle(nickname);
+
         etContent.setHint(getString(R.string.add_message));
         refreshLayout.setHeader(new ArrowPullLoadHeader(R.layout.easy_refresh_pull_load_header));
         refreshLayout.setLoadAble(false);
         adapter = new ChatAdapter(mPresenter.getData());
         adapter.bindToRecyclerView(recyclerView);
+        page = 1;
+        mPresenter.getMessages(userId, page, true);
     }
 
     @Override
@@ -54,7 +70,7 @@ public class ChatActivity extends BaseRecyclerViewActivity<ChatPresenter> implem
     @Override
     protected void OnRefreshBeginSync() {
         page++;
-        mPresenter.getMessages(userInfo.getId(), page, false);
+        mPresenter.getMessages(userId, page, false);
     }
 
     @Override
@@ -77,10 +93,6 @@ public class ChatActivity extends BaseRecyclerViewActivity<ChatPresenter> implem
         return new ChatPresenter(this);
     }
 
-    @OnClick(R.id.btn_send)
-    public void onViewClicked() {
-    }
-
     @Override
     public void getMessagesSuccess() {
         if (adapter != null) {
@@ -91,5 +103,24 @@ public class ChatActivity extends BaseRecyclerViewActivity<ChatPresenter> implem
     @Override
     public void sendMessageSuccess(String content) {
         //TODO send message success
+        adapter.addData(0, new MessageItemMy(new Message.Builder()
+                .content(content)
+                .fromUserId(UserInfoManager.getInstance().getUserId())
+                .toUserId(userId)
+                .createTime(System.currentTimeMillis())
+                .user(UserInfoManager.getInstance().getUserInfo())
+                .build()));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            //发送一条消息
+            case R.id.btn_send:
+                mPresenter.sendMessage(userId, etContent.getText().toString());
+                etContent.setText("");
+                InputMethodUtil.hide(this, etContent);
+                break;
+        }
     }
 }

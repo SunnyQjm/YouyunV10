@@ -1,17 +1,19 @@
 package com.sunny.youyun.activity.chat;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.activity.chat.item.MessageItem;
+import com.sunny.youyun.activity.chat.item.MessageItemMy;
+import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.data_item.Message;
+import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -39,19 +41,21 @@ class ChatModel implements ChatContract.Model {
         APIManager.getInstance()
                 .getChatServices(GsonConverterFactory.create())
                 .getChatRecordSingle(userId, page, size)
-                .subscribe(new Observer<BaseResponseBody<MessageItem>>() {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseResponseBody<Message[]>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<MessageItem> messageItemBaseResponseBody) {
+                    public void onNext(BaseResponseBody<Message[]> messageItemBaseResponseBody) {
                         if (messageItemBaseResponseBody.isSuccess() &&
                                 messageItemBaseResponseBody.getData() != null) {
                             if(isRefresh)
                                 mList.clear();
-                            Collections.addAll(mList, messageItemBaseResponseBody.getData());
+                            addAll(messageItemBaseResponseBody.getData());
                             mPresenter.getMessagesSuccess();
                         } else {
                             mPresenter.showTip("没有获取到信息");
@@ -60,6 +64,7 @@ class ChatModel implements ChatContract.Model {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         Logger.e("获取聊天记录失败", e);
                     }
 
@@ -68,6 +73,16 @@ class ChatModel implements ChatContract.Model {
 
                     }
                 });
+    }
+
+    private void addAll(Message[] data) {
+        for (Message d : data) {
+            if(d.getUser().getId() == UserInfoManager.getInstance().getUserId()){
+                mList.add(0, new MessageItemMy(d));
+            } else {
+                mList.add(0, new MessageItemOther(d));
+            }
+        }
     }
 
     @Override

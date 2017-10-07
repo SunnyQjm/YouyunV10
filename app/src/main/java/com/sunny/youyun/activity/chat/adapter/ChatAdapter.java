@@ -6,6 +6,8 @@ import com.sunny.youyun.activity.chat.item.DateItem;
 import com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.model.data_item.Message;
+import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
 
 import java.util.List;
@@ -33,7 +35,12 @@ public class ChatAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
         switch (item.getItemType()) {
             case ChatConfig.MESSAGE_ITEM_TYPE_OTHER:
             case ChatConfig.MESSAGE_ITEM_TYPE_SELF:
-
+                Message messageItem = (Message) item;
+                helper.setText(R.id.tv_content, messageItem.getContent());
+                if(messageItem.getUser() == null)
+                    break;
+                GlideUtils.load(mContext, helper.getView(R.id.img_avatar),
+                        messageItem.getUser().getAvatar());
                 break;
             case ChatConfig.MESSAGE_ITEM_TYPE_DATE:
                 if (item instanceof DateItem) {

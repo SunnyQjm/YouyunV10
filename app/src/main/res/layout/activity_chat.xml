@@ -7,12 +7,21 @@
     tools:context="com.sunny.youyun.activity.chat.ChatActivity">
 
     <include layout="@layout/bar_item"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_weight="1"
+    <com.sunny.youyun.views.easy_refresh.EasyRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/light_gray">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
+    </com.sunny.youyun.views.easy_refresh.EasyRefreshLayout>
+    <include layout="@layout/divide_item"/>
     <include layout="@layout/send_view"/>
 </LinearLayout>

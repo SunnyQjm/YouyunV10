@@ -61,7 +61,7 @@ public class ArrowPullLoadHeader extends EasyRefreshHeaderHandler{
     public void refreshing(View header) {
         System.out.println("refreshing");
         this.setText(header, R.id.refresh_text, context.getString(R.string.loading));
-        this.setVisibility(header, R.id.refresh_text, INVISIBLE);
+        this.setVisibility(header, R.id.refresh_text, VISIBLE);
         this.setVisibility(header, R.id.refresh_progressBar, VISIBLE);
         this.setVisibility(header, R.id.refresh_arrow, INVISIBLE);
     }

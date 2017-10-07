@@ -15,6 +15,7 @@ interface ChatContract {
     interface View extends BaseView {
         void getMessagesSuccess();
         void sendMessageSuccess(String content);
+
     }
 
     interface Model extends BaseModel {
@@ -29,5 +30,6 @@ interface ChatContract {
         abstract List<MultiItemEntity> getData();
         abstract void sendMessage(int userId, String content);
         abstract void sendMessageSuccess(String content);
+
     }
 }
