@@ -70,11 +70,13 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
         refreshLayout.setOnRefreshListener(() -> {
             page = 1;
             mPresenter.getPrivateLetterList(page, true);
+            refreshLayout.closeRefresh();
         });
 
         refreshLayout.setOnLoadListener(() -> {
             page++;
             mPresenter.getPrivateLetterList(page, false);
+            refreshLayout.closeLoad();
         });
         adapter = new MessageAdapter(mPresenter.getData());
         adapter.bindToRecyclerView(recyclerView);

@@ -69,8 +69,8 @@ class MessageModel implements MessageContract.Model{
     }
 
     private void remove() {
-        for (int i = 2; i < mList.size(); i++) {
-            mList.remove(i);
+        while (mList.size() > 2){
+            mList.remove(2);
         }
     }
 }
