@@ -37,7 +37,7 @@ public abstract class MultiTypeDelegate<T> {
     }
 
     /**
-     * get the item type from specific entity.
+     * getCount the item type from specific entity.
      *
      * @param t entity
      * @return item type

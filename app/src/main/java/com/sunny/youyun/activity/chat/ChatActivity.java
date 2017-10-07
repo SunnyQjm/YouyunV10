@@ -16,6 +16,7 @@ import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
 import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.InputMethodUtil;
 import com.sunny.youyun.utils.MyNotifyUtil;
@@ -52,6 +53,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
         super.onStop();
         MessageEventBus.getInstance()
                 .unregister(this);
+        MyNotifyUtil.setShowTag(MyNotifyUtil.SHOW_TAG_OTHER);
     }
 
     @Override
@@ -65,6 +67,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
         userId = getIntent().getIntExtra(ChatConfig.PARAM_USER_ID, -1);
         String nickname = getIntent().getStringExtra(ChatConfig.PARAM_USER_NICKNAME);
         MyNotifyUtil.setChattingId(userId);
+        MessageManager.getInstance().clearCount(userId);
 
         etContent = (EditText) findViewById(R.id.et_content);
         btnSend = (Button) findViewById(R.id.btn_send);
@@ -113,10 +116,10 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void receiveMessage(JPushEvent jPushEvent){
+    public void receiveMessage(JPushEvent jPushEvent) {
         //如果收到对方的聊天信息
-        if(jPushEvent.getFromUser() != null && jPushEvent.getFromUser().getId() == userId &&
-                jPushEvent.getType().equals(JPushEvent.INSTANTCONTACT)){
+        if (jPushEvent.getFromUser() != null && jPushEvent.getFromUser().getId() == userId &&
+                jPushEvent.getType().equals(JPushEvent.INSTANTCONTACT)) {
             //TODO send message success
             adapter.addData(0, new MessageItemOther(new Message.Builder()
                     .content(jPushEvent.getContent())
@@ -128,6 +131,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
             recyclerView.scrollToPosition(0);
         }
     }
+
     @Override
     protected ChatPresenter onCreatePresenter() {
         return new ChatPresenter(this);
@@ -151,6 +155,14 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
                 .user(UserInfoManager.getInstance().getUserInfo())
                 .build()));
         recyclerView.scrollToPosition(0);
+        MessageManager.getInstance()
+                .put(userId, new Message.Builder()
+                        .content(content)
+                        .toUserId(userId)
+                        .fromUserId(UserInfoManager.getInstance().getUserId())
+                        .createTime(System.currentTimeMillis())
+                        .user(UserInfoManager.getInstance().getUserInfo())
+                        .build());
     }
 
     @Override

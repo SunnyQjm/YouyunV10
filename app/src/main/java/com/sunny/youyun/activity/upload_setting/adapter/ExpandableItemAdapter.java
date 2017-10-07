@@ -107,7 +107,7 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
         MultiItemEntity target = getItem(position);
         if(target == null)
             return false;
-        //get the item's parent position
+        //getCount the item's parent position
         int cp = getParentPosition(target);
         MenuItem menuItem = (MenuItem) getItem(cp);
         if(menuItem == null)

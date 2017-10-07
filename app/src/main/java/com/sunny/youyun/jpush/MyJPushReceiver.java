@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
+import com.sunny.youyun.model.manager.MessageManager;
+import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.GsonUtil;
 import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.bus.MessageEventBus;
@@ -51,14 +54,34 @@ public class MyJPushReceiver extends BroadcastReceiver {
             try {
                 extras = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                 System.out.println(extras);
+                String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
+                String type = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
                 User user = null;
                 try {
                     user = GsonUtil.json2Bean(extras.getString("fromUser"), User.class);
+                    if (user != null) {
+                        if (MyNotifyUtil.getShowTag() != MyNotifyUtil.SHOW_TAG_CHATTING ||
+                                MyNotifyUtil.getChattingId() != user.getId()) {
+                            //未读消息+1
+                            MessageManager.getInstance()
+                                    .addCount(user.getId());
+                        }
+
+                        //收到新消息
+                        if (type != null && type.equals(JPushEvent.INSTANTCONTACT)) {
+                            MessageManager.getInstance()
+                                    .put(user.getId(), new Message.Builder()
+                                            .content(content)
+                                            .fromUserId(user.getId())
+                                            .toUserId(UserInfoManager.getInstance().getUserId())
+                                            .createTime(System.currentTimeMillis())
+                                            .user(user)
+                                            .build());
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
-                String type = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
                 JPushEvent jPushEvent = new JPushEvent.Builder()
                         .content(content)
                         .fromUser(user)

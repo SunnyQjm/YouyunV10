@@ -1045,7 +1045,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     }
 
     /**
-     * get generic parameter K
+     * getCount generic parameter K
      *
      * @param z
      * @return
@@ -1548,7 +1548,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     protected abstract void convert(K helper, T item);
 
     /**
-     * get the specific view by position,e.g. getViewByPosition(2, R.id.textView)
+     * getCount the specific view by position,e.g. getViewByPosition(2, R.id.textView)
      * <p>
      * bind recyclerView {@link #bindToRecyclerView(RecyclerView)} before use!
      *

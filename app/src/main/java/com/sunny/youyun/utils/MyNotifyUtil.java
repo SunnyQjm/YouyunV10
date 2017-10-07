@@ -212,8 +212,7 @@ public class MyNotifyUtil {
          * @param smallIcon
          * @param ticker
          */
-        private NotificationCompat.Builder
-        createCompatBuilder(final Context context, final PendingIntent pendingIntent, final @DrawableRes int smallIcon, String ticker,
+        private NotificationCompat.Builder createCompatBuilder(final Context context, final PendingIntent pendingIntent, final @DrawableRes int smallIcon, String ticker,
                             final String title, final String content, final boolean sound, final boolean vibrate,
                             final boolean lights) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);

@@ -21,6 +21,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @BindView(R.id.welcome_layout)
     ConstraintLayout welcomeLayout;
+//    @BindView(R.id.draggableView)
+//    DraggableFlagView draggableView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -50,6 +52,17 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_acivity);
         ButterKnife.bind(this);
 
+        initView();
+    }
+
+    private void initView() {
+//        draggableView.setText("8");
+//        draggableView.setOnDraggableFlagViewListener(new DraggableFlagView.OnDraggableFlagViewListener() {
+//            @Override
+//            public void onFlagDismiss(DraggableFlagView view) {
+//                Toast.makeText(WelcomeActivity.this, "drag", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override

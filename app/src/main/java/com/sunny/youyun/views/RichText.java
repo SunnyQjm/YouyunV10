@@ -80,7 +80,7 @@ public class RichText extends AppCompatTextView {
      * @return
      */
     private Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight) {
-        //get the original size
+        //getCount the original size
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 

@@ -11,13 +11,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.activity.main.adapter.MainAdapter;
 import com.sunny.youyun.activity.main.config.MainActivityConfig;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
@@ -26,19 +24,22 @@ import com.sunny.youyun.fragment.main.finding_fragment.FindingFragment;
 import com.sunny.youyun.fragment.main.main_fragment.MainFragment;
 import com.sunny.youyun.fragment.main.message_fragment.MessageFragment;
 import com.sunny.youyun.fragment.main.mine_fragment.MineFragment;
+import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.event.MultiSelectEvent;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.utils.DensityUtil;
 import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.TimePickerUtils;
+import com.sunny.youyun.utils.bus.MessageEventBus;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.NoScrollViewPager;
+import com.sunny.youyun.views.drag_view.DraggableFlagView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -77,6 +78,8 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     LinearLayout lMultiSelectorOperator;
     @BindView(R.id.easyBar)
     EasyBar easyBar;
+    @BindView(R.id.draggableView)
+    DraggableFlagView draggableView;
 
     private List<Fragment> fragmentList = new ArrayList<>();
     private MainAdapter mainAdapter;
@@ -93,12 +96,20 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        MessageEventBus.getInstance()
+                .register(this);
+        //每次重新可见的时候刷新未读气泡数值
+        changeDragCount();
+        System.out.println("MainActivity onStart");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+        MessageEventBus.getInstance()
+                .unregister(this);
+        System.out.println("MainActivity onStop");
     }
 
     @Override
@@ -143,7 +154,7 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
 
     private void initView() {
         System.out.println("initView");
-
+        draggableView.setDraggable(false);
         easyBar.setDisplayMode(EasyBar.Mode.TEXT);
         easyBar.setLeftText("");
         easyBar.setRightText(getString(R.string.select_all));
@@ -178,6 +189,21 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         viewpager.setAdapter(mainAdapter);
         viewpager.setScroll(false);
         viewpager.setCurrentItem(MAIN_PAGE_FRAGMENT, false);
+
+        changeDragCount();
+    }
+
+    /**
+     * 修改拖拽气泡的数值
+     */
+    private void changeDragCount() {
+        int total = MessageManager.getInstance().getTotalCount();
+        if(total > 0){
+            draggableView.setVisibility(View.VISIBLE);
+            draggableView.setText(String.valueOf(total));
+        } else {
+            draggableView.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -291,6 +317,20 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiveMessage(JPushEvent jPushEvent){
+        changeDragCount();
+        switch (jPushEvent.getType()){
+            case JPushEvent.COMMENT:
+                break;
+            case JPushEvent.FOLLOW:
+                break;
+            case JPushEvent.INSTANTCONTACT:
+                break;
+            case JPushEvent.STAR:
+                break;
+        }
+    }
     @Override
     public void onFragmentInteraction(Uri uri) {
 

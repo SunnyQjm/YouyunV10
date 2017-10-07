@@ -39,7 +39,7 @@ public class ScanActivity extends MVPBaseActivity<ScanPresenter> implements Scan
         @Override
         public void onScanQRCodeOpenCameraError(Throwable throwable) {
             Logger.e(throwable, "打开摄像头失败");
-            // fix get permission in Xiaomi device under 6.0
+            // fix getCount permission in Xiaomi device under 6.0
             if (Build.MANUFACTURER.equals("Xiaomi")
                     && android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 mQRCodeView.post(() -> {

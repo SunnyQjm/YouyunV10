@@ -1,5 +1,6 @@
 package com.sunny.youyun.fragment.main.message_fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,17 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.chat.ChatActivity;
+import com.sunny.youyun.activity.chat.config.ChatConfig;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.message_fragment.adapter.MessageAdapter;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
 import com.sunny.youyun.model.data_item.PrivateLetter;
+import com.sunny.youyun.model.event.JPushEvent;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.bus.MessageEventBus;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +51,23 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
     private MessageAdapter adapter;
     private int page = 1;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        MessageEventBus.getInstance()
+                .register(this);
+        updateAll();
+        System.out.println("MessageFragment onStart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        MessageEventBus.getInstance()
+                .unregister(this);
+        System.out.println("MessageFragment onStop");
+    }
+
     public static MessageFragment newInstance() {
         Bundle args = new Bundle();
         MessageFragment fragment = new MessageFragment();
@@ -60,6 +85,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
         } else {
             unbinder = ButterKnife.bind(this, view);
         }
+        System.out.println("onCreateView");
         return view;
     }
 
@@ -84,6 +110,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
         adapter = new MessageAdapter(mPresenter.getData());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
+        //一开始先加载一波数据
         mPresenter.getPrivateLetterList(page, true);
     }
 
@@ -94,6 +121,21 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
                 R.drawable.icon_message_comment));
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiveMessage(JPushEvent jPushEvent) {
+        updateAll();
+        switch (jPushEvent.getType()) {
+            case JPushEvent.INSTANTCONTACT:
+                break;
+            case JPushEvent.COMMENT:
+                break;
+            case JPushEvent.FOLLOW:
+                break;
+            case JPushEvent.STAR:
+                break;
+        }
+    }
 
     @Override
     protected MessagePresenter onCreatePresenter() {
@@ -108,13 +150,23 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        if(position >= 2){
+        if (position >= 2) {
             PrivateLetter letter = (PrivateLetter) adapter.getItem(position);
-            if(letter == null)
+            if (letter == null)
                 return;
-            RouterUtils.open(activity, IntentRouter.ChatActivity, String.valueOf(letter.getId()),
-                    letter.getUsername());
+            MessageManager.getInstance().clearCount(letter.getId());
+            Intent intent = new Intent(activity, ChatActivity.class);
+            intent.putExtra(ChatConfig.PARAM_USER_ID, letter.getId());
+            intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, letter.getUsername());
+            RouterUtils.openForResult(this, intent, 0);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        page = 1;
+        mPresenter.getPrivateLetterList(page, true);
     }
 
     @Override
@@ -123,7 +175,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
     }
 
     private void updateAll() {
-        if(adapter != null)
+        if (adapter != null)
             adapter.notifyDataSetChanged();
     }
 

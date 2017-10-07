@@ -7,10 +7,10 @@ import com.sunny.youyun.model.User;
  */
 
 public class JPushEvent {
-    public static String INSTANTCONTACT = "INSTANTCONTACT";
-    public static String STAR = "STAR";
-    public static String FOLLOW = "FOLLOW";
-    public static String COMMENT = "COMMENT";
+    public static final String INSTANTCONTACT = "INSTANTCONTACT";
+    public static final String STAR = "STAR";
+    public static final String FOLLOW = "FOLLOW";
+    public static final String COMMENT = "COMMENT";
     private String type = INSTANTCONTACT;
     private User fromUser;
     private String title;

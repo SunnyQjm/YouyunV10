@@ -4,10 +4,10 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -20,9 +20,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Sunny on 2017/6/25 0025.
  */
 
-class MessageModel implements MessageContract.Model{
+class MessageModel implements MessageContract.Model {
     private final MessagePresenter mPresenter;
     private final List<MultiItemEntity> mList = new ArrayList<>();
+
     MessageModel(MessagePresenter messagePresenter) {
         mPresenter = messagePresenter;
     }
@@ -47,11 +48,11 @@ class MessageModel implements MessageContract.Model{
 
                     @Override
                     public void onNext(BaseResponseBody<PrivateLetterItem[]> privateLetterBaseResponseBody) {
-                        if(privateLetterBaseResponseBody.isSuccess() &&
-                                privateLetterBaseResponseBody.getData() != null){
-                            if(isRefresh)
+                        if (privateLetterBaseResponseBody.isSuccess() &&
+                                privateLetterBaseResponseBody.getData() != null) {
+                            if (isRefresh)
                                 remove();
-                            Collections.addAll(mList, privateLetterBaseResponseBody.getData());
+                            addAll(privateLetterBaseResponseBody.getData());
                             mPresenter.getPrivateLetterListSuccess();
                         }
                     }
@@ -68,8 +69,18 @@ class MessageModel implements MessageContract.Model{
                 });
     }
 
+    private void addAll(PrivateLetterItem[] privateLetters) {
+        for (PrivateLetterItem l : privateLetters) {
+            mList.add(l);
+            MessageManager.getInstance()
+                    .put(l.getId(), l.getMessage());
+        }
+    }
+
     private void remove() {
-        while (mList.size() > 2){
+        MessageManager.getInstance()
+                .clearMessage();
+        while (mList.size() > 2) {
             mList.remove(2);
         }
     }

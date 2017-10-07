@@ -9,6 +9,11 @@
     <attr name="icon_color" format="color" />
     <attr name="icon_stroke_width" format="dimension" />
 
+    <!--可拖拽气泡-->
+    <declare-styleable name="DraggableFlagView">
+        <attr name="color" format="color"/>
+    </declare-styleable>
+
     <declare-styleable name="MyCircleProgress">
         <attr name="progress_value" />
         <attr name="progress_width" />

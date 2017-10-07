@@ -157,7 +157,7 @@ public class PersistentCookieStore implements CookieStore
         for (Cookie c : ret) {
             info += "/n{" + c.name() + " : " + c.value() + "; persistent : " + (c.expiresAt() - System.currentTimeMillis());
         }
-        Log.e("get : ", info);
+        Log.e("getCount : ", info);
         return ret;
     }
 

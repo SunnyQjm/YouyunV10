@@ -1,14 +1,19 @@
 package com.sunny.youyun.fragment.main.message_fragment.adapter;
 
+import android.view.View;
+
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
+import com.sunny.youyun.model.data_item.Message;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
 import com.sunny.youyun.views.LineMenuItem;
+import com.sunny.youyun.views.drag_view.DraggableFlagView;
 
 import java.util.List;
 
@@ -41,9 +46,20 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                 break;
             case TypeConfig.TYPE_MESSAGE:   //消息内容填充
                 PrivateLetterItem messageItem = (PrivateLetterItem) item;
+                Message message = MessageManager.getInstance().getMessage(messageItem.getId());
+                if (message == null)
+                    return;
                 helper.setText(R.id.tv_name, messageItem.getUsername())
-                        .setText(R.id.tv_description, messageItem.getMessage().getContent())
-                        .setText(R.id.tv_date, TimeUtils.returnTime_ymd(messageItem.getCreateTime()));
+                        .setText(R.id.tv_description, message.getContent())
+                        .setText(R.id.tv_date, TimeUtils.returnTime_ymd(message.getCreateTime()));
+                int count = MessageManager.getInstance().getCount(messageItem.getId());
+                DraggableFlagView draggableFlagView = helper.getView(R.id.draggableView);
+                if (count > 0) {
+                    draggableFlagView.setVisibility(View.VISIBLE);
+                    draggableFlagView.setText(String.valueOf(count));
+                } else {
+                    draggableFlagView.setVisibility(View.INVISIBLE);
+                }
                 GlideUtils.load(mContext, helper.getView(R.id.img_icon), messageItem.getAvatar());
                 break;
         }

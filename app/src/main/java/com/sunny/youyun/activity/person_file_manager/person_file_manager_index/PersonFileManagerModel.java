@@ -100,7 +100,7 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                 .createDirectory(body)
                 .map(baseResponseBody -> {
                     if (baseResponseBody.isSuccess()) {
-//                        mList.clear();
+//                        mList.clearCount();
 //                        Collections.addAll(mList, baseResponseBody.getData());
                         return true;
                     }
