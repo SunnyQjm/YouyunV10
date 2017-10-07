@@ -37,7 +37,7 @@ class HotModel implements HotContract.Model{
     public void getForumDataHot(int page, boolean isRefresh) {
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
-                .getForumAll(page, ApiInfo.GET_FORUM_DEFAULT_SIZE, false, true)
+                .getForumAll(page, ApiInfo.GET_DEFAULT_SIZE, false, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseResponseBody<InternetFile[]>>() {
@@ -56,7 +56,7 @@ class HotModel implements HotContract.Model{
                                 internetFiles.clear();
                             }
                             Collections.addAll(internetFiles, datas);
-                            if(datas.length < ApiInfo.GET_FORUM_DEFAULT_SIZE){
+                            if(datas.length < ApiInfo.GET_DEFAULT_SIZE){
                                 mPresenter.allDataLoadFinish();
                             }
                             mPresenter.getDataSuccess();

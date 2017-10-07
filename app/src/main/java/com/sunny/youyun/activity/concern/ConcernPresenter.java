@@ -28,7 +28,7 @@ class ConcernPresenter extends ConcernContract.Presenter{
 
     @Override
     void getFollowingList(int page, boolean isRefresh) {
-        mModel.getFollowingList(page, ApiInfo.GET_FORUM_DEFAULT_SIZE, isRefresh);
+        mModel.getFollowingList(page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
     }
 
     @Override

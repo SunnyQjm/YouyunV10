@@ -38,7 +38,7 @@ class PersonFileListPresenter extends PersonFileListContract.Presenter{
 
     @Override
     void getFileByType(String MIME, int page, boolean isRefresh) {
-        mModel.getFileByType(MIME, page, ApiInfo.GET_FORUM_DEFAULT_SIZE, isRefresh);
+        mModel.getFileByType(MIME, page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
     }
 
     @Override

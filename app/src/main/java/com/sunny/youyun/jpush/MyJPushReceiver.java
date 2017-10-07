@@ -6,10 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.event.JPushEvent;
+import com.sunny.youyun.utils.GsonUtil;
+import com.sunny.youyun.utils.bus.MessageEventBus;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.jpush.android.api.JPushInterface;
 
 /**
- *
  * Created by Sunny on 2017/5/29 0029.
  */
 
@@ -30,11 +37,42 @@ public class MyJPushReceiver extends BroadcastReceiver {
         }
         //收到了自定义消息 Push 。
         else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(action)) {
+            // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
             Log.e(TAG, "收到了自定义消息。消息标题是：" + bundle.getString(JPushInterface.EXTRA_TITLE));
             Log.e(TAG, "收到了自定义消息。消息内容是：" + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-            Log.e(TAG, "收到了自定义消息。消息附加字段是：" + bundle.getString(JPushInterface.EXTRA_EXTRA));
+            Log.e(TAG, "收到了自定义消息。消息附加字段是：" + bundle.get(JPushInterface.EXTRA_EXTRA));
             Log.e(TAG, "收到了自定义消息。唯一标识消息的 ID是：" + bundle.getString(JPushInterface.EXTRA_MSG_ID));
-            // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
+            Log.e(TAG, "收到了自定义消息,类型为：" + bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE));
+
+            String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+            JSONObject extras = null;
+            try {
+                extras = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                System.out.println(extras);
+                User user = null;
+                try {
+                    user = GsonUtil.json2Bean(extras.getString("fromUser"), User.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
+                String type = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
+                //推送一个Event
+                MessageEventBus.getInstance()
+                        .post(new JPushEvent.Builder()
+                                .content(content)
+                                .fromUser(user)
+                                .title(title)
+                                .type(type)
+                                .push_id(id)
+                                .build()
+                        );
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+
         }
         //收到了通知 Push。
         else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(action)) {

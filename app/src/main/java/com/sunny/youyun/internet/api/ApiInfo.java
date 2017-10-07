@@ -12,12 +12,14 @@ public class ApiInfo {
     //    private static final String IP = "http://172.6.0.186";
 //    private static final String IP = "http://192.168.10.176";
     public static final int port = 8080;
-    public static final String BaseUrl = IP + ":" + port + "/youyun/";
+    public static final String BaseUrl = IP + ":" + port + "/";
 //    public static final String BaseUrl = IP + "/";
 
     public static final String DOWNLOAD = "file/download/",
             BASE_DOWNLOAD_URL = BaseUrl + DOWNLOAD;
     public static final String GET_FILE_INFO = "file/message", GET_FILE_INFO_IDENTIFY_CODE = "identifycode";
+
+    public static final int GET_DEFAULT_SIZE = 10;
 
 
     ////////////////////////////////////////////////////////
@@ -130,7 +132,6 @@ public class ApiInfo {
     public static final String GET_FORUM_URL = "forum/files", GET_FORUM_PAGE = "page",
             GET_FORUM_SIZE = "size", GET_FORUM_SORT_BY_DATE = "createTime",
             GET_FORUM_SORT_BY_DOWNLOAD_COUNT = "downloadCount";
-    public static final int GET_FORUM_DEFAULT_SIZE = 5;
 
     public static final String ADD_COMMENT_URL = "authc/forum/comment",
             ADD_COMMENT_FILE_ID = "fileId", ADD_COMMENT_CONTENT = "content";

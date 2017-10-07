@@ -23,7 +23,7 @@ class MyCollectionPresenter extends MyCollectionContract.Presenter{
 
     @Override
     void getCollections(int page, boolean isRefresh) {
-        mModel.getCollections(page, ApiInfo.GET_FORUM_DEFAULT_SIZE, isRefresh);
+        mModel.getCollections(page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
     }
 
     @Override

@@ -54,7 +54,7 @@ class ConcernModel implements ConcernContract.Model {
                             }
                             Collections.addAll(mList, baseResponseBody.getData());
                             mPresenter.getFollowingSuccess();
-                            if (baseResponseBody.getData().length < ApiInfo.GET_FORUM_DEFAULT_SIZE) {
+                            if (baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE) {
                                 mPresenter.allDataGetFinish();
                             }
                         }

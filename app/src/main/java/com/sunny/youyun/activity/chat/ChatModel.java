@@ -78,9 +78,9 @@ class ChatModel implements ChatContract.Model {
     private void addAll(Message[] data) {
         for (Message d : data) {
             if(d.getUser().getId() == UserInfoManager.getInstance().getUserId()){
-                mList.add(0, new MessageItemMy(d));
+                mList.add(new MessageItemMy(d));
             } else {
-                mList.add(0, new MessageItemOther(d));
+                mList.add(new MessageItemOther(d));
             }
         }
     }

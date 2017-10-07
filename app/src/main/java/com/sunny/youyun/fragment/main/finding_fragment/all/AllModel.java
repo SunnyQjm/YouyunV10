@@ -32,7 +32,7 @@ class AllModel implements AllContract.Model{
     public void getForumDataALL(int page, boolean isRefresh) {
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
-                .getForumAll(page, ApiInfo.GET_FORUM_DEFAULT_SIZE, true, false)
+                .getForumAll(page, ApiInfo.GET_DEFAULT_SIZE, true, false)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseResponseBody<InternetFile[]>>() {
@@ -51,7 +51,7 @@ class AllModel implements AllContract.Model{
                                 internetFiles.clear();
                             }
                             Collections.addAll(internetFiles, datas);
-                            if(datas.length < ApiInfo.GET_FORUM_DEFAULT_SIZE){
+                            if(datas.length < ApiInfo.GET_DEFAULT_SIZE){
                                 mPresenter.allDataLoadFinish();
                             }
                             mPresenter.getForumDataSuccess();
