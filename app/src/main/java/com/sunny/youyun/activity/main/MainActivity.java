@@ -95,6 +95,9 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
     @Override
     protected void onStart() {
         super.onStart();
+        //设置显示标记，如果不在上传下载界面，就在状态栏弹窗提示
+        MyNotifyUtil.setShowTag(MyNotifyUtil.SHOW_TAG_MAIN);
+
         EventBus.getDefault().register(this);
         MessageEventBus.getInstance()
                 .register(this);
