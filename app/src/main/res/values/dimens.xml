@@ -48,4 +48,5 @@
     <dimen name="finding_item_icon_size">12dp</dimen>
     <dimen name="message_icon_size">44dp</dimen>
     <dimen name="finding_search_et_height">25dp</dimen>
+    <dimen name="person_info_bottom_bar_height">38dp</dimen>
 </resources>

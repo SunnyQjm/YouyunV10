@@ -13,36 +13,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/person_info_bg"
-        android:paddingTop="25dp"
         app:elevation="0dp"
         tools:context="com.sunny.youyun.activity.person_info.PersonInfoActivity">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:fitsSystemWindows="true"
+            app:collapsedTitleGravity="center_horizontal"
+            app:expandedTitleGravity="center_horizontal"
+            app:contentScrim="@color/application_theme_color"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@android:color/transparent"
+            >
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/img_info_background"
                 android:orientation="vertical"
+                android:adjustViewBounds="true"
+                android:fitsSystemWindows="true"
+                android:layout_marginTop="25dp"
                 android:transitionName="@string/mine_share_item"
-                app:layout_collapseMode="parallax">
-
-                <com.sunny.youyun.views.EasyBar
-                    android:id="@+id/easyBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/bar_item_height"
-                    android:background="@color/transparent"
-                    app:icon_size="20dp"
-                    app:left_text="@string/back"
-                    app:right_text="@string/sure"
-                    app:title_color="@color/white"
-                    app:title_size="17sp">
-
-
-                </com.sunny.youyun.views.EasyBar>
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
+                >
 
                 <ImageView
                     android:id="@+id/img_icon"
@@ -132,6 +129,31 @@
 
 
             </android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.Toolbar
+                app:layout_collapseMode="pin"
+                android:layout_width="match_parent"
+                android:paddingTop="25dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetRight="0dp"
+                android:layout_height="80dp">
+
+            </android.support.v7.widget.Toolbar>
+            <com.sunny.youyun.views.EasyBar
+                android:id="@+id/easyBar"
+                android:gravity="top"
+                app:layout_collapseMode="pin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bar_item_height"
+                android:background="@color/transparent"
+                android:layout_marginTop="25dp"
+                app:icon_size="20dp"
+                app:left_text="@string/back"
+                app:right_text="@string/sure"
+                app:title_color="@color/white"
+                app:title_size="17sp">
+            </com.sunny.youyun.views.EasyBar>
         </android.support.design.widget.CollapsingToolbarLayout>
 
         <android.support.design.widget.TabLayout
@@ -150,20 +172,15 @@
         <include layout="@layout/divide_item"/>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="@dimen/person_info_bottom_bar_height"
+        />
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
-
-
-    </android.support.v4.widget.NestedScrollView>
-
+    <include layout="@layout/person_info_concern_bottom_bar"/>
 
 </android.support.design.widget.CoordinatorLayout>

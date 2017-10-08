@@ -162,4 +162,5 @@
     <string name="star_record">点赞记录</string>
     <string name="comment_record">评论记录</string>
     <string name="have_new_message">有新消息</string>
+    <string name="private_letter">私信</string>
 </resources>

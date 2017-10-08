@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mzule.activityrouter.annotation.Router;
@@ -61,6 +63,22 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     TextView fansNum;
     @BindView(R.id.img_edit)
     ImageView imgEdit;
+    @BindView(R.id.collapsingToolbarLayout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.person_info_concern_icon)
+    ImageView personInfoConcernIcon;
+    @BindView(R.id.person_info_concern_text)
+    TextView personInfoConcernText;
+    @BindView(R.id.person_info_concern)
+    LinearLayout personInfoConcern;
+    @BindView(R.id.person_info_private_letter_icon)
+    ImageView personInfoPrivateLetterIcon;
+    @BindView(R.id.person_info_private_letter_text)
+    TextView personInfoPrivateLetterText;
+    @BindView(R.id.person_info_private_letter)
+    LinearLayout personInfoPrivateLetter;
+    @BindView(R.id.person_info_bottom_bar)
+    LinearLayout personInfoBottomBar;
 
 
     private List<Fragment> fragmentList = new ArrayList<>();
@@ -85,11 +103,11 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
-            window.setNavigationBarColor(Color.TRANSPARENT);
+//            window.setNavigationBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_person_info);
         ButterKnife.bind(this);
@@ -97,6 +115,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     }
 
     private void initView() {
+
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {
@@ -105,18 +124,19 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
 
             @Override
             public void onRightIconClick(View view) {
-                //TODO 关注
-                if (otherId < 0)
-                    return;
-                mPresenter.concern(otherId);
+
             }
         });
+
         otherId = getIntent().getIntExtra("otherId", -1);
         if (otherId > 0 && otherId != UserInfoManager.getInstance()
                 .getUserInfo().getId()) {  //如果查看的是别人的信息
-            easyBar.setDisplayMode(EasyBar.Mode.ICON_TEXT);
-            easyBar.setRightText(getString(R.string.concern));
+//            easyBar.setDisplayMode(EasyBar.Mode.ICON_TEXT);
+//            easyBar.setRightText(getString(R.string.concern));
             imgEdit.setVisibility(View.INVISIBLE);
+            personInfoBottomBar.setVisibility(View.VISIBLE);
+        } else {
+            personInfoBottomBar.setVisibility(View.INVISIBLE);
         }
 
         concernFragment = ConcernFragment.newInstance();
@@ -133,6 +153,10 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         RecyclerViewUtils.setIndicator(this, tabLayout, TAB_MARGIN_LEFT, TAB_MARGIN_RIGHT);
 
+        collapsingToolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.bar_title_style_collapsing);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.bar_title_style_expand);
         if (otherId > 0) { //查看别人的信息
             mPresenter.getOtherUserInfoOnline(otherId);
         } else {  //查看自己的信息
@@ -145,7 +169,8 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         return new PersonInfoPresenter(this);
     }
 
-    @OnClick({R.id.img_icon, R.id.tv_name, R.id.tv_signature, R.id.img_edit})
+    @OnClick({R.id.img_icon, R.id.tv_name, R.id.tv_signature, R.id.img_edit,
+            R.id.person_info_concern, R.id.person_info_private_letter})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_icon:
@@ -159,6 +184,16 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
                     RouterUtils.openForResult(this, IntentRouter.PersonSettingActivity,
                             REQUEST_EDIT_INFO);
                 }
+                break;
+            case R.id.person_info_concern:
+                //TODO 关注
+                if (otherId < 0)
+                    return;
+                mPresenter.concern(otherId);
+                break;
+            case R.id.person_info_private_letter:
+                RouterUtils.open(this, IntentRouter.ChatActivity,
+                        String.valueOf(user.getId()), user.getUsername());
                 break;
         }
     }
@@ -212,11 +247,14 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         tvSignature.setText(user.getSignature());
         fansNum.setText(String.format(getString(R.string.fans_num), " ", user.getFans()));
         followingNum.setText(String.format(getString(R.string.concern_num), " ", user.getFollowers()));
+        collapsingToolbarLayout.setTitle(user.getUsername());
         if (otherId > 0) {
             if (user.isFollow()) {
-                easyBar.setRightText(getString(R.string.cancel_concern));
+                personInfoConcernText.setText(getString(R.string.cancel_concern));
+                personInfoConcernIcon.setImageResource(R.drawable.icon_user_follow_selected);
             } else {
-                easyBar.setRightText(getString(R.string.concern));
+                personInfoConcernIcon.setImageResource(R.drawable.icon_user_follow);
+                personInfoConcernText.setText(getString(R.string.concern));
             }
         }
     }

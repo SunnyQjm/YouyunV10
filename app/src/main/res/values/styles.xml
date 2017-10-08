@@ -149,4 +149,14 @@
         <item name="android:textSize">14sp</item>
         <item name="android:layout_height">40dp</item>
     </style>
+
+
+    <style name="bar_title_style_collapsing">
+        <item name="android:textSize">17sp</item>
+        <item name="android:color">@color/white</item>
+    </style>
+    <style name="bar_title_style_expand">
+        <item name="android:textSize">0sp</item>
+        <item name="android:color">@color/transparent</item>
+    </style>
 </resources>
