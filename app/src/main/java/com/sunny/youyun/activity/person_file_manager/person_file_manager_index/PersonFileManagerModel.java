@@ -4,7 +4,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
-import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import org.json.JSONException;
@@ -72,9 +72,8 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                     @Override
                     public void onError(Throwable e) {
                         Logger.e("获取上传文件列表失败: " + e.getMessage(), e);
-                        if(e.getClass() == LoginTokenInvalidException.class){
-                            mPresenter.showError("登录失效，请重新登录");
-                        }
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

@@ -4,6 +4,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.activity.person_file_manager.item.BaseFileItem;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import java.util.ArrayList;
@@ -61,6 +62,8 @@ class PersonFileListModel implements PersonFileListContract.Model{
                     @Override
                     public void onError(Throwable e) {
                         Logger.e("根据类型获取文件失败", e);
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

@@ -48,7 +48,7 @@ class PersonInfoModel implements PersonInfoContract.Model {
                     public void onError(Throwable e) {
                         Logger.e("获取个人信息错误", e);
                         YouyunExceptionDeal.getInstance()
-                                .deal(mPresenter.getContext(), e);
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

@@ -5,6 +5,7 @@ import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.QQLoginResult;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 
@@ -50,6 +51,8 @@ class LoginModel implements LoginContract.Model{
                     @Override
                     public void onError(Throwable e) {
                         Logger.e(e, "登录失败");
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                         mPresenter.showError("登录失败，请检查网络连接");
                     }
 

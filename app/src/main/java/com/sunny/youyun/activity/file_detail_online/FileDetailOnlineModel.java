@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.file_detail_online;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
@@ -70,7 +71,8 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
                     @Override
                     public void onError(Throwable e) {
                         Logger.e("评论失败", e);
-                        mPresenter.showError("评论失败");
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

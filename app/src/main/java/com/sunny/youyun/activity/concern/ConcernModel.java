@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.concern;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.ConcernItem;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
@@ -62,6 +63,8 @@ class ConcernModel implements ConcernContract.Model {
 
                     @Override
                     public void onError(Throwable e) {
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                         Logger.e("获取关注的人列表失败", e);
                     }
 

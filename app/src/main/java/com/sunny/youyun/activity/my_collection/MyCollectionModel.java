@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.my_collection;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.Collection;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
@@ -63,6 +64,8 @@ class MyCollectionModel implements MyCollectionContract.Model{
                     @Override
                     public void onError(Throwable e) {
                         Logger.e("获取用户收藏失败哦", e);
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

@@ -4,6 +4,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
@@ -60,6 +61,8 @@ class MessageModel implements MessageContract.Model {
                     @Override
                     public void onError(Throwable e) {
                         Logger.e("获取私信列表失败", e);
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

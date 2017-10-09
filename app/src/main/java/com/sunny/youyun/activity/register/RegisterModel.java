@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
 import com.sunny.youyun.utils.GsonUtil;
@@ -47,6 +48,8 @@ class RegisterModel implements RegisterContract.Model{
                     @Override
                     public void onError(Throwable e) {
                         Log.e(RegisterModel.class.getName(), "send code fail!!");
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                         mPresenter.showError("发送验证码失败，请检查网络连接");
                     }
 

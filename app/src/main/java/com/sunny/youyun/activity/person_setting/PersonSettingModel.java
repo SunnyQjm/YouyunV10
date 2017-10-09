@@ -5,6 +5,7 @@ import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
@@ -83,6 +84,8 @@ class PersonSettingModel implements PersonSettingContract.Model {
                     public void onError(Throwable e) {
                         mPresenter.dismissDialog();
                         Logger.e("修改用户信息失败", e);
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

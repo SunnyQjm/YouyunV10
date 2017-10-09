@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.setting;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import io.reactivex.Observer;
@@ -41,6 +42,8 @@ class SettingModel implements SettingContract.Model {
                     @Override
                     public void onError(Throwable e) {
                         Logger.e("退出登录失败", e);
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                     }
 
                     @Override

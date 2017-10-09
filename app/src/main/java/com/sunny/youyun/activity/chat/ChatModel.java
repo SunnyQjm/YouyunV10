@@ -6,6 +6,7 @@ import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
@@ -65,6 +66,8 @@ class ChatModel implements ChatContract.Model {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                         Logger.e("获取聊天记录失败", e);
                     }
 

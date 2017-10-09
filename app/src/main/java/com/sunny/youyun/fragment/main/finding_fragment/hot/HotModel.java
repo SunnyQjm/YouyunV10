@@ -4,6 +4,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.utils.GsonUtil;
 
@@ -65,6 +66,8 @@ class HotModel implements HotContract.Model{
 
                     @Override
                     public void onError(Throwable e) {
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                         Logger.e("获取社区信息失败", e);
                     }
 

@@ -4,6 +4,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.finding_fragment.item.FileItem;
 import com.sunny.youyun.fragment.main.finding_fragment.item.FileTag;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.SearchData;
 import com.sunny.youyun.fragment.main.finding_fragment.item.UserItem;
 import com.sunny.youyun.fragment.main.finding_fragment.item.UserTag;
@@ -68,6 +69,8 @@ class FindingModel implements FindingContract.Model {
                     @Override
                     public void onError(Throwable e) {
                         mPresenter.dismissDialog();
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
                         Logger.e("搜索失败", e);
                     }
 

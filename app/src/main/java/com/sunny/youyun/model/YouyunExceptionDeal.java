@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
+import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
@@ -20,11 +21,19 @@ public enum  YouyunExceptionDeal {
 
     private YouyunTipDialog dialog = null;
 
+    public void deal(BaseView baseView, Throwable throwable){
+        if(baseView == null || !(baseView instanceof AppCompatActivity)){
+            Logger.e("错误处理出错：baseView not instanceof AppCompatActivity" );
+        }
+        deal((AppCompatActivity)baseView, throwable);
+    }
     public void deal(Context context, Throwable e){
         if(context == null || !(context instanceof AppCompatActivity)){
             Logger.e("错误处理出错：context not instanceof AppCompatActivity" );
         }
-        deal((AppCompatActivity)context, e);
+        if(context instanceof AppCompatActivity){
+            deal((AppCompatActivity)context, e);
+        }
     }
     public void deal(AppCompatActivity appCompatActivity, Throwable e){
         //登陆失效，需要重新登录

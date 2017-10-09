@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.clip;
 
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
@@ -90,7 +91,9 @@ class ClipImageModel implements ClipImageContrat.Model {
                     @Override
                     public void onError(Throwable e) {
                         mPresenter.showError("头像修改失败，请检查网络连接");
-                        mPresenter.updateFail();
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getView(), e);
+//                        mPresenter.updateFail();
                     }
 
                     @Override
