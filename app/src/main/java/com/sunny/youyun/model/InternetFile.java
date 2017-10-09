@@ -267,6 +267,10 @@ public class InternetFile extends DataSupport implements Serializable {
         return description;
     }
 
+    public void setCanStore(boolean canStore) {
+        this.canStore = canStore;
+    }
+
     public static final class Builder {
         private String indentfyCode;
         private int id;

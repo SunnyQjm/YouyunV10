@@ -81,6 +81,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     @BindView(R.id.recyclerView_comment)
     RecyclerView recyclerViewComment;
 
+    private InternetFile originalInternetFile = null;
     private InternetFile internetFile = null;
     private final List<InternetFile> mFileList = App.mList_DownloadRecord;
     private ShareDialog shareDialog = null;
@@ -141,15 +142,15 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         String uuid = getIntent().getStringExtra("uuid");
         int fileId = getIntent().getIntExtra("fileId", -1);
         String identifyCode = getIntent().getStringExtra("identifyCode");
-        if(fileId < 0){
-            internetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
+        if (fileId < 0) {
+            internetFile = originalInternetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
             //浏览量+1
-            internetFile.setLookNum(internetFile.getLookNum() + 1);
+            originalInternetFile.setLookNum(originalInternetFile.getLookNum() + 1);
             fillData();
 
             mPresenter.getFileInfo(internetFile.getIdentifyCode());
             mPresenter.getComments(internetFile.getId(), true);
-        } else{
+        } else {
             mPresenter.getFileInfo(identifyCode);
             mPresenter.getComments(fileId, true);
         }
@@ -234,14 +235,16 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                             .build(), new ShareDialog.OnCollectionListener() {
                 @Override
                 public void onCollectionSuccess() {
-                    internetFile.setCanStar(false);
+                    internetFile.setCanStore(false);
+                    originalInternetFile.setCanStore(false);
                     shareDialog.setCollectName(getString(R.string.cancel_collection));
                     fillData();
                 }
 
                 @Override
                 public void onCollectionFailed() {
-                    internetFile.setCanStar(true);
+                    internetFile.setCanStore(true);
+                    originalInternetFile.setCanStore(true);
                     shareDialog.setCollectName(getString(R.string.cancel));
                 }
             });
@@ -268,7 +271,9 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
         FileDownloader.getInstance()
                 .download(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + identifyCode, internetFile.getName(), position);
-        internetFile.setDownloadCount(internetFile.getDownloadCount() + 1);
+        if (internetFile != originalInternetFile)
+            internetFile.setDownloadCount(internetFile.getDownloadCount() + 1);
+        originalInternetFile.setDownloadCount(originalInternetFile.getDownloadCount() + 1);
         finish();
     }
 
@@ -308,7 +313,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             case R.id.btn_download_now:
                 if (internetFile == null)
                     return;
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
                     RxPermissionUtil.getInstance(this)
                             .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             .subscribe(aBoolean -> {
@@ -362,16 +368,18 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
     @Override
     public void starSuccess() {
-//        //点赞成功后重新获取文件信息
-//        mPresenter.getFileInfo(internetFile.getIdentifyCode());
 
         //点赞成功后直接
         if (internetFile.isCanStar()) {
             internetFile.setCanStar(false);
+            originalInternetFile.setCanStar(false);
             internetFile.setStar(internetFile.getStar() + 1);
+            originalInternetFile.setStar(originalInternetFile.getStar() + 1);
         } else {
             internetFile.setCanStar(true);
+            originalInternetFile.setCanStar(true);
             internetFile.setStar(internetFile.getStar() - 1);
+            originalInternetFile.setStar(originalInternetFile.getStar() - 1);
         }
         fillData();
     }
