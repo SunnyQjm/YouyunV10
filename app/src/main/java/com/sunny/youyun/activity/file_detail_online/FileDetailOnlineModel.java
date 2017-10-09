@@ -118,6 +118,7 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
 
     @Override
     public void getFileInfo(String code) {
+        mPresenter.showLoading();
         APIManager.getInstance()
                 .getFileServices(GsonConverterFactory.create())
                 .getFileInfo(code)
@@ -136,6 +137,7 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
                         } else {
                             Logger.i("获取文件信息失败");
                         }
+                        mPresenter.dismissDialog();
                     }
 
                     @Override

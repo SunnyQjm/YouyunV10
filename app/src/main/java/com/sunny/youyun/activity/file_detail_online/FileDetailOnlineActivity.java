@@ -52,7 +52,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(value = IntentRouter.FileDetailOnlineActivity + "/:uuid", stringParams = "uuid")
+@Router(value = {IntentRouter.FileDetailOnlineActivity + "/:uuid",
+        IntentRouter.FileDetailOnlineActivity + "/:fileId" + "/:identifyCode"},
+        stringParams = "uuid", intParams = "fileId")
 public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePresenter> implements FileDetailOnlineContract.View, EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     @BindView(R.id.easyBar)
@@ -137,13 +139,20 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         adapter.setOnItemChildClickListener(this);
 
         String uuid = getIntent().getStringExtra("uuid");
-        internetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
-        //浏览量+1
-        internetFile.setLookNum(internetFile.getLookNum() + 1);
-        fillData();
+        int fileId = getIntent().getIntExtra("fileId", -1);
+        String identifyCode = getIntent().getStringExtra("identifyCode");
+        if(fileId < 0){
+            internetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
+            //浏览量+1
+            internetFile.setLookNum(internetFile.getLookNum() + 1);
+            fillData();
 
-        mPresenter.getFileInfo(internetFile.getIdentifyCode());
-        mPresenter.getComments(internetFile.getId(), true);
+            mPresenter.getFileInfo(internetFile.getIdentifyCode());
+            mPresenter.getComments(internetFile.getId(), true);
+        } else{
+            mPresenter.getFileInfo(identifyCode);
+            mPresenter.getComments(fileId, true);
+        }
     }
 
     /**

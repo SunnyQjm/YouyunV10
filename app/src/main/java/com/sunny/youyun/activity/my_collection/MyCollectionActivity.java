@@ -88,6 +88,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
         Collection collection = (Collection) adapter.getItem(position);
         if(collection == null || collection.getFile() == null)
             return;
-        RouterUtils.openToFileDetailOnline(this, collection.getFile());
+        RouterUtils.openToFileDetailOnline(this, collection.getFile().getId(),
+                collection.getFile().getIdentifyCode());
     }
 }
