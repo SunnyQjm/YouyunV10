@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.person_info;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.result.GetUserInfoResult;
 
@@ -45,8 +46,9 @@ class PersonInfoModel implements PersonInfoContract.Model {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Logger.e("获取用户信息失败", e);
+                        Logger.e("获取个人信息错误", e);
+                        YouyunExceptionDeal.getInstance()
+                                .deal(mPresenter.getContext(), e);
                     }
 
                     @Override

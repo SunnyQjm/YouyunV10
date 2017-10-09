@@ -1,5 +1,7 @@
 package com.sunny.youyun.mvp;
 
+import android.content.Context;
+
 import java.io.IOException;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -13,9 +15,14 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
     protected V mView;
     protected M mModel;
     private CompositeDisposable compositeDisposable;
+    private final Context context;
 
     public BasePresenter(){
+        context = null;
+    }
 
+    protected BasePresenter(Context context){
+        this.context = context;
     }
 
     protected abstract void start() throws IOException;
@@ -69,5 +76,8 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
     }
     public void showLoading(){
         mView.showLoading();
+    }
+    public Context getContext(){
+        return context;
     }
 }

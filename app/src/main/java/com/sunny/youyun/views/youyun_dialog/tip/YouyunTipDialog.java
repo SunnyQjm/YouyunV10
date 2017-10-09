@@ -31,6 +31,8 @@ public class YouyunTipDialog extends DialogFragment {
 
     private OnYouyunTipDialogClickListener listener;
     private boolean isBtnVisiable = true;
+    private String leftText = null;
+    private String rightText = null;
 
     private static final int defaultIcon = R.drawable.icon_transfer_back;
     private static final String defaultContent = "提示";
@@ -110,9 +112,26 @@ public class YouyunTipDialog extends DialogFragment {
         }
     }
 
+    public void setLeftText(String text){
+        leftText = text;
+        if(tvCancel != null)
+            tvCancel.setText(text);
+    }
+
+    public void setRightText(String text){
+        rightText = text;
+        if(tvSure != null)
+            tvSure.setText(text);
+    }
+
     private void initView() {
         imgIcon.setImageResource(drawableRes);
         tvText.setText(content);
+        if(leftText != null)
+            tvCancel.setText(leftText);
+        if(rightText != null)
+            tvSure.setText(rightText);
+
         if (isBtnVisiable) {
             setBtnVisible();
         } else {

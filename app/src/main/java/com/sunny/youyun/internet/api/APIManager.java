@@ -157,6 +157,7 @@ public class APIManager {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put(ApiInfo.UPDATE_COOKIE_BY_TOKEN_TOKEN, YouyunAPI.getLoginToken());
+                    Logger.i("update token: " + YouyunAPI.getLoginToken());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

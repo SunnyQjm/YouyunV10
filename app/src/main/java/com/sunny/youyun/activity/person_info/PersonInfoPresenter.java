@@ -12,6 +12,7 @@ import java.io.IOException;
 class PersonInfoPresenter extends PersonInfoContract.Presenter{
 
     PersonInfoPresenter(PersonInfoActivity settingActivity) {
+        super(settingActivity);
         mView = settingActivity;
         mModel = new PersonInfoModel(this);
     }

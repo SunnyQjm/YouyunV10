@@ -1,6 +1,5 @@
 package com.sunny.youyun.views;
 
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.R;
@@ -16,6 +15,7 @@ public class EasyDialog {
     private static YouyunTipDialog tipDialog = null;
     private static YouyunTipDialog errorDialog = null;
     private static YouyunTipDialog successDialog = null;
+    private static YouyunTipDialog reLoginTipDialog = null;
 
     public static YouyunTipDialog showTip(AppCompatActivity appCompatActivity, String info) {
         if (tipDialog == null) {
@@ -82,6 +82,27 @@ public class EasyDialog {
         }
         successDialog.show(appCompatActivity.getSupportFragmentManager(), "SUCCESS_DIALOG_TAG");
         return successDialog;
+    }
+
+    public static YouyunTipDialog showReLogin(AppCompatActivity appCompatActivity){
+        if(reLoginTipDialog == null) {
+            reLoginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
+                    appCompatActivity.getString(R.string.re_login_tip),
+                    new OnYouyunTipDialogClickListener() {
+                        @Override
+                        public void onCancelClick() {
+
+                        }
+
+                        @Override
+                        public void onSureClick() {
+
+                        }
+                    });
+            reLoginTipDialog.setRightText(appCompatActivity.getString(R.string.login));
+        }
+        reLoginTipDialog.show(appCompatActivity.getSupportFragmentManager(), "RE_LOGIN_DIALOG_TAG");
+        return reLoginTipDialog;
     }
 
     public static YouyunLoadingView showLoading(AppCompatActivity appCompatActivity) {
