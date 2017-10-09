@@ -91,11 +91,12 @@ public class EasyDialog {
                     new OnYouyunTipDialogClickListener() {
                         @Override
                         public void onCancelClick() {
-
+                            reLoginTipDialog.dismiss();
                         }
 
                         @Override
                         public void onSureClick() {
+                            reLoginTipDialog.dismiss();
 
                         }
                     });

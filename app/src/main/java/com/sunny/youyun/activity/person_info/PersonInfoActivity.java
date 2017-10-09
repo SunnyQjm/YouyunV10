@@ -95,6 +95,16 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     private static final int REQUEST_EDIT_INFO = 100;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (otherId > 0) { //查看别人的信息
+            mPresenter.getOtherUserInfoOnline(otherId);
+        } else {  //查看自己的信息
+            mPresenter.getUserInfoOnline();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -155,11 +165,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.bar_title_style_collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.bar_title_style_expand);
-        if (otherId > 0) { //查看别人的信息
-            mPresenter.getOtherUserInfoOnline(otherId);
-        } else {  //查看自己的信息
-            mPresenter.getUserInfoOnline();
-        }
+
     }
 
     @Override

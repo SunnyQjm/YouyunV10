@@ -36,6 +36,14 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         mPresenter.beginListen();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!isFirst){
+            loadData(true);
+        }
+    }
+
     public static ConcernFragment newInstance() {
         Bundle args = new Bundle();
         ConcernFragment fragment = new ConcernFragment();
@@ -66,9 +74,18 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         if(!isVisible || !isPrepared)
             return;
         if(isFirst){
+            loadData(true);
+            isFirst = false;
+        }
+    }
+
+    private void loadData(boolean isRefresh){
+        if(isRefresh){
             page = 1;
             mPresenter.getFollowingList(page, true);
-            isFirst = false;
+        }else{
+            page++;
+            mPresenter.getFollowingList(page, true);
         }
     }
 
@@ -92,13 +109,12 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
 
     @Override
     protected void onRefreshBegin() {
-        page = 1;
         endView.setVisibility(View.GONE);
     }
 
     @Override
     protected void OnRefreshBeginSync() {
-        mPresenter.getFollowingList(page, true);
+        loadData(true);
     }
 
     @Override
@@ -108,8 +124,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
 
     @Override
     protected void onLoadBeginSync() {
-        page++;
-        mPresenter.getFollowingList(page, false);
+        loadData(false);
     }
 
     @Override

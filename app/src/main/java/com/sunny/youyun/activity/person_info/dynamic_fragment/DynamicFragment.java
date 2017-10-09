@@ -29,6 +29,13 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
             adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!isFirst)
+            loadData(true);
+    }
+
     public static DynamicFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -61,12 +68,20 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         if(!isVisible || !isPrepared)
             return;
         if(isFirst){
-            page = 1;
-            mPresenter.getDynamic(page, true);
+            loadData(true);
             isFirst = false;
         }
     }
 
+    private void loadData(boolean isRefresh){
+        if(isRefresh){
+            page = 1;
+            mPresenter.getDynamic(page, true);
+        } else {
+            page++;
+            mPresenter.getDynamic(page, true);
+        }
+    }
     private void initView() {
         adapter = new DynamicAdapter(mPresenter.getData());
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
@@ -87,12 +102,11 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
 
     @Override
     protected void onRefreshBegin() {
-        page = 1;
     }
 
     @Override
     protected void OnRefreshBeginSync() {
-        mPresenter.getDynamic(page, true);
+        loadData(true);
     }
 
     @Override
@@ -102,8 +116,7 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
 
     @Override
     protected void onLoadBeginSync() {
-        page++;
-        mPresenter.getDynamic(page, false);
+        loadData(false);
     }
 
     @Override
