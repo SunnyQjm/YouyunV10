@@ -1,4 +1,7 @@
-package com.sunny.youyun.fragment.main.finding_fragment.item;
+package com.sunny.youyun.model.data_item;
+
+import com.sunny.youyun.fragment.main.finding_fragment.item.FileItem;
+import com.sunny.youyun.fragment.main.finding_fragment.item.UserItem;
 
 /**
  * Created by Sunny on 2017/10/4 0004.

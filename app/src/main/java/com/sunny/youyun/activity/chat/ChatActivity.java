@@ -14,12 +14,14 @@ import com.sunny.youyun.activity.chat.config.ChatConfig;
 import com.sunny.youyun.activity.chat.item.MessageItemMy;
 import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
-import com.sunny.youyun.utils.InputMethodUtil;
 import com.sunny.youyun.utils.MyNotifyUtil;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.bus.MessageEventBus;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowPullLoadHeader;
@@ -31,7 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
 @Router(value = {IntentRouter.ChatActivity + "/:" + ChatConfig.PARAM_USER_ID
         + "/:" + ChatConfig.PARAM_USER_NICKNAME},
         intParams = {ChatConfig.PARAM_USER_ID})
-public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> implements ChatContract.View, View.OnClickListener {
+public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> implements ChatContract.View, View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
 
     EditText etContent;
     Button btnSend;
@@ -87,6 +89,8 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
         adapter.bindToRecyclerView(recyclerView);
         page = 1;
         mPresenter.getMessages(userId, page, true);
+
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -172,8 +176,23 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
             case R.id.btn_send:
                 mPresenter.sendMessage(userId, etContent.getText().toString());
                 etContent.setText("");
-                InputMethodUtil.hide(this, etContent);
+//                InputMethodUtil.hide(this, etContent);
                 break;
+        }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getItem(position);
+        if (multiItemEntity == null || !(multiItemEntity instanceof Message))
+            return;
+        Message message = (Message) multiItemEntity;
+        switch (multiItemEntity.getItemType()) {
+            case ChatConfig.MESSAGE_ITEM_TYPE_SELF:
+            case ChatConfig.MESSAGE_ITEM_TYPE_OTHER:
+                RouterUtils.openToUser(this, message.getFromUserId());
+                break;
+
         }
     }
 }

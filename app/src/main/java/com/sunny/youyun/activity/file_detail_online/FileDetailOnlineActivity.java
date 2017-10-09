@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.App;
@@ -180,7 +179,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                 .toString();
         SpannableString spannableString = new SpannableString(result);
         spannableString.setSpan(new MyClickText(this, v -> {
-                    Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                    RouterUtils.openToUser(this, internetFile.getUserId());
                 }),
                 uploader.length(), internetFile.getUser().getUsername().length() + uploader.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

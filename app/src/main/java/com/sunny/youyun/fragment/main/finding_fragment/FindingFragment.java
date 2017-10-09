@@ -15,13 +15,19 @@ import android.widget.ImageView;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.RecordTabsAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.SearchAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.all.AllFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.concern.ConcernFragment;
+import com.sunny.youyun.fragment.main.finding_fragment.config.SearchItemType;
 import com.sunny.youyun.fragment.main.finding_fragment.hot.HotFragment;
+import com.sunny.youyun.fragment.main.finding_fragment.item.FileItem;
+import com.sunny.youyun.fragment.main.finding_fragment.item.UserItem;
 import com.sunny.youyun.utils.RecyclerViewUtils;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.MyPopupWindow;
 import com.sunny.youyun.views.NoScrollViewPager;
@@ -37,7 +43,7 @@ import butterknife.Unbinder;
  * Created by Sunny on 2017/6/24 0024.
  */
 
-public class FindingFragment extends MVPBaseFragment<FindingPresenter> implements FindingContract.View {
+public class FindingFragment extends MVPBaseFragment<FindingPresenter> implements FindingContract.View, BaseQuickAdapter.OnItemClickListener {
 
 
     @BindView(R.id.easyBar)
@@ -159,8 +165,9 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter> implement
         searchAdapter = new SearchAdapter(mPresenter.getData());
         searchAdapter.bindToRecyclerView(recyclerView);
         searchAdapter.setEmptyView(R.layout.recycler_empty_view);
+        searchAdapter.setOnItemClickListener(this);
         searchPopupWindow.setOnDismissListener(() -> {
-            if(searchAdapter != null){
+            if (searchAdapter != null) {
                 searchAdapter.getData().clear();
                 searchAdapter.notifyDataSetChanged();
                 etSearch.setText("");
@@ -183,5 +190,25 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter> implement
     public void searchSuccess() {
         if (searchAdapter != null)
             searchAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        //TODO On search result click
+        MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getItem(position);
+        if (multiItemEntity == null)
+            return;
+        switch (multiItemEntity.getItemType()) {
+            case SearchItemType.TYPE_FILE:
+                if(multiItemEntity instanceof FileItem){
+                    FileItem fileItem = (FileItem) multiItemEntity;
+                    RouterUtils.openToFileDetailOnline(activity, fileItem, position);
+                }
+                break;
+            case SearchItemType.TYPE_USER:
+                UserItem userItem = (UserItem) multiItemEntity;
+                RouterUtils.openToUser(activity, userItem.getId());
+                break;
+        }
     }
 }

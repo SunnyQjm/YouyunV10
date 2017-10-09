@@ -4,7 +4,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.finding_fragment.item.FileItem;
 import com.sunny.youyun.fragment.main.finding_fragment.item.FileTag;
-import com.sunny.youyun.fragment.main.finding_fragment.item.SearchData;
+import com.sunny.youyun.model.data_item.SearchData;
 import com.sunny.youyun.fragment.main.finding_fragment.item.UserItem;
 import com.sunny.youyun.fragment.main.finding_fragment.item.UserTag;
 import com.sunny.youyun.internet.api.APIManager;

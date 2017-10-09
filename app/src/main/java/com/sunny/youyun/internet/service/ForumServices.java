@@ -1,6 +1,6 @@
 package com.sunny.youyun.internet.service;
 
-import com.sunny.youyun.fragment.main.finding_fragment.item.SearchData;
+import com.sunny.youyun.model.data_item.SearchData;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.data_item.Comment;

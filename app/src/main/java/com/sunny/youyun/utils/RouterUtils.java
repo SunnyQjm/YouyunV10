@@ -12,6 +12,8 @@ import android.view.View;
 import com.github.mzule.activityrouter.router.Routers;
 import com.sunny.youyun.App;
 import com.sunny.youyun.IntentRouter;
+import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.utils.bus.ObjectPool;
 
 /**
  * Created by Administrator on 2017/3/29/029.
@@ -42,6 +44,17 @@ public class RouterUtils {
         System.out.println(router);
         Routers.open(context, router.toString());
         App.startAnim(context);
+    }
+
+    public static void openToFileDetailOnline(Activity activity, InternetFile internetFile, int position){
+        String uuid = UUIDUtil.getUUID();
+        ObjectPool.getInstance().put(uuid, internetFile);
+        RouterUtils.open(activity, IntentRouter.FileDetailOffLineActivity, uuid,
+                String.valueOf(position));
+    }
+
+    public static void openToUser(Activity activity, int userId){
+        RouterUtils.open(activity, IntentRouter.PersonInfoActivity, String.valueOf(userId));
     }
 
     @SafeVarargs
