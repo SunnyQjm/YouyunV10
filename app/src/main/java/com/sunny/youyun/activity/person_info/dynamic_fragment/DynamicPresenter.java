@@ -34,4 +34,9 @@ public class DynamicPresenter extends DynamicContract.Presenter{
     List<Dynamic> getData() {
         return mModel.getData();
     }
+
+    @Override
+    void allDataGetFinish() {
+        mView.allDataGetFinish();
+    }
 }

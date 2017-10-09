@@ -27,6 +27,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     private View view = null;
     private int page = 1;
     private boolean isSelf = true;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -44,7 +45,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     @Override
     public void onStart() {
         super.onStart();
-        if(!isFirst){
+        if (!isFirst) {
             loadData(true);
         }
     }
@@ -77,23 +78,26 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
 
     @Override
     protected void loadData() {
-        if(!isVisible || !isPrepared)
+        if (!isVisible || !isPrepared)
             return;
-        if(isFirst){
+        if (isFirst) {
             loadData(true);
             isFirst = false;
         }
     }
 
-    private void loadData(boolean isRefresh){
-        if(isRefresh){
+    private void loadData(boolean isRefresh) {
+        if (isRefresh) {
             page = 1;
-            if(isSelf){
+            if (endView != null)
+                endView.setVisibility(View.INVISIBLE);
+            refreshLayout.setLoadAble(true);
+            if (isSelf) {
                 mPresenter.getFollowingList(page, true);
             }
-        }else{
+        } else {
             page++;
-            if(isSelf){
+            if (isSelf) {
                 mPresenter.getFollowingList(page, false);
             }
         }
@@ -108,7 +112,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         adapter.setEmptyView(R.layout.recycler_empty_view);
         adapter.setOnItemClickListener(this);
         mPresenter.beginListen();
-        refreshLayout.setLoadAble(false);
+        refreshLayout.setLoadAble(true);
         refreshLayout.setRefreshAble(false);
     }
 
@@ -149,28 +153,27 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
 
     @Override
     public void allDataGetFinish() {
-        if(endView == null) {
+        if (endView == null) {
             endView = LayoutInflater.from(activity)
                     .inflate(R.layout.easy_refresh_end, null, false);
-            if(adapter != null){
+            if (adapter != null) {
                 adapter.addFooterView(endView);
             }
-        }
-        else
+        } else
             endView.setVisibility(View.VISIBLE);
         //设置不可加载更多
         refreshLayout.setLoadAble(false);
     }
 
     private void updateAll() {
-        if(adapter != null)
+        if (adapter != null)
             adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         ConcernItem concernItem = (ConcernItem) adapter.getItem(position);
-        if(concernItem == null || concernItem.getUser() == null)
+        if (concernItem == null || concernItem.getUser() == null)
             return;
         RouterUtils.open(activity, IntentRouter.PersonInfoActivity,
                 String.valueOf(concernItem.getUser().getId()));

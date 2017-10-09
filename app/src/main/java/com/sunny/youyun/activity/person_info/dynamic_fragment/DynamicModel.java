@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.data_item.Dynamic;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class DynamicModel implements DynamicContract.Model {
     private final DynamicPresenter mPresenter;
     private final List<Dynamic> mList = new ArrayList<>();
+
     DynamicModel(DynamicPresenter uploadRecordPresenter) {
         mPresenter = uploadRecordPresenter;
     }
@@ -32,13 +34,12 @@ class DynamicModel implements DynamicContract.Model {
                 .getUserService(GsonConverterFactory.create())
                 .getUserDynamic(page, size)
                 .map(baseResponseBody -> {
-                    if(baseResponseBody.isSuccess()){
-                        if(isRefresh){
+                    if (baseResponseBody.isSuccess()) {
+                        if (isRefresh)
                             mList.clear();
-                            Collections.addAll(mList, baseResponseBody.getData());
-                        }else {
-                            Collections.addAll(mList, baseResponseBody.getData());
-                        }
+                        Collections.addAll(mList, baseResponseBody.getData());
+                        if (baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE)
+                            mPresenter.allDataGetFinish();
                         return true;
                     }
                     return false;
@@ -53,7 +54,7 @@ class DynamicModel implements DynamicContract.Model {
 
                     @Override
                     public void onNext(Boolean isSuccess) {
-                        if(isSuccess){
+                        if (isSuccess) {
                             mPresenter.getDynamicSuccess();
                         }
                     }

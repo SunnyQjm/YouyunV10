@@ -30,13 +30,14 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
             adapter.notifyDataSetChanged();
     }
 
-    private void setSelt(boolean isSelf){
+    private void setSelf(boolean isSelf) {
         this.isSelf = isSelf;
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        if(!isFirst)
+        if (!isFirst)
             loadData(true);
     }
 
@@ -45,7 +46,7 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         Bundle args = new Bundle();
         DynamicFragment fragment = new DynamicFragment();
         fragment.setArguments(args);
-        fragment.setSelt(isSelf);
+        fragment.setSelf(isSelf);
         return fragment;
     }
 
@@ -69,27 +70,31 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
 
     @Override
     protected void loadData() {
-        if(!isVisible || !isPrepared)
+        if (!isVisible || !isPrepared)
             return;
-        if(isFirst){
+        if (isFirst) {
             loadData(true);
             isFirst = false;
         }
     }
 
-    private void loadData(boolean isRefresh){
-        if(isRefresh){
+    private void loadData(boolean isRefresh) {
+        if (isRefresh) {
             page = 1;
-            if(isSelf){
+            if (endView != null)
+                endView.setVisibility(View.INVISIBLE);
+            refreshLayout.setLoadAble(true);
+            if (isSelf) {
                 mPresenter.getDynamic(page, true);
             }
         } else {
             page++;
-            if(isSelf){
+            if (isSelf) {
                 mPresenter.getDynamic(page, false);
             }
         }
     }
+
     private void initView() {
         adapter = new DynamicAdapter(mPresenter.getData());
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
@@ -97,7 +102,7 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         refreshLayout.setRefreshAble(false);
-        refreshLayout.setLoadAble(false);
+        refreshLayout.setLoadAble(true);
         loadData(true);
     }
 
@@ -137,8 +142,22 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         updateAll();
     }
 
+    @Override
+    public void allDataGetFinish() {
+        if (endView == null) {
+            endView = LayoutInflater.from(activity)
+                    .inflate(R.layout.easy_refresh_end, null, false);
+            if (adapter != null) {
+                adapter.addFooterView(endView);
+            }
+        } else
+            endView.setVisibility(View.VISIBLE);
+        //设置不可加载更多
+        refreshLayout.setLoadAble(false);
+    }
+
     private void updateAll() {
-        if(adapter != null){
+        if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }
