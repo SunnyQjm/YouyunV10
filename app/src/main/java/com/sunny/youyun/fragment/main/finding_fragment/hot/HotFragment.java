@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_detail_online.FileDetailOnlineActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
@@ -67,6 +68,9 @@ public class HotFragment extends BaseRecyclerViewFragment<HotPresenter> implemen
     @Override
     protected void onRefreshBegin() {
         page = 1;
+        if(endView != null)
+            endView.setVisibility(View.INVISIBLE);
+        refreshLayout.setLoadAble(true);
     }
 
     @Override
@@ -102,6 +106,15 @@ public class HotFragment extends BaseRecyclerViewFragment<HotPresenter> implemen
 
     @Override
     public void allDataLoadFinish() {
+        if (endView == null) {
+            endView = LayoutInflater.from(activity)
+                    .inflate(R.layout.easy_refresh_end, null, false);
+            if (adapter != null) {
+                adapter.addFooterView(endView);
+            }
+        } else
+            endView.setVisibility(View.VISIBLE);
+        //设置不可加载更多
         refreshLayout.setLoadAble(false);
     }
 

@@ -56,7 +56,8 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
         super.onStart();
         MessageEventBus.getInstance()
                 .register(this);
-        updateAll();
+        //一开始先加载一波数据
+        mPresenter.getPrivateLetterList(page, true);
         System.out.println("MessageFragment onStart");
     }
 

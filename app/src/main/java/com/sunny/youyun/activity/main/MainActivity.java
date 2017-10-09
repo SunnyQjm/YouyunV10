@@ -120,6 +120,7 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         super.onPause();
         MyNotifyUtil.setShowTag(MyNotifyUtil.SHOW_TAG_OTHER);
         TimePickerUtils.unBind();
+        System.out.println("MainActivity onPause");
     }
 
     /**

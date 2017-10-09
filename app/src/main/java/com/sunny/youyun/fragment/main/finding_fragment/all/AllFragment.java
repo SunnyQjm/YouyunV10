@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_detail_online.FileDetailOnlineActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
@@ -74,6 +75,9 @@ public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implemen
     @Override
     protected void onRefreshBegin() {
         page = 1;
+        if(endView != null)
+            endView.setVisibility(View.INVISIBLE);
+        refreshLayout.setLoadAble(true);
     }
 
     @Override
@@ -108,16 +112,18 @@ public class AllFragment extends BaseRecyclerViewFragment<AllPresenter> implemen
 
     @Override
     public void allDataLoadFinish() {
+        if (endView == null) {
+            endView = LayoutInflater.from(activity)
+                    .inflate(R.layout.easy_refresh_end, null, false);
+            if (adapter != null) {
+                adapter.addFooterView(endView);
+            }
+        } else
+            endView.setVisibility(View.VISIBLE);
+        //设置不可加载更多
         refreshLayout.setLoadAble(false);
-        addDataLoadFinishFooter();
     }
 
-    /**
-     * 已经没有更多数据可以加载了，在最后添加一个布局
-     */
-    private void addDataLoadFinishFooter() {
-
-    }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

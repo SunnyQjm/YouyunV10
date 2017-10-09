@@ -55,7 +55,12 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
         super.onStop();
         MessageEventBus.getInstance()
                 .unregister(this);
+    }
+
+    @Override
+    protected void onPause() {
         MyNotifyUtil.setShowTag(MyNotifyUtil.SHOW_TAG_OTHER);
+        super.onPause();
     }
 
     @Override
