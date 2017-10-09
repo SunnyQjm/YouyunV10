@@ -176,7 +176,7 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingBottom="@dimen/person_info_bottom_bar_height"
         />

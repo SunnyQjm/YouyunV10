@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.person_setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -73,7 +74,7 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.li_change_avatar:
-                RouterUtils.open(this, IntentRouter.DcimActivity);
+                RouterUtils.openForResult(this, IntentRouter.DcimActivity, 0);
                 break;
             case R.id.li_change_nickname:
                 YouyunEditDialog.newInstance(getString(R.string.edit_nickname),
@@ -87,6 +88,14 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
                         .show(getSupportFragmentManager(), this.getClass().toString());
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //如果是更新头像的请求，则修改成功后填充一下数据
+        if(requestCode == 0)
+            fillData();
     }
 
     @Override
