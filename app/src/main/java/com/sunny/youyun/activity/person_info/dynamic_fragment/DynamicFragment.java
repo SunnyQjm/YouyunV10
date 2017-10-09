@@ -20,6 +20,7 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
     private DynamicAdapter adapter;
     private int page = 1;
     private View view = null;
+    private boolean isSelf = true;
 
     @Override
     public void onResume() {
@@ -29,6 +30,9 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
             adapter.notifyDataSetChanged();
     }
 
+    private void setSelt(boolean isSelf){
+        this.isSelf = isSelf;
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -36,12 +40,12 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
             loadData(true);
     }
 
-    public static DynamicFragment newInstance() {
+    public static DynamicFragment newInstance(boolean isSelf) {
 
         Bundle args = new Bundle();
-
         DynamicFragment fragment = new DynamicFragment();
         fragment.setArguments(args);
+        fragment.setSelt(isSelf);
         return fragment;
     }
 
@@ -76,10 +80,14 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
     private void loadData(boolean isRefresh){
         if(isRefresh){
             page = 1;
-            mPresenter.getDynamic(page, true);
+            if(isSelf){
+                mPresenter.getDynamic(page, true);
+            }
         } else {
             page++;
-            mPresenter.getDynamic(page, true);
+            if(isSelf){
+                mPresenter.getDynamic(page, false);
+            }
         }
     }
     private void initView() {
@@ -88,9 +96,9 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         recyclerView.setLayoutManager(layoutManager);
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
-        mPresenter.getDynamic(page, true);
         refreshLayout.setRefreshAble(false);
         refreshLayout.setLoadAble(false);
+        loadData(true);
     }
 
 

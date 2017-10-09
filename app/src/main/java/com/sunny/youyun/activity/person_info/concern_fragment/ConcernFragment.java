@@ -26,6 +26,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     private UserItemAdapter adapter = null;
     private View view = null;
     private int page = 1;
+    private boolean isSelf = true;
     @Override
     public void onResume() {
         super.onResume();
@@ -36,6 +37,10 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         mPresenter.beginListen();
     }
 
+    private void setSelf(boolean self) {
+        isSelf = self;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -44,10 +49,11 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         }
     }
 
-    public static ConcernFragment newInstance() {
+    public static ConcernFragment newInstance(boolean isSelf) {
         Bundle args = new Bundle();
         ConcernFragment fragment = new ConcernFragment();
         fragment.setArguments(args);
+        fragment.setSelf(isSelf);
         return fragment;
     }
 
@@ -82,10 +88,14 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     private void loadData(boolean isRefresh){
         if(isRefresh){
             page = 1;
-            mPresenter.getFollowingList(page, true);
+            if(isSelf){
+                mPresenter.getFollowingList(page, true);
+            }
         }else{
             page++;
-            mPresenter.getFollowingList(page, true);
+            if(isSelf){
+                mPresenter.getFollowingList(page, false);
+            }
         }
     }
 
