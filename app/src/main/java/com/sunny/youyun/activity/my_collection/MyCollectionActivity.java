@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.my_collection;
 
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
+import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
@@ -9,9 +10,12 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.activity.my_collection.adapter.CollectionAdapter;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.model.data_item.Collection;
+import com.sunny.youyun.utils.RouterUtils;
 
 @Router(IntentRouter.MyCollectionActivity)
-public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionPresenter> implements MyCollectionContract.View {
+public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionPresenter> implements MyCollectionContract.View, BaseQuickAdapter.OnItemClickListener {
 
     private CollectionAdapter adapter;
     private int page = 1;
@@ -30,6 +34,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
         adapter.setEmptyView(R.layout.recycler_empty_view);
         easyBar.setTitle(getString(R.string.my_collection));
         mPresenter.getCollections(page, true);
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -76,5 +81,13 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
     private void updateAll() {
         if(adapter != null)
             adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Collection collection = (Collection) adapter.getItem(position);
+        if(collection == null || collection.getFile() == null)
+            return;
+        RouterUtils.openToFileDetailOnline(this, collection.getFile());
     }
 }

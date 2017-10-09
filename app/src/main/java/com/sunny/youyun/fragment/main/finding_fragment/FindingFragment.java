@@ -202,7 +202,7 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter> implement
             case SearchItemType.TYPE_FILE:
                 if(multiItemEntity instanceof FileItem){
                     FileItem fileItem = (FileItem) multiItemEntity;
-                    RouterUtils.openToFileDetailOnline(activity, fileItem, position);
+                    RouterUtils.openToFileDetailOnline(activity, fileItem);
                 }
                 break;
             case SearchItemType.TYPE_USER:

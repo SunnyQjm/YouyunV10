@@ -46,11 +46,10 @@ public class RouterUtils {
         App.startAnim(context);
     }
 
-    public static void openToFileDetailOnline(Activity activity, InternetFile internetFile, int position){
+    public static void openToFileDetailOnline(Activity activity, InternetFile internetFile){
         String uuid = UUIDUtil.getUUID();
         ObjectPool.getInstance().put(uuid, internetFile);
-        RouterUtils.open(activity, IntentRouter.FileDetailOffLineActivity, uuid,
-                String.valueOf(position));
+        RouterUtils.open(activity, IntentRouter.FileDetailOnlineActivity, uuid);
     }
 
     public static void openToUser(Activity activity, int userId){
