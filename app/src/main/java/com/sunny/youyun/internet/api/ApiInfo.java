@@ -130,8 +130,8 @@ public class ApiInfo {
     /////////ForumService
     //////////////////////////////////////////////////////////
     public static final String GET_FORUM_URL = "forum/files", GET_FORUM_PAGE = "page",
-            GET_FORUM_SIZE = "size", GET_FORUM_SORT_BY_DATE = "createTime",
-            GET_FORUM_SORT_BY_DOWNLOAD_COUNT = "downloadCount";
+            GET_FORUM_SIZE = "size", GET_FORUM_SORT_BY_DATE = "time",
+            GET_FORUM_SORT_BY_DOWNLOAD_COUNT = "hot";
 
     public static final String ADD_COMMENT_URL = "authc/forum/comment",
             ADD_COMMENT_FILE_ID = "fileId", ADD_COMMENT_CONTENT = "content";
