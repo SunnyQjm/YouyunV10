@@ -90,7 +90,7 @@ class ChatModel implements ChatContract.Model {
             //间隔五分钟放时间item
             if (lastMessageTime - d.getCreateTime() > 1000 * 60 * 5) {
                 mList.add(new DateItem.Builder()
-                        .date(d.getCreateTime())
+                        .date(lastMessageTime)
                         .build());
             }
             if (d.getUser().getId() == UserInfoManager.getInstance().getUserId()) {

@@ -25,7 +25,7 @@ public class TimeUtils {
     private static SimpleDateFormat sdr_y4md_line_divide = new SimpleDateFormat("yyyy-MM-dd"
             , Locale.CANADA);
     private static SimpleDateFormat sdr_y4md_line_time = new SimpleDateFormat(
-            "yyyy-MM-dd hh:mm:ss", Locale.CANADA);
+            "yyyy-MM-dd HH:mm:ss", Locale.CANADA);
 
     static {
         sdr_hm.setTimeZone(TimeZone.getTimeZone("GMT+8"));// 中国北京时间，东八区
