@@ -1,9 +1,12 @@
 package com.sunny.youyun.model;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.IntentRouter;
+import com.sunny.youyun.activity.login.LoginActivity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
@@ -28,6 +31,15 @@ public class EasyYouyunAPIManager {
         YouyunAPI.updateIsLogin(false);
         JPushUtil.setTag(activity, "0000");
         RouterUtils.open(activity, IntentRouter.LoginActivity);
+    }
+
+    public static void logout(Fragment fragment){
+        //清空用户数据
+        UserInfoManager.getInstance().clear();
+        logout();
+        YouyunAPI.updateIsLogin(false);
+        JPushUtil.setTag(fragment.getContext(), "0000");
+        fragment.startActivity(new Intent(fragment.getContext(), LoginActivity.class));
     }
 
     private static void logout(){

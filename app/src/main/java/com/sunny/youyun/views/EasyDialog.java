@@ -1,5 +1,6 @@
 package com.sunny.youyun.views;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.R;
@@ -104,6 +105,28 @@ public class EasyDialog {
             reLoginTipDialog.setRightText(appCompatActivity.getString(R.string.login));
         }
         reLoginTipDialog.show(appCompatActivity.getSupportFragmentManager(), "RE_LOGIN_DIALOG_TAG");
+        return reLoginTipDialog;
+    }
+
+    public static YouyunTipDialog showReLogin(Fragment fragment){
+        if(reLoginTipDialog == null) {
+            reLoginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
+                    fragment.getString(R.string.re_login_tip),
+                    new OnYouyunTipDialogClickListener() {
+                        @Override
+                        public void onCancelClick() {
+                            reLoginTipDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onSureClick() {
+                            reLoginTipDialog.dismiss();
+                            EasyYouyunAPIManager.logout(fragment);
+                        }
+                    });
+            reLoginTipDialog.setRightText(fragment.getString(R.string.login));
+        }
+        reLoginTipDialog.show(fragment.getFragmentManager(), "RE_LOGIN_DIALOG_TAG");
         return reLoginTipDialog;
     }
 
