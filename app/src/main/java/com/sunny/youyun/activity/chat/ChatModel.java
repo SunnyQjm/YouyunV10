@@ -1,6 +1,7 @@
 package com.sunny.youyun.activity.chat;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.activity.chat.item.DateItem;
 import com.sunny.youyun.activity.chat.item.MessageItemMy;
 import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.base.entity.MultiItemEntity;
@@ -32,6 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class ChatModel implements ChatContract.Model {
     private final ChatPresenter mPresenter;
     private final List<MultiItemEntity> mList = new ArrayList<>();
+    private long lastMessageTime = 0;
 
     ChatModel(ChatPresenter chatPresenter) {
         mPresenter = chatPresenter;
@@ -54,7 +56,7 @@ class ChatModel implements ChatContract.Model {
                     public void onNext(BaseResponseBody<Message[]> messageItemBaseResponseBody) {
                         if (messageItemBaseResponseBody.isSuccess() &&
                                 messageItemBaseResponseBody.getData() != null) {
-                            if(isRefresh)
+                            if (isRefresh)
                                 mList.clear();
                             addAll(messageItemBaseResponseBody.getData());
                             mPresenter.getMessagesSuccess();
@@ -80,11 +82,23 @@ class ChatModel implements ChatContract.Model {
 
     private void addAll(Message[] data) {
         for (Message d : data) {
-            if(d.getUser().getId() == UserInfoManager.getInstance().getUserId()){
+            //第一次添加
+            if (mList.size() == 0) {
+                lastMessageTime = d.getCreateTime();
+            }
+            System.out.println(d.getCreateTime() - lastMessageTime);
+            //间隔五分钟放时间item
+            if (lastMessageTime - d.getCreateTime() > 1000 * 60 * 5) {
+                mList.add(new DateItem.Builder()
+                        .date(d.getCreateTime())
+                        .build());
+            }
+            if (d.getUser().getId() == UserInfoManager.getInstance().getUserId()) {
                 mList.add(new MessageItemMy(d));
             } else {
                 mList.add(new MessageItemOther(d));
             }
+            lastMessageTime = d.getCreateTime();
         }
     }
 
@@ -118,7 +132,7 @@ class ChatModel implements ChatContract.Model {
 
                     @Override
                     public void onNext(BaseResponseBody baseResponseBody) {
-                        if(baseResponseBody.isSuccess())
+                        if (baseResponseBody.isSuccess())
                             mPresenter.sendMessageSuccess(content);
                     }
 

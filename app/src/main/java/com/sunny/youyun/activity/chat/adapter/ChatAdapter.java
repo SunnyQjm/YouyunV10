@@ -46,7 +46,7 @@ public class ChatAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
                 if (item instanceof DateItem) {
                     DateItem dateItem = (DateItem) item;
                     helper.setText(R.id.tv_date,
-                            TimeUtils.returnTime_y4md_line_divide(dateItem.getDate()));
+                            TimeUtils.returnDate_Time(dateItem.getDate()));
                 }
                 break;
         }

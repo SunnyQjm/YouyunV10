@@ -11,6 +11,7 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.chat.adapter.ChatAdapter;
 import com.sunny.youyun.activity.chat.config.ChatConfig;
+import com.sunny.youyun.activity.chat.item.DateItem;
 import com.sunny.youyun.activity.chat.item.MessageItemMy;
 import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
@@ -156,11 +157,18 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
     @Override
     public void sendMessageSuccess(String content) {
         //TODO send message success
+        Message message = (Message) adapter.getItem(0);
+        long currentTime = System.currentTimeMillis();
+        if (message != null && currentTime - message.getCreateTime() > 1000 * 60 * 5) {
+            adapter.addData(0, new DateItem.Builder()
+                    .date(currentTime)
+                    .build());
+        }
         adapter.addData(0, new MessageItemMy(new Message.Builder()
                 .content(content)
                 .fromUserId(UserInfoManager.getInstance().getUserId())
                 .toUserId(userId)
-                .createTime(System.currentTimeMillis())
+                .createTime(currentTime)
                 .user(UserInfoManager.getInstance().getUserInfo())
                 .build()));
         recyclerView.scrollToPosition(0);
