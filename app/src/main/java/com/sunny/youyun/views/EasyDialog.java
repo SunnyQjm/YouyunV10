@@ -3,6 +3,7 @@ package com.sunny.youyun.views;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.R;
+import com.sunny.youyun.model.EasyYouyunAPIManager;
 import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
@@ -97,7 +98,7 @@ public class EasyDialog {
                         @Override
                         public void onSureClick() {
                             reLoginTipDialog.dismiss();
-
+                            EasyYouyunAPIManager.logout(appCompatActivity);
                         }
                     });
             reLoginTipDialog.setRightText(appCompatActivity.getString(R.string.login));

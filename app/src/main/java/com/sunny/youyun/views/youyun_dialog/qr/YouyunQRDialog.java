@@ -23,6 +23,7 @@ public class YouyunQRDialog extends DialogFragment {
     private Context context;
     private String content;
     private View view;
+    private Bitmap icon = null;
 
 
     private void setContext(Context context) {
@@ -63,10 +64,17 @@ public class YouyunQRDialog extends DialogFragment {
     public void setContent(String content) {
         this.content = content;
         if (imgQr != null) {
-            QRCodeUtil.createQRImage(content, 500, 500, null, QR_PATH);
-            Bitmap bitmap1 = BitmapFactory.decodeFile(QR_PATH);
-            imgQr.setImageBitmap(bitmap1);
+            imgQr.post(() -> {
+                QRCodeUtil.createQRImage(content, imgQr.getMeasuredWidth(), imgQr.getMeasuredHeight(),
+                        icon, QR_PATH);
+                Bitmap bitmap1 = BitmapFactory.decodeFile(QR_PATH);
+                imgQr.setImageBitmap(bitmap1);
+            });
         }
+    }
+
+    public void setCenterIcon(Bitmap bitmap) {
+        this.icon = bitmap;
     }
 
     @Override

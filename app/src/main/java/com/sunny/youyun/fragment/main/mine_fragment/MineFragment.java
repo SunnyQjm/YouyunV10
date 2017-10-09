@@ -1,5 +1,6 @@
 package com.sunny.youyun.fragment.main.mine_fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -11,10 +12,12 @@ import android.widget.TextView;
 
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.scan.config.ScanConfig;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
+import com.sunny.youyun.utils.BitmapUtils;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
@@ -61,6 +64,7 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
 
     private YouyunEditDialog editDialog = null;
     private User user;
+    private Bitmap centerIcon = null;
 
     public static MineFragment newInstance() {
 
@@ -106,11 +110,10 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
         easyBar.setLeftIconInVisible();
 
         user = UserInfoManager.getInstance().getUserInfo();
-        if (YouyunAPI.isIsLogin()){
+        if (YouyunAPI.isIsLogin()) {
             tvNickname.setText(user.getUsername());
             GlideUtils.load(activity, imgAvatar, user.getAvatar());
-        }
-        else {
+        } else {
             tvNickname.setText(getString(R.string.click_here_to_login));
             GlideUtils.load(activity, imgAvatar, R.drawable.icon_logo_round);
         }
@@ -144,7 +147,7 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
 
     @OnClick({R.id.cl_avatar, R.id.li_my_collect, R.id.li_my_concern, R.id.li_callback,
             R.id.li_setting, R.id.li_my_share, R.id.li_file_manager, R.id.img_edit,
-            R.id.img_icon})
+            R.id.img_icon, R.id.img_qr_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_avatar:
@@ -178,6 +181,16 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                 break;
             case R.id.img_icon:
                 RouterUtils.open(activity, IntentRouter.DcimActivity);
+                break;
+            case R.id.img_qr_code:  //显示二维码
+                if (!YouyunAPI.isIsLogin())
+                    return;
+                if (centerIcon == null) {
+                    centerIcon = BitmapUtils.drawableToBitmap(
+                            getResources().getDrawable(R.mipmap.logo));
+                }
+                showQrDialog(ScanConfig.createData(UserInfoManager.getInstance().getUserId()))
+                        .setCenterIcon(centerIcon);
                 break;
         }
     }

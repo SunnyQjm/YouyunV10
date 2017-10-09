@@ -12,6 +12,7 @@ import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
+import com.sunny.youyun.views.youyun_dialog.qr.YouyunQRDialog;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
 
@@ -19,7 +20,7 @@ import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
  * Created by Administrator on 2017/3/18 0018.
  */
 
-public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment implements BaseView{
+public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment implements BaseView {
     protected P mPresenter;
     protected AppCompatActivity activity;
     protected OnFragmentInteractionListener mListener;
@@ -30,18 +31,19 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
 
     //用来标识保存Fragment的显示状态
     public static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(mPresenter == null){
+        if (mPresenter == null) {
             mPresenter = onCreatePresenter();
         }
         //页面重启时，Fragment会被保存恢复，而此时再加载Fragment，会导致重叠
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             boolean isHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-            if(isHidden){
+            if (isHidden) {
                 ft.hide(this);
             } else {
                 ft.show(this);
@@ -59,7 +61,7 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.clearAllDisposable();
         }
     }
@@ -73,7 +75,7 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        if(context instanceof OnFragmentListener){
+        if (context instanceof OnFragmentListener) {
             paramListener = (OnFragmentListener) context;
         }
         activity = (AppCompatActivity) context;
@@ -87,7 +89,7 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
 
     }
 
-    public boolean onBackPressed(){
+    public boolean onBackPressed() {
         return false;
     }
 
@@ -132,6 +134,12 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
             dialog.show(activity.getSupportFragmentManager(), String.valueOf(this.getClass()));
     }
 
+    public YouyunQRDialog showQrDialog(String content) {
+        YouyunQRDialog qrDialog = YouyunQRDialog.newInstance(activity, content);
+        qrDialog.show(activity.getSupportFragmentManager(), String.valueOf(this.getClass()));
+        return qrDialog;
+    }
+
     public void showLoading() {
         dismissDialog();
         loadingView = EasyDialog.showLoading(activity);
@@ -160,7 +168,7 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
         void onFragmentInteraction(Uri uri);
     }
 
-    public interface OnFragmentListener{
+    public interface OnFragmentListener {
         void integerParam(Integer code, Object... params);
     }
 

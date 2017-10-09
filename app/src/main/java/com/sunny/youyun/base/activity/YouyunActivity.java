@@ -10,6 +10,7 @@ import android.view.Window;
 import com.sunny.youyun.App;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
+import com.sunny.youyun.views.youyun_dialog.qr.YouyunQRDialog;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
 /**
@@ -18,8 +19,8 @@ import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
 public class YouyunActivity extends AppCompatActivity {
 
-    protected YouyunTipDialog dialog;
-    protected YouyunLoadingView loadingView;
+    protected YouyunTipDialog dialog = null;
+    protected YouyunLoadingView loadingView = null;
 
     @Override
     protected void onStart() {
@@ -74,6 +75,12 @@ public class YouyunActivity extends AppCompatActivity {
     public void showLoading() {
         dismissDialog();
         loadingView = EasyDialog.showLoading(this);
+    }
+
+    public YouyunQRDialog showQrDialog(String content) {
+        YouyunQRDialog youyunQRDialog = YouyunQRDialog.newInstance(this, content);
+        youyunQRDialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
+        return youyunQRDialog;
     }
 
     public void dismissDialog() {
