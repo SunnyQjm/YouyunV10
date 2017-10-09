@@ -26,7 +26,7 @@ public class DynamicAdapter extends BaseQuickAdapter<Dynamic, BaseViewHolder> {
         if (item.getFile() == null)
             return;
         helper.setText(R.id.tv_content, getString(item.getType()) + item.getFile().getName())
-                .setText(R.id.tv_date, TimeUtils.returnTime_ymd(item.getCreateTime()));
+                .setText(R.id.tv_date, TimeUtils.returnTime(item.getCreateTime()));
         GlideUtils.load(mContext, helper.getView(R.id.img_icon), UserInfoManager.getInstance().getUserInfo()
                 .getAvatar());
     }

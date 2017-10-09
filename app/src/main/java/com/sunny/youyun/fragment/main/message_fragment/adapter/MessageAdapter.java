@@ -51,7 +51,7 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                     return;
                 helper.setText(R.id.tv_name, messageItem.getUsername())
                         .setText(R.id.tv_description, message.getContent())
-                        .setText(R.id.tv_date, TimeUtils.returnTime_ymd(message.getCreateTime()));
+                        .setText(R.id.tv_date, TimeUtils.returnTime(message.getCreateTime()));
                 int count = MessageManager.getInstance().getCount(messageItem.getId());
                 DraggableFlagView draggableFlagView = helper.getView(R.id.draggableView);
                 if (count > 0) {
