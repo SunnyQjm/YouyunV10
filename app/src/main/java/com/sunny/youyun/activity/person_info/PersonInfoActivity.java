@@ -131,8 +131,6 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         otherId = getIntent().getIntExtra("otherId", -1);
         if (otherId > 0 && otherId != UserInfoManager.getInstance()
                 .getUserInfo().getId()) {  //如果查看的是别人的信息
-//            easyBar.setDisplayMode(EasyBar.Mode.ICON_TEXT);
-//            easyBar.setRightText(getString(R.string.concern));
             imgEdit.setVisibility(View.INVISIBLE);
             personInfoBottomBar.setVisibility(View.VISIBLE);
         } else {

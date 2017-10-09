@@ -24,7 +24,7 @@
             app:collapsedTitleGravity="center_horizontal"
             app:expandedTitleGravity="center_horizontal"
             app:contentScrim="@color/application_theme_color"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="@android:color/transparent"
             >
 
