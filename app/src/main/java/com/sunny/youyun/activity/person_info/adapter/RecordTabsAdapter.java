@@ -19,6 +19,11 @@ public class RecordTabsAdapter extends FragmentPagerAdapter {
         super(fm);
         this.fragmentList = fragments;
     }
+    public RecordTabsAdapter(String[] titles, FragmentManager fm, List<Fragment> fragments) {
+        super(fm);
+        this.titles = titles;
+        this.fragmentList = fragments;
+    }
 
     @Override
     public Fragment getItem(int position) {

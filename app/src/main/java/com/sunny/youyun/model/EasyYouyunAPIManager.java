@@ -12,6 +12,7 @@ import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.share.TencentUtil;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,24 +26,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EasyYouyunAPIManager {
     public static void logout(Activity activity){
-        //清空用户数据
-        UserInfoManager.getInstance().clear();
-        logout();
-        YouyunAPI.updateIsLogin(false);
-        JPushUtil.setTag(activity, "0000");
+        logout_(activity);
         RouterUtils.open(activity, IntentRouter.LoginActivity);
     }
 
     public static void logout(Fragment fragment){
-        //清空用户数据
-        UserInfoManager.getInstance().clear();
-        logout();
-        YouyunAPI.updateIsLogin(false);
-        JPushUtil.setTag(fragment.getContext(), "0000");
+        logout_(fragment.getActivity());
         fragment.startActivity(new Intent(fragment.getContext(), LoginActivity.class));
     }
 
-    private static void logout(){
+    private static void logout_(Activity activity){
+        //清空用户数据
+        UserInfoManager.getInstance().clear();
+        YouyunAPI.updateIsLogin(false);
+        JPushUtil.setTag(activity, "0000");
+        //QQ登出
+        if(YouyunAPI.getLoginMode() == YouyunAPI.LOGIN_MODE_QQ){
+            TencentUtil.getInstance(activity)
+                    .loginOut();
+        }
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .logout()

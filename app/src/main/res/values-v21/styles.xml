@@ -21,4 +21,5 @@
         <!--<item name="android:windowEnterAnimation">@transition/slide_in</item>-->
         <!--<item name="android:windowReenterTransition">@transition/fade</item>-->
     </style>
+
 </resources>

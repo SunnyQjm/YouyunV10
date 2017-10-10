@@ -94,6 +94,10 @@ public class ApiInfo {
             MODIFY_USER_INFO_SIGNATURE = "signature", MODIFY_USER_INFO_OLD_PASSWORD = "oldpassword",
             MODIFY_USER_INFO_NEW_PASSWORD = "newpassword";
 
+    public static final String GET_OTHER_USER_PUBLIC_FILES_URL = "file/otherPubFiles",
+            GET_OTHER_USER_PUBLIC_FILES_USER_ID = "userId", GET_OTHER_USER_PUBLIC_FILES_PAGE = "page",
+            GET_OTHER_USER_PUBLIC_FILES_SIZE = "size";
+
     ///////////////////////////////////////////////////////////
     ////////FileService
     ///////////////////////////////////////////////////////////

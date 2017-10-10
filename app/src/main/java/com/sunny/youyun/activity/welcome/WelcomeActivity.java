@@ -68,9 +68,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        welcomeLayout.postDelayed(() -> {
-            RouterUtils.open(WelcomeActivity.this, IntentRouter.MainActivity);
-            finish();
-        }, 500);
+        RouterUtils.open(WelcomeActivity.this, IntentRouter.MainActivity);
+        finish();
     }
 }

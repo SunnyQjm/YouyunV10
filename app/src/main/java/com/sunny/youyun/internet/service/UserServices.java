@@ -3,6 +3,7 @@ package com.sunny.youyun.internet.service;
 
 import com.sunny.youyun.activity.person_file_manager.item.BaseFileItem;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.data_item.Collection;
 import com.sunny.youyun.model.data_item.ConcernItem;
@@ -160,6 +161,13 @@ public interface UserServices {
             @Query(ApiInfo.GET_USER_DYNAMIC_PAGE) int page,
             @Query(ApiInfo.GET_USER_DYNAMIC_SIZE) int size,
             @Query(ApiInfo.GET_USER_DYNAMIC_TYPE) int type
+    );
+
+    @GET(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_URL)
+    Observable<BaseResponseBody<InternetFile[]>> getOtherPublicFiles(
+            @Query(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_USER_ID) int userId,
+            @Query(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_PAGE) int page,
+            @Query(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_SIZE) int size
     );
 
 }

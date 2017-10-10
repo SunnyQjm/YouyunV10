@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_info.concern_fragment;
+package com.sunny.youyun.activity.person_info.other_file_fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,38 +8,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.person_info.adapter.UserItemAdapter;
+import com.sunny.youyun.activity.person_info.adapter.PublicShareFileAdapter;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
-import com.sunny.youyun.model.data_item.ConcernItem;
-import com.sunny.youyun.utils.RouterUtils;
-
+import com.sunny.youyun.model.InternetFile;
 
 /**
- * Created by Sunny on 2017/6/25 0025.
+ * Created by Sunny on 2017/10/10 0010.
  */
-public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> implements ConcernContract.View, BaseQuickAdapter.OnItemClickListener {
 
-    private UserItemAdapter adapter = null;
+public class OtherPublicShareFileFragment extends BaseRecyclerViewFragment<OtherPublicShareFilePresenter>
+        implements OtherPublicShareFileContract.View, BaseQuickAdapter.OnItemClickListener {
+
+    private PublicShareFileAdapter adapter;
     private View view = null;
     private int page = 1;
-    private boolean isSelf = true;
+    private int userId = -1;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //重新显示的时候更新数据
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
-        //开始监听
-        mPresenter.beginListen();
-    }
-
-    private void setSelf(boolean self) {
-        isSelf = self;
+    private void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -50,17 +39,17 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         }
     }
 
-    public static ConcernFragment newInstance(boolean isSelf) {
+    public static OtherPublicShareFileFragment newInstance(int userId) {
         Bundle args = new Bundle();
-        ConcernFragment fragment = new ConcernFragment();
+        OtherPublicShareFileFragment fragment = new OtherPublicShareFileFragment();
         fragment.setArguments(args);
-        fragment.setSelf(isSelf);
+        fragment.setUserId(userId);
         return fragment;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
             view = super.onCreateView(inflater, container, savedInstanceState);
             initView();
@@ -95,31 +84,21 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         } else {
             page++;
         }
-        if (isSelf) {
-            mPresenter.getFollowingList(page, true);
-        } else {
-            refreshLayout.setLoadAble(false);
-        }
+        mPresenter.getFiles(userId, page, isRefresh);
     }
 
     private void initView() {
-        adapter = new UserItemAdapter(mPresenter.getData());
+        adapter = new PublicShareFileAdapter(mPresenter.getData());
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(activity,
                 DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         adapter.setOnItemClickListener(this);
-        mPresenter.beginListen();
         refreshLayout.setLoadAble(true);
         refreshLayout.setRefreshAble(false);
+        loadData(true);
     }
-
-    @Override
-    protected ConcernPresenter onCreatePresenter() {
-        return new ConcernPresenter(this);
-    }
-
     @Override
     protected void onRefreshBegin() {
         endView.setVisibility(View.GONE);
@@ -132,7 +111,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
 
     @Override
     protected void OnRefreshFinish() {
-        getFollowingListSuccess();
+        getOtherPublicFilesSuccess();
     }
 
     @Override
@@ -142,11 +121,11 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
 
     @Override
     protected void onLoadFinish() {
-        getFollowingListSuccess();
+        getOtherPublicFilesSuccess();
     }
 
     @Override
-    public void getFollowingListSuccess() {
+    public void getOtherPublicFilesSuccess() {
         updateAll();
         if(adapter.getData().size() == 0)
             refreshLayout.setLoadAble(false);
@@ -173,10 +152,11 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        ConcernItem concernItem = (ConcernItem) adapter.getItem(position);
-        if (concernItem == null || concernItem.getUser() == null)
-            return;
-        RouterUtils.open(activity, IntentRouter.PersonInfoActivity,
-                String.valueOf(concernItem.getUser().getId()));
+        InternetFile concernItem = (InternetFile) adapter.getItem(position);
+    }
+
+    @Override
+    protected OtherPublicShareFilePresenter onCreatePresenter() {
+        return new OtherPublicShareFilePresenter(this);
     }
 }

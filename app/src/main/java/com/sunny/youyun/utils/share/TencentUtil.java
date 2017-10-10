@@ -3,6 +3,7 @@ package com.sunny.youyun.utils.share;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.model.ShareContent;
@@ -65,7 +66,8 @@ public enum TencentUtil {
     }
 
     public void login(IUiListener iUiListener) {
-        if (YouyunAPI.getOpenId() != null && !YouyunAPI.getOpenId().equals("")) {
+        if (YouyunAPI.isIsLogin() && YouyunAPI.getOpenId() != null
+                && !YouyunAPI.getOpenId().equals("")) {
             tencent.setOpenId(YouyunAPI.getOpenId());
             tencent.setAccessToken(YouyunAPI.getAccessToken(),
                     String.valueOf(YouyunAPI.getExpiresIn()));

@@ -164,4 +164,5 @@
     <string name="have_new_message">有新消息</string>
     <string name="private_letter">私信</string>
     <string name="re_login_tip"><![CDATA[登录失效，请重新登录>.<]]></string>
+    <string name="dynamic">动态</string>
 </resources>

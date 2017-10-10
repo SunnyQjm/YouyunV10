@@ -1,5 +1,7 @@
 package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
+import android.os.Handler;
+
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
@@ -22,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class DynamicModel implements DynamicContract.Model {
     private final DynamicPresenter mPresenter;
     private final List<Dynamic> mList = new ArrayList<>();
+    private final Handler handler = new Handler();
 
     DynamicModel(DynamicPresenter uploadRecordPresenter) {
         mPresenter = uploadRecordPresenter;
@@ -39,7 +42,7 @@ class DynamicModel implements DynamicContract.Model {
                             mList.clear();
                         Collections.addAll(mList, baseResponseBody.getData());
                         if (baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE)
-                            mPresenter.allDataGetFinish();
+                            handler.post(mPresenter::allDataGetFinish);
                         return true;
                     }
                     return false;
@@ -54,6 +57,7 @@ class DynamicModel implements DynamicContract.Model {
 
                     @Override
                     public void onNext(Boolean isSuccess) {
+                        System.out.println("isSuccess: " + isSuccess);
                         if (isSuccess) {
                             mPresenter.getDynamicSuccess();
                         }

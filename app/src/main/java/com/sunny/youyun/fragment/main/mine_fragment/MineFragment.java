@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.scan.config.ScanConfig;
@@ -17,7 +20,7 @@ import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
-import com.sunny.youyun.utils.BitmapUtils;
+import com.sunny.youyun.utils.GlideOptions;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
@@ -175,7 +178,6 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                 break;
             case R.id.img_edit:
                 if (YouyunAPI.isIsLogin()) {
-//                    showEditDialog(user.getUsername());
                     RouterUtils.open(activity, IntentRouter.PersonSettingActivity);
                 }
                 break;
@@ -185,12 +187,19 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
             case R.id.img_qr_code:  //显示二维码
                 if (!YouyunAPI.isIsLogin())
                     return;
-                if (centerIcon == null) {
-                    centerIcon = BitmapUtils.drawableToBitmap(
-                            getResources().getDrawable(R.mipmap.logo));
-                }
-                showQrDialog(ScanConfig.createData(UserInfoManager.getInstance().getUserId()))
-                        .setCenterIcon(centerIcon);
+                //将圆形头像放在二维码中间
+                Glide.with(activity)
+                        .asBitmap()
+                        .apply(GlideOptions.getInstance()
+                                .getAvatarOptions())
+                        .load(user.getAvatar())
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                showQrDialog(ScanConfig.createData(UserInfoManager.getInstance().getUserId()))
+                                        .setCenterIcon(resource);
+                            }
+                        });
                 break;
         }
     }

@@ -55,6 +55,11 @@ public enum YouyunExceptionDeal {
         //登陆失效，需要重新登录
         if (e instanceof LoginTokenInvalidException) {
             showReLogin(fragment);
+//            switch (YouyunAPI.getLoginMode()){
+//                case YouyunAPI.LOGIN_MODE_NORMAL:
+//                    showReLogin(fragment);
+//                    break;
+//            }
         }
     }
 

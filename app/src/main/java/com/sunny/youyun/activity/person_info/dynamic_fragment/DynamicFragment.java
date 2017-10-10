@@ -22,14 +22,6 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
     private View view = null;
     private boolean isSelf = true;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //重新显示的时候更新数据
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
-    }
-
     private void setSelf(boolean isSelf) {
         this.isSelf = isSelf;
     }
@@ -79,19 +71,19 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
     }
 
     private void loadData(boolean isRefresh) {
+        System.out.println("load data : " + isRefresh);
         if (isRefresh) {
             page = 1;
             if (endView != null)
                 endView.setVisibility(View.INVISIBLE);
             refreshLayout.setLoadAble(true);
-            if (isSelf) {
-                mPresenter.getDynamic(page, true);
-            }
         } else {
             page++;
-            if (isSelf) {
-                mPresenter.getDynamic(page, false);
-            }
+        }
+        if (isSelf) {
+            mPresenter.getDynamic(page, true);
+        } else {
+            refreshLayout.setLoadAble(false);
         }
     }
 
@@ -140,6 +132,8 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
     @Override
     public void getDynamicSuccess() {
         updateAll();
+        if(adapter.getData().size() == 0)
+            refreshLayout.setLoadAble(false);
     }
 
     @Override

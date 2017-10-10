@@ -22,6 +22,7 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_info.adapter.RecordTabsAdapter;
 import com.sunny.youyun.activity.person_info.concern_fragment.ConcernFragment;
 import com.sunny.youyun.activity.person_info.dynamic_fragment.DynamicFragment;
+import com.sunny.youyun.activity.person_info.other_file_fragment.OtherPublicShareFileFragment;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.model.User;
@@ -152,7 +153,15 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
         dynamicFragment = DynamicFragment.newInstance(isSelf);
         fragmentList.add(dynamicFragment);
         fragmentList.add(concernFragment);
-        adapter = new RecordTabsAdapter(getSupportFragmentManager(), fragmentList);
+        String[] titles;
+        if (isSelf) {
+            titles = new String[]{getString(R.string.dynamic), getString(R.string.concern)};
+        } else {
+            titles = new String[]{getString(R.string.file), getString(R.string.dynamic),
+                    getString(R.string.concern)};
+            fragmentList.add(0, OtherPublicShareFileFragment.newInstance(otherId));
+        }
+        adapter = new RecordTabsAdapter(titles, getSupportFragmentManager(), fragmentList);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
 
