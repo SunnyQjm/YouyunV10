@@ -10,7 +10,6 @@ import com.sunny.youyun.mvp.BaseView;
 
 interface StarRecordContract {
     interface View extends BaseView {
-
     }
 
     interface Model extends BaseModel {

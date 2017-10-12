@@ -83,4 +83,9 @@ public class DownloadActivity extends MVPBaseActivity<DownloadPresenter> impleme
         RouterUtils.open(this, IntentRouter.FileDetailOnlineActivity, uuid);
         finish();
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

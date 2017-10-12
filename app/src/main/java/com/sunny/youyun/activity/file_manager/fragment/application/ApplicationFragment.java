@@ -51,4 +51,8 @@ public class ApplicationFragment extends BaseFileManagerFragment<ApplicationPres
         return new ApplicationPresenter(this);
     }
 
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

@@ -41,7 +41,9 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * Created by Sunny on 2017/6/25 0025.
  */
 
-public class ReceiveRecordFragment extends MVPBaseFragment<ReceiveRecordPresenter> implements ReceiveRecordContract.View, BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener {
+public class ReceiveRecordFragment extends MVPBaseFragment<ReceiveRecordPresenter>
+        implements ReceiveRecordContract.View, BaseQuickAdapter.OnItemClickListener,
+        BaseQuickAdapter.OnItemLongClickListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;

@@ -396,4 +396,9 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                     String.valueOf(comment.getUserId()));
         }
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

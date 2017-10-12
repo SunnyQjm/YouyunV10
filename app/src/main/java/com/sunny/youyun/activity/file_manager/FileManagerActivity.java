@@ -30,7 +30,6 @@ import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.utils.DensityUtil;
-import com.sunny.youyun.utils.EasyPermission;
 import com.sunny.youyun.utils.RecyclerViewUtils;
 import com.sunny.youyun.views.EasyBar;
 
@@ -181,5 +180,10 @@ public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> i
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void allDataLoadFinish() {
+
     }
 }

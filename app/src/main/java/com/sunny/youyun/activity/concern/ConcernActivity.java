@@ -68,8 +68,8 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
     }
 
     @Override
-    public void allDataGetFinish() {
-        System.out.println("allDataGetFinish");
+    public void allDataLoadFinish() {
+        System.out.println("allDataLoadFinish");
         super.allDataLoadFinish(adapter);
     }
 

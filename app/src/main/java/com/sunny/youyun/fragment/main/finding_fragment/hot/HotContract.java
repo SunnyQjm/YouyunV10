@@ -14,7 +14,6 @@ import java.util.List;
 interface HotContract {
     interface View extends BaseView {
         void getDataSuccess();
-        void allDataLoadFinish();
     }
 
     interface Model extends BaseModel {
@@ -26,6 +25,5 @@ interface HotContract {
         abstract List<InternetFile> getDatas();
         abstract void getForumDataHot(int page, boolean isRefresh);
         abstract void getDataSuccess();
-        abstract void allDataLoadFinish();
     }
 }

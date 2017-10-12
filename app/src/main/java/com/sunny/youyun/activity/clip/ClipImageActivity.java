@@ -111,4 +111,9 @@ public class ClipImageActivity extends MVPBaseActivity<ClipImagePresenter> imple
     public void updateFail() {
         finish();
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

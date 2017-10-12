@@ -51,4 +51,5 @@ public class VideoFragment extends BaseFileManagerFragment<VideoPresenter> imple
     protected VideoPresenter onCreatePresenter() {
         return new VideoPresenter(this);
     }
+
 }

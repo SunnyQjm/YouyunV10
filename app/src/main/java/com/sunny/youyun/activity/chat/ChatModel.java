@@ -1,6 +1,7 @@
 package com.sunny.youyun.activity.chat;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.activity.chat.item.DateItem;
 import com.sunny.youyun.activity.chat.item.MessageItemMy;
 import com.sunny.youyun.activity.chat.item.MessageItemOther;
@@ -44,25 +45,46 @@ class ChatModel implements ChatContract.Model {
         APIManager.getInstance()
                 .getChatServices(GsonConverterFactory.create())
                 .getChatRecordSingle(userId, page, size)
+                .map(baseResponseBody -> {
+                    if (baseResponseBody.isSuccess() &&
+                            baseResponseBody.getData() != null) {
+                        if (isRefresh)
+                            mList.clear();
+                        addAll(baseResponseBody.getData());
+                        if(baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE){
+                            return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
+                        }
+                        return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
+                    } else {
+                        return ApiInfo.RESULT_DEAL_TYPE_FAIL;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<Message[]>>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<Message[]> messageItemBaseResponseBody) {
-                        if (messageItemBaseResponseBody.isSuccess() &&
-                                messageItemBaseResponseBody.getData() != null) {
-                            if (isRefresh)
-                                mList.clear();
-                            addAll(messageItemBaseResponseBody.getData());
-                            mPresenter.getMessagesSuccess();
-                        } else {
-                            mPresenter.showTip("没有获取到信息");
-                        }
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getMessagesSuccess();
+                            }
+
+                            @Override
+                            public void onLoadFinish() {
+                                mPresenter.getMessagesSuccess();
+                            }
+
+                            @Override
+                            public void onFail() {
+                                Logger.e("获取聊天记录失败");
+                            }
+                        });
                     }
 
                     @Override

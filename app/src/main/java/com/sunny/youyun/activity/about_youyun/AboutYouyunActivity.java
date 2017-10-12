@@ -88,4 +88,9 @@ public class AboutYouyunActivity extends MVPBaseActivity<AboutYouyunPresenter> i
     @OnClick(R.id.li_about_youyun_comment)
     public void onLiAboutYouyunCommentClicked() {
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

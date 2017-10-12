@@ -171,4 +171,9 @@ public class DcimFragment extends MVPBaseFragment<DcimPresenter> implements Dcim
             activity.onBackPressed();
         }
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

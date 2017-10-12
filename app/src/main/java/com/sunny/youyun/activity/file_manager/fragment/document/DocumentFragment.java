@@ -51,4 +51,8 @@ public class DocumentFragment extends BaseFileManagerFragment<DocumentPresenter>
     }
 
 
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

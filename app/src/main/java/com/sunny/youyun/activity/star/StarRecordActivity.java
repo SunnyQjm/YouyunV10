@@ -3,10 +3,13 @@ package com.sunny.youyun.activity.star;
 import android.os.Bundle;
 import android.view.View;
 
+import com.github.mzule.activityrouter.annotation.Router;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
 import com.sunny.youyun.views.EasyBar;
 
+@Router(IntentRouter.StarRecordActivity)
 public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPresenter>
         implements StarRecordContract.View {
 

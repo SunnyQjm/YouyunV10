@@ -14,7 +14,6 @@ import java.util.List;
 interface MyCollectionContract {
     interface View extends BaseView {
         void getCollectionsSuccess();
-        void allDataLoadFinish();
     }
 
     interface Model extends BaseModel {
@@ -26,6 +25,5 @@ interface MyCollectionContract {
         abstract void getCollections(int page, boolean isRefresh);
         abstract List<Collection> getData();
         abstract void getCollectionsSuccess();
-        abstract void allDataLoadFinish();
     }
 }

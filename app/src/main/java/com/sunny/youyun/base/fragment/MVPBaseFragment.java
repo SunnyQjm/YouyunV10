@@ -173,4 +173,9 @@ public abstract class MVPBaseFragment<P extends BasePresenter> extends Fragment 
     }
 
     protected abstract P onCreatePresenter();
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

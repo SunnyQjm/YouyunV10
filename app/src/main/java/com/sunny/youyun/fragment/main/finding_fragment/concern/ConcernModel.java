@@ -3,12 +3,10 @@ package com.sunny.youyun.fragment.main.finding_fragment.concern;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
-import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -38,20 +36,8 @@ class ConcernModel implements ConcernContract.Model{
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .getConcernPeopleShares(page, size)
-                .map(internetFileBaseResponseBody -> {
-                    if(internetFileBaseResponseBody.isSuccess() &&
-                            internetFileBaseResponseBody.getData() != null){
-                        if(isRefresh)
-                            mList.clear();
-                        Collections.addAll(mList, internetFileBaseResponseBody.getData());
-                        if(internetFileBaseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE){
-                            return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
-                        }
-                        return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
-                    } else {
-                        return ApiInfo.RESULT_DEAL_TYPE_FAIL;
-                    }
-                })
+                .map(internetFileBaseResponseBody -> YouyunResultDeal.
+                        dealData(internetFileBaseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -65,13 +51,11 @@ class ConcernModel implements ConcernContract.Model{
                         YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
-                                System.out.println("success");
                                 mPresenter.getDatasOnlineSuccess();
                             }
 
                             @Override
                             public void onLoadFinish() {
-                                System.out.println("load finish");
                                 mPresenter.allDataLoadFinish();
                             }
 

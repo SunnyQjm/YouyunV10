@@ -228,4 +228,9 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
     @OnClick(R.id.tv_detail_info_content)
     public void onViewClicked() {
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

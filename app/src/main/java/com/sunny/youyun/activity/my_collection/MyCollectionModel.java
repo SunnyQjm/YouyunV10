@@ -1,6 +1,7 @@
 package com.sunny.youyun.activity.my_collection;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.YouyunExceptionDeal;
@@ -14,6 +15,7 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,27 +40,33 @@ class MyCollectionModel implements MyCollectionContract.Model{
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getUserCollections(page, size, ApiInfo.GET_USER_DYNAMIC_TYPE_COLLECT)
+                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<Collection[]>>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<Collection[]> baseResponseBody) {
-                        if(baseResponseBody.isSuccess() && baseResponseBody.getData() != null){
-                            if(isRefresh){
-                                mList.clear();
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getCollectionsSuccess();
                             }
-                            Collections.addAll(mList, baseResponseBody.getData());
-                            mPresenter.getCollectionsSuccess();
-                            if(baseResponseBody.getData().length< ApiInfo.GET_DEFAULT_SIZE)
+
+                            @Override
+                            public void onLoadFinish() {
                                 mPresenter.allDataLoadFinish();
-                        } else {
-                            mPresenter.showError("获取失败");
-                        }
+                            }
+
+                            @Override
+                            public void onFail() {
+                                Logger.e("获取收藏列表失败");
+                            }
+                        });
                     }
 
                     @Override

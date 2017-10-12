@@ -43,7 +43,8 @@ import butterknife.Unbinder;
  * Created by Sunny on 2017/6/24 0024.
  */
 
-public class FindingFragment extends MVPBaseFragment<FindingPresenter> implements FindingContract.View, BaseQuickAdapter.OnItemClickListener {
+public class FindingFragment extends MVPBaseFragment<FindingPresenter>
+        implements FindingContract.View, BaseQuickAdapter.OnItemClickListener {
 
 
     @BindView(R.id.easyBar)

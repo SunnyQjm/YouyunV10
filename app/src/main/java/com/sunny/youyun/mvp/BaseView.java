@@ -10,4 +10,5 @@ public interface BaseView {
     void showTip(String info);
     void dismissDialog();
     void showLoading();
+    void allDataLoadFinish();
 }

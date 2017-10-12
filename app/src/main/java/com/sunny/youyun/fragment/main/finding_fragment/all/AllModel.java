@@ -8,7 +8,6 @@ import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -33,20 +32,7 @@ class AllModel implements AllContract.Model{
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .getForumAll(page, ApiInfo.GET_DEFAULT_SIZE, true, false)
-                .map(baseResponseBody -> {
-                    if(baseResponseBody.isSuccess() &&
-                            baseResponseBody.getData() != null){
-                        if(isRefresh)
-                            mList.clear();
-                        Collections.addAll(mList, baseResponseBody.getData());
-                        if(baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE){
-                            return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
-                        }
-                        return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
-                    } else {
-                        return ApiInfo.RESULT_DEAL_TYPE_FAIL;
-                    }
-                })
+                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -74,23 +60,6 @@ class AllModel implements AllContract.Model{
                             }
                         });
                     }
-
-//                    @Override
-//                    public void onNext(BaseResponseBody<InternetFile[]> listBaseResponseBody) {
-//                        Logger.i(GsonUtil.getInstance().toJson(listBaseResponseBody));
-//                        if(listBaseResponseBody.isSuccess()){
-//                            InternetFile[] datas = listBaseResponseBody.getData();
-//                            //如果是更新操作则先清空数据
-//                            if(isRefresh){
-//                                mList.clear();
-//                            }
-//                            Collections.addAll(mList, datas);
-//                            if(datas.length < ApiInfo.GET_DEFAULT_SIZE){
-//                                mPresenter.allDataLoadFinish();
-//                            }
-//                            mPresenter.getForumDataSuccess();
-//                        }
-//                    }
 
                     @Override
                     public void onError(Throwable e) {

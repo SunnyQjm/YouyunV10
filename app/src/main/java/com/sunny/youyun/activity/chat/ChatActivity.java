@@ -208,4 +208,9 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
 
         }
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

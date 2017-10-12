@@ -50,7 +50,8 @@ import static com.sunny.youyun.model.InternetFile.Status.*;
  * Created by Sunny on 2017/6/25 0025.
  */
 
-public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresenter> implements DownloadRecordContract.View, BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener {
+public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresenter>
+        implements DownloadRecordContract.View, BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;

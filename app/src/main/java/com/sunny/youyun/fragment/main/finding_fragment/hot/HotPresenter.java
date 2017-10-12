@@ -36,7 +36,7 @@ class HotPresenter extends HotContract.Presenter{
     }
 
     @Override
-    void allDataLoadFinish() {
+    public void allDataLoadFinish() {
         mView.allDataLoadFinish();
     }
 }

@@ -126,4 +126,9 @@ public class OtherFragment extends MVPBaseFragment<OtherPresenter> implements Ot
     public void showError(String info) {
 
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

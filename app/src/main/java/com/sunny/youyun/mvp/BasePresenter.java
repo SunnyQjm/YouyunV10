@@ -81,4 +81,8 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
     public BaseView getView(){
         return mView;
     }
+
+    public void allDataLoadFinish(){
+        mView.allDataLoadFinish();
+    }
 }

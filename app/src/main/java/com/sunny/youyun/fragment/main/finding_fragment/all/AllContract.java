@@ -14,7 +14,6 @@ import java.util.List;
 interface AllContract {
     interface View extends BaseView {
         void getForumDataSuccess();
-        void allDataLoadFinish();
     }
 
     interface Model extends BaseModel {
@@ -26,6 +25,5 @@ interface AllContract {
         abstract void getForumDataALL(int page, boolean isRefresh);
         abstract List<InternetFile> getDatas();
         abstract void getForumDataSuccess();
-        abstract void allDataLoadFinish();
     }
 }

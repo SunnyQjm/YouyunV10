@@ -14,7 +14,6 @@ import java.util.List;
 interface ConcernContract {
     interface View extends BaseView {
         void getDatasOnlineSuccess();
-        void allDataLoadFinish();
     }
 
     interface Model extends BaseModel {
@@ -26,6 +25,5 @@ interface ConcernContract {
         abstract List<InternetFile> getDatas();
         abstract void getConcernPeopleShares(int page, boolean isRefresh);
         abstract void getDatasOnlineSuccess();
-        abstract void allDataLoadFinish();
     }
 }

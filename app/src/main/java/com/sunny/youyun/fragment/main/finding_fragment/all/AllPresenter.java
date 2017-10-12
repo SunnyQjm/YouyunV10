@@ -36,7 +36,7 @@ class AllPresenter extends AllContract.Presenter{
     }
 
     @Override
-    void allDataLoadFinish() {
+    public void allDataLoadFinish() {
         mView.allDataLoadFinish();
     }
 }

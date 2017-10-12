@@ -44,12 +44,12 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 @Router(IntentRouter.SenderActivity)
-public class SenderActivity extends WifiDirectBaseActivity<SenderPresenter> implements SenderContract.View, BaseQuickAdapter.OnItemClickListener {
+public class SenderActivity extends WifiDirectBaseActivity<SenderPresenter>
+        implements SenderContract.View, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.btn_qr_code)
     RichText btnQrCode;
     @BindView(R.id.btn_add_file)
     RichText btnAddFile;
-    Unbinder unbinder;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.shape_loading_view)

@@ -37,7 +37,7 @@ class MyCollectionPresenter extends MyCollectionContract.Presenter{
     }
 
     @Override
-    void allDataLoadFinish() {
+    public void allDataLoadFinish() {
         mView.allDataLoadFinish();
     }
 }

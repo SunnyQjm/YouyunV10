@@ -48,4 +48,8 @@ public abstract class MVPBaseActivity<P extends BasePresenter> extends YouyunAct
         super.dismissDialog();
     }
 
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }

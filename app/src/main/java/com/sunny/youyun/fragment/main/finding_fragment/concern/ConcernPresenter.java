@@ -37,7 +37,7 @@ class ConcernPresenter extends ConcernContract.Presenter{
     }
 
     @Override
-    void allDataLoadFinish() {
+    public void allDataLoadFinish() {
         mView.allDataLoadFinish();
     }
 }

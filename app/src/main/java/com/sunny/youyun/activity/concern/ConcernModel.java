@@ -1,14 +1,12 @@
 package com.sunny.youyun.activity.concern;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
-import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.ConcernItem;
-import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -39,26 +37,33 @@ class ConcernModel implements ConcernContract.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getFollowingList(page, size)
+                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<ConcernItem[]>>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<ConcernItem[]> baseResponseBody) {
-                        if (baseResponseBody.isSuccess() && baseResponseBody.getData() != null) {
-                            if (isRefresh) {
-                                mList.clear();
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getFollowingSuccess();
                             }
-                            Collections.addAll(mList, baseResponseBody.getData());
-                            mPresenter.getFollowingSuccess();
-                            if (baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE) {
-                                mPresenter.allDataGetFinish();
+
+                            @Override
+                            public void onLoadFinish() {
+                                mPresenter.allDataLoadFinish();
                             }
-                        }
+
+                            @Override
+                            public void onFail() {
+                                Logger.e("获取关注的人列表失败");
+                            }
+                        });
                     }
 
                     @Override

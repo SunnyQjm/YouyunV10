@@ -48,7 +48,9 @@ import static com.sunny.youyun.model.InternetFile.Status.PAUSE;
  * Created by Sunny on 2017/6/25 0025.
  */
 
-public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter> implements UploadRecordContract.View, BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener {
+public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
+        implements UploadRecordContract.View, BaseQuickAdapter.OnItemClickListener,
+        BaseQuickAdapter.OnItemLongClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;

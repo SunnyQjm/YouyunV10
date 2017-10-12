@@ -50,5 +50,10 @@ public class PictureFragment extends BaseFileManagerFragment<PicturePresenter> i
     protected PicturePresenter onCreatePresenter() {
         return new PicturePresenter(this);
     }
+
+    @Override
+    public void allDataLoadFinish() {
+
+    }
 }
 
