@@ -99,6 +99,19 @@ public class ApiInfo {
             GET_OTHER_USER_PUBLIC_FILES_USER_ID = "userId", GET_OTHER_USER_PUBLIC_FILES_PAGE = "page",
             GET_OTHER_USER_PUBLIC_FILES_SIZE = "size";
 
+    /**
+     * 获取他人给自己文件评论的记录
+     */
+    public static final String GET_COMMENT_LIST_URL = "authc/forum/get/commentList",
+            GET_COMMENT_LIST_PAGE = "page", GET_COMMENT_LIST_SIZE = "size";
+
+
+    /**
+     * 获取他人给自己的点赞列表
+     */
+    public static final String GET_STAR_LIST_URL = "authc/forum/get/starList",
+            GET_STAR_LIST_PAGE = "page", GET_STAR_LIST_SIZE = "size";
+
     ///////////////////////////////////////////////////////////
     ////////FileService
     ///////////////////////////////////////////////////////////

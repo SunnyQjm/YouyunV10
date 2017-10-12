@@ -21,8 +21,6 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
         implements ConcernContract.View, EasyRefreshLayout.OnRefreshListener,
         EasyRefreshLayout.OnLoadListener, BaseQuickAdapter.OnItemClickListener {
 
-    private UserItemAdapter adapter = null;
-    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,33 +29,10 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
     }
 
     @Override
-    protected void onRefreshBegin() {
-        page = 1;
-        refreshLayout.setLoadAble(true);
+    protected void loadData(boolean isRefresh) {
+        mPresenter.getFollowingList(page, isRefresh);
     }
 
-    @Override
-    protected void OnRefreshBeginSync() {
-        //TODO Refresh data here
-        mPresenter.getFollowingList(page, true);
-    }
-
-    @Override
-    protected void OnRefreshFinish() {
-        getFollowingSuccess();
-    }
-
-    @Override
-    protected void onLoadBeginSync() {
-        //TODO Load data here
-        page++;
-        mPresenter.getFollowingList(page, false);
-    }
-
-    @Override
-    protected void onLoadFinish() {
-        getFollowingSuccess();
-    }
     private void init() {
         easyBar.setTitle(getString(R.string.my_concern));
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
@@ -94,12 +69,8 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
 
     @Override
     public void allDataGetFinish() {
-        super.allDataGetFinish(adapter);
-    }
-
-    private void updateAll() {
-        if(adapter != null)
-            adapter.notifyDataSetChanged();
+        System.out.println("allDataGetFinish");
+        super.allDataLoadFinish(adapter);
     }
 
     @Override

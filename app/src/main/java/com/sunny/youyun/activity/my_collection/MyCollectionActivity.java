@@ -15,15 +15,18 @@ import com.sunny.youyun.model.data_item.Collection;
 import com.sunny.youyun.utils.RouterUtils;
 
 @Router(IntentRouter.MyCollectionActivity)
-public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionPresenter> implements MyCollectionContract.View, BaseQuickAdapter.OnItemClickListener {
-
-    private CollectionAdapter adapter;
-    private int page = 1;
+public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionPresenter>
+        implements MyCollectionContract.View, BaseQuickAdapter.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+    }
+
+    @Override
+    protected void loadData(boolean isRefresh) {
+        mPresenter.getCollections(page, isRefresh);
     }
 
     private void init() {
@@ -38,32 +41,6 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
     }
 
     @Override
-    protected void onRefreshBegin() {
-        page = 1;
-        refreshLayout.setLoadAble(true);
-    }
-
-    @Override
-    protected void OnRefreshBeginSync() {
-        mPresenter.getCollections(page, true);
-    }
-
-    @Override
-    protected void OnRefreshFinish() {
-    }
-
-    @Override
-    protected void onLoadBeginSync() {
-        page++;
-        mPresenter.getCollections(page, false);
-    }
-
-    @Override
-    protected void onLoadFinish() {
-
-    }
-
-    @Override
     protected MyCollectionPresenter onCreatePresenter() {
         return new MyCollectionPresenter(this);
     }
@@ -75,12 +52,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
 
     @Override
     public void allDataLoadFinish() {
-        super.allDataGetFinish(adapter);
-    }
-
-    private void updateAll() {
-        if(adapter != null)
-            adapter.notifyDataSetChanged();
+        super.allDataLoadFinish(adapter);
     }
 
     @Override

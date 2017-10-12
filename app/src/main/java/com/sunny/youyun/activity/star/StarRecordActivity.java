@@ -16,6 +16,11 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
         init();
     }
 
+    @Override
+    protected void loadData(boolean isRefresh) {
+
+    }
+
     private void init() {
         easyBar.setTitle(getString(R.string.star_record));
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
@@ -29,31 +34,6 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
 
             }
         });
-
-    }
-
-    @Override
-    protected void onRefreshBegin() {
-
-    }
-
-    @Override
-    protected void OnRefreshBeginSync() {
-
-    }
-
-    @Override
-    protected void OnRefreshFinish() {
-
-    }
-
-    @Override
-    protected void onLoadBeginSync() {
-
-    }
-
-    @Override
-    protected void onLoadFinish() {
 
     }
 
