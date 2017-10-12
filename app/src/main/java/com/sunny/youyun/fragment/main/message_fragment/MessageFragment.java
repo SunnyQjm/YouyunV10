@@ -17,7 +17,7 @@ import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.message_fragment.adapter.MessageAdapter;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
-import com.sunny.youyun.model.data_item.PrivateLetter;
+import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.utils.RouterUtils;
@@ -152,13 +152,15 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (position >= 2) {
-            PrivateLetter letter = (PrivateLetter) adapter.getItem(position);
+            Message letter = (Message) adapter.getItem(position);
             if (letter == null)
                 return;
             MessageManager.getInstance().clearCount(letter.getId());
             Intent intent = new Intent(activity, ChatActivity.class);
-            intent.putExtra(ChatConfig.PARAM_USER_ID, letter.getId());
-            intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, letter.getUsername());
+            if (letter.getUser() != null) {
+                intent.putExtra(ChatConfig.PARAM_USER_ID, letter.getUser().getId());
+                intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, letter.getUser().getUsername());
+            }
             RouterUtils.openForResult(this, intent, 0);
         }
     }

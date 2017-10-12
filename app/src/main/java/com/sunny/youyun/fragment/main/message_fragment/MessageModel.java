@@ -76,7 +76,7 @@ class MessageModel implements MessageContract.Model {
         for (PrivateLetterItem l : privateLetters) {
             mList.add(l);
             MessageManager.getInstance()
-                    .put(l.getId(), l.getMessage());
+                    .put(l.getId(), l);
         }
     }
 

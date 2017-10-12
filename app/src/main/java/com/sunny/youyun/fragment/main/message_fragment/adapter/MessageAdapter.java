@@ -49,9 +49,13 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                 Message message = MessageManager.getInstance().getMessage(messageItem.getId());
                 if (message == null)
                     return;
-                helper.setText(R.id.tv_name, messageItem.getUsername())
-                        .setText(R.id.tv_description, message.getContent())
+                helper.setText(R.id.tv_description, message.getContent())
                         .setText(R.id.tv_date, TimeUtils.returnTime(message.getCreateTime()));
+                if(message.getUser() != null) {
+                    helper.setText(R.id.tv_name, messageItem.getUser().getUsername());
+                    GlideUtils.load(mContext, helper.getView(R.id.img_icon),
+                            messageItem.getUser().getAvatar());
+                }
                 int count = MessageManager.getInstance().getCount(messageItem.getId());
                 DraggableFlagView draggableFlagView = helper.getView(R.id.draggableView);
                 if (count > 0) {
@@ -60,7 +64,7 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                 } else {
                     draggableFlagView.setVisibility(View.INVISIBLE);
                 }
-                GlideUtils.load(mContext, helper.getView(R.id.img_icon), messageItem.getAvatar());
+
                 break;
         }
     }
