@@ -10,16 +10,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <!--&lt;!&ndash; 允许使用transitions &ndash;&gt;-->
-        <!--<item name="android:windowContentTransitions">true</item>-->
-        <!--&lt;!&ndash;是否覆盖执行，其实可以理解成是否同步执行还是顺序执行&ndash;&gt;-->
-        <!--<item name="android:windowAllowEnterTransitionOverlap">true</item>-->
-        <!--<item name="android:windowAllowReturnTransitionOverlap">false</item>-->
-
-        <!--<item name="android:windowExitTransition">@transition/slide_out</item>-->
-        <!--<item name="android:windowEnterAnimation">@transition/slide_in</item>-->
-        <!--<item name="android:windowReenterTransition">@transition/fade</item>-->
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
 </resources>
