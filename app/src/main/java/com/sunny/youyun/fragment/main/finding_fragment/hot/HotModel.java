@@ -1,12 +1,11 @@
 package com.sunny.youyun.fragment.main.finding_fragment.hot;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunExceptionDeal;
-import com.sunny.youyun.model.response_body.BaseResponseBody;
-import com.sunny.youyun.utils.GsonUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,14 +23,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 class HotModel implements HotContract.Model{
     private final HotPresenter mPresenter;
-    private final List<InternetFile> internetFiles = new ArrayList<>();
+    private final List<InternetFile> mList = new ArrayList<>();
     HotModel(HotPresenter hotPresenter) {
         mPresenter = hotPresenter;
     }
 
     @Override
     public List<InternetFile> getDatas() {
-        return internetFiles;
+        return mList;
     }
 
     @Override
@@ -39,29 +38,46 @@ class HotModel implements HotContract.Model{
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .getForumAll(page, ApiInfo.GET_DEFAULT_SIZE, false, true)
+                .map(baseResponseBody -> {
+                    if(baseResponseBody.isSuccess() &&
+                            baseResponseBody.getData() != null){
+                        if(isRefresh)
+                            mList.clear();
+                        Collections.addAll(mList, baseResponseBody.getData());
+                        if(baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE){
+                            return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
+                        }
+                        return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
+                    } else {
+                        return ApiInfo.RESULT_DEAL_TYPE_FAIL;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<InternetFile[]>>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<InternetFile[]> listBaseResponseBody) {
-                        Logger.i(GsonUtil.getInstance().toJson(listBaseResponseBody));
-                        if(listBaseResponseBody.isSuccess()){
-                            InternetFile[] datas = listBaseResponseBody.getData();
-                            //如果是更新操作则先清空数据
-                            if(isRefresh){
-                                internetFiles.clear();
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getDataSuccess();
                             }
-                            Collections.addAll(internetFiles, datas);
-                            if(datas.length < ApiInfo.GET_DEFAULT_SIZE){
+
+                            @Override
+                            public void onLoadFinish() {
                                 mPresenter.allDataLoadFinish();
                             }
-                            mPresenter.getDataSuccess();
-                        }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
                     }
 
                     @Override

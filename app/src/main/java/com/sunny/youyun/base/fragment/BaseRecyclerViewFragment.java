@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sunny.youyun.R;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
 import com.sunny.youyun.views.easy_refresh.CustomLinerLayoutManager;
@@ -32,9 +33,9 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Sunny on 2017/8/29 0029.
  */
 
-public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends MVPBaseFragment<P> implements EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener {
+public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends MVPBaseFragment<P>
+        implements EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener {
 
-    protected View view = null;
     @BindView(R.id.recyclerView)
     protected RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
@@ -51,6 +52,10 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
 
     Unbinder unbinder;
 
+    protected View view = null;
+    protected BaseQuickAdapter adapter = null;
+    protected int page = 1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,12 +63,62 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
             view = inflater.inflate(R.layout.base_recycler_view_layout, container, false);
             unbinder = ButterKnife.bind(this, view);
             initView();
+            init();
         } else {
             unbinder = ButterKnife.bind(this, view);
         }
-
+        isPrepared = true;
         return view;
     }
+
+    protected void loadData() {
+        if (!isVisible || !isPrepared)
+            return;
+        if (isFirst) {
+            loadData(true);
+            isFirst = false;
+        }
+    }
+
+    protected void onRefreshBegin() {
+        if (adapter != null && adapter.getFooterLayout() != null) {
+            adapter.getFooterLayout().setVisibility(View.GONE);
+        }
+//        if(adapter != null)
+//            adapter.removeFooterView(endView);
+        refreshLayout.setLoadAble(true);
+    }
+
+    protected void OnRefreshBeginSync() {
+        loadData(true);
+    }
+
+    protected void onLoadBeginSync() {
+        loadData(false);
+    }
+
+    protected void updateAll() {
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+    }
+
+    public void allDataLoadFinish() {
+        if (endView == null) {
+            endView = LayoutInflater.from(activity)
+                    .inflate(R.layout.easy_refresh_end, null, false);
+            adapter.addFooterView(endView);
+        }
+        if (adapter != null && adapter.getFooterLayout() != null) {
+            adapter.getFooterLayout().setVisibility(View.VISIBLE);
+        }
+
+        //设置不可加载更多
+        refreshLayout.setLoadAble(false);
+        updateAll();
+    }
+    protected abstract void loadData(boolean isRefresh);
+
+    protected abstract void init();
 
 
     /**
@@ -83,14 +138,13 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
         }
     }
 
-    protected abstract void onInvisible();
+    protected void onInvisible(){}
 
     protected void onVisible(){
         //加载数据
         loadData();
     }
 
-    protected abstract void loadData();
 
     private void initView() {
         linerLayoutManager = new CustomLinerLayoutManager(activity);
@@ -134,12 +188,6 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
 
     }
 
-    protected abstract void onRefreshBegin();
-
-    protected abstract void OnRefreshBeginSync();
-
-    protected abstract void OnRefreshFinish();
-
     @Override
     public void onLoad() {
         linerLayoutManager.setScrollAble(false);
@@ -157,7 +205,7 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
                 });
     }
 
-    protected abstract void onLoadBeginSync();
+    protected void OnRefreshFinish(){}
 
-    protected abstract void onLoadFinish();
+    protected void onLoadFinish(){}
 }

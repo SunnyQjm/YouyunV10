@@ -1,6 +1,7 @@
 package com.sunny.youyun.fragment.main.finding_fragment.concern;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
@@ -61,15 +62,24 @@ class ConcernModel implements ConcernContract.Model{
 
                     @Override
                     public void onNext(Integer integer) {
-                        switch (integer){
-                            case ApiInfo.RESULT_DEAL_TYPE_FAIL:
-                                break;
-                            case ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH:
-                                mPresenter.allDataLoadFinish();
-                            case ApiInfo.RESULT_DEAL_TYPE_SUCCESS:
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                System.out.println("success");
                                 mPresenter.getDatasOnlineSuccess();
-                                break;
-                        }
+                            }
+
+                            @Override
+                            public void onLoadFinish() {
+                                System.out.println("load finish");
+                                mPresenter.allDataLoadFinish();
+                            }
+
+                            @Override
+                            public void onFail() {
+                                System.out.println("fail");
+                            }
+                        });
                     }
 
                     @Override

@@ -1,11 +1,7 @@
 package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_info.adapter.DynamicAdapter;
@@ -17,9 +13,6 @@ import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
 
 public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> implements DynamicContract.View {
 
-    private DynamicAdapter adapter;
-    private int page = 1;
-    private View view = null;
     private boolean isSelf = true;
 
     private void setSelf(boolean isSelf) {
@@ -42,52 +35,21 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        if (view == null) {
-            view = super.onCreateView(inflater, container, savedInstanceState);
-            initView();
-        } else {
-            super.onCreateView(inflater, container, savedInstanceState);
-        }
-        isPrepared = true;
-        return view;
-    }
-
-    @Override
-    protected void onInvisible() {
-
-    }
-
-    @Override
-    protected void loadData() {
-        if (!isVisible || !isPrepared)
-            return;
-        if (isFirst) {
-            loadData(true);
-            isFirst = false;
-        }
-    }
-
-    private void loadData(boolean isRefresh) {
-        System.out.println("load data : " + isRefresh);
-        if (isRefresh) {
+    protected void loadData(boolean isRefresh) {
+        if (isRefresh)
             page = 1;
-            if (endView != null)
-                endView.setVisibility(View.INVISIBLE);
-            refreshLayout.setLoadAble(true);
-        } else {
+        else
             page++;
-        }
         if (isSelf) {
-            mPresenter.getDynamic(page, true);
+            mPresenter.getDynamic(page, isRefresh);
         } else {
             refreshLayout.setLoadAble(false);
         }
     }
 
-    private void initView() {
+    @Override
+    protected void init() {
         adapter = new DynamicAdapter(mPresenter.getData());
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
@@ -104,55 +66,14 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         return new DynamicPresenter(this);
     }
 
-
-    @Override
-    protected void onRefreshBegin() {
-    }
-
-    @Override
-    protected void OnRefreshBeginSync() {
-        loadData(true);
-    }
-
-    @Override
-    protected void OnRefreshFinish() {
-        getDynamicSuccess();
-    }
-
-    @Override
-    protected void onLoadBeginSync() {
-        loadData(false);
-    }
-
-    @Override
-    protected void onLoadFinish() {
-        getDynamicSuccess();
-    }
-
     @Override
     public void getDynamicSuccess() {
         updateAll();
-        if(adapter.getData().size() == 0)
-            refreshLayout.setLoadAble(false);
     }
 
     @Override
     public void allDataGetFinish() {
-        if (endView == null) {
-            endView = LayoutInflater.from(activity)
-                    .inflate(R.layout.easy_refresh_end, null, false);
-            if (adapter != null) {
-                adapter.addFooterView(endView);
-            }
-        } else
-            endView.setVisibility(View.VISIBLE);
-        //设置不可加载更多
-        refreshLayout.setLoadAble(false);
+        allDataLoadFinish();
     }
 
-    private void updateAll() {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
-    }
 }

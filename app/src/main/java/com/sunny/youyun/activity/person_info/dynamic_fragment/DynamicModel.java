@@ -1,8 +1,7 @@
 package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
-import android.os.Handler;
-
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.data_item.Dynamic;
@@ -24,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class DynamicModel implements DynamicContract.Model {
     private final DynamicPresenter mPresenter;
     private final List<Dynamic> mList = new ArrayList<>();
-    private final Handler handler = new Handler();
 
     DynamicModel(DynamicPresenter uploadRecordPresenter) {
         mPresenter = uploadRecordPresenter;
@@ -38,29 +36,42 @@ class DynamicModel implements DynamicContract.Model {
                 .getUserDynamic(page, size)
                 .map(baseResponseBody -> {
                     if (baseResponseBody.isSuccess()) {
-                        if (isRefresh)
+                        if (isRefresh) {
                             mList.clear();
+                        }
                         Collections.addAll(mList, baseResponseBody.getData());
                         if (baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE)
-                            handler.post(mPresenter::allDataGetFinish);
-                        return true;
+                            return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
+                        return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
                     }
-                    return false;
+                    return ApiInfo.RESULT_DEAL_TYPE_FAIL;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Boolean>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(Boolean isSuccess) {
-                        System.out.println("isSuccess: " + isSuccess);
-                        if (isSuccess) {
-                            mPresenter.getDynamicSuccess();
-                        }
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getDynamicSuccess();
+                            }
+
+                            @Override
+                            public void onLoadFinish() {
+                                mPresenter.allDataGetFinish();
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
                     }
 
                     @Override

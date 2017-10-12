@@ -36,7 +36,7 @@ class OtherPublicShareFileModel implements OtherPublicShareFileContract.Model {
     }
 
     @Override
-    public void getFiles(int userId, int page, int size, boolean b) {
+    public void getFiles(int userId, int page, int size, boolean isRefresh) {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getOtherPublicFiles(userId, page, size)
@@ -44,7 +44,7 @@ class OtherPublicShareFileModel implements OtherPublicShareFileContract.Model {
                     Logger.i("获取他人文件Map，thread：" + Thread.currentThread().getName());
                     if(internetFileBaseResponseBody.isSuccess() &&
                             internetFileBaseResponseBody.getData() != null){
-                        if(b)
+                        if(isRefresh)
                             mList.clear();
                         Collections.addAll(mList, internetFileBaseResponseBody.getData());
                         if (internetFileBaseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE)

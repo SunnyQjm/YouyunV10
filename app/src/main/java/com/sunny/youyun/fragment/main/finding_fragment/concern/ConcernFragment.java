@@ -1,7 +1,6 @@
 package com.sunny.youyun.fragment.main.finding_fragment.concern;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
@@ -47,13 +46,4 @@ public class ConcernFragment extends FindingBaseFragment<ConcernPresenter>
         updateAll();
     }
 
-    @Override
-    protected void OnRefreshFinish() {
-
-    }
-
-    @Override
-    protected void onLoadFinish() {
-
-    }
 }
