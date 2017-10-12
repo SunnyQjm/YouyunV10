@@ -6,8 +6,10 @@ import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.data_item.Collection;
+import com.sunny.youyun.model.data_item.CommentRecord;
 import com.sunny.youyun.model.data_item.ConcernItem;
 import com.sunny.youyun.model.data_item.Dynamic;
+import com.sunny.youyun.model.data_item.StarRecord;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.model.response_body.LoginResponseBody;
 import com.sunny.youyun.model.response_body.RegisterResponseBody;
@@ -163,11 +165,37 @@ public interface UserServices {
             @Query(ApiInfo.GET_USER_DYNAMIC_TYPE) int type
     );
 
+    /**
+     * 获取其他用户公开分享分享的文件列表
+     * @param userId
+     * @param page
+     * @param size
+     * @return
+     */
     @GET(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_URL)
     Observable<BaseResponseBody<InternetFile[]>> getOtherPublicFiles(
             @Query(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_USER_ID) int userId,
             @Query(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_PAGE) int page,
             @Query(ApiInfo.GET_OTHER_USER_PUBLIC_FILES_SIZE) int size
+    );
+
+
+    /**
+     * 获取他人给自己的点赞列表
+     * @param page
+     * @param size
+     * @return
+     */
+    @GET(ApiInfo.GET_STAR_LIST_URL)
+    Observable<BaseResponseBody<StarRecord[]>> getStarRecord(
+            @Query(ApiInfo.GET_STAR_LIST_PAGE) int page,
+            @Query(ApiInfo.GET_STAR_LIST_SIZE) int size
+    );
+
+    @GET(ApiInfo.GET_COMMENT_LIST_URL)
+    Observable<BaseResponseBody<CommentRecord[]>> getCommentRecord(
+            @Query(ApiInfo.GET_COMMENT_LIST_PAGE) int page,
+            @Query(ApiInfo.GET_COMMENT_LIST_SIZE) int size
     );
 
 }

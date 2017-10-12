@@ -6,7 +6,9 @@ import android.view.View;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.star.adapter.StarRecordAdapter;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
+import com.sunny.youyun.base.entity.MyDecoration;
 import com.sunny.youyun.views.EasyBar;
 
 @Router(IntentRouter.StarRecordActivity)
@@ -21,7 +23,7 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
 
     @Override
     protected void loadData(boolean isRefresh) {
-
+        mPresenter.getStarRecord(page, isRefresh);
     }
 
     private void init() {
@@ -37,11 +39,20 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
 
             }
         });
-
+        adapter = new StarRecordAdapter(mPresenter.getDatas());
+        recyclerView.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
+        adapter.bindToRecyclerView(recyclerView);
+        adapter.setEmptyView(R.layout.recycler_empty_view);
+        loadData(true);
     }
 
     @Override
     protected StarRecordPresenter onCreatePresenter() {
         return new StarRecordPresenter(this);
+    }
+
+    @Override
+    public void getStarRecordSuccess() {
+        updateAll();
     }
 }

@@ -23,8 +23,6 @@ public class FindingItemAdapter extends BaseQuickAdapter<InternetFile, BaseViewH
 
     @Override
     protected void convert(BaseViewHolder helper, InternetFile item) {
-//        if(item == null)
-//            return;
         helper.setText(R.id.tv_file_name, item.getName())
                 .setText(R.id.tv_file_description, item.getDescription())
                 .setText(R.id.rt_view_count, String.valueOf(item.getLookNum()))

@@ -68,12 +68,6 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
     }
 
     @Override
-    public void allDataLoadFinish() {
-        System.out.println("allDataLoadFinish");
-        super.allDataLoadFinish(adapter);
-    }
-
-    @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         ConcernItem concernItem = (ConcernItem) adapter.getItem(position);
         if(concernItem == null || concernItem.getUser() == null)

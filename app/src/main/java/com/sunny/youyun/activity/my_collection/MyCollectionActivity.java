@@ -51,11 +51,6 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
     }
 
     @Override
-    public void allDataLoadFinish() {
-        super.allDataLoadFinish(adapter);
-    }
-
-    @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Collection collection = (Collection) adapter.getItem(position);
         if(collection == null || collection.getFile() == null)

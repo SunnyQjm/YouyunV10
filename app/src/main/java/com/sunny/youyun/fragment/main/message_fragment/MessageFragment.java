@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.chat.ChatActivity;
 import com.sunny.youyun.activity.chat.config.ChatConfig;
@@ -151,6 +152,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
         if (position >= 2) {
             Message letter = (Message) adapter.getItem(position);
             if (letter == null)
@@ -162,6 +164,10 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
                 intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, letter.getUser().getUsername());
             }
             RouterUtils.openForResult(this, intent, 0);
+        } else if (position == 0){  //赞
+            RouterUtils.open(activity, IntentRouter.StarRecordActivity);
+        } else if(position == 1){   //评论
+            //TODO go to comment record activity
         }
     }
 

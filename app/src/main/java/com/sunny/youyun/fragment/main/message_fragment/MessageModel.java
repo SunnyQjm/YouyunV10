@@ -1,12 +1,13 @@
 package com.sunny.youyun.fragment.main.message_fragment;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.MessageManager;
-import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,23 +40,42 @@ class MessageModel implements MessageContract.Model {
         APIManager.getInstance()
                 .getChatServices(GsonConverterFactory.create())
                 .getPrivateLetterList(page, size)
+                .map(baseResponseBody -> {
+                    if (baseResponseBody.isSuccess() &&
+                            baseResponseBody.getData() != null) {
+                        if (isRefresh)
+                            remove();
+                        addAll(baseResponseBody.getData());
+                        return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
+                    }
+                    return ApiInfo.RESULT_DEAL_TYPE_FAIL;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<PrivateLetterItem[]>>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<PrivateLetterItem[]> privateLetterBaseResponseBody) {
-                        if (privateLetterBaseResponseBody.isSuccess() &&
-                                privateLetterBaseResponseBody.getData() != null) {
-                            if (isRefresh)
-                                remove();
-                            addAll(privateLetterBaseResponseBody.getData());
-                            mPresenter.getPrivateLetterListSuccess();
-                        }
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getPrivateLetterListSuccess();
+                            }
+
+                            @Override
+                            public void onLoadFinish() {
+
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
                     }
 
                     @Override

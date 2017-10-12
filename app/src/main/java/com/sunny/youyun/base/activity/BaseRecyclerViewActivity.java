@@ -132,8 +132,8 @@ public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends 
                 });
     }
 
-
-    public void allDataLoadFinish(BaseQuickAdapter adapter) {
+    @Override
+    public void allDataLoadFinish() {
         if (endView == null) {
             endView = LayoutInflater.from(this)
                     .inflate(R.layout.easy_refresh_end, null, false);
