@@ -1,5 +1,6 @@
 package com.sunny.youyun.fragment.main.finding_fragment.concern;
 
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.InternetFile;
 
 import java.io.IOException;
@@ -23,5 +24,20 @@ class ConcernPresenter extends ConcernContract.Presenter{
     @Override
     List<InternetFile> getDatas() {
         return mModel.getDatas();
+    }
+
+    @Override
+    void getConcernPeopleShares(int page, boolean isRefresh) {
+        mModel.getConcernPeopleShares(page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
+    }
+
+    @Override
+    void getDatasOnlineSuccess() {
+        mView.getDatasOnlineSuccess();
+    }
+
+    @Override
+    void allDataLoadFinish() {
+        mView.allDataLoadFinish();
     }
 }

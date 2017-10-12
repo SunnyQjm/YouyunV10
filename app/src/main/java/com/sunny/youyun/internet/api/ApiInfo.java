@@ -94,6 +94,7 @@ public class ApiInfo {
             MODIFY_USER_INFO_SIGNATURE = "signature", MODIFY_USER_INFO_OLD_PASSWORD = "oldpassword",
             MODIFY_USER_INFO_NEW_PASSWORD = "newpassword";
 
+    //获取他人公开上传的文件列表
     public static final String GET_OTHER_USER_PUBLIC_FILES_URL = "file/otherPubFiles",
             GET_OTHER_USER_PUBLIC_FILES_USER_ID = "userId", GET_OTHER_USER_PUBLIC_FILES_PAGE = "page",
             GET_OTHER_USER_PUBLIC_FILES_SIZE = "size";
@@ -153,6 +154,10 @@ public class ApiInfo {
     public static final String DELETE_FILE_OR_DIRECTORY_URL = "authc/file/delete",
             DELETE_FILE_OR_DIRECTORY_ID = "selfId";
 
+    //获取关注的人分享的文件（动态）
+    public static final String GET_CONCERN_PEOPLE_SHARES_URL = "authc/forum/followUserDynamic",
+            GET_CONCERN_PEOPLE_SHARES_PAGE = "page", GET_CONCERN_PEOPLE_SHARES_SIZE = "size";
+
     ////////////////////////////////////////////////////////////////////////////
     /////////////TokenService
     ///////////////////////////////////////////////////////////////////////////
@@ -182,4 +187,13 @@ public class ApiInfo {
     //////////////////////////////////////////////////////////////////////////
 
     public static final String MEDIA_TYPE_JSON = "Application/json; charset=utf-8";
+
+
+
+    /////////////////////////////////////////////////////////////////////////
+    ///////////Result deal type
+    ////////////////////////////////////////////////////////////////////////
+    public static final int RESULT_DEAL_TYPE_FAIL = -1;
+    public static final int RESULT_DEAL_TYPE_SUCCESS = 1;
+    public static final int RESULT_DEAL_TYPE_LOAD_FINISH = 2;
 }

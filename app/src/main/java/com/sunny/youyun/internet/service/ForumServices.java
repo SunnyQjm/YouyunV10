@@ -62,8 +62,23 @@ public interface ForumServices {
             @Query(ApiInfo.STAR_FILE_ID) int fileId
     );
 
+    /**
+     * 搜索
+     * @param str
+     * @return
+     */
     @GET(ApiInfo.SEARCH_URL)
     Observable<BaseResponseBody<SearchData>> search(
             @Query(ApiInfo.SEARCH_STR) String str
+    );
+
+    /**
+     * 获取关注的人公开分享的文件
+     * @return
+     */
+    @GET(ApiInfo.GET_CONCERN_PEOPLE_SHARES_URL)
+    Observable<BaseResponseBody<InternetFile[]>> getConcernPeopleShares(
+            @Query(ApiInfo.GET_CONCERN_PEOPLE_SHARES_PAGE) int page,
+            @Query(ApiInfo.GET_CONCERN_PEOPLE_SHARES_SIZE) int size
     );
 }

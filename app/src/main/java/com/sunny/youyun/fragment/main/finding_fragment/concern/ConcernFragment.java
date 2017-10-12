@@ -1,17 +1,14 @@
 package com.sunny.youyun.fragment.main.finding_fragment.concern;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
+import com.sunny.youyun.fragment.main.finding_fragment.base.FindingBaseFragment;
 
-public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> implements ConcernContract.View {
-
-    private View view = null;
-    private FindingItemAdapter adapter;
+public class ConcernFragment extends FindingBaseFragment<ConcernPresenter>
+        implements ConcernContract.View, BaseQuickAdapter.OnItemClickListener {
 
     // TODO: Rename and change types and number of parameters
     public static ConcernFragment newInstance() {
@@ -26,38 +23,28 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
         return new ConcernPresenter(this);
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-            view = super.onCreateView(inflater, container, savedInstanceState);
-            init();
-        return view;
+    protected void loadData(boolean isRefresh) {
+        if(isRefresh){
+            page = 1;
+        } else {
+            page++;
+        }
+        mPresenter.getConcernPeopleShares(page, isRefresh);
     }
 
     @Override
-    protected void onInvisible() {
-
-    }
-
-    @Override
-    protected void loadData() {
-
-    }
-
-    private void init() {
+    protected void init() {
         adapter = new FindingItemAdapter(mPresenter.getDatas());
         adapter.bindToRecyclerView(recyclerView);
+        adapter.setOnItemClickListener(this);
     }
 
-    @Override
-    protected void onRefreshBegin() {
-
-    }
 
     @Override
-    protected void OnRefreshBeginSync() {
-
+    public void getDatasOnlineSuccess() {
+        updateAll();
     }
 
     @Override
@@ -66,13 +53,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter> 
     }
 
     @Override
-    protected void onLoadBeginSync() {
-
-    }
-
-    @Override
     protected void onLoadFinish() {
 
     }
-
 }
