@@ -154,6 +154,7 @@ public class APIManager {
             if (result.getCode() == ApiInfo.STATUS_CODE_NOT_LOGIN &&
                     YouyunAPI.isIsLogin() && YouyunAPI.getLoginToken() != null &&
                     !YouyunAPI.getLoginToken().equals("")) {
+                System.out.println("update Token");
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put(ApiInfo.UPDATE_COOKIE_BY_TOKEN_TOKEN, YouyunAPI.getLoginToken());
@@ -190,7 +191,6 @@ public class APIManager {
                 System.out.println("抛出LoginToken失效异常");
                 throw new LoginTokenInvalidException("LoginToken Invalid!!");
             }
-
 //            //对下载文件的Response拦截处理
 //            if (request.url().toString().startsWith(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD)) {
 //                System.out.println("返回带下载进度监听的responseBody");

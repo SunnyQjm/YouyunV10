@@ -24,7 +24,8 @@ public enum YouyunExceptionDeal {
     private YouyunTipDialog dialog = null;
 
     public void deal(BaseView baseView, Throwable throwable) {
-        if (baseView == null || !(baseView instanceof AppCompatActivity || baseView instanceof Fragment)) {
+        if (baseView == null ||
+                !(baseView instanceof AppCompatActivity || baseView instanceof Fragment)) {
             Logger.e("错误处理出错：baseView not instanceof AppCompatActivity OR Fragment");
             return;
         }
@@ -32,7 +33,6 @@ public enum YouyunExceptionDeal {
             deal((AppCompatActivity) baseView, throwable);
             return;
         }
-
         deal((Fragment)baseView, throwable);
     }
 
@@ -55,11 +55,6 @@ public enum YouyunExceptionDeal {
         //登陆失效，需要重新登录
         if (e instanceof LoginTokenInvalidException) {
             showReLogin(fragment);
-//            switch (YouyunAPI.getLoginMode()){
-//                case YouyunAPI.LOGIN_MODE_NORMAL:
-//                    showReLogin(fragment);
-//                    break;
-//            }
         }
     }
 

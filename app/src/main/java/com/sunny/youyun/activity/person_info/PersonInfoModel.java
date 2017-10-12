@@ -39,7 +39,8 @@ class PersonInfoModel implements PersonInfoContract.Model {
 
                     @Override
                     public void onNext(BaseResponseBody<GetUserInfoResult> getUserInfoResultBaseResponseBody) {
-                        if(getUserInfoResultBaseResponseBody.isSuccess()){
+                        if(getUserInfoResultBaseResponseBody.isSuccess() &&
+                                getUserInfoResultBaseResponseBody.getData() != null){
                             mPresenter.getUserInfoSuccess(getUserInfoResultBaseResponseBody.getData());
                         }
                     }

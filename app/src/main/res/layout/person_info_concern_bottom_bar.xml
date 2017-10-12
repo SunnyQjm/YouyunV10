@@ -6,6 +6,7 @@
     android:layout_gravity="bottom"
     android:background="@color/white"
     android:orientation="horizontal"
+    app:layout_behavior="com.sunny.youyun.views.behavior.MyBottomBarBehavior"
     android:id="@+id/person_info_bottom_bar"
     >
 
