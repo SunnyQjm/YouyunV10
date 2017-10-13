@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_file_manager.person_file_list;
+package com.sunny.youyun.activity.person_file_manager.person_file_type;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.YouyunResultDeal;
@@ -21,11 +21,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Sunny on 2017/9/25 0025.
  */
 
-class PersonFileListModel implements PersonFileListContract.Model {
-    private final PersonFileListPresenter mPresenter;
+class PersonFileListTypeModel implements PersonFileListTypeContract.Model {
+    private final PersonFileListTypePresenter mPresenter;
     private final List<MultiItemEntity> mList = new ArrayList<>();
 
-    PersonFileListModel(PersonFileListPresenter personFileListPresenter) {
+    PersonFileListTypeModel(PersonFileListTypePresenter personFileListPresenter) {
         mPresenter = personFileListPresenter;
     }
 
@@ -40,11 +40,14 @@ class PersonFileListModel implements PersonFileListContract.Model {
                 .getUserService(GsonConverterFactory.create())
                 .getUserFileByType(MIME, page, size)
                 .map(baseResponseBody -> {
-                    if (baseResponseBody.isSuccess()) {
+                    if (baseResponseBody.isSuccess() && baseResponseBody.getData() != null) {
                         if (isRefresh) {
                             mList.clear();
                         }
                         Collections.addAll(mList, baseResponseBody.getData());
+                        if(baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE){
+                            return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
+                        }
                         return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
                     } else {
                         Logger.e("根据类型获取文件失败: " + baseResponseBody.getMsg());
@@ -69,7 +72,7 @@ class PersonFileListModel implements PersonFileListContract.Model {
 
                             @Override
                             public void onLoadFinish() {
-
+                                mPresenter.allDataLoadFinish();
                             }
 
                             @Override
@@ -90,10 +93,5 @@ class PersonFileListModel implements PersonFileListContract.Model {
 
                     }
                 });
-    }
-
-    @Override
-    public void getFileByPath(String parentId) {
-
     }
 }

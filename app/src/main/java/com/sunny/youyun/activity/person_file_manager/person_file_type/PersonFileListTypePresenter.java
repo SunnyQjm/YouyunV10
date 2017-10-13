@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.person_file_manager.person_file_list;
+package com.sunny.youyun.activity.person_file_manager.person_file_type;
 
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.ApiInfo;
@@ -10,10 +10,10 @@ import java.util.List;
  * Created by Sunny on 2017/9/25 0025.
  */
 
-class PersonFileListPresenter extends PersonFileListContract.Presenter{
-    PersonFileListPresenter(PersonFileListActivity personFileListActivity) {
+class PersonFileListTypePresenter extends PersonFileListTypeContract.Presenter{
+    PersonFileListTypePresenter(PersonFileListTypeActivity personFileListActivity) {
         mView = personFileListActivity;
-        mModel = new PersonFileListModel(this);
+        mModel = new PersonFileListTypeModel(this);
     }
 
     @Override
@@ -32,17 +32,7 @@ class PersonFileListPresenter extends PersonFileListContract.Presenter{
     }
 
     @Override
-    void getFileByPathSuccess() {
-        mView.getFileByPathSuccess();
-    }
-
-    @Override
     void getFileByType(String MIME, int page, boolean isRefresh) {
         mModel.getFileByType(MIME, page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
-    }
-
-    @Override
-    void getFileByPath(String parentId) {
-        mModel.getFileByPath(parentId);
     }
 }

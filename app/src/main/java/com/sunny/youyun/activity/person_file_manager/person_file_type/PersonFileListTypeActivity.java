@@ -1,7 +1,6 @@
-package com.sunny.youyun.activity.person_file_manager.person_file_list;
+package com.sunny.youyun.activity.person_file_manager.person_file_type;
 
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
@@ -9,6 +8,7 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_file_manager.adapter.FileAdapter;
 import com.sunny.youyun.activity.person_file_manager.config.DisplayTypeConfig;
+import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.model.InternetFile;
@@ -25,13 +25,12 @@ import static com.sunny.youyun.activity.person_file_manager.config.DisplayTypeCo
 import static com.sunny.youyun.activity.person_file_manager.config.DisplayTypeConfig.TYPE_DIVIDE_VIDEO;
 import static com.sunny.youyun.activity.person_file_manager.config.DisplayTypeConfig.TYPE_DIVIDE_ZIP;
 
-@Router(value = {IntentRouter.PersonFileListActivity + "/:type"},
-        intParams = "type", stringParams = "parentId")
-public class PersonFileListActivity extends BaseRecyclerViewActivity<PersonFileListPresenter>
-        implements PersonFileListContract.View, BaseQuickAdapter.OnItemClickListener {
+@Router(value = {IntentRouter.PersonFileListActivity + "/:type"}, intParams = "type")
+public class PersonFileListTypeActivity extends BaseRecyclerViewActivity<PersonFileListTypePresenter>
+        implements PersonFileListTypeContract.View, BaseQuickAdapter.OnItemClickListener {
 
     private int type = TYPE_DIVIDE_APPLICATION;
-    private String parentId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,61 +47,47 @@ public class PersonFileListActivity extends BaseRecyclerViewActivity<PersonFileL
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         adapter.setOnItemClickListener(this);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
+                RecyclerViewDividerItem.VERTICAL));
         type = getIntent().getIntExtra("type", TYPE_DIVIDE_APPLICATION);
-        parentId = getIntent().getStringExtra("parentId");
-        if(type > 10){
-            refreshLayout.setLoadAble(false);
-            mPresenter.getFileByPath(parentId);
-        } else {
-            updateTitle(type);
-            mPresenter.getFileByType(DisplayTypeConfig.getMIMEByType(type), page, true);
-        }
+        updateTitle(type);
+        mPresenter.getFileByType(DisplayTypeConfig.getMIMEByType(type), page, true);
     }
 
     private void updateTitle(int type) {
         String title;
-        switch (type){
+        switch (type) {
             case TYPE_DIVIDE_APPLICATION:
-                title =  getString(R.string.install_package);
+                title = getString(R.string.install_package);
                 break;
             case TYPE_DIVIDE_ZIP:
-                title =  getString(R.string.compression_pack);
+                title = getString(R.string.compression_pack);
                 break;
             case TYPE_DIVIDE_VIDEO:
-                title =  getString(R.string.vedio);
+                title = getString(R.string.vedio);
                 break;
             case TYPE_DIVIDE_MUSIC:
-                title =  getString(R.string.music);
+                title = getString(R.string.music);
                 break;
             case TYPE_DIVIDE_PICTURE:
-                title =  getString(R.string.picture);
+                title = getString(R.string.picture);
                 break;
             case TYPE_DIVIDE_DOCUMENT:
-                title =  getString(R.string.document);
+                title = getString(R.string.document);
                 break;
             case TYPE_DIVIDE_HTML:
-                title =  getString(R.string.web_page);
+                title = getString(R.string.web_page);
                 break;
             case TYPE_DIVIDE_OTHER:
             default:
-                title =  getString(R.string.other);
+                title = getString(R.string.other);
         }
         easyBar.setTitle(title);
     }
 
     @Override
-    protected void OnRefreshBeginSync() {
-        if(type < 10){
-            super.OnRefreshBeginSync();
-        } else {
-            mPresenter.getFileByPath(parentId);
-        }
-    }
-
-    @Override
-    protected PersonFileListPresenter onCreatePresenter() {
-        return new PersonFileListPresenter(this);
+    protected PersonFileListTypePresenter onCreatePresenter() {
+        return new PersonFileListTypePresenter(this);
     }
 
     @Override
@@ -110,29 +95,18 @@ public class PersonFileListActivity extends BaseRecyclerViewActivity<PersonFileL
         updateAll();
     }
 
-
-    @Override
-    public void getFileByPathSuccess() {
-        updateAll();
-    }
-
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        //全路径查看
-        if(type > 10){
-
-        } else {    //分类查看
-            if(adapter.getItem(position) == null || !(adapter.getItem(position) instanceof InternetFile)) {
+            if (adapter.getItem(position) == null || !(adapter.getItem(position) instanceof InternetFile)) {
                 return;
             }
             InternetFile internetFile = (InternetFile) adapter.getItem(position);
-            if(internetFile == null)
+            if (internetFile == null)
                 return;
             internetFile = internetFile.copy();
             String uuid = UUIDUtil.getUUID();
             ObjectPool.getInstance()
                     .put(uuid, internetFile);
             RouterUtils.open(this, IntentRouter.FileDetailOnlineActivity, uuid);
-        }
     }
 }

@@ -49,7 +49,9 @@
                 <data android:scheme="youyun" /> <!-- 改成自己的scheme -->
             </intent-filter>
         </activity>
-        <activity android:name=".activity.file_manager.FileManagerActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.file_manager.FileManagerActivity" />
 
         <receiver
             android:name=".jpush.MyJPushReceiver"
@@ -79,6 +81,7 @@
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
+            android:theme="@style/MyActivityTheme"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -101,10 +104,10 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activity.TencentTest" />
         <activity
+            android:theme="@style/MyActivityTheme"
             android:name=".activity.main.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.welcome.WelcomeActivity"
             android:theme="@style/WelcomeTheme">
@@ -114,19 +117,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.login.LoginActivity" />
-        <activity android:name=".activity.register.RegisterActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.login.LoginActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.register.RegisterActivity" />
         <activity
             android:name=".activity.download.DownloadActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".wifidirect.activity.single_trans.main.SingleTransMainActivity" />
-        <activity android:name=".activity.scan.ScanActivity" />
-        <activity android:name=".wifidirect.activity.single_trans.trans.TransActivity" />
-        <activity android:name=".wifidirect.activity.single_trans.send.SenderActivity" />
-        <activity android:name=".wifidirect.activity.single_trans.receiver.ReceiverActivity" />
-        <activity android:name=".activity.upload_setting.UploadSettingActivity" />
-        <activity android:name=".activity.file_detail_online.FileDetailOnlineActivity" />
-        <activity android:name=".activity.file_detail_off_line.FileDetailOffLineActivity" />
+            android:theme="@style/MyActivityTheme"
+            />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".wifidirect.activity.single_trans.main.SingleTransMainActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.scan.ScanActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".wifidirect.activity.single_trans.trans.TransActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".wifidirect.activity.single_trans.send.SenderActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".wifidirect.activity.single_trans.receiver.ReceiverActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.upload_setting.UploadSettingActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.file_detail_online.FileDetailOnlineActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.file_detail_off_line.FileDetailOffLineActivity" />
 
         <service android:name=".internet.download.FileDownloadService" />
 
@@ -145,23 +169,51 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.forget_pass.ForgetPassActivity" />
-        <activity android:name=".activity.decim.DcimActivity" />
-        <activity android:name=".activity.clip.ClipImageActivity" />
-        <activity android:name=".wifidirect.activity.record.WifiDirectRecordActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.forget_pass.ForgetPassActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.decim.DcimActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.clip.ClipImageActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".wifidirect.activity.record.WifiDirectRecordActivity" />
         <activity
             android:name=".activity.person_info.PersonInfoActivity"
             android:theme="@style/FullToStatusBarTheme" />
-        <activity android:name=".activity.setting.SettingActivity" />
-        <activity android:name=".activity.about_youyun.AboutYouyunActivity" />
-        <activity android:name=".activity.concern.ConcernActivity" />
-        <activity android:name=".activity.person_file_manager.person_file_manager_index.PersonFileManagerActivity" />
-        <activity android:name=".activity.my_collection.MyCollectionActivity" />
-        <activity android:name=".activity.person_file_manager.person_file_list.PersonFileListActivity" />
-        <activity android:name=".activity.person_setting.PersonSettingActivity" />
-        <activity android:name=".activity.chat.ChatActivity" />
-        <activity android:name=".activity.star.StarRecordActivity" />
-        <activity android:name=".activity.comment.CommentRecordActivity"/>
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.setting.SettingActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.about_youyun.AboutYouyunActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.concern.ConcernActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.person_file_manager.person_file_manager_index.PersonFileManagerActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.my_collection.MyCollectionActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.person_file_manager.person_file_type.PersonFileListTypeActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.person_setting.PersonSettingActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.chat.ChatActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.star.StarRecordActivity" />
+        <activity
+            android:theme="@style/MyActivityTheme"
+            android:name=".activity.comment.CommentRecordActivity"/>
     </application>
 
 </manifest>

@@ -30,7 +30,7 @@ public class IntentRouter {
     public static final String ConcernActivity = Activity + "ConcernActivity";
     public static final String PersonFileManagerActivity = Activity + "PersonFileManagerActivity";
     public static final String MyCollectionActivity = Activity + "MyCollectionActivity";
-    public static final String PersonFileListActivity = Activity + "PersonFileListActivity";
+    public static final String PersonFileListActivity = Activity + "PersonFileListTypeActivity";
     public static final String PersonSettingActivity = Activity + "PersonSettingActivity";
     public static final String ChatActivity = Activity + "ChatActivity";
     public static final String StarRecordActivity = Activity + "StarRecordActivity";

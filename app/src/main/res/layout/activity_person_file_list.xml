@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.person_file_manager.person_file_list.PersonFileListActivity">
+    tools:context=".activity.person_file_manager.person_file_type.PersonFileListTypeActivity">
 
 </android.support.constraint.ConstraintLayout>
