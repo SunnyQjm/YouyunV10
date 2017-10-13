@@ -34,4 +34,5 @@ public class IntentRouter {
     public static final String PersonSettingActivity = Activity + "PersonSettingActivity";
     public static final String ChatActivity = Activity + "ChatActivity";
     public static final String StarRecordActivity = Activity + "StarRecordActivity";
+    public static final String CommentRecordActivity = Activity + "CommentRecordActivity";
 }

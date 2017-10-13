@@ -1,4 +1,4 @@
-package com.sunny.youyun.activity.star;
+package com.sunny.youyun.activity.comment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,14 +6,18 @@ import android.view.View;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.star.adapter.StarRecordAdapter;
+import com.sunny.youyun.activity.comment.adapter.CommentRecordAdapter;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
 import com.sunny.youyun.views.EasyBar;
 
-@Router(IntentRouter.StarRecordActivity)
-public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPresenter>
-        implements StarRecordContract.View {
+/**
+ * Created by Sunny on 2017/10/13 0013.
+ */
+
+@Router(IntentRouter.CommentRecordActivity)
+public class CommentRecordActivity extends BaseRecyclerViewActivity<CommentRecordPresenter>
+        implements CommentRecordContract.View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +25,8 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
         init();
     }
 
-    @Override
-    protected void loadData(boolean isRefresh) {
-        mPresenter.getStarRecord(page, isRefresh);
-    }
-
     private void init() {
-        easyBar.setTitle(getString(R.string.star_record));
+        easyBar.setTitle(getString(R.string.comment_record));
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {
@@ -39,7 +38,7 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
 
             }
         });
-        adapter = new StarRecordAdapter(mPresenter.getDatas());
+        adapter = new CommentRecordAdapter(mPresenter.getDatas());
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
                 RecyclerViewDividerItem.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
@@ -48,12 +47,17 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
     }
 
     @Override
-    protected StarRecordPresenter onCreatePresenter() {
-        return new StarRecordPresenter(this);
+    protected CommentRecordPresenter onCreatePresenter() {
+        return new CommentRecordPresenter(this);
     }
 
     @Override
-    public void getStarRecordSuccess() {
+    protected void loadData(boolean isRefresh) {
+        mPresenter.getCommentRecord(page, isRefresh);
+    }
+
+    @Override
+    public void getCommentRecordSuccess() {
         updateAll();
     }
 }

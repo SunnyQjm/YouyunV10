@@ -161,7 +161,7 @@
         <activity android:name=".activity.person_setting.PersonSettingActivity" />
         <activity android:name=".activity.chat.ChatActivity" />
         <activity android:name=".activity.star.StarRecordActivity" />
-        <activity android:name=".activity.comment.CommentRecordActivity"></activity>
+        <activity android:name=".activity.comment.CommentRecordActivity"/>
     </application>
 
 </manifest>

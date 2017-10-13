@@ -168,6 +168,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
             RouterUtils.open(activity, IntentRouter.StarRecordActivity);
         } else if(position == 1){   //评论
             //TODO go to comment record activity
+            RouterUtils.open(activity, IntentRouter.CommentRecordActivity);
         }
     }
 
