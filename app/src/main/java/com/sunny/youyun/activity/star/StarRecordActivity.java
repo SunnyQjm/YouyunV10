@@ -9,11 +9,14 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.activity.star.adapter.StarRecordAdapter;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivity;
+import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.model.data_item.StarRecord;
+import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 
 @Router(IntentRouter.StarRecordActivity)
 public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPresenter>
-        implements StarRecordContract.View {
+        implements StarRecordContract.View, BaseQuickAdapter.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
                 RecyclerViewDividerItem.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
+        adapter.setOnItemClickListener(this);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         loadData(true);
     }
@@ -55,5 +59,14 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
     @Override
     public void getStarRecordSuccess() {
         updateAll();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        StarRecord starRecord = (StarRecord) adapter.getItem(position);
+        if(starRecord == null || starRecord.getFile() == null)
+            return;
+        RouterUtils.openToFileDetailOnline(this, starRecord.getFileId(),
+                starRecord.getFile().getIdentifyCode());
     }
 }
