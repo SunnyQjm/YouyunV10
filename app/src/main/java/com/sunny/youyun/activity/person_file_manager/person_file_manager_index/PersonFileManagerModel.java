@@ -4,7 +4,9 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.EasyYouyunAPIManager;
 import com.sunny.youyun.model.YouyunExceptionDeal;
+import com.sunny.youyun.model.callback.SimpleListener;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import org.json.JSONException;
@@ -85,51 +87,67 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
 
     @Override
     public void createDirectory(String parentId, String name) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(ApiInfo.CREATE_DIRECTORY_NAME, name);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody body = RequestBody.create(
-                MediaType.parse(ApiInfo.MEDIA_TYPE_JSON), jsonObject.toString()
-        );
-        APIManager.getInstance()
-                .getFileServices(GsonConverterFactory.create())
-                .createDirectory(body)
-                .map(baseResponseBody -> {
-                    if (baseResponseBody.isSuccess()) {
-                        return true;
-                    }
-                    return false;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Boolean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        mPresenter.addSubscription(d);
-                    }
+        EasyYouyunAPIManager.createNewDirectory(parentId, name, new SimpleListener() {
+            @Override
+            public void onSuccess() {
+                mPresenter.createDirectorySuccess();
+                mPresenter.getUploadFilesOnline(null);
+            }
 
-                    @Override
-                    public void onNext(Boolean aBoolean) {
-                        if (aBoolean) {
-                            mPresenter.createDirectorySuccess();
-                            mPresenter.getUploadFilesOnline(null);
-                        }
-                    }
+            @Override
+            public void onFail() {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Logger.e("创建文件夹失败", e);
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onError(Throwable e) {
 
-                    }
-                });
+            }
+        });
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put(ApiInfo.CREATE_DIRECTORY_NAME, name);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        RequestBody body = RequestBody.create(
+//                MediaType.parse(ApiInfo.MEDIA_TYPE_JSON), jsonObject.toString()
+//        );
+//        APIManager.getInstance()
+//                .getFileServices(GsonConverterFactory.create())
+//                .createDirectory(body)
+//                .map(baseResponseBody -> {
+//                    if (baseResponseBody.isSuccess()) {
+//                        return true;
+//                    }
+//                    return false;
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<Boolean>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        mPresenter.addSubscription(d);
+//                    }
+//
+//                    @Override
+//                    public void onNext(Boolean aBoolean) {
+//                        if (aBoolean) {
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                        Logger.e("创建文件夹失败", e);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 
     @Override

@@ -235,6 +235,13 @@ public class EasyBar extends RelativeLayout {
             img_right.setImageResource(res);
     }
 
+    public View getRightIcon(){
+        return img_right;
+    }
+    public View getLeftIcon(){
+        return img_left;
+    }
+
     public interface OnEasyBarClickListener {
         /**
          * 如果是图标模式，则响应左图标点击，否则响应左文字点击

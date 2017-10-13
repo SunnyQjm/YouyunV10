@@ -31,7 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DcimFragment extends MVPBaseFragment<DcimPresenter> implements DcimContract.View, BaseQuickAdapter.OnItemClickListener {
+public class DcimFragment extends MVPBaseFragment<DcimPresenter>
+        implements DcimContract.View, BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.easyBar)
     EasyBar easyBar;

@@ -34,7 +34,8 @@ import org.greenrobot.eventbus.ThreadMode;
 @Router(value = {IntentRouter.ChatActivity + "/:" + ChatConfig.PARAM_USER_ID
         + "/:" + ChatConfig.PARAM_USER_NICKNAME},
         intParams = {ChatConfig.PARAM_USER_ID})
-public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> implements ChatContract.View, View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
+public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
+        implements ChatContract.View, View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
 
     EditText etContent;
     Button btnSend;
@@ -71,6 +72,11 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
         init();
     }
 
+    @Override
+    protected void loadData(boolean isRefresh) {
+        mPresenter.getMessages(userId, page, isRefresh);
+    }
+
     private void init() {
         userId = getIntent().getIntExtra(ChatConfig.PARAM_USER_ID, -1);
         String nickname = getIntent().getStringExtra(ChatConfig.PARAM_USER_NICKNAME);
@@ -99,32 +105,6 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
         adapter.setOnItemClickListener(this);
     }
 
-    @Override
-    protected void onRefreshBegin() {
-    }
-
-    @Override
-    protected void OnRefreshBeginSync() {
-        page++;
-        mPresenter.getMessages(userId, page, false);
-    }
-
-    @Override
-    protected void OnRefreshFinish() {
-
-    }
-
-    @Override
-    protected void onLoadBeginSync() {
-
-    }
-
-    @Override
-    protected void onLoadFinish() {
-
-    }
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiveMessage(JPushEvent jPushEvent) {
         //如果收到对方的聊天信息
@@ -149,9 +129,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
 
     @Override
     public void getMessagesSuccess() {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        updateAll();
     }
 
     @Override
@@ -189,7 +167,6 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
             case R.id.btn_send:
                 mPresenter.sendMessage(userId, etContent.getText().toString());
                 etContent.setText("");
-//                InputMethodUtil.hide(this, etContent);
                 break;
         }
     }
@@ -207,10 +184,5 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter> im
                 break;
 
         }
-    }
-
-    @Override
-    public void allDataLoadFinish() {
-
     }
 }

@@ -138,7 +138,8 @@ public class ApiInfo {
      * }
      */
     public static final String GET_UPLOAD_FILES_URL = "authc/file/dir",
-            GET_UPLOAD_FILES_PARENT_ID = "parentId", GET_UPLOAD_FILES_ROOT_PATH = "/";
+            GET_UPLOAD_FILES_PARENT_ID = "parentId", GET_UPLOAD_FILES_ROOT_PATH = "/",
+            GET_UPLOAD_FILES_PAGE = "page", GET_UPLOAD_FILES_SIZE = "size";
 
 
     public static final String CREATE_DIRECTORY_URL = "authc/file/createDirectory",

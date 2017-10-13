@@ -119,7 +119,6 @@
     <string name="login_first">请先登陆</string>
     <string name="message">消息</string>
     <string name="zan">赞</string>
-    <string name="create_new_directory">新建文件夹</string>
     <string name="not_alow_empty">不允许为空</string>
     <string name="concern_num">关注%1$s%2$d</string>
     <string name="fans_num">粉丝%1$s%2$d</string>
@@ -165,4 +164,7 @@
     <string name="private_letter">私信</string>
     <string name="re_login_tip"><![CDATA[登录失效，请重新登录>.<]]></string>
     <string name="dynamic">动态</string>
+    <string name="root_path">根目录</string>
+    <string name="create_new_directory">新建文件夹</string>
+    <string name="upload_file_to_here">上传文件</string>
 </resources>

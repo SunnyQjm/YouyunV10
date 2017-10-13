@@ -37,6 +37,9 @@ public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> exte
     protected CustomLinerLayoutManager linerLayoutManager;
     protected View endView = null;
 
+    protected BaseQuickAdapter adapter = null;
+    protected int page = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +66,36 @@ public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> exte
         });
     }
 
+    protected abstract void loadData(boolean isRefresh);
+
+    protected void onRefreshBegin() {
+        if (adapter != null && adapter.getFooterLayout() != null) {
+            adapter.getFooterLayout().setVisibility(View.GONE);
+        }
+        refreshLayout.setLoadAble(true);
+    }
+
+    protected void OnRefreshBeginSync() {
+        page = 1;
+        loadData(true);
+    }
+
+    protected void OnRefreshFinish() {
+
+    }
+
+    protected void onLoadBeginSync() {
+        page++;
+        loadData(false);
+    }
+
+    protected void onLoadFinish() {
+
+    }
+
     @Override
     public void onRefresh() {
         this.onRefreshBegin();
-        if (endView != null)
-            endView.setVisibility(View.GONE);
         Observable.create((ObservableOnSubscribe<Integer>) e -> {
             linerLayoutManager.setScrollAble(false);
             this.OnRefreshBeginSync();
@@ -83,11 +111,10 @@ public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> exte
 
     }
 
-    protected abstract void onRefreshBegin();
-
-    protected abstract void OnRefreshBeginSync();
-
-    protected abstract void OnRefreshFinish();
+    protected void updateAll() {
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onLoad() {
@@ -105,20 +132,19 @@ public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> exte
                 });
     }
 
-    protected abstract void onLoadBeginSync();
-
-    protected abstract void onLoadFinish();
-
-    public void allDataGetFinish(BaseQuickAdapter adapter) {
+    @Override
+    public void allDataLoadFinish() {
         if (endView == null) {
             endView = LayoutInflater.from(this)
                     .inflate(R.layout.easy_refresh_end, null, false);
-            if (adapter != null) {
-                adapter.addFooterView(endView);
-            }
-        } else
-            endView.setVisibility(View.VISIBLE);
+            adapter.addFooterView(endView);
+        }
+        if (adapter != null && adapter.getFooterLayout() != null) {
+            adapter.getFooterLayout().setVisibility(View.VISIBLE);
+        }
+
         //设置不可加载更多
         refreshLayout.setLoadAble(false);
+        updateAll();
     }
 }

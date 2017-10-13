@@ -12,6 +12,7 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_file_manager.adapter.ClassificationAdapter;
 import com.sunny.youyun.activity.person_file_manager.adapter.FileAdapter;
+import com.sunny.youyun.activity.person_file_manager.config.ItemTypeConfig;
 import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.entity.MultiItemEntity;
@@ -76,7 +77,8 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
         //初始化文件列表
         initFileList();
 
-        popupwindow = FileManagerOptionsPopupwindow.bind(this, new FileManagerOptionsPopupwindow.OnOptionClickListener() {
+        popupwindow = FileManagerOptionsPopupwindow.bind(this,
+                new FileManagerOptionsPopupwindow.OnOptionClickListener() {
             @Override
             public void onCancelClick() {
 
@@ -121,7 +123,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
                     if (result == null || result.equals(""))
                         showTip(getString(R.string.not_alow_empty));
                     else
-                        mPresenter.createDirectory("/", result);
+                        mPresenter.createDirectory(null, result);
                 }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),
                 "");
     }
@@ -132,7 +134,18 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
         fileAdapter = new FileAdapter(mPresenter.getData());
         fileAdapter.bindToRecyclerView(fileRecyclerView);
         fileAdapter.setOnItemClickListener((adapter, view, position) -> {
-
+            FileItem fileItem = (FileItem) adapter.getItem(position);
+            if (fileItem == null)
+                return;
+            switch (fileItem.getItemType()) {
+                case ItemTypeConfig.TYPE_DIRECT_INFO:
+                    RouterUtils.open(this, IntentRouter.PersonFileListPathActivity,
+                            fileItem.getSelfId(), fileItem.getPathName());
+                    break;
+                case ItemTypeConfig.TYPE_FILE_INFO:
+                    RouterUtils.openToFileDetailOnline(this, fileItem.getFile());
+                    break;
+            }
         });
         fileAdapter.setOnItemLongClickListener((adapter, view, position) -> {
             popupwindow.show(view, position);

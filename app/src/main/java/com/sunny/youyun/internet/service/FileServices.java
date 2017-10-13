@@ -71,7 +71,9 @@ public interface FileServices {
      */
     @GET(ApiInfo.GET_UPLOAD_FILES_URL)
     Observable<BaseResponseBody<FileItem[]>> getUploadFiles(
-            @Query(ApiInfo.GET_UPLOAD_FILES_PARENT_ID) String parentId
+            @Query(ApiInfo.GET_UPLOAD_FILES_PARENT_ID) String parentId,
+            @Query(ApiInfo.GET_UPLOAD_FILES_PAGE) int page,
+            @Query(ApiInfo.GET_UPLOAD_FILES_SIZE) int size
     );
 
     /**
