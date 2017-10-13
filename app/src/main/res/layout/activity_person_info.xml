@@ -141,28 +141,30 @@
 
             </android.support.v7.widget.Toolbar>
             <com.sunny.youyun.views.EasyBar
-                android:id="@+id/easyBar"
-                android:gravity="top"
-                app:layout_collapseMode="pin"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/bar_item_height"
                 android:background="@color/transparent"
+                android:id="@+id/easyBar"
+                android:layout_gravity="top"
+                app:layout_collapseMode="pin"
                 android:layout_marginTop="25dp"
-                app:icon_size="20dp"
+                app:icon_size="@dimen/bar_item_height"
+                app:title_size="17sp"
+                app:icon_margin="17.5dp"
                 app:left_text="@string/back"
                 app:right_text="@string/sure"
                 app:title_color="@color/white"
-                app:title_size="17sp">
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bar_item_height">
+
             </com.sunny.youyun.views.EasyBar>
         </android.support.design.widget.CollapsingToolbarLayout>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/white"
-            app:tabIndicatorColor="@color/application_theme_color"
-            app:tabIndicatorHeight="3dp"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/application_theme_color"
+        app:tabIndicatorHeight="3dp"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/application_theme_color"
             app:tabTextColor="@color/text_gray">

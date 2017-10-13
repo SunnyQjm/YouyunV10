@@ -75,8 +75,8 @@ public class EasyBar extends RelativeLayout {
         img_left_param.addRule(ALIGN_PARENT_LEFT);
         img_left_param.width = icon_size;
         img_left_param.height = icon_size;
-        img_left_param.leftMargin = icon_margin;
         img_left.setLayoutParams(img_left_param);
+        img_left.setPadding(icon_margin, icon_margin, icon_margin, icon_margin);
         addView(img_left, img_left_param);
 
         img_left.setOnClickListener(view -> {
@@ -142,8 +142,8 @@ public class EasyBar extends RelativeLayout {
         img_right_param.addRule(ALIGN_PARENT_RIGHT);
         img_right_param.width = icon_size;
         img_right_param.height = icon_size;
-        img_right_param.rightMargin = icon_margin;
         img_right.setLayoutParams(img_right_param);
+        img_right.setPadding(icon_margin, icon_margin, icon_margin, icon_margin);
         addView(img_right, img_right_param);
 
         img_right.setVisibility(INVISIBLE);
