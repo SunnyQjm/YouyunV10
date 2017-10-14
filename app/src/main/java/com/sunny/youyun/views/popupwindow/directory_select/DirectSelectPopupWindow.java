@@ -252,7 +252,7 @@ public class DirectSelectPopupWindow extends BaseMVPPopupwindow<DirectSelectPres
                 break;
             case R.id.tv_sure:
                 if(onDismissListener != null){
-                    onDismissListener.onResult(currentParentId);
+                    onDismissListener.onResult(currentPath, currentParentId);
                 }
                 dismiss();
                 break;
@@ -260,8 +260,12 @@ public class DirectSelectPopupWindow extends BaseMVPPopupwindow<DirectSelectPres
     }
 
 
+    public void setOnDismissListener(OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
+    }
+
     public interface OnDismissListener {
         void onDismiss();
-        void onResult(String result);
+        void onResult(String pathName, String pathId);
     }
 }

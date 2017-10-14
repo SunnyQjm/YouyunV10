@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
-import com.sunny.youyun.views.popupwindow.directory_select.DirectSelectPopupWindow;
 import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
 import butterknife.BindView;
@@ -169,8 +167,6 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                 RouterUtils.openAfterLogin(activity, IntentRouter.ConcernActivity);
                 break;
             case R.id.li_callback:
-                new DirectSelectPopupWindow(activity)
-                        .showAtLocation(liCallback, Gravity.CENTER, 0, 0);
                 break;
             case R.id.li_setting:
                 RouterUtils.open(activity, IntentRouter.SettingActivity);
