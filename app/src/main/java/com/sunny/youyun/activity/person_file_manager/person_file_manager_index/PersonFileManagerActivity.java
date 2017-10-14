@@ -17,11 +17,15 @@ import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.EasyYouyunAPIManager;
+import com.sunny.youyun.model.callback.SimpleListener;
 import com.sunny.youyun.model.nodes.ClassificationNode;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.WindowUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.popupwindow.FileManagerOptionsPopupwindow;
+import com.sunny.youyun.views.popupwindow.directory_select.DirectSelectPopupWindow;
+import com.sunny.youyun.views.popupwindow.directory_select.DirectorySelectManager;
 import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
 import java.util.ArrayList;
@@ -81,12 +85,12 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
                 new FileManagerOptionsPopupwindow.OnOptionClickListener() {
             @Override
             public void onCancelClick() {
-
             }
 
             @Override
             public void onRenameClick(int position) {
-
+                popupwindow.dismiss(position);
+                rename(position);
             }
 
             @Override
@@ -96,17 +100,17 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
                     return;
                 FileItem fileItem = (FileItem) multiItemEntity;
                 mPresenter.delete(fileItem.getSelfId(), position);
-
                 popupwindow.dismiss(position);
             }
 
             @Override
             public void onMoveClick(int position) {
-
+                move(position);
             }
 
             @Override
             public void onShareClick(int position) {
+                //TODO share File or directory
 
             }
 
@@ -115,6 +119,84 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
                 WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);
             }
         });
+    }
+
+    /**
+     * 移动文件或文件夹
+     * @param position
+     */
+    private void move(int position) {
+        if(position >= fileAdapter.getData().size())
+            return;
+        FileItem fileItem = (FileItem) fileAdapter.getItem(position);
+        if(fileItem == null)
+            return;
+        DirectorySelectManager.getInstance(this)
+                .setOnDismissListener(new DirectSelectPopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+
+                    }
+
+                    @Override
+                    public void onResult(String pathName, String pathId) {
+                        EasyYouyunAPIManager.movePath(fileItem.getSelfId(),
+                                pathId, fileItem.getPathName(), new SimpleListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        mPresenter.getUploadFilesOnline(null);
+                                    }
+
+                                    @Override
+                                    public void onFail() {
+                                        showError(getString(R.string.move_fail));
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        showError(getString(R.string.move_fail));
+                                    }
+                                });
+                    }
+                })
+                .show(easyBar);
+    }
+
+    /**
+     * 修改文件夹的名字
+     * @param position
+     */
+    private void rename(int position) {
+        if(position >= fileAdapter.getData().size())
+            return;
+        FileItem fileItem = (FileItem) fileAdapter.getItem(position);
+        if(fileItem == null || fileItem.getItemType() != ItemTypeConfig.TYPE_DIRECT_INFO)
+            return;
+        YouyunEditDialog.newInstance(getString(R.string.please_input_new_name),
+                fileItem.getPathName(), result -> {
+                    if (result == null || result.equals(""))
+                        showTip(getString(R.string.not_alow_empty));
+                    else
+                        //是在父路径下修改文件夹的信息
+                        EasyYouyunAPIManager.reName(fileItem.getSelfId(), null,
+                                result, new SimpleListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getUploadFilesOnline(null);
+                            }
+
+                            @Override
+                            public void onFail() {
+                                showError(getString(R.string.change_fail));
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                showError(getString(R.string.change_fail));
+                            }
+                        });
+                }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),
+                "");
     }
 
     private void createNewDirectory() {

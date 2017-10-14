@@ -16,6 +16,7 @@ interface PersonFileListPathContract {
     interface View extends BaseView {
         void getFilesByPathSuccess();
         void getPathsSuccess();
+        void deleteSuccess(int position);
     }
 
     interface Model extends BaseModel {
@@ -24,6 +25,9 @@ interface PersonFileListPathContract {
 
         //path
         List<PathItem> getPaths();
+
+        void delete(String id, int position);
+
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
@@ -32,5 +36,7 @@ interface PersonFileListPathContract {
         abstract void getFilesByPathSuccess();
         abstract List<PathItem> getPaths();
         abstract void getPathsSuccess();
+        abstract void delete(String id, int position);
+        abstract void deleteSuccess(int position);
     }
 }

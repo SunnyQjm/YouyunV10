@@ -1,11 +1,14 @@
 package com.sunny.youyun.activity.person_file_manager.person_file_path;
 
+import com.orhanobut.logger.Logger;
 import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.EasyYouyunAPIManager;
 import com.sunny.youyun.model.YouyunExceptionDeal;
+import com.sunny.youyun.model.callback.SimpleListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +40,32 @@ class PersonFileListPathModel implements PersonFileListPathContract.Model{
     @Override
     public List<PathItem> getPaths() {
         return pathItems;
+    }
+
+    @Override
+    public void delete(String id, int position) {
+        EasyYouyunAPIManager.delete(id, new SimpleListener() {
+            @Override
+            public void onSuccess() {
+                mList.remove(position);
+                mPresenter.deleteSuccess(position);
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Logger.e("删除失败", e);
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                mPresenter.addSubscription(d);
+            }
+        });
     }
 
 

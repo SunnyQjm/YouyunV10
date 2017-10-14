@@ -2,6 +2,8 @@ package com.sunny.youyun.model;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.orhanobut.logger.Logger;
@@ -34,13 +36,140 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class EasyYouyunAPIManager {
 
     ///////////////////////////////////////////////////////
+    /////////delete
+    ///////////////////////////////////////////////////////
+    public static void delete(final String id, SimpleListener simpleListener){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(ApiInfo.DELETE_FILE_OR_DIRECTORY_ID, id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        RequestBody body = RequestBody.create(
+                MediaType.parse(ApiInfo.MEDIA_TYPE_JSON), jsonObject.toString()
+        );
+        APIManager.getInstance()
+                .getFileServices(GsonConverterFactory.create())
+                .deleteFileOrDirectory(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        if(simpleListener != null)
+                            simpleListener.onSubscribe(d);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponseBody baseResponseBody) {
+                        if(baseResponseBody.isSuccess()) {
+                            if(simpleListener != null)
+                                simpleListener.onSuccess();
+//                            mPresenter.deleteSuccess(position);
+//                            mList.remove(position);
+                        } else {
+                            if(simpleListener != null)
+                                simpleListener.onFail();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(simpleListener != null)
+                            simpleListener.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    ///////////////////////////////////////////////////////
+    /////////changeDirectory
+    ///////////////////////////////////////////////////////
+
+    /**
+     * 移动文件或文件夹
+     *
+     * @param selfId
+     * @param targetId
+     * @param selfName
+     * @param simpleListener
+     */
+    public static void movePath(@NonNull String selfId, @Nullable String targetId,
+                                @NonNull String selfName, SimpleListener simpleListener) {
+        changeDirectory(selfId, targetId, selfName, simpleListener);
+    }
+
+    /**
+     * 修改文件或文件夹的名字
+     *
+     * @param selfId
+     * @param newName
+     * @param simpleListener
+     */
+    public static void reName(@NonNull String selfId, @Nullable String targetId, @NonNull String newName,
+                              SimpleListener simpleListener) {
+        changeDirectory(selfId, targetId, newName, simpleListener);
+    }
+
+    private static void changeDirectory(@NonNull String selfId, @Nullable String targetId,
+                                        @NonNull String newName, SimpleListener simpleListener) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(ApiInfo.CHANGE_DIRECTORY_SELF_ID, selfId);
+            if (targetId != null)
+                jsonObject.put(ApiInfo.CHANGE_DIRECTORY_TARGET_PARENT_ID, targetId);
+            jsonObject.put(ApiInfo.CHANGE_DIRECTORY_NAME, newName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(
+                MediaType.parse(ApiInfo.MEDIA_TYPE_JSON), jsonObject.toString()
+        );
+        APIManager.getInstance()
+                .getFileServices(GsonConverterFactory.create())
+                .changeDirectory(body)
+                .map(baseResponseBody -> baseResponseBody != null
+                        && baseResponseBody.getData() != null)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        dealOnNext(simpleListener, aBoolean);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dealOnError(simpleListener, e);
+                        Logger.e("修改文件夹失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    ///////////////////////////////////////////////////////
     /////////createNewDirectory
     //////////////////////////////////////////////////////
-    public static void createNewDirectory(String parentId, String name, SimpleListener listener){
+    public static void createNewDirectory(String parentId, String name, SimpleListener listener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(ApiInfo.CREATE_DIRECTORY_NAME, name);
-            if(parentId != null){
+            if (parentId != null) {
                 jsonObject.put(ApiInfo.CREATE_DIRECTORY_PARENT_ID, parentId);
             }
         } catch (JSONException e) {
@@ -62,19 +191,12 @@ public class EasyYouyunAPIManager {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        if(aBoolean){
-                            if(listener != null)
-                                listener.onSuccess();
-                        } else if(listener != null){
-                            listener.onFail();
-                        }
+                        dealOnNext(listener, aBoolean);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        if(listener != null)
-                            listener.onError(e);
+                        dealOnError(listener, e);
                         Logger.e("创建文件夹失败", e);
                     }
 
@@ -85,26 +207,27 @@ public class EasyYouyunAPIManager {
                 });
     }
 
+
     ///////////////////////////////////////////////////////
     /////////logout
     //////////////////////////////////////////////////////
-    public static void logout(Activity activity){
+    public static void logout(Activity activity) {
         logout_(activity);
         RouterUtils.open(activity, IntentRouter.LoginActivity);
     }
 
-    public static void logout(Fragment fragment){
+    public static void logout(Fragment fragment) {
         logout_(fragment.getActivity());
         fragment.startActivity(new Intent(fragment.getContext(), LoginActivity.class));
     }
 
-    private static void logout_(Activity activity){
+    private static void logout_(Activity activity) {
         //清空用户数据
         UserInfoManager.getInstance().clear();
         YouyunAPI.updateIsLogin(false);
         JPushUtil.setTag(activity, "0000");
         //QQ登出
-        if(YouyunAPI.getLoginMode() == YouyunAPI.LOGIN_MODE_QQ){
+        if (YouyunAPI.getLoginMode() == YouyunAPI.LOGIN_MODE_QQ) {
             TencentUtil.getInstance(activity)
                     .loginOut();
         }
@@ -133,5 +256,21 @@ public class EasyYouyunAPIManager {
 
                     }
                 });
+    }
+
+
+    private static void dealOnError(SimpleListener listener, Throwable e) {
+        e.printStackTrace();
+        if (listener != null)
+            listener.onError(e);
+    }
+
+    private static void dealOnNext(SimpleListener simpleListener, boolean b) {
+        if (b) {
+            if (simpleListener != null)
+                simpleListener.onSuccess();
+        } else if (simpleListener != null) {
+            simpleListener.onFail();
+        }
     }
 }

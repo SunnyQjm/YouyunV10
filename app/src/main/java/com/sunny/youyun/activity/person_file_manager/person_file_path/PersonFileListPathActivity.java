@@ -16,17 +16,24 @@ import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
+import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.model.EasyYouyunAPIManager;
 import com.sunny.youyun.model.callback.SimpleListener;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.WindowUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.CustomLinerLayoutManager;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
+import com.sunny.youyun.views.popupwindow.FileManagerOptionsPopupwindow;
 import com.sunny.youyun.views.popupwindow.TopMenuPopupWindow;
+import com.sunny.youyun.views.popupwindow.directory_select.DirectSelectPopupWindow;
+import com.sunny.youyun.views.popupwindow.directory_select.DirectorySelectManager;
 import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Sunny on 2017/10/13 0013.
@@ -44,6 +51,7 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
     private String currentPath = "/";
 
     private TopMenuPopupWindow myOptionsPopupWindow = null;
+    private FileManagerOptionsPopupwindow popupwindow = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +121,144 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
         pathAdapter.bindToRecyclerView(pathRecyclerView);
         pathAdapter.setOnItemClickListener((adapter, view, position) -> jumpTo(position));
         loadData(true);
+
+        popupwindow = FileManagerOptionsPopupwindow.bind(this,
+                new FileManagerOptionsPopupwindow.OnOptionClickListener() {
+                    @Override
+                    public void onCancelClick() {
+                    }
+
+                    @Override
+                    public void onRenameClick(int position) {
+                        popupwindow.dismiss(position);
+                        rename(position);
+                    }
+
+                    @Override
+                    public void onDeleteClick(int position) {
+                        popupwindow.dismiss(position);
+                        delete(position);
+                    }
+
+                    @Override
+                    public void onMoveClick(int position) {
+                        move(position);
+                    }
+
+                    @Override
+                    public void onShareClick(int position) {
+                        //TODO share File or directory
+
+                    }
+
+                    @Override
+                    public void onDismiss() {
+                        WindowUtil.changeWindowAlpha(PersonFileListPathActivity.this, 1.0f);
+                    }
+                });
+    }
+
+    /**
+     * 删除文件或文件夹
+     * @param position
+     */
+    private void delete(int position) {
+        MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getItem(position);
+        if (multiItemEntity == null) {
+            return;
+        }
+        FileItem fileItem = (FileItem) multiItemEntity;
+        mPresenter.delete(fileItem.getSelfId(), position);
+    }
+
+    /**
+     * 移动文件或文件夹
+     * @param position
+     */
+    private void move(int position) {
+        if(position >= adapter.getData().size())
+            return;
+        FileItem fileItem = (FileItem) adapter.getItem(position);
+        if(fileItem == null)
+            return;
+        DirectorySelectManager.getInstance(this)
+                .setOnDismissListener(new DirectSelectPopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+
+                    }
+
+                    @Override
+                    public void onResult(String pathName, String pathId) {
+                        EasyYouyunAPIManager.movePath(fileItem.getSelfId(),
+                                pathId, fileItem.getPathName(), new SimpleListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        currentParentId = pathId;
+                                        currentPath = fileItem.getPathName();
+                                        loadData(true);
+                                    }
+
+                                    @Override
+                                    public void onFail() {
+                                        showError(getString(R.string.move_fail));
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        showError(getString(R.string.move_fail));
+                                    }
+
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+                                        mPresenter.addSubscription(d);
+                                    }
+                                });
+                    }
+                })
+                .show(easyBar);
+    }
+
+    /**
+     * 修改文件夹的名字
+     * @param position
+     */
+    private void rename(int position) {
+        if(position >= adapter.getData().size())
+            return;
+        FileItem fileItem = (FileItem) adapter.getItem(position);
+        if(fileItem == null || fileItem.getItemType() != ItemTypeConfig.TYPE_DIRECT_INFO)
+            return;
+        YouyunEditDialog.newInstance(getString(R.string.please_input_new_name),
+                fileItem.getPathName(), result -> {
+                    if (result == null || result.equals(""))
+                        showTip(getString(R.string.not_alow_empty));
+                    else
+                        //是在父路径下修改文件夹的信息
+                        EasyYouyunAPIManager.reName(fileItem.getSelfId(), null,
+                                result, new SimpleListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        loadData(true);
+                                    }
+
+                                    @Override
+                                    public void onFail() {
+                                        showError(getString(R.string.change_fail));
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        showError(getString(R.string.change_fail));
+                                    }
+
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+
+                                    }
+                                });
+                }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),
+                "");
     }
 
     /**
@@ -158,6 +304,11 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
                             public void onError(Throwable e) {
 
                             }
+
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                mPresenter.addSubscription(d);
+                            }
                         });
                 }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),
                 "");
@@ -193,6 +344,11 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
     public void getPathsSuccess() {
         if (pathAdapter != null)
             pathAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteSuccess(int position) {
+        loadData(true);
     }
 
     /**

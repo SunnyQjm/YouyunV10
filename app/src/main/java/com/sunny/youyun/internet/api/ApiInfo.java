@@ -143,8 +143,20 @@ public class ApiInfo {
             GET_UPLOAD_FILES_DIRECTORY_ONLY = "noFile";
 
 
+    /**
+     * 新建文件夹
+     */
     public static final String CREATE_DIRECTORY_URL = "authc/file/createDirectory",
             CREATE_DIRECTORY_PARENT_ID = "parentId", CREATE_DIRECTORY_NAME = "name";
+
+    /**
+     * 移动文件夹或给文件夹更名
+     */
+    public static final String CHANGE_DIRECTORY_URL = "authc/file/changeDirectory",
+            CHANGE_DIRECTORY_SELF_ID = "selfId", CHANGE_DIRECTORY_TARGET_PARENT_ID = "toParentId",
+            CHANGE_DIRECTORY_NAME = "name";
+
+
 
     ///////////////////////////////////////////////////////////
     /////////ForumService

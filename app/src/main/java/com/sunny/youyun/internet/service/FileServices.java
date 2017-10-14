@@ -127,4 +127,8 @@ public interface FileServices {
      */
     @POST(ApiInfo.FILE_COLLECT_URL)
     Observable<BaseResponseBody> collect(@Body RequestBody body);
+
+
+    @POST(ApiInfo.CHANGE_DIRECTORY_URL)
+    Observable<BaseResponseBody> changeDirectory(@Body RequestBody body);
 }
