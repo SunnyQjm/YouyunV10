@@ -33,6 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
 
 @Router(IntentRouter.PersonFileManagerActivity)
 public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManagerPresenter> implements PersonFileManagerContract.View {
@@ -83,53 +84,54 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
         popupwindow = FileManagerOptionsPopupwindow.bind(this,
                 new FileManagerOptionsPopupwindow.OnOptionClickListener() {
-            @Override
-            public void onCancelClick() {
-            }
+                    @Override
+                    public void onCancelClick() {
+                    }
 
-            @Override
-            public void onRenameClick(int position) {
-                popupwindow.dismiss(position);
-                rename(position);
-            }
+                    @Override
+                    public void onRenameClick(int position) {
+                        popupwindow.dismiss(position);
+                        rename(position);
+                    }
 
-            @Override
-            public void onDeleteClick(int position) {
-                MultiItemEntity multiItemEntity = fileAdapter.getItem(position);
-                if (multiItemEntity == null)
-                    return;
-                FileItem fileItem = (FileItem) multiItemEntity;
-                mPresenter.delete(fileItem.getSelfId(), position);
-                popupwindow.dismiss(position);
-            }
+                    @Override
+                    public void onDeleteClick(int position) {
+                        MultiItemEntity multiItemEntity = fileAdapter.getItem(position);
+                        if (multiItemEntity == null)
+                            return;
+                        FileItem fileItem = (FileItem) multiItemEntity;
+                        mPresenter.delete(fileItem.getSelfId(), position);
+                        popupwindow.dismiss(position);
+                    }
 
-            @Override
-            public void onMoveClick(int position) {
-                move(position);
-            }
+                    @Override
+                    public void onMoveClick(int position) {
+                        move(position);
+                    }
 
-            @Override
-            public void onShareClick(int position) {
-                //TODO share File or directory
+                    @Override
+                    public void onShareClick(int position) {
+                        //TODO share File or directory
 
-            }
+                    }
 
-            @Override
-            public void onDismiss() {
-                WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);
-            }
-        });
+                    @Override
+                    public void onDismiss() {
+                        WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);
+                    }
+                });
     }
 
     /**
      * 移动文件或文件夹
+     *
      * @param position
      */
     private void move(int position) {
-        if(position >= fileAdapter.getData().size())
+        if (position >= fileAdapter.getData().size())
             return;
         FileItem fileItem = (FileItem) fileAdapter.getItem(position);
-        if(fileItem == null)
+        if (fileItem == null)
             return;
         DirectorySelectManager.getInstance(this)
                 .setOnDismissListener(new DirectSelectPopupWindow.OnDismissListener() {
@@ -156,6 +158,11 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
                                     public void onError(Throwable e) {
                                         showError(getString(R.string.move_fail));
                                     }
+
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+                                        mPresenter.addSubscription(d);
+                                    }
                                 });
                     }
                 })
@@ -164,13 +171,14 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
     /**
      * 修改文件夹的名字
+     *
      * @param position
      */
     private void rename(int position) {
-        if(position >= fileAdapter.getData().size())
+        if (position >= fileAdapter.getData().size())
             return;
         FileItem fileItem = (FileItem) fileAdapter.getItem(position);
-        if(fileItem == null || fileItem.getItemType() != ItemTypeConfig.TYPE_DIRECT_INFO)
+        if (fileItem == null || fileItem.getItemType() != ItemTypeConfig.TYPE_DIRECT_INFO)
             return;
         YouyunEditDialog.newInstance(getString(R.string.please_input_new_name),
                 fileItem.getPathName(), result -> {
@@ -180,21 +188,26 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
                         //是在父路径下修改文件夹的信息
                         EasyYouyunAPIManager.reName(fileItem.getSelfId(), null,
                                 result, new SimpleListener() {
-                            @Override
-                            public void onSuccess() {
-                                mPresenter.getUploadFilesOnline(null);
-                            }
+                                    @Override
+                                    public void onSuccess() {
+                                        mPresenter.getUploadFilesOnline(null);
+                                    }
 
-                            @Override
-                            public void onFail() {
-                                showError(getString(R.string.change_fail));
-                            }
+                                    @Override
+                                    public void onFail() {
+                                        showError(getString(R.string.change_fail));
+                                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                showError(getString(R.string.change_fail));
-                            }
-                        });
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        showError(getString(R.string.change_fail));
+                                    }
+
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+                                        mPresenter.addSubscription(d);
+                                    }
+                                });
                 }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),
                 "");
     }
