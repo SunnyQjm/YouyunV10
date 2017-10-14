@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
     tools:context="com.sunny.youyun.activity.file_detail_online.FileDetailOnlineActivity">
 
-    <include layout="@layout/bar_item" />
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/bar_item" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <com.sunny.youyun.views.easy_refresh.EasyRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
         <android.support.v7.widget.RecyclerView
@@ -26,9 +31,17 @@
         </android.support.v7.widget.RecyclerView>
     </com.sunny.youyun.views.easy_refresh.EasyRefreshLayout>
 
-    <include layout="@layout/divide_item"/>
 
-    <include layout="@layout/send_view"/>
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="com.sunny.youyun.views.behavior.MyBottomBarBehavior"
+        android:layout_height="wrap_content">
+        <include layout="@layout/divide_item"/>
+        <include layout="@layout/send_view"/>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
