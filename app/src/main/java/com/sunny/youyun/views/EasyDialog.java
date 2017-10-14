@@ -18,6 +18,7 @@ public class EasyDialog {
     private static YouyunTipDialog errorDialog = null;
     private static YouyunTipDialog successDialog = null;
     private static YouyunTipDialog reLoginTipDialog = null;
+    private static YouyunTipDialog loginTipDialog = null;
 
     public static YouyunTipDialog showTip(AppCompatActivity appCompatActivity, String info) {
         if (tipDialog == null) {
@@ -130,6 +131,28 @@ public class EasyDialog {
         return reLoginTipDialog;
     }
 
+    public static YouyunTipDialog showLogin(AppCompatActivity appCompatActivity){
+        if(loginTipDialog == null) {
+            loginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
+                    appCompatActivity.getString(R.string.login_first),
+                    new OnYouyunTipDialogClickListener() {
+                        @Override
+                        public void onCancelClick() {
+                            loginTipDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onSureClick() {
+                            loginTipDialog.dismiss();
+                            EasyYouyunAPIManager.logout(appCompatActivity);
+                        }
+                    });
+            loginTipDialog.setRightText(appCompatActivity.getString(R.string.login));
+        }
+        loginTipDialog.show(appCompatActivity.getSupportFragmentManager(),
+                "LOGIN_DIALOG_TAG");
+        return loginTipDialog;
+    }
     public static YouyunLoadingView showLoading(AppCompatActivity appCompatActivity) {
         YouyunLoadingView youyunLoadingView = new YouyunLoadingView(appCompatActivity);
         youyunLoadingView.show();

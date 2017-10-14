@@ -120,7 +120,7 @@ public class ApiInfo {
     public static final String UPLOAD_FILE_URL = "file/upload", UPLOAD_FILE_PARAM_SHARE = "share",
             UPLOAD_FILE_PARAM_LEFT_ALLOW_DOWNLOAD_COUNT = "leftAllowDownloadCount",
             UPLOAD_FILE_PARAM_EXPIRE_TIME = "expireTime", UPLOAD_FILE_PARAM_SCORE = "score",
-            UPLOAD_FILE_PARAM_IS_PRIVATE = "privateOwn", UPLOAD_FILE_PARAM_PARENT_PATH = "test.txt",
+            UPLOAD_FILE_PARAM_IS_PRIVATE = "privateOwn", UPLOAD_FILE_PARAM_PARENT_PATH = "parentId",
             UPLOAD_FILE_PARAM_DESCRIPTION = "description", UPLOAD_FILE_PARAM_MD5 = "md5",
             UPLOAD_FILE_PARAM_SIZE = "size", UPLOAD_FILE_PARAM_NAME = "name",
             UPLOAD_FILE_PARAM_MIME = "MIME";
@@ -139,7 +139,8 @@ public class ApiInfo {
      */
     public static final String GET_UPLOAD_FILES_URL = "authc/file/dir",
             GET_UPLOAD_FILES_PARENT_ID = "parentId", GET_UPLOAD_FILES_ROOT_PATH = "/",
-            GET_UPLOAD_FILES_PAGE = "page", GET_UPLOAD_FILES_SIZE = "size";
+            GET_UPLOAD_FILES_PAGE = "page", GET_UPLOAD_FILES_SIZE = "size",
+            GET_UPLOAD_FILES_DIRECTORY_ONLY = "noFile";
 
 
     public static final String CREATE_DIRECTORY_URL = "authc/file/createDirectory",

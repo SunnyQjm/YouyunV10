@@ -1,5 +1,6 @@
 package com.sunny.youyun.views;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -16,6 +17,12 @@ public class MyPopupWindow extends PopupWindow {
     private int width = ViewGroup.LayoutParams.MATCH_PARENT;
     private int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
+    public MyPopupWindow(Context context, int width, int height){
+        super(context);
+        this.width = width;
+        this.height = height;
+        init();
+    }
     public MyPopupWindow(View contentView, int width, int height) {
         this(contentView, width, height, true);
     }

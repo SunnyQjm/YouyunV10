@@ -29,6 +29,7 @@ public interface FileServices {
 
     /**
      * 上传
+     *
      * @param paramMap
      * @param file
      * @return
@@ -40,6 +41,7 @@ public interface FileServices {
 
     /**
      * 上传前的重复检测
+     *
      * @param body
      * @return
      */
@@ -48,6 +50,7 @@ public interface FileServices {
 
     /**
      * 下载文件
+     *
      * @param url
      * @return
      */
@@ -57,6 +60,7 @@ public interface FileServices {
 
     /**
      * 获取文件信息
+     *
      * @param code
      * @return
      */
@@ -66,6 +70,7 @@ public interface FileServices {
 
     /**
      * 获取已上传文件列表
+     *
      * @param parentId
      * @return
      */
@@ -78,13 +83,27 @@ public interface FileServices {
 
     /**
      * 获取已上传文件的列表
+     *
+     * @return
+     */
+    @GET(ApiInfo.GET_UPLOAD_FILES_URL)
+    Observable<BaseResponseBody<FileItem[]>> getUploadFiles(
+            @Query(ApiInfo.GET_UPLOAD_FILES_PARENT_ID) String parentId,
+            @Query(ApiInfo.GET_UPLOAD_FILES_DIRECTORY_ONLY) boolean directoryOnly
+    );
+
+    /**
+     * 获取已上传文件的列表
+     *
      * @return
      */
     @GET(ApiInfo.GET_UPLOAD_FILES_URL)
     Observable<BaseResponseBody<FileItem[]>> getUploadFiles();
 
+
     /**
      * 在云上新建文件夹
+     *
      * @param body
      * @return
      */
@@ -93,6 +112,7 @@ public interface FileServices {
 
     /**
      * 删除文件或目录
+     *
      * @param body
      * @return
      */
@@ -101,6 +121,7 @@ public interface FileServices {
 
     /**
      * 收藏
+     *
      * @param body
      * @return
      */

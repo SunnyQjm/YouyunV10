@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/bar_item" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pathRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/person_file_path_item_height">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <com.sunny.youyun.views.easy_refresh.EasyRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </com.sunny.youyun.views.easy_refresh.EasyRefreshLayout>
+    <include layout="@layout/main_foot"/>
+</LinearLayout>

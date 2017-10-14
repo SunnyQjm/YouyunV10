@@ -32,7 +32,8 @@ import java.util.List;
  * Created by Sunny on 2017/10/13 0013.
  */
 
-@Router(value = IntentRouter.PersonFileListPathActivity + "/:currentParentId/:path",
+@Router(value = {IntentRouter.PersonFileListPathActivity + "/:currentParentId/:path",
+        IntentRouter.PersonFileListPathActivity + "/:currentParentId/:path/:type"},
         stringParams = {"currentParentId", "path"})
 public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<PersonFileListPathPresenter>
         implements PersonFileListPathContract.View {

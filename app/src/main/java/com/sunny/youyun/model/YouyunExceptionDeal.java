@@ -1,5 +1,6 @@
 package com.sunny.youyun.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +59,13 @@ public enum YouyunExceptionDeal {
         }
     }
 
+    public void showReLogin(Activity activity){
+        if(activity instanceof AppCompatActivity){
+            showReLogin((AppCompatActivity) activity);
+        } else {
+            Logger.e("activity not instanceof AppcompatActivity");
+        }
+    }
     private void showReLogin(AppCompatActivity appCompatActivity) {
         dismissDialog();
         dialog = EasyDialog.showReLogin(appCompatActivity);

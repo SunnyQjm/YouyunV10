@@ -7,13 +7,16 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.github.mzule.activityrouter.router.Routers;
 import com.sunny.youyun.App;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.utils.bus.ObjectPool;
+import com.sunny.youyun.views.EasyDialog;
 
 /**
  * Created by Administrator on 2017/3/29/029.
@@ -44,6 +47,20 @@ public class RouterUtils {
         System.out.println(router);
         Routers.open(context, router.toString());
         App.startAnim(context);
+    }
+
+    /**
+     * 如果已登录则执行跳转
+     * @param activity
+     * @param routerWithNoScheme
+     * @param params
+     */
+    public static void openAfterLogin(Activity activity, String routerWithNoScheme, String... params){
+        if(YouyunAPI.isIsLogin()){
+            open(activity, routerWithNoScheme, params);
+        } else if(activity instanceof AppCompatActivity){
+            EasyDialog.showLogin((AppCompatActivity) activity);
+        }
     }
 
     public static void openToFileDetailOnline(Activity activity, InternetFile internetFile) {

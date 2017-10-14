@@ -116,7 +116,7 @@
     <string name="uploader">上传者</string>
     <string name="send">发送</string>
     <string name="add_comment">添加评论</string>
-    <string name="login_first">请先登陆</string>
+    <string name="login_first">请先登陆^*^</string>
     <string name="message">消息</string>
     <string name="zan">赞</string>
     <string name="not_alow_empty">不允许为空</string>
@@ -167,4 +167,6 @@
     <string name="root_path">根目录</string>
     <string name="create_new_directory">新建文件夹</string>
     <string name="upload_file_to_here">上传文件</string>
+    <string name="select_directory">选择文件夹</string>
+    <string name="select">选择</string>
 </resources>

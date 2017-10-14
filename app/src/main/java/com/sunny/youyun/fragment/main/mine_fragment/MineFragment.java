@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
+import com.sunny.youyun.views.popupwindow.directory_select.DirectSelectPopupWindow;
 import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
 import butterknife.BindView;
@@ -161,12 +163,14 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                 }
                 break;
             case R.id.li_my_collect:
-                RouterUtils.open(activity, IntentRouter.MyCollectionActivity);
+                RouterUtils.openAfterLogin(activity, IntentRouter.MyCollectionActivity);
                 break;
             case R.id.li_my_concern:
-                RouterUtils.open(activity, IntentRouter.ConcernActivity);
+                RouterUtils.openAfterLogin(activity, IntentRouter.ConcernActivity);
                 break;
             case R.id.li_callback:
+                new DirectSelectPopupWindow(activity)
+                        .showAtLocation(liCallback, Gravity.CENTER, 0, 0);
                 break;
             case R.id.li_setting:
                 RouterUtils.open(activity, IntentRouter.SettingActivity);
@@ -174,15 +178,13 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
             case R.id.li_my_share:
                 break;
             case R.id.li_file_manager:
-                RouterUtils.open(activity, IntentRouter.PersonFileManagerActivity);
+                RouterUtils.openAfterLogin(activity, IntentRouter.PersonFileManagerActivity);
                 break;
             case R.id.img_edit:
-                if (YouyunAPI.isIsLogin()) {
-                    RouterUtils.open(activity, IntentRouter.PersonSettingActivity);
-                }
+                RouterUtils.openAfterLogin(activity, IntentRouter.PersonSettingActivity);
                 break;
             case R.id.img_icon:
-                RouterUtils.open(activity, IntentRouter.DcimActivity);
+                RouterUtils.openAfterLogin(activity, IntentRouter.DcimActivity);
                 break;
             case R.id.img_qr_code:  //显示二维码
                 if (!YouyunAPI.isIsLogin())
@@ -203,16 +205,4 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                 break;
         }
     }
-
-    private void showEditDialog(String nickname) {
-        if (editDialog == null)
-            editDialog = YouyunEditDialog.newInstance(getString(R.string.edit_nickname),
-                    nickname, System.out::println);
-        else {
-            editDialog.setHint(nickname);
-        }
-        editDialog.show(getFragmentManager(), String.valueOf(this.getClass()));
-    }
-
-
 }
