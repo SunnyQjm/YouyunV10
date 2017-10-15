@@ -110,7 +110,6 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
             @Override
             public void onSuccess() {
                 mPresenter.deleteSuccess(position);
-                mList.remove(position);
             }
 
             @Override

@@ -77,7 +77,7 @@ class ChatModel implements ChatContract.Model {
 
                             @Override
                             public void onLoadFinish() {
-                                mPresenter.getMessagesSuccess();
+                                mPresenter.allDataLoadFinish();
                             }
 
                             @Override

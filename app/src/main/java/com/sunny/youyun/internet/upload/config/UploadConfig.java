@@ -11,4 +11,5 @@ public class UploadConfig {
     public static final String DOWNLOAD_SCORE = "DOWNLOAD_SCORE";
     public static final String DESCRIPTION = "DESCRIPTION";
     public static final String PATH = "path";
+    public static final String PARENT_ID = "parentId";
 }

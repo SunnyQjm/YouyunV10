@@ -43,6 +43,11 @@ public enum  MessageManager {
         redBubbleCounts.delete(userId);
     }
 
+    public void clearAll(){
+        redBubbleCounts.clear();
+        lastMessageManager.clear();
+    }
+
     public int getCount(int userId){
         return redBubbleCounts.get(userId);
     }

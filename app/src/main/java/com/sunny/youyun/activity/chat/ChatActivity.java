@@ -40,7 +40,6 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
     EditText etContent;
     Button btnSend;
 
-    private ChatAdapter adapter = null;
     private int page = 1;
     private int userId;
 
@@ -100,9 +99,8 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
         adapter = new ChatAdapter(mPresenter.getData());
         adapter.bindToRecyclerView(recyclerView);
         page = 1;
-        mPresenter.getMessages(userId, page, true);
-
         adapter.setOnItemClickListener(this);
+        loadData(true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -128,7 +126,23 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
     }
 
     @Override
+    protected void OnRefreshBeginSync() {
+        page++;
+        loadData(false);
+    }
+
+    @Override
+    public void allDataLoadFinish() {
+        refreshLayout.setRefreshAble(false);
+    }
+
+    @Override
+    protected void onRefreshBegin() {
+    }
+
+    @Override
     public void getMessagesSuccess() {
+        System.out.println("getMessageSuccess");
         updateAll();
     }
 

@@ -156,6 +156,12 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
                         WindowUtil.changeWindowAlpha(PersonFileListPathActivity.this, 1.0f);
                     }
                 });
+
+        adapter.setOnItemLongClickListener((adapter, view, position) -> {
+            popupwindow.show(view, position);
+            WindowUtil.changeWindowAlpha(PersonFileListPathActivity.this, 0.7f);
+            return false;
+        });
     }
 
     /**

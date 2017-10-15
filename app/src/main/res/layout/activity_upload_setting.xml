@@ -53,6 +53,16 @@
 
             <include layout="@layout/divide_item" />
 
+            <com.sunny.youyun.views.LineMenuItem
+                android:id="@+id/upload_setting_select_directory"
+                style="@style/LineMenuItem"
+                android:background="@color/white"
+                app:menu_title="@string/upload_to"
+                app:menu_value_color="@color/gray">
+
+
+            </com.sunny.youyun.views.LineMenuItem>
+            <include layout="@layout/divide_item" />
             <com.sunny.youyun.views.ExpandableLineMenuItem
                 android:id="@+id/upload_setting_effect_date"
                 android:layout_width="match_parent"

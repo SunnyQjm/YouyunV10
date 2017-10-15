@@ -196,6 +196,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                 long expireTime = data.getLongExtra(UploadConfig.EFFECT_DATE, -1);
                 boolean isPublic = data.getBooleanExtra(UploadConfig.IS_PUBLIC, true);
                 int score = data.getIntExtra(UploadConfig.DOWNLOAD_SCORE, 0);
+                String parentId = data.getStringExtra(UploadConfig.PARENT_ID);
                 String description = data.getStringExtra(UploadConfig.DESCRIPTION);
                 for (String path : paths) {
                     mPresenter.uploadFile(new FileUploadFileParam
@@ -205,6 +206,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                             .expireTime(expireTime)
                             .isPrivate(!isPublic)
                             .isShare(isPublic)
+                            .parentId(parentId)
                             .description(description)
                             .score(score)
                             .build());

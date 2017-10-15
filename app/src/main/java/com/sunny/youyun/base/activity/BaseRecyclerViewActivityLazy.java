@@ -114,6 +114,8 @@ public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> exte
     protected void updateAll() {
         if (adapter != null)
             adapter.notifyDataSetChanged();
+        else
+            System.out.println("adapter is null");
     }
 
     @Override

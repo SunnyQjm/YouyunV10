@@ -24,6 +24,8 @@ import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.CustomLinerLayoutManager;
 import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
+import io.reactivex.disposables.Disposable;
+
 /**
  * Created by Sunny on 2017/10/14 0014.
  */
@@ -161,6 +163,11 @@ public class DirectSelectPopupWindow extends BaseMVPPopupwindow<DirectSelectPres
                             @Override
                             public void onError(Throwable e) {
 
+                            }
+
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                mPresenter.addSubscription(d);
                             }
                         });
                 }).show(activity.getSupportFragmentManager(), String.valueOf(this.getClass()),

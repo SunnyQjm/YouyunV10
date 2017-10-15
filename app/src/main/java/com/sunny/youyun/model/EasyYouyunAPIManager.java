@@ -12,6 +12,7 @@ import com.sunny.youyun.activity.login.LoginActivity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.callback.SimpleListener;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.utils.JPushUtil;
@@ -66,8 +67,6 @@ public class EasyYouyunAPIManager {
                         if(baseResponseBody.isSuccess()) {
                             if(simpleListener != null)
                                 simpleListener.onSuccess();
-//                            mPresenter.deleteSuccess(position);
-//                            mList.remove(position);
                         } else {
                             if(simpleListener != null)
                                 simpleListener.onFail();
@@ -134,8 +133,7 @@ public class EasyYouyunAPIManager {
         APIManager.getInstance()
                 .getFileServices(GsonConverterFactory.create())
                 .changeDirectory(body)
-                .map(baseResponseBody -> baseResponseBody != null
-                        && baseResponseBody.getData() != null)
+                .map(BaseResponseBody::isSuccess)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Boolean>() {
@@ -226,6 +224,9 @@ public class EasyYouyunAPIManager {
         UserInfoManager.getInstance().clear();
         YouyunAPI.updateIsLogin(false);
         JPushUtil.setTag(activity, "0000");
+        //清除所有新消息红点
+        MessageManager.getInstance()
+                .clearAll();
         //QQ登出
         if (YouyunAPI.getLoginMode() == YouyunAPI.LOGIN_MODE_QQ) {
             TencentUtil.getInstance(activity)

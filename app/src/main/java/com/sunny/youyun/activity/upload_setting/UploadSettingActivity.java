@@ -25,6 +25,8 @@ import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.ExpandableLineMenuItem;
 import com.sunny.youyun.views.LineMenuItem;
 import com.sunny.youyun.views.LineMenuSwitch;
+import com.sunny.youyun.views.popupwindow.directory_select.DirectSelectPopupWindow;
+import com.sunny.youyun.views.popupwindow.directory_select.DirectorySelectManager;
 import com.sunny.youyun.views.youyun_dialog.data_picker.YouyunDatePickerDialog;
 import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
@@ -73,20 +75,19 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     ExpandableLineMenuItem uploadSettingDescription;
     @BindView(R.id.upload_setting_description_img_sure)
     ImageView uploadSettingDescriptionImgSure;
+    @BindView(R.id.upload_setting_select_directory)
+    LineMenuItem uploadSettingSelectDirectory;
     private ExpandableItemAdapter adapter;
     private YouyunDatePickerDialog datePickerDialog = null;
     private YouyunTipDialog tipDialog = null;
 
-    //    public static final String IS_PUBLIC = "is public";
-//    public static final String ALLOW_DOWNLOAD_COUNT = "allow download count";
-//    public static final String EFFECT_DATE = "effect date";
-//    public static final String PATH = "path";
     private static final int MAX = -1;
 
     private boolean isPublic = true;
     private int allowDownloadCount = MAX;
     private int downloadScore = 0;
     private long expireTime = MAX;
+    private String parentId = null;
 
     private static final int REQUEST_PATH = 0;
 
@@ -127,6 +128,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         uploadSettingIsPublic.setChecked(isPublic);
+        uploadSettingSelectDirectory.setValue(getString(R.string.root_path));
     }
 
     @Override
@@ -156,6 +158,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 intent.putExtra(UploadConfig.DOWNLOAD_SCORE, downloadScore);
                 intent.putExtra(UploadConfig.DESCRIPTION, uploadSettingDescriptionEdit.getText()
                         .toString());
+                intent.putExtra(UploadConfig.PARENT_ID, parentId);
                 setResult(0, intent);
                 finish();
                 break;
@@ -301,5 +304,26 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
             adapter.collapse(0);
             adapter.expand(0);
         }
+    }
+
+    /**
+     * 选择文件夹
+     */
+    @OnClick(R.id.upload_setting_select_directory)
+    public void onViewClicked() {
+        DirectorySelectManager.getInstance(this)
+                .setOnDismissListener(new DirectSelectPopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+
+                    }
+
+                    @Override
+                    public void onResult(String pathName, String pathId) {
+                        uploadSettingSelectDirectory.setValue(pathName);
+                        parentId = pathId;
+                    }
+                })
+                .show(uploadSettingAllowDownCount);
     }
 }

@@ -55,14 +55,14 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                     helper.setText(R.id.tv_name, messageItem.getUser().getUsername());
                     GlideUtils.load(mContext, helper.getView(R.id.img_icon),
                             messageItem.getUser().getAvatar());
-                }
-                int count = MessageManager.getInstance().getCount(messageItem.getId());
-                DraggableFlagView draggableFlagView = helper.getView(R.id.draggableView);
-                if (count > 0) {
-                    draggableFlagView.setVisibility(View.VISIBLE);
-                    draggableFlagView.setText(String.valueOf(count));
-                } else {
-                    draggableFlagView.setVisibility(View.INVISIBLE);
+                    int count = MessageManager.getInstance().getCount(messageItem.getUser().getId());
+                    DraggableFlagView draggableFlagView = helper.getView(R.id.draggableView);
+                    if (count > 0) {
+                        draggableFlagView.setVisibility(View.VISIBLE);
+                        draggableFlagView.setText(String.valueOf(count));
+                    } else {
+                        draggableFlagView.setVisibility(View.INVISIBLE);
+                    }
                 }
 
                 break;

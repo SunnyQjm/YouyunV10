@@ -47,4 +47,14 @@ class PersonFileListPathPresenter extends PersonFileListPathContract.Presenter{
         mView.getPathsSuccess();
     }
 
+    @Override
+    void delete(String id, int position) {
+        mModel.delete(id, position);
+    }
+
+    @Override
+    void deleteSuccess(int position) {
+        mView.deleteSuccess(position);
+    }
+
 }

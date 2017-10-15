@@ -96,12 +96,13 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
                     @Override
                     public void onDeleteClick(int position) {
+                        popupwindow.dismiss(position);
                         MultiItemEntity multiItemEntity = fileAdapter.getItem(position);
-                        if (multiItemEntity == null)
+                        if (multiItemEntity == null) {
                             return;
+                        }
                         FileItem fileItem = (FileItem) multiItemEntity;
                         mPresenter.delete(fileItem.getSelfId(), position);
-                        popupwindow.dismiss(position);
                     }
 
                     @Override
@@ -111,8 +112,7 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
 
                     @Override
                     public void onShareClick(int position) {
-                        //TODO share File or directory
-
+                        //TODO share F
                     }
 
                     @Override
@@ -317,11 +317,14 @@ public class PersonFileManagerActivity extends MVPBaseActivity<PersonFileManager
     public void deleteSuccess(int position) {
         dismissDialog();
         if (fileAdapter != null)
-            fileAdapter.notifyItemRemoved(position);
+            fileAdapter.remove(position);
     }
 
     private void updateAll() {
+        System.out.println("update all");
         if (fileAdapter != null)
             fileAdapter.notifyDataSetChanged();
+        else
+            System.out.println("fileAdapter is null");
     }
 }
