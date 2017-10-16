@@ -1,40 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context=".activity.person_file_manager.person_file_manager_index.PersonFileManagerActivity">
 
-    <include layout="@layout/bar_item"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/classification_recycler_view"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        >
-
-    </android.support.v7.widget.RecyclerView>
-    <include layout="@layout/divide_item"/>
-
-
-    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content">
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="0.5dp"
-        android:background="@color/line_gray" />
-    <include layout="@layout/person_file_manager_my_file_tag"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <include layout="@layout/bar_item"/>
+        <com.sunny.youyun.views.ExpandableLineMenuItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|snap"
+            app:menu_height="@dimen/mine_item_height"
+            app:open="true"
+            app:menu_title="@string/classification_display"
+            app:menu_value_color="@color/gray">
+            <include layout="@layout/divide_item"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/classification_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                >
 
-    <include layout="@layout/divide_item"/>
+            </android.support.v7.widget.RecyclerView>
+        </com.sunny.youyun.views.ExpandableLineMenuItem>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/filerecycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        >
+        <include layout="@layout/divide_item"/>
 
-    </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="0.5dp"
+            android:background="@color/line_gray" />
+        <include layout="@layout/person_file_manager_my_file_tag"/>
+
+        <include layout="@layout/divide_item"/>
+
+        <com.sunny.youyun.views.easy_refresh.EasyRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+        </com.sunny.youyun.views.easy_refresh.EasyRefreshLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

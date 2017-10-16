@@ -11,37 +11,27 @@
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="7dp"
-        android:layout_height="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/divide_line"
+        android:layout_height="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/application_theme_color"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:srcCompat="@color/application_theme_color" />
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pathRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/person_file_path_item_height"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/my_file"
-        android:textColor="@color/text_gray"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/divide_line"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp">
 
-    <View xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/divide_line"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/line_gray"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </android.support.v7.widget.RecyclerView>
+
+
 </android.support.constraint.ConstraintLayout>

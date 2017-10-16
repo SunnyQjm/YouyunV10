@@ -82,6 +82,17 @@ public interface FileServices {
     );
 
     /**
+     * 获取已上传文件列表
+     *
+     * @return
+     */
+    @GET(ApiInfo.GET_UPLOAD_FILES_URL)
+    Observable<BaseResponseBody<FileItem[]>> getUploadFiles(
+            @Query(ApiInfo.GET_UPLOAD_FILES_PAGE) int page,
+            @Query(ApiInfo.GET_UPLOAD_FILES_SIZE) int size
+    );
+
+    /**
      * 获取已上传文件的列表
      *
      * @return

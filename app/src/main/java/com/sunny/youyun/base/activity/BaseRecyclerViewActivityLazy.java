@@ -149,4 +149,11 @@ public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> exte
         refreshLayout.setLoadAble(false);
         updateAll();
     }
+
+    protected void load(boolean isRefresh){
+        if(isRefresh)
+            onRefresh();
+        else
+            onLoad();
+    }
 }

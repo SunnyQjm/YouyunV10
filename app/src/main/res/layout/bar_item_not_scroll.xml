@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_scrollFlags="scroll|enterAlways|snap"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.sunny.youyun.views.EasyBar

@@ -166,6 +166,7 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
 
     /**
      * 删除文件或文件夹
+     *
      * @param position
      */
     private void delete(int position) {
@@ -179,13 +180,14 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
 
     /**
      * 移动文件或文件夹
+     *
      * @param position
      */
     private void move(int position) {
-        if(position >= adapter.getData().size())
+        if (position >= adapter.getData().size())
             return;
         FileItem fileItem = (FileItem) adapter.getItem(position);
-        if(fileItem == null)
+        if (fileItem == null)
             return;
         DirectorySelectManager.getInstance(this)
                 .setOnDismissListener(new DirectSelectPopupWindow.OnDismissListener() {
@@ -227,13 +229,14 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
 
     /**
      * 修改文件夹的名字
+     *
      * @param position
      */
     private void rename(int position) {
-        if(position >= adapter.getData().size())
+        if (position >= adapter.getData().size())
             return;
         FileItem fileItem = (FileItem) adapter.getItem(position);
-        if(fileItem == null || fileItem.getItemType() != ItemTypeConfig.TYPE_DIRECT_INFO)
+        if (fileItem == null || fileItem.getItemType() != ItemTypeConfig.TYPE_DIRECT_INFO)
             return;
         YouyunEditDialog.newInstance(getString(R.string.please_input_new_name),
                 fileItem.getPathName(), result -> {
@@ -277,7 +280,7 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
             options.add(getString(R.string.upload_file_to_here));
             myOptionsPopupWindow = new TopMenuPopupWindow(this, (parent, view, position, id) -> {
                 myOptionsPopupWindow.dismiss();
-                switch (position){
+                switch (position) {
                     case 0:     //create new directory
                         createNewDirectory();
                         break;
@@ -393,9 +396,9 @@ public class PersonFileListPathActivity extends BaseRecyclerViewActivityLazy<Per
             pathAdapter.remove(i);
         }
         size = pathAdapter.getData().size();
-        if(size > 0){
+        if (size > 0) {
             PathItem pathItem = pathAdapter.getItem(size - 1);
-            if(pathItem == null)
+            if (pathItem == null)
                 return;
             currentPath = pathItem.getPath();
             currentParentId = pathItem.getParentId();

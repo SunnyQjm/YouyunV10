@@ -1,6 +1,8 @@
 package com.sunny.youyun.activity.person_file_manager.person_file_manager_index;
 
+import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.internet.api.ApiInfo;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,24 +28,23 @@ class PersonFileManagerPresenter extends PersonFileManagerContract.Presenter{
     }
 
     @Override
-    void getUploadFilesOnline(String parent) {
-        mModel.getUploadFilesOnline(parent);
+    void getFilesByPath(String parentId, int page, boolean isRefresh) {
+        mModel.getFilesByPath(parentId, page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
     }
 
     @Override
-    void getUploadFilesSuccess() {
-        mView.getUploadFilesSuccess();
+    void getFilesByPathSuccess() {
+        mView.getFilesByPathSuccess();
     }
 
     @Override
-    void createDirectory(String parentId, String name) {
-        mModel.createDirectory(parentId, name);
-
+    void getPathsSuccess() {
+        mView.getPathsSuccess();
     }
 
     @Override
-    void createDirectorySuccess() {
-        mView.createDirectorySuccess();
+    List<PathItem> getPaths() {
+        return mModel.getPaths();
     }
 
     @Override
