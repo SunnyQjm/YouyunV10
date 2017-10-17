@@ -20,12 +20,14 @@ public interface ConcernContract {
         void beginListen();
         List<ConcernItem> getData();
         void getFollowingList(int page, int size, boolean isRefresh);
+        void getFollowingList(int userId, int page, int size, boolean isRefresh);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
         abstract void beginListen();
         abstract List<ConcernItem> getData();
         abstract void getFollowingList(int page, boolean isRefresh);
+        abstract void getFollowingList(int userId, int page, boolean isRefresh);
         abstract void getFollowingListSuccess();
         abstract void allDataGetFinish();
     }

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
+import com.github.mzule.activityrouter.annotation.Router;
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.scan.config.ScanConfig;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
@@ -19,6 +21,7 @@ import com.sunny.youyun.views.QRScan.qrcode.core.QRCodeView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Router(IntentRouter.ScanActivity)
 public class ScanActivity extends MVPBaseActivity<ScanPresenter> implements ScanContract.View {
 
     @BindView(R.id.easyBar)
@@ -60,6 +63,7 @@ public class ScanActivity extends MVPBaseActivity<ScanPresenter> implements Scan
 
     private void initView() {
         easyBar.setTitle("扫一扫");
+        easyBar.setLeftIconVisible();
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {

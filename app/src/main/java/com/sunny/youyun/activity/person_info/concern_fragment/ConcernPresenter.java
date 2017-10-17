@@ -38,6 +38,11 @@ public class ConcernPresenter extends ConcernContract.Presenter{
     }
 
     @Override
+    void getFollowingList(int userId, int page, boolean isRefresh) {
+        mModel.getFollowingList(userId, page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
+    }
+
+    @Override
     void getFollowingListSuccess() {
         mView.getFollowingListSuccess();
     }

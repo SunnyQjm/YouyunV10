@@ -22,7 +22,7 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter>
         implements ConcernContract.View, BaseQuickAdapter.OnItemClickListener {
 
     private boolean isSelf = true;
-
+    private int userId = -1;
     @Override
     public void onResume() {
         super.onResume();
@@ -37,6 +37,10 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter>
         isSelf = self;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -45,11 +49,16 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter>
         }
     }
 
-    public static ConcernFragment newInstance(boolean isSelf) {
+    public static ConcernFragment newInstance(int userId) {
         Bundle args = new Bundle();
         ConcernFragment fragment = new ConcernFragment();
         fragment.setArguments(args);
-        fragment.setSelf(isSelf);
+        if(userId > 0){
+            fragment.setSelf(false);
+            fragment.setUserId(userId);
+        } else {
+            fragment.setSelf(true);
+        }
         return fragment;
     }
 
@@ -61,9 +70,9 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter>
             page++;
         }
         if (isSelf) {
-            mPresenter.getFollowingList(page, true);
-        } else {
-            refreshLayout.setLoadAble(false);
+            mPresenter.getFollowingList(page, isRefresh);
+        } else if(refreshLayout != null){
+            mPresenter.getFollowingList(userId, page, isRefresh);
         }
     }
 

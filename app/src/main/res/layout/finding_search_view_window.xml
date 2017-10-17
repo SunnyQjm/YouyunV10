@@ -2,43 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="@color/application_theme_color"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bar_item_height">
-        <EditText
+        android:layout_height="@dimen/bar_item_height"
+        android:background="@color/application_theme_color">
+
+        <com.sunny.youyun.views.RichEditText
             android:id="@+id/et_search"
-            android:layout_weight="1"
             android:layout_width="0dp"
+            android:layout_height="@dimen/finding_search_et_height"
             android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="10dp"
-            android:paddingLeft="10dp"
-            android:textSize="12sp"
-            android:hint="@string/search_hint"
-            android:background="@drawable/finding_search_et_bg"
-            android:layout_height="@dimen/finding_search_et_height"
-            android:paddingStart="10dp"
             android:layout_marginStart="12dp"
-            android:layout_marginEnd="10dp" />
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:drawablePadding="5dp"
+            app:drawable_src="@drawable/icon_search_gray"
+            app:drawable_width="20dp"
+            app:drawable_height="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/finding_search_et_bg"
+            android:hint="@string/search_hint"
+            android:textSize="12sp"
+            android:paddingStart="8dp" />
+
         <ImageView
             android:id="@+id/img_search"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_search"
-            android:layout_marginRight="12dp"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="12dp" />
+            android:layout_gravity="center"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/icon_search" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_gray"
-        >
+        android:background="@color/light_gray">
 
     </android.support.v7.widget.RecyclerView>
 

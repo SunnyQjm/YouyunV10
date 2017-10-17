@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
+import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.data_item.Dynamic;
 import com.sunny.youyun.mvp.BaseView;
 
@@ -23,6 +24,11 @@ public class DynamicPresenter extends DynamicContract.Presenter{
     @Override
     void getDynamic(int page, boolean isRefresh) {
         mModel.getDynamic(page, 10, isRefresh);
+    }
+
+    @Override
+    void getDynamic(int userId, int page, boolean isRefresh) {
+        mModel.getDynamic(userId, page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
     }
 
     @Override

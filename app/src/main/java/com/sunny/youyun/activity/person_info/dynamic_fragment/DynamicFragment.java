@@ -14,9 +14,13 @@ import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;
 public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> implements DynamicContract.View {
 
     private boolean isSelf = true;
-
+    private int userId = -1;
     private void setSelf(boolean isSelf) {
         this.isSelf = isSelf;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -26,12 +30,18 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
             loadData(true);
     }
 
-    public static DynamicFragment newInstance(boolean isSelf) {
+    public static DynamicFragment newInstance(int userId) {
 
         Bundle args = new Bundle();
         DynamicFragment fragment = new DynamicFragment();
         fragment.setArguments(args);
-        fragment.setSelf(isSelf);
+        if(userId > 0){
+            fragment.setSelf(false);
+            fragment.setUserId(userId);
+        }else {
+            fragment.setSelf(true);
+        }
+
         return fragment;
     }
 
@@ -44,6 +54,7 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         if (isSelf) {
             mPresenter.getDynamic(page, isRefresh);
         } else {
+            mPresenter.getDynamic(userId, page, isRefresh);
             refreshLayout.setLoadAble(false);
         }
     }

@@ -14,17 +14,27 @@ import java.util.List;
 public interface DynamicContract {
     interface View extends BaseView {
         void getDynamicSuccess();
+
         void allDataGetFinish();
     }
+
     interface Model extends BaseModel {
         void getDynamic(int page, int size, boolean isRefresh);
+
+        void getDynamic(int userId, int page, int size, boolean isRefresh);
+
         List<Dynamic> getData();
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
         abstract void getDynamic(int page, boolean isRefresh);
+
+        abstract void getDynamic(int userId, int page, boolean isRefresh);
+
         abstract void getDynamicSuccess();
+
         abstract List<Dynamic> getData();
+
         abstract void allDataGetFinish();
     }
 }

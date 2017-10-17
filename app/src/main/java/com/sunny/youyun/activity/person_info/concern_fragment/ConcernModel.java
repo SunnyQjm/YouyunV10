@@ -1,13 +1,11 @@
 package com.sunny.youyun.activity.person_info.concern_fragment;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
-import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.data_item.ConcernItem;
-import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -20,9 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Sunny on 2017/6/25 0025.
  */
 
-class ConcernModel implements ConcernContract.Model{
+class ConcernModel implements ConcernContract.Model {
     private final ConcernPresenter mPresenter;
     private final List<ConcernItem> mList = new ArrayList<>();
+
     ConcernModel(ConcernPresenter downloadRecordPresenter) {
         mPresenter = downloadRecordPresenter;
     }
@@ -42,25 +41,82 @@ class ConcernModel implements ConcernContract.Model{
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getFollowingList(page, size)
+                .map(baseResponseBody ->
+                        YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody<ConcernItem[]>>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mPresenter.addSubscription(d);
                     }
 
                     @Override
-                    public void onNext(BaseResponseBody<ConcernItem[]> baseResponseBody) {
-                        if(baseResponseBody.isSuccess() && baseResponseBody.getData() != null){
-                            if(isRefresh){
-                                mList.clear();
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getFollowingListSuccess();
                             }
-                            Collections.addAll(mList, baseResponseBody.getData());
-                            mPresenter.getFollowingListSuccess();
-                            if(baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE)
+
+                            @Override
+                            public void onLoadFinish() {
                                 mPresenter.allDataGetFinish();
-                        }
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.e("获取关注的人信息失败", e);
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getFollowingList(int userId, int page, int size, boolean isRefresh) {
+        APIManager.getInstance()
+                .getUserService(GsonConverterFactory.create())
+                .getFollowingList(userId, page, size)
+                .map(baseResponseBody ->
+                        YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mPresenter.addSubscription(d);
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                mPresenter.getFollowingListSuccess();
+                            }
+
+                            @Override
+                            public void onLoadFinish() {
+                                mPresenter.allDataGetFinish();
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
                     }
 
                     @Override

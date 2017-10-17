@@ -149,8 +149,8 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
             isSelf = true;
         }
 
-        concernFragment = ConcernFragment.newInstance(isSelf);
-        dynamicFragment = DynamicFragment.newInstance(isSelf);
+        concernFragment = ConcernFragment.newInstance(otherId);
+        dynamicFragment = DynamicFragment.newInstance(otherId);
         fragmentList.add(dynamicFragment);
         fragmentList.add(concernFragment);
         String[] titles;

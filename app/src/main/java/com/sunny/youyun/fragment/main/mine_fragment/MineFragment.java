@@ -1,5 +1,6 @@
 package com.sunny.youyun.fragment.main.mine_fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,17 +16,19 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.scan.ScanActivity;
 import com.sunny.youyun.activity.scan.config.ScanConfig;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
+import com.sunny.youyun.model.result.ScanResult;
 import com.sunny.youyun.utils.GlideOptions;
 import com.sunny.youyun.utils.GlideUtils;
+import com.sunny.youyun.utils.GsonUtil;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.LineMenuItem;
-import com.sunny.youyun.views.youyun_dialog.edit.YouyunEditDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,9 +68,8 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     ImageView imgEdit;
 
 
-    private YouyunEditDialog editDialog = null;
     private User user;
-    private Bitmap centerIcon = null;
+    private static final int REQUEST_CODE_SCAN = 0;
 
     public static MineFragment newInstance() {
 
@@ -111,6 +113,21 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     private void initView() {
         easyBar.setTitle(getString(R.string.person_center));
         easyBar.setLeftIconInVisible();
+        easyBar.setRightIconVisible();
+        easyBar.setRightIcon(R.drawable.icon_mine_scan);
+        easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
+            @Override
+            public void onLeftIconClick(View view) {
+
+            }
+
+            @Override
+            public void onRightIconClick(View view) {
+                //TODO open scan
+                MineFragment.this.startActivityForResult(new Intent(activity, ScanActivity.class),
+                        REQUEST_CODE_SCAN);
+            }
+        });
 
         user = UserInfoManager.getInstance().getUserInfo();
         if (YouyunAPI.isIsLogin()) {
@@ -123,18 +140,28 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
     }
 
     @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
-    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+        if (requestCode == REQUEST_CODE_SCAN) {
+            String result = data.getStringExtra(ScanConfig.SCAN_RESULT);
+            ScanResult scanResult = GsonUtil.json2Bean(result, ScanResult.class);
+            if(scanResult == null)
+                return;
+            switch (scanResult.getType()) {
+                case ScanResult.TYPE_FILE:
+                    RouterUtils.openToFileDetailOnline(activity, Integer.valueOf(scanResult.getData()),
+                            scanResult.getData2());
+                    break;
+                case ScanResult.TYPE_USER:
+                    RouterUtils.openToUser(activity, Integer.parseInt(scanResult.getData()));
+                    break;
+                case ScanResult.TYPE_URL:
+                    break;
+            }
 
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
-
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
+        }
     }
 
     @Override
@@ -194,7 +221,11 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                showQrDialog(ScanConfig.createData(UserInfoManager.getInstance().getUserId()))
+                                ScanResult scanResult = new ScanResult.Builder()
+                                        .data(String.valueOf(UserInfoManager.getInstance().getUserId()))
+                                        .type(ScanResult.TYPE_USER)
+                                        .build();
+                                showQrDialog(GsonUtil.bean2Json(scanResult))
                                         .setCenterIcon(resource);
                             }
                         });

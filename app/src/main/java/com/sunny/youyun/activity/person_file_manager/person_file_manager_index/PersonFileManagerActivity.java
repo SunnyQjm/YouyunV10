@@ -83,7 +83,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
         refreshLayout = (EasyRefreshLayout) findViewById(R.id.refreshLayout);
         initView();
         easyBar.setRightIconVisible();
-        easyBar.setRightIcon(R.drawable.icon_add);
+        easyBar.setRightIcon(R.drawable.icon_add1);
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
             public void onLeftIconClick(View view) {
@@ -199,7 +199,11 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
                 }
             }, options);
         }
+        WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 0.7f);
         myOptionsPopupWindow.show(easyBar.getRightIcon());
+        myOptionsPopupWindow.setOnDismissListener(() -> {
+            WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);
+        });
     }
 
     /**

@@ -67,7 +67,7 @@ public class ApiInfo {
     //获取用户动态
     public static final String GET_USER_DYNAMIC_URL = "authc/file/event",
             GET_USER_DYNAMIC_PAGE = "page", GET_USER_DYNAMIC_SIZE = "size",
-            GET_USER_DYNAMIC_TYPE = "type";
+            GET_USER_DYNAMIC_TYPE = "type", GET_USER_DYNAMIC_USER_ID = "userId";
     public static final int GET_USER_DYNAMIC_TYPE_COLLECT = 1,
             GET_USER_DYNAMIC_TYPE_SHARE = 2, GET_USER_DYNAMIC_TYPE_UPLOAD = 3,
             GET_USER_DYNAMIC_TYPE_DOWNLOAD = 4;
@@ -78,7 +78,8 @@ public class ApiInfo {
             GET_USER_FILE_BY_TYPE_SIZE = "size";
 
     //获取关注的人列表
-    public static final String GET_FOLLOWING_LIST_URL = "authc/get/follow",
+    public static final String GET_FOLLOWING_LIST_URL = "get/follow",
+            GET_FOLLOWING_LIST_USER_ID = "userId",
             GET_FOLLOWING_LIST_PAGE = "page", GET_FOLLOWING_LIST_SIZE = "size";
 
     //关注别人
@@ -157,7 +158,6 @@ public class ApiInfo {
             CHANGE_DIRECTORY_NAME = "name";
 
 
-
     ///////////////////////////////////////////////////////////
     /////////ForumService
     //////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ public class ApiInfo {
             DELETE_FILE_OR_DIRECTORY_ID = "selfId";
 
     //获取关注的人分享的文件（动态）
-    public static final String GET_CONCERN_PEOPLE_SHARES_URL = "authc/forum/followUserDynamic",
+    public static final String GET_CONCERN_PEOPLE_SHARES_URL = "authc/forum/followUserFiles",
             GET_CONCERN_PEOPLE_SHARES_PAGE = "page", GET_CONCERN_PEOPLE_SHARES_SIZE = "size";
 
     ////////////////////////////////////////////////////////////////////////////
@@ -214,7 +214,6 @@ public class ApiInfo {
     //////////////////////////////////////////////////////////////////////////
 
     public static final String MEDIA_TYPE_JSON = "Application/json; charset=utf-8";
-
 
 
     /////////////////////////////////////////////////////////////////////////

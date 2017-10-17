@@ -100,6 +100,20 @@ public interface UserServices {
     );
 
     /**
+     * 获取用户动态
+     * @param page
+     * @param size
+     * @return
+     */
+    @GET(ApiInfo.GET_USER_DYNAMIC_URL)
+    Observable<BaseResponseBody<Dynamic[]>> getUserDynamic(
+            @Query(ApiInfo.GET_USER_DYNAMIC_USER_ID) int userId,
+            @Query(ApiInfo.GET_USER_DYNAMIC_PAGE) int page,
+            @Query(ApiInfo.GET_USER_DYNAMIC_SIZE) int size,
+            @Query(ApiInfo.GET_USER_DYNAMIC_TYPE) String type
+    );
+
+    /**
      * 根据文件类型获取用户的文件
      * @param MIME
      * @param page
@@ -119,6 +133,17 @@ public interface UserServices {
      */
     @GET(ApiInfo.GET_FOLLOWING_LIST_URL)
     Observable<BaseResponseBody<ConcernItem[]>> getFollowingList(
+            @Query(ApiInfo.GET_FOLLOWING_LIST_PAGE) int page,
+            @Query(ApiInfo.GET_FOLLOWING_LIST_SIZE) int size
+    );
+
+    /**
+     * 获取关注的人列表
+     * @return
+     */
+    @GET(ApiInfo.GET_FOLLOWING_LIST_URL)
+    Observable<BaseResponseBody<ConcernItem[]>> getFollowingList(
+            @Query(ApiInfo.GET_FOLLOWING_LIST_USER_ID) int userId,
             @Query(ApiInfo.GET_FOLLOWING_LIST_PAGE) int page,
             @Query(ApiInfo.GET_FOLLOWING_LIST_SIZE) int size
     );
