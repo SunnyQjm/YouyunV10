@@ -214,9 +214,6 @@
         <activity
             android:theme="@style/MyActivityTheme"
             android:name=".activity.comment.CommentRecordActivity"/>
-        <activity
-            android:theme="@style/MyActivityTheme"
-            android:name=".activity.person_file_manager.person_file_path.PersonFileListPathActivity"/>
     </application>
 
 </manifest>

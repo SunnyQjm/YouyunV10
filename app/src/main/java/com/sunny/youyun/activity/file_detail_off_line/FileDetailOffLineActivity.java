@@ -130,8 +130,10 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
                             .shareUrl(ApiInfo.BASE_DOWNLOAD_URL + internetFile.getIdentifyCode())
                             .build());
         shareDialog.show(parent, null);
-        shareDialog.setOnDismissListener(() -> WindowUtil.changeWindowAlpha(this, 1.0f));
-        WindowUtil.changeWindowAlpha(this, 0.7f);
+        shareDialog.setOnDismissListener(() -> WindowUtil.changeWindowAlpha(this, false)
+        );
+
+        WindowUtil.changeWindowAlpha(this, true);
     }
 
     @Override

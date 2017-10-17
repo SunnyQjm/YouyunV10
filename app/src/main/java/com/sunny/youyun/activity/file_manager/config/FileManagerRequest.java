@@ -9,4 +9,6 @@ public class FileManagerRequest {
 
 
     public static final String KEY_PATH = "path";
+    public static final String KEY_PATH_ID = "pathId";
+    public static final String KEY_PATH_NAME = "pathName";
 }

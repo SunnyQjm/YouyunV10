@@ -9,6 +9,10 @@ import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+
 /**
  * Created by Sunny on 2017/8/26 0026.
  */
@@ -84,6 +88,8 @@ public class EasyDialog {
             successDialog.setText(successInfo);
         }
         successDialog.show(appCompatActivity.getSupportFragmentManager(), "SUCCESS_DIALOG_TAG");
+        Observable.timer(1, TimeUnit.SECONDS)
+                .subscribe(aLong -> successDialog.dismiss());
         return successDialog;
     }
 

@@ -66,6 +66,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
 
     /**
      * 加载数据回调，由刷新和加载动作回调
+     *
      * @param isRefresh
      */
     @Override
@@ -122,7 +123,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
         //长点击监听
         adapter.setOnItemLongClickListener((adapter, view, position) -> {
             popupwindow.show(view, position);
-            WindowUtil.changeWindowAlpha(this, 0.7f);
+            WindowUtil.changeWindowAlpha(this, true);
             return false;
         });
 
@@ -175,7 +176,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
 
                     @Override
                     public void onDismiss() {
-                        WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);
+                        WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, false);
                     }
                 });
     }
@@ -185,24 +186,26 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
      */
     private void showOptions() {
         if (myOptionsPopupWindow == null) {
-            List<String> options = new ArrayList<>();
-            options.add(getString(R.string.create_new_directory));
-            options.add(getString(R.string.upload_file_to_here));
-            myOptionsPopupWindow = new TopMenuPopupWindow(this, (parent, view, position, id) -> {
-                myOptionsPopupWindow.dismiss();
-                switch (position) {
-                    case 0:     //create new directory
-                        createNewDirectory();
-                        break;
-                    case 1:     //uploadFile
-                        break;
+            myOptionsPopupWindow = new TopMenuPopupWindow(this, new TopMenuPopupWindow.OnSelectListener() {
+                @Override
+                public void onCreateDirectory() {
+                    myOptionsPopupWindow.dismiss();
+                    createNewDirectory();
                 }
-            }, options);
+
+                @Override
+                public void onUpload() {
+                    RouterUtils.open(PersonFileManagerActivity.this,
+                            IntentRouter.FileManagerActivity, currentParentId, pathAdapter.getData()
+                                    .get(pathAdapter.getData().size() - 1).getPath());
+                    myOptionsPopupWindow.dismiss();
+                }
+            });
         }
-        WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 0.7f);
+        WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, true);
         myOptionsPopupWindow.show(easyBar.getRightIcon());
         myOptionsPopupWindow.setOnDismissListener(() -> {
-            WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, 1.0f);
+            WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, false);
         });
     }
 

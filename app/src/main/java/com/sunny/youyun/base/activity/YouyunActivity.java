@@ -58,10 +58,7 @@ public class YouyunActivity extends AppCompatActivity {
 
     public void showSuccess(String info) {
         dismissDialog();
-        if (dialog == null)
-            dialog = EasyDialog.showSuccess(this, info);
-        else
-            dialog.show(getSupportFragmentManager(), String.valueOf(this.getClass()));
+        dialog = EasyDialog.showSuccess(this, info);
     }
 
     public void showError(String info) {

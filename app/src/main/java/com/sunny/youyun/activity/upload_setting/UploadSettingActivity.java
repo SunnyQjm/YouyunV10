@@ -88,6 +88,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
     private int downloadScore = 0;
     private long expireTime = MAX;
     private String parentId = null;
+    private String pathName = "";
 
     private static final int REQUEST_PATH = 0;
 
@@ -121,6 +122,10 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
 
         Intent intent = getIntent();
         String[] paths = intent.getStringArrayExtra("paths");
+        pathName = intent.getStringExtra(FileManagerRequest.KEY_PATH_NAME);
+        parentId = intent.getStringExtra(FileManagerRequest.KEY_PATH_ID);
+        if(parentId.equals(""))
+            parentId = null;
         adapter = new ExpandableItemAdapter(this, mPresenter.getData(paths));
         adapter.setOnItemChildClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -128,7 +133,8 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         uploadSettingIsPublic.setChecked(isPublic);
-        uploadSettingSelectDirectory.setValue(getString(R.string.root_path));
+        uploadSettingSelectDirectory.setValue(pathName.equals("") ? pathName :
+                getString(R.string.root_path));
     }
 
     @Override

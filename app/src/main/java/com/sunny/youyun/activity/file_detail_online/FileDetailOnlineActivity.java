@@ -245,22 +245,27 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                             .build(), new ShareDialog.OnCollectionListener() {
                 @Override
                 public void onCollectionSuccess() {
-                    internetFile.setCanStore(false);
-                    originalInternetFile.setCanStore(false);
-                    shareDialog.setCollectName(getString(R.string.cancel_collection));
+                    if (internetFile.isCanStore()) {
+                        internetFile.setCanStore(false);
+                        originalInternetFile.setCanStore(false);
+                        shareDialog.setCollectName(getString(R.string.cancel_collection));
+                        showSuccess(getString(R.string.collect_success));
+                    } else {
+                        internetFile.setCanStore(true);
+                        originalInternetFile.setCanStore(true);
+                        shareDialog.setCollectName(getString(R.string.collection));
+                        showSuccess(getString(R.string.cancel_collect_success));
+                    }
                     fillData();
                 }
 
                 @Override
                 public void onCollectionFailed() {
-                    internetFile.setCanStore(true);
-                    originalInternetFile.setCanStore(true);
-                    shareDialog.setCollectName(getString(R.string.cancel));
                 }
             });
         shareDialog.show(parent, null);
-        shareDialog.setOnDismissListener(() -> WindowUtil.changeWindowAlpha(this, 1.0f));
-        WindowUtil.changeWindowAlpha(this, 0.7f);
+        shareDialog.setOnDismissListener(() -> WindowUtil.changeWindowAlpha(this, false));
+        WindowUtil.changeWindowAlpha(this, true);
     }
 
     @Override
@@ -314,6 +319,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             case R.id.rt_view_count:
                 break;
             case R.id.rt_like_count:
+                mPresenter.star(internetFile.getId());
                 break;
             case R.id.rt_down_count:
                 break;

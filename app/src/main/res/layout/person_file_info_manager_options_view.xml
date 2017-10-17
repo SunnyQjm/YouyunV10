@@ -2,15 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:elevation="2dp"
-    >
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/circle_rect_bg">
 
-    <ListView
-        android:padding="5dp"
-        android:id="@+id/listView"
-        android:background="@color/white"
-        android:layout_width="100dp"
-        android:layout_height="match_parent">
+    <com.sunny.youyun.views.RichText
+        android:id="@+id/rt_create_directory"
+        app:drawable_src="@drawable/icon_filemanage_newfile"
+        app:drawable_width="20dp"
+        app:drawable_height="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="14sp"
+        android:textColor="@color/text_gray"
+        android:text="@string/create_new_directory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp" />
+    <com.sunny.youyun.views.RichText
+        android:id="@+id/rt_upload"
+        app:drawable_src="@drawable/icon_filemanage_upload"
+        app:drawable_width="20dp"
+        app:drawable_height="20dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="10dp"
+        android:textSize="14sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/text_gray"
+        android:text="@string/upload_file_to_here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="20dp"
+        />
 
-    </ListView>
+    <!--<ListView-->
+        <!--android:padding="5dp"-->
+        <!--android:id="@+id/listView"-->
+        <!--android:background="@color/white"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="wrap_content">-->
+
+    <!--</ListView>-->
 </LinearLayout>

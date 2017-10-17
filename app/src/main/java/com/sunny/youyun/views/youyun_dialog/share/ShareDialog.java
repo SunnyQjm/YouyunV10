@@ -65,6 +65,9 @@ public class ShareDialog {
     private static final int SHARE_COPY_CODE = 5;
     private static final int SHARE_COLLECT = 6;
 
+
+    private boolean isCanStore = true;
+
     public ShareDialog(@NonNull final Activity context, ShareContent shareContent) {
         this.context = context;
         this.shareContent = shareContent;
@@ -106,12 +109,14 @@ public class ShareDialog {
                 .id(SHARE_FRIEND_CIRCLE)
                 .build());
 
-        shareNodes.add(new ShareNode.Builder()
+        ShareNode collectNode = new ShareNode.Builder()
                 .icon(R.drawable.icon_share_collect)
                 .name(shareContent.isCanStore() ? context.getString(R.string.collection) :
                         context.getString(R.string.cancel_collection))
                 .id(SHARE_COLLECT)
-                .build());
+                .build();
+        isCanStore = shareContent.isCanStore();
+        shareNodes.add(collectNode);
         shareAdapter = new ShareAdapter(shareNodes);
 
         List<ShareNode> otherFunctionNodes = new ArrayList<>();
@@ -128,9 +133,9 @@ public class ShareDialog {
         otherFunctionAdapter = new ShareAdapter(otherFunctionNodes);
     }
 
-    public void setCollectName(String name){
+    public void setCollectName(String name) {
         ShareNode shareNode = shareAdapter.getItem(shareAdapter.getData().size() - 1);
-        if(shareNode != null)
+        if (shareNode != null)
             shareNode.setName(name);
     }
 
@@ -162,7 +167,7 @@ public class ShareDialog {
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put(ApiInfo.FILE_COLLECT_FILE_ID, shareContent.getFileId());
-                        jsonObject.put(ApiInfo.FILE_COLLECT_TYPE, shareContent.isCanStore() ? 1 : 2);
+                        jsonObject.put(ApiInfo.FILE_COLLECT_TYPE, isCanStore ? 1 : 2);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -180,12 +185,13 @@ public class ShareDialog {
 
                                 @Override
                                 public void onNext(BaseResponseBody baseResponseBody) {
-                                    if(baseResponseBody.isSuccess()){
-                                        if(onCollectionListener != null){
+                                    if (baseResponseBody.isSuccess()) {
+                                        isCanStore = !isCanStore;
+                                        if (onCollectionListener != null) {
                                             onCollectionListener.onCollectionSuccess();
                                         }
                                     } else {
-                                        if(onCollectionListener != null) {
+                                        if (onCollectionListener != null) {
                                             onCollectionListener.onCollectionFailed();
                                         }
                                     }
@@ -248,6 +254,8 @@ public class ShareDialog {
             iUiListener = new MyIUListener(context);
         this.iUiListener = iUiListener;
         myPopupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        if (shareAdapter != null)
+            shareAdapter.notifyDataSetChanged();
     }
 
 
@@ -338,8 +346,9 @@ public class ShareDialog {
 
     private OnCollectionListener onCollectionListener = null;
 
-    public interface OnCollectionListener{
+    public interface OnCollectionListener {
         void onCollectionSuccess();
+
         void onCollectionFailed();
     }
 }

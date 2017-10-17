@@ -75,7 +75,7 @@ public enum FileManagerOptionsPopupwindow implements View.OnClickListener {
      * @param position
      */
     public void dismiss(int position){
-        if(popupWindow != null && popupWindow.isShowing())
+        if(popupWindow != null)
             popupWindow.dismiss();
     }
 

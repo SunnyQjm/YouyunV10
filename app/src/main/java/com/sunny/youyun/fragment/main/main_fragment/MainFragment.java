@@ -184,6 +184,10 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                 String[] paths = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
                 Intent intent = new Intent(activity, UploadSettingActivity.class);
                 intent.putExtra("paths", paths);
+                intent.putExtra(FileManagerRequest.KEY_PATH_NAME,
+                        data.getStringArrayExtra(FileManagerRequest.KEY_PATH_NAME));
+                intent.putExtra(FileManagerRequest.KEY_PATH_ID,
+                        data.getStringArrayExtra(FileManagerRequest.KEY_PATH_ID));
                 startActivityForResult(intent, UPLOAD_SETTING);
                 break;
             case UPLOAD_SETTING:

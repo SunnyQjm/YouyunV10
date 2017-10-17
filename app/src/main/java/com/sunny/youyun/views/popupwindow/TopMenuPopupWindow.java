@@ -6,36 +6,28 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.adapter.BaseStringAdapter;
-import com.sunny.youyun.utils.DensityUtil;
-
-import java.util.List;
+import com.sunny.youyun.views.RichText;
 
 /**
  * Created by Sunny on 2017/10/13 0013.
  */
 
-public class TopMenuPopupWindow extends PopupWindow {
+public class TopMenuPopupWindow extends PopupWindow implements View.OnClickListener {
     private final Context context;
-    private ListView listView = null;
-    private final List<String> mList;
-    private AdapterView.OnItemClickListener onItemClickListener;
+    private RichText rtCreateDirectory;
+    private RichText rtUpload;
 
     private LayoutInflater inflater;
     private View menuView;
-    private BaseStringAdapter adapter;
-
+    private OnSelectListener listener;
 
     public TopMenuPopupWindow(@NonNull Context context,
-                              AdapterView.OnItemClickListener onItemClickListener, List<String> mList) {
+                              OnSelectListener onSelectListener) {
         this.context = context;
-        this.mList = mList;
-        this.onItemClickListener = onItemClickListener;
+        this.listener = onSelectListener;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (inflater != null)
             menuView = inflater.inflate(R.layout.person_file_info_manager_options_view,
@@ -44,12 +36,10 @@ public class TopMenuPopupWindow extends PopupWindow {
     }
 
     private void initView() {
-        listView = (ListView) menuView.findViewById(R.id.listView);
-        listView.setOnItemClickListener(onItemClickListener);
-        listView.setDividerHeight(DensityUtil.dip2px(context, 0.5f));
-        adapter = new BaseStringAdapter(context, mList);
-        listView.setAdapter(adapter);
-
+        rtCreateDirectory = (RichText) menuView.findViewById(R.id.rt_create_directory);
+        rtUpload = (RichText) menuView.findViewById(R.id.rt_upload);
+        rtCreateDirectory.setOnClickListener(this);
+        rtUpload.setOnClickListener(this);
         //initPopup
         // 设置AccessoryPopup的view
         this.setContentView(menuView);
@@ -67,6 +57,30 @@ public class TopMenuPopupWindow extends PopupWindow {
     }
 
     public void show(View view) {
-        showAsDropDown(view);
+        System.out.println("view_width: " + (view.getMeasuredWidth() + view.getPaddingLeft() +
+                view.getPaddingRight()));
+        System.out.println("width: " + view.getWidth());
+        showAsDropDown(view, -view.getMeasuredWidth() - view.getPaddingRight() - 30, 10);
+    }
+
+
+    public interface OnSelectListener {
+        void onCreateDirectory();
+
+        void onUpload();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rt_create_directory:
+                if (listener != null)
+                    listener.onCreateDirectory();
+                break;
+            case R.id.rt_upload:
+                if (listener != null)
+                    listener.onUpload();
+                break;
+        }
     }
 }
