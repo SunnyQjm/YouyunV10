@@ -3,7 +3,6 @@ package com.sunny.youyun.utils.share;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.model.ShareContent;
@@ -37,7 +36,7 @@ public enum TencentUtil {
     private Tencent tencent;
     private IWXAPI wechat;
     private Activity activity;
-    private static final String SCOPE = "get_user_info";
+    private static final String SCOPE = "get_simple_userinfo";
 
     public void shareToQQ(ShareContent shareContent, IUiListener listener) {
         Bundle bundle = new Bundle();

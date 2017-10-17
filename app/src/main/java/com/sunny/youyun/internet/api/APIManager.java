@@ -149,6 +149,9 @@ public class APIManager {
             Logger.i(request.url().toString());
             BaseResponseBody result = GsonUtil.json2Bean(responseString, BaseResponseBody.class);
             Logger.i(result.toString());
+            if(result.getCode() == ApiInfo.STATUS_CODE_NOT_LOGIN){
+                System.out.println("notLogin: " + YouyunAPI.getLoginToken());
+            }
             //如果现在保存的登录状态是已登录，并且报未登录错误，则说明是cookie失效了，此时用
             // LoginToken重新请求
             if (result.getCode() == ApiInfo.STATUS_CODE_NOT_LOGIN &&
