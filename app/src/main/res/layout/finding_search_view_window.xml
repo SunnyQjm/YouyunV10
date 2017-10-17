@@ -13,6 +13,7 @@
         <com.sunny.youyun.views.RichEditText
             android:id="@+id/et_search"
             android:layout_width="0dp"
+            android:focusable="true"
             android:layout_height="@dimen/finding_search_et_height"
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"

@@ -40,7 +40,6 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
     EditText etContent;
     Button btnSend;
 
-    private int page = 1;
     private int userId;
 
     @Override
@@ -73,7 +72,15 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
 
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getMessages(userId, page, isRefresh);
+//        if (isRefresh) {   //没有数据或是加载更多
+//            mPresenter.getMessages(userId, 1, true);
+//        } else {
+//            mPresenter.getMessages(userId, ((Message) adapter.getItem(0)).getUpdateTime(), false);
+//        }
+        mPresenter.getMessages(userId,
+                adapter.getData().size() == 0 ? System.currentTimeMillis() :
+                        ((Message) adapter.getItem(adapter.getData().size() - 1)).getUpdateTime()
+                , isRefresh);
     }
 
     private void init() {
@@ -134,6 +141,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
     @Override
     public void allDataLoadFinish() {
         refreshLayout.setRefreshAble(false);
+        getMessagesSuccess();
     }
 
     @Override
@@ -164,14 +172,16 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
                 .user(UserInfoManager.getInstance().getUserInfo())
                 .build()));
         recyclerView.scrollToPosition(0);
-        MessageManager.getInstance()
-                .put(userId, new Message.Builder()
-                        .content(content)
-                        .toUserId(userId)
-                        .fromUserId(UserInfoManager.getInstance().getUserId())
-                        .createTime(System.currentTimeMillis())
-                        .user(UserInfoManager.getInstance().getUserInfo())
-                        .build());
+//        MessageManager.getInstance()
+//                .put(userId, new PrivateLetterItem(new Message.Builder()
+//                        .content(content)
+//                        .ownerId(UserInfoManager.getInstance().getUserId())
+//                        .targetId(userId)
+//                        .toUserId(userId)
+//                        .fromUserId(UserInfoManager.getInstance().getUserId())
+//                        .createTime(System.currentTimeMillis())
+//                        .updateTime(System.currentTimeMillis())
+//                        .user(UserInfoManager.getInstance().getUserInfo())));
     }
 
     @Override

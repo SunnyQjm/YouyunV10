@@ -199,13 +199,15 @@ public class ApiInfo {
     //获取聊天记录
     public static final String GET_CHAT_RECORD_URL = "authc/chat/get",
             GET_CHAT_RECORD_USER_ID = "userId", GET_CHAT_RECORD_JOIN_CODE = "joinCode",
-            GET_CHAT_RECORD_PAGE = "page", GET_CHAT_RECORD_SIZE = "size";
+            GET_CHAT_RECORD_PAGE = "page", GET_CHAT_RECORD_SIZE = "size",
+            GET_CHAT_RECORD_TIME = "time";
 
     public static final String SEND_MESSAGE_URL = "authc/chat/send",
             SEND_MESSAGE_CONTENT = "content", SEND_MESSAGE_USER_ID = "userId",
             SEND_MESSAGE_JOIN_CODE = "joinCode";
 
     public static final String GET_PRIVATE_LETTER_LIST_URL = "authc/chat/get/list",
+            GET_PRIVATE_LETTER_LIST_TIME = "time",
             GET_PRIVATE_LETTER_LIST_PAGE = "page", GET_PRIVATE_LETTER_LIST_SIZE = "size";
 
 

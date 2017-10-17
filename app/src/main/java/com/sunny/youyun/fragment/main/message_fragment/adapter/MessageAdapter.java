@@ -8,7 +8,6 @@ import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
-import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
@@ -46,12 +45,9 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, B
                 break;
             case TypeConfig.TYPE_MESSAGE:   //消息内容填充
                 PrivateLetterItem messageItem = (PrivateLetterItem) item;
-                Message message = MessageManager.getInstance().getMessage(messageItem.getId());
-                if (message == null)
-                    return;
-                helper.setText(R.id.tv_description, message.getContent())
-                        .setText(R.id.tv_date, TimeUtils.returnTime(message.getCreateTime()));
-                if(message.getUser() != null) {
+                helper.setText(R.id.tv_description, messageItem.getContent())
+                        .setText(R.id.tv_date, TimeUtils.returnTime(messageItem.getCreateTime()));
+                if(messageItem.getUser() != null) {
                     helper.setText(R.id.tv_name, messageItem.getUser().getUsername());
                     GlideUtils.load(mContext, helper.getView(R.id.img_icon),
                             messageItem.getUser().getAvatar());

@@ -41,10 +41,10 @@ class ChatModel implements ChatContract.Model {
     }
 
     @Override
-    public void getMessages(int userId, int page, int size, boolean isRefresh) {
+    public void getMessages(int userId, long times, int size, boolean isRefresh) {
         APIManager.getInstance()
                 .getChatServices(GsonConverterFactory.create())
-                .getChatRecordSingle(userId, page, size)
+                .getChatRecordSingle(userId, times, size)
                 .map(baseResponseBody -> {
                     if (baseResponseBody.isSuccess() &&
                             baseResponseBody.getData() != null) {

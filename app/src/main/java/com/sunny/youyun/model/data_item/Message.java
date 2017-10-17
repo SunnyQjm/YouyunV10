@@ -2,13 +2,15 @@ package com.sunny.youyun.model.data_item;
 
 import com.sunny.youyun.model.User;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * 消息Model
  *
  * Created by Sunny on 2017/9/25 0025.
  */
 
-public class Message {
+public class Message extends DataSupport{
 
     /**
      * fromUserId : 1010
@@ -18,7 +20,8 @@ public class Message {
      * createTime : 1507356322261
      * updateTime : 1507356322261
      */
-
+    private int ownerId;
+    private int targetId;
     private final int fromUserId;
     private final int toUserId;
     private final String content;
@@ -28,6 +31,8 @@ public class Message {
     private final long updateTime;
 
     protected Message(Builder builder) {
+        setOwnerId(builder.ownerId);
+        setTargetId(builder.targetId);
         fromUserId = builder.fromUserId;
         toUserId = builder.toUserId;
         content = builder.content;
@@ -65,6 +70,22 @@ public class Message {
         return updateTime;
     }
 
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public int getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
+    }
+
     public static final class Builder {
         private int fromUserId;
         private int toUserId;
@@ -73,6 +94,8 @@ public class Message {
         private User user;
         private long createTime;
         private long updateTime;
+        private int ownerId;
+        private int targetId;
 
         public Builder() {
         }
@@ -114,6 +137,16 @@ public class Message {
 
         public Message build() {
             return new Message(this);
+        }
+
+        public Builder ownerId(int val) {
+            ownerId = val;
+            return this;
+        }
+
+        public Builder targetId(int val) {
+            targetId = val;
+            return this;
         }
     }
 }

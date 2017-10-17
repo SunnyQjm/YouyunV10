@@ -8,8 +8,8 @@ import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.MessageManager;
+import com.sunny.youyun.model.manager.UserInfoManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 class MessageModel implements MessageContract.Model {
     private final MessagePresenter mPresenter;
-    private final List<MultiItemEntity> mList = new ArrayList<>();
+    private final List<MultiItemEntity> mList = MessageManager.getInstance().getMessages();
 
     MessageModel(MessagePresenter messagePresenter) {
         mPresenter = messagePresenter;
@@ -36,15 +36,13 @@ class MessageModel implements MessageContract.Model {
     }
 
     @Override
-    public void getPrivateLetterList(int page, int size, boolean isRefresh) {
+    public void getPrivateLetterList(long times, int size, boolean isRefresh) {
         APIManager.getInstance()
                 .getChatServices(GsonConverterFactory.create())
-                .getPrivateLetterList(page, size)
+                .getPrivateLetterList(times)
                 .map(baseResponseBody -> {
                     if (baseResponseBody.isSuccess() &&
                             baseResponseBody.getData() != null) {
-                        if (isRefresh)
-                            remove();
                         addAll(baseResponseBody.getData());
                         return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
                     }
@@ -80,6 +78,7 @@ class MessageModel implements MessageContract.Model {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         Logger.e("获取私信列表失败", e);
                         YouyunExceptionDeal.getInstance()
                                 .deal(mPresenter.getView(), e);
@@ -93,10 +92,13 @@ class MessageModel implements MessageContract.Model {
     }
 
     private void addAll(PrivateLetterItem[] privateLetters) {
-        for (PrivateLetterItem l : privateLetters) {
-            mList.add(l);
+        for (int i = privateLetters.length - 1; i >= 0; i--) {
+            PrivateLetterItem l = privateLetters[i];
+            l.setOwnerId(UserInfoManager.getInstance()
+                    .getUserId());
+            l.setTargetId(l.getUser().getId());
             MessageManager.getInstance()
-                    .put(l.getId(), l);
+                    .put(l.getUser().getId(), l);
         }
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
@@ -70,13 +71,15 @@ public class MyJPushReceiver extends BroadcastReceiver {
                         //收到新消息
                         if (type != null && type.equals(JPushEvent.INSTANTCONTACT)) {
                             MessageManager.getInstance()
-                                    .put(user.getId(), new Message.Builder()
+                                    .put(user.getId(), new PrivateLetterItem(new Message.Builder()
                                             .content(content)
+                                            .ownerId(UserInfoManager.getInstance().getUserId())
+                                            .targetId(user.getId())
                                             .fromUserId(user.getId())
                                             .toUserId(UserInfoManager.getInstance().getUserId())
+                                            .updateTime(System.currentTimeMillis())
                                             .createTime(System.currentTimeMillis())
-                                            .user(user)
-                                            .build());
+                                            .user(user)));
                         }
                     }
                 } catch (JSONException e) {

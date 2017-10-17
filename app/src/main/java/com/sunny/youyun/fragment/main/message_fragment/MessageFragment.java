@@ -18,6 +18,7 @@ import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.message_fragment.adapter.MessageAdapter;
 import com.sunny.youyun.fragment.main.message_fragment.item.HeaderItem;
+import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.manager.MessageManager;
@@ -50,7 +51,6 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
     Unbinder unbinder;
     private View view = null;
     private MessageAdapter adapter;
-    private int page = 1;
 
     @Override
     public void onStart() {
@@ -58,7 +58,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
         MessageEventBus.getInstance()
                 .register(this);
         //一开始先加载一波数据
-        mPresenter.getPrivateLetterList(page, true);
+        loadData();
         System.out.println("MessageFragment onStart");
     }
 
@@ -99,28 +99,37 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
         recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
         refreshLayout.setHeader(new ArrowRefreshHeader(R.layout.easy_refresh_header));
         refreshLayout.setOnRefreshListener(() -> {
-            page = 1;
-            mPresenter.getPrivateLetterList(page, true);
+            loadData();
             refreshLayout.closeRefresh();
         });
 
         refreshLayout.setOnLoadListener(() -> {
-            page++;
-            mPresenter.getPrivateLetterList(page, false);
+            loadData();
             refreshLayout.closeLoad();
         });
         adapter = new MessageAdapter(mPresenter.getData());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
-        //一开始先加载一波数据
-        mPresenter.getPrivateLetterList(page, true);
+    }
+
+    private void loadData() {
+        if (adapter.getData().size() <= 2)
+            mPresenter.getPrivateLetterList(1, true);
+        else {
+            PrivateLetterItem p = (PrivateLetterItem) adapter.getItem(2);
+            if (p == null)
+                return;
+            mPresenter.getPrivateLetterList(p.getUpdateTime() + 10, false);
+        }
     }
 
     private void create_header_view() {
-        mPresenter.getData().add(new HeaderItem(getString(R.string.zan),
-                R.drawable.icon_message_zan));
-        mPresenter.getData().add(new HeaderItem(getString(R.string.comment),
-                R.drawable.icon_message_comment));
+        MessageManager.getInstance()
+                .addHeader(new HeaderItem(getString(R.string.zan),
+                        R.drawable.icon_message_zan));
+        MessageManager.getInstance()
+                .addHeader(new HeaderItem(getString(R.string.comment),
+                        R.drawable.icon_message_comment));
     }
 
 
@@ -164,9 +173,9 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
                 intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, letter.getUser().getUsername());
             }
             RouterUtils.openForResult(this, intent, 0);
-        } else if (position == 0){  //赞
+        } else if (position == 0) {  //赞
             RouterUtils.open(activity, IntentRouter.StarRecordActivity);
-        } else if(position == 1){   //评论
+        } else if (position == 1) {   //评论
             //TODO go to comment record activity
             RouterUtils.open(activity, IntentRouter.CommentRecordActivity);
         }
@@ -175,8 +184,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        page = 1;
-        mPresenter.getPrivateLetterList(page, true);
+        loadData();
     }
 
     @Override

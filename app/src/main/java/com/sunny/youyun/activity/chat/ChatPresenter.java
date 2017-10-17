@@ -22,8 +22,8 @@ class ChatPresenter extends ChatContract.Presenter{
     }
 
     @Override
-    void getMessages(int userId, int page, boolean isRefresh) {
-        mModel.getMessages(userId, page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
+    void getMessages(int userId, long times, boolean isRefresh) {
+        mModel.getMessages(userId, times, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
     }
 
     @Override

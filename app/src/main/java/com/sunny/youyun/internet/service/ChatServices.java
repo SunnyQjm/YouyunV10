@@ -23,14 +23,13 @@ public interface ChatServices {
     /**
      * 获取与单个人的聊天记录
      * @param userId
-     * @param page
      * @param size
      * @return
      */
     @GET(ApiInfo.GET_CHAT_RECORD_URL)
     Observable<BaseResponseBody<Message[]>> getChatRecordSingle(
             @Query(ApiInfo.GET_CHAT_RECORD_USER_ID) int userId,
-            @Query(ApiInfo.GET_CHAT_RECORD_PAGE) int page,
+            @Query(ApiInfo.GET_CHAT_RECORD_TIME) long times,
             @Query(ApiInfo.GET_CHAT_RECORD_SIZE) int size
     );
 
@@ -65,4 +64,13 @@ public interface ChatServices {
             @Query(ApiInfo.GET_PRIVATE_LETTER_LIST_PAGE) int page,
             @Query(ApiInfo.GET_PRIVATE_LETTER_LIST_SIZE) int size
     );
+    /**
+     * 获取私信列表
+     * @return
+     */
+    @GET(ApiInfo.GET_PRIVATE_LETTER_LIST_URL)
+    Observable<BaseResponseBody<PrivateLetterItem[]>> getPrivateLetterList(
+            @Query(ApiInfo.GET_PRIVATE_LETTER_LIST_TIME) long times
+    );
+//    GET_PRIVATE_LETTER_LIST_TIME
 }

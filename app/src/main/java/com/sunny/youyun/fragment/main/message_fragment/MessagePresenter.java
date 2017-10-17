@@ -28,8 +28,8 @@ public class MessagePresenter extends MessageContract.Presenter{
     }
 
     @Override
-    void getPrivateLetterList(int page, boolean isRefresh) {
-        mModel.getPrivateLetterList(page, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
+    void getPrivateLetterList(long times, boolean isRefresh) {
+        mModel.getPrivateLetterList(times, ApiInfo.GET_DEFAULT_SIZE, isRefresh);
     }
 
     @Override

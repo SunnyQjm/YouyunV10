@@ -19,13 +19,13 @@ interface ChatContract {
     }
 
     interface Model extends BaseModel {
-        void getMessages(int userId, int page, int size, boolean isRefresh);
+        void getMessages(int userId, long times, int size, boolean isRefresh);
         List<MultiItemEntity> getData();
         void sendMessage(int userId, String content);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
-        abstract void getMessages(int userId, int page, boolean isRefresh);
+        abstract void getMessages(int userId, long times, boolean isRefresh);
         abstract void getMessagesSuccess();
         abstract List<MultiItemEntity> getData();
         abstract void sendMessage(int userId, String content);
