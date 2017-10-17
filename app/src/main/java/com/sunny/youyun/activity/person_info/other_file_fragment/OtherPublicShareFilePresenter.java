@@ -38,6 +38,6 @@ class OtherPublicShareFilePresenter extends OtherPublicShareFileContract.Present
 
     @Override
     void allDataGetFinish() {
-        mView.allDataGetFinish();
+        mView.allDataLoadFinish();
     }
 }

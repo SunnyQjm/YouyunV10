@@ -43,6 +43,6 @@ public class DynamicPresenter extends DynamicContract.Presenter{
 
     @Override
     void allDataGetFinish() {
-        mView.allDataGetFinish();
+        mView.allDataLoadFinish();
     }
 }

@@ -70,12 +70,19 @@ public class OtherPublicShareFileFragment extends BaseRecyclerViewFragment<Other
         updateAll();
     }
 
+    /**
+     * 复写父函数，不显示尾布局
+     */
     @Override
-    public void allDataGetFinish() {
-        allDataLoadFinish();
+    public void allDataLoadFinish() {
+        if (adapter != null && adapter.getFooterLayout() != null) {
+            adapter.getFooterLayout().setVisibility(View.VISIBLE);
+        }
+
+        //设置不可加载更多
+        refreshLayout.setLoadAble(false);
+        updateAll();
     }
-
-
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         InternetFile concernItem = (InternetFile) adapter.getItem(position);

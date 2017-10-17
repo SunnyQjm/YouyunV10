@@ -16,7 +16,7 @@ interface OtherPublicShareFileContract {
 
         void getOtherPublicFilesSuccess();
 
-        void allDataGetFinish();
+        void allDataLoadFinish();
     }
 
     interface Model extends BaseModel {

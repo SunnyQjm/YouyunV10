@@ -15,7 +15,7 @@ public interface DynamicContract {
     interface View extends BaseView {
         void getDynamicSuccess();
 
-        void allDataGetFinish();
+        void allDataLoadFinish();
     }
 
     interface Model extends BaseModel {

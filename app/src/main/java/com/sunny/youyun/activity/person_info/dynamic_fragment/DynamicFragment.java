@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.person_info.adapter.DynamicAdapter;
@@ -82,9 +83,18 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         updateAll();
     }
 
+    /**
+     * 复写父函数，不显示尾布局
+     */
     @Override
-    public void allDataGetFinish() {
-        allDataLoadFinish();
+    public void allDataLoadFinish() {
+        if (adapter != null && adapter.getFooterLayout() != null) {
+            adapter.getFooterLayout().setVisibility(View.VISIBLE);
+        }
+
+        //设置不可加载更多
+        refreshLayout.setLoadAble(false);
+        updateAll();
     }
 
 }
