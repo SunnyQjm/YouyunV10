@@ -174,4 +174,6 @@
     <string name="select_directory">选择文件夹</string>
     <string name="upload_to">上传到</string>
     <string name="classification_display">分类查看</string>
+    <string name="download_now">立即下载</string>
+    <string name="look_comment">查看评论</string>
 </resources>

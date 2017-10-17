@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.file_detail_online;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.RequiresPermission;
@@ -19,6 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.App;
 import com.sunny.youyun.IntentRouter;
@@ -32,8 +36,11 @@ import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.ShareContent;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.data_item.Comment;
+import com.sunny.youyun.model.result.ScanResult;
 import com.sunny.youyun.utils.FileUtils;
+import com.sunny.youyun.utils.GlideOptions;
 import com.sunny.youyun.utils.GlideUtils;
+import com.sunny.youyun.utils.GsonUtil;
 import com.sunny.youyun.utils.InputMethodUtil;
 import com.sunny.youyun.utils.MyClickText;
 import com.sunny.youyun.utils.RouterUtils;
@@ -75,6 +82,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     private Button btnLookComment;
     private Button btnDownloadNow;
     private TextView tvDescription;
+    private ImageView imgQRCode;
 
     private View header;
     private CommentAdapter adapter;
@@ -208,6 +216,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         btnLookComment = (Button) header.findViewById(R.id.btn_look_comment);
         btnDownloadNow = (Button) header.findViewById(R.id.btn_download_now);
         tvDescription = (TextView) header.findViewById(R.id.tv_detail_info_content);
+        imgQRCode = (ImageView) header.findViewById(R.id.img_qr_code);
         tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
         tvDescription.setHighlightColor(Color.TRANSPARENT);
         imgIcon.setOnClickListener(this);
@@ -218,6 +227,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         rtDownNum.setOnClickListener(this);
         btnLookComment.setOnClickListener(this);
         btnDownloadNow.setOnClickListener(this);
+        imgQRCode.setOnClickListener(this);
     }
 
     private void showShareDialog(View parent) {
@@ -304,11 +314,32 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             case R.id.rt_view_count:
                 break;
             case R.id.rt_like_count:
-                mPresenter.star(internetFile.getId());
                 break;
             case R.id.rt_down_count:
                 break;
             case R.id.btn_look_comment:
+                break;
+            case R.id.img_qr_code:  //显示二维码
+                if (!YouyunAPI.isIsLogin())
+                    return;
+                //将圆形头像放在二维码中间
+                Glide.with(this)
+                        .asBitmap()
+                        .apply(GlideOptions.getInstance()
+                                .getAvatarOptions())
+                        .load(internetFile.getUser() == null ? "" : internetFile.getUser().getAvatar())
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                ScanResult scanResult = new ScanResult.Builder()
+                                        .data(String.valueOf(internetFile.getId()))
+                                        .data2(internetFile.getIdentifyCode())
+                                        .type(ScanResult.TYPE_FILE)
+                                        .build();
+                                showQrDialog(GsonUtil.bean2Json(scanResult))
+                                        .setCenterIcon(resource);
+                            }
+                        });
                 break;
             case R.id.btn_download_now:
                 if (internetFile == null)
@@ -397,8 +428,5 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         }
     }
 
-    @Override
-    public void allDataLoadFinish() {
 
-    }
 }
