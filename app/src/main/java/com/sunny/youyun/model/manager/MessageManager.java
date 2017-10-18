@@ -5,7 +5,11 @@ import android.util.SparseIntArray;
 
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
-import com.sunny.youyun.utils.GsonUtil;
+import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.event.JPushEvent;
+import com.sunny.youyun.utils.bus.MessageEventBus;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,38 @@ public enum MessageManager {
     private final List<MultiItemEntity> mList = new ArrayList<>();
     private int headCount = 0;
 
+    public void init(int userId) {
+        //按更新时间升序查出所有的私信记录
+        List<PrivateLetterItem> privateLetterItems = DataSupport.where("ownerId = ?", String.valueOf(userId))
+                .order("updateTime asc")
+                .find(PrivateLetterItem.class);
+        for (PrivateLetterItem p :
+                privateLetterItems) {
+            User user = null;
+            if (p.getUser() == null) {
+                List<User> list = DataSupport.where("userId=?",
+                        String.valueOf(p.getTargetId())).find(User.class);
+                if (list.size() == 0) {
+                    System.out.println("查询到0条记录");
+                    continue;
+                }
+                user = list.get(0);
+                if (user == null)
+                    continue;
+                p.setUser(user);
+            }
+            p.setUser(user);
+            put(p.getUser().getId(), p);
+        }
+        JPushEvent jPushEvent = new JPushEvent.Builder()
+                .content("")
+                .title("")
+                .type(JPushEvent.JUST_NOTIFY)
+                .build();
+        //推送一个Event
+        MessageEventBus.getInstance()
+                .post(jPushEvent);
+    }
     ////////////////////////////////////////////////////////////////
     ///////////未读消息数量管理
     ///////////////////////////////////////////////////////////////
@@ -88,8 +124,11 @@ public enum MessageManager {
 
     public void put(int userId, PrivateLetterItem message) {
 
+        if (message.getUser() == null)
+            return;
+        message.getUser().saveOrUpdate("userId=?", String.valueOf(userId));
         //异步更新数据库
-        message.saveOrUpdateAsync("ownerId = ? and targetId",
+        message.saveOrUpdate("ownerId = ? and targetId = ?",
                 String.valueOf(UserInfoManager.getInstance().getUserId()), String.valueOf(userId));
         if (messagePosition.get(userId) == 0) {       //如果之前没加就往后添加
             mList.add(headCount, message);
@@ -100,8 +139,8 @@ public enum MessageManager {
             if (multiItemEntity == null || !(multiItemEntity instanceof PrivateLetterItem))
                 return;
             PrivateLetterItem m = (PrivateLetterItem) multiItemEntity;
-            System.out.println("put: " + userId);
-            System.out.println(GsonUtil.bean2Json(m));
+//            System.out.println("put: " + userId);
+//            System.out.println(GsonUtil.bean2Json(m));
             if (message.getUpdateTime() > m.getUpdateTime()) {
                 int position = messagePosition.get(userId);
                 mList.remove(position);
@@ -129,7 +168,7 @@ public enum MessageManager {
     }
 
 
-    private void positionChange(int count){
+    private void positionChange(int count) {
         //如果这边添加，位置会后挪一位
         for (int i = 0; i < messagePosition.size(); i++) {
             int userId = messagePosition.keyAt(i);
@@ -137,10 +176,10 @@ public enum MessageManager {
         }
     }
 
-    private void positionChangeFromMessage(int startPosition){
+    private void positionChangeFromMessage(int startPosition) {
         for (int i = startPosition; i < mList.size(); i++) {
             MultiItemEntity multiItemEntity = mList.get(i);
-            if(multiItemEntity instanceof PrivateLetterItem){
+            if (multiItemEntity instanceof PrivateLetterItem) {
                 PrivateLetterItem p = (PrivateLetterItem) multiItemEntity;
                 messagePosition.put(p.getUser().getId(), i);
             }

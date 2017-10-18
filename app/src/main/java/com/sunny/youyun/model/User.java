@@ -40,8 +40,8 @@ public class User extends DataSupport{
     private int fans;
     private long updateTime;
     private boolean isFollow;
-    public static final int INSTANCE_TAG = 0;
-    private final int INSTANCE = INSTANCE_TAG;
+    public static final int INSTANCE_TAG = -1;
+    private int INSTANCE = INSTANCE_TAG;
 
     protected User(Builder builder) {
         setUsername(builder.username);

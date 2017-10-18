@@ -23,6 +23,7 @@ import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.result.ScanResult;
+import com.sunny.youyun.utils.EasyPermission;
 import com.sunny.youyun.utils.GlideOptions;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.GsonUtil;
@@ -212,24 +213,38 @@ public class MineFragment extends MVPBaseFragment<MinePresenter> implements Mine
             case R.id.img_qr_code:  //显示二维码
                 if (!YouyunAPI.isIsLogin())
                     return;
-                //将圆形头像放在二维码中间
-                Glide.with(activity)
-                        .asBitmap()
-                        .apply(GlideOptions.getInstance()
-                                .getAvatarOptions())
-                        .load(user.getAvatar())
-                        .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                ScanResult scanResult = new ScanResult.Builder()
-                                        .data(String.valueOf(UserInfoManager.getInstance().getUserId()))
-                                        .type(ScanResult.TYPE_USER)
-                                        .build();
-                                showQrDialog(GsonUtil.bean2Json(scanResult))
-                                        .setCenterIcon(resource);
-                            }
-                        });
+                EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(activity, new EasyPermission.OnPermissionRequestListener() {
+                    @Override
+                    public void success() {
+                        displayQRCode();
+                    }
+
+                    @Override
+                    public void fail() {
+
+                    }
+                });
                 break;
         }
+    }
+
+    private void displayQRCode() {
+        //将圆形头像放在二维码中间
+        Glide.with(activity)
+                .asBitmap()
+                .apply(GlideOptions.getInstance()
+                        .getAvatarOptions())
+                .load(user.getAvatar())
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        ScanResult scanResult = new ScanResult.Builder()
+                                .data(String.valueOf(UserInfoManager.getInstance().getUserId()))
+                                .type(ScanResult.TYPE_USER)
+                                .build();
+                        showQrDialog(GsonUtil.bean2Json(scanResult))
+                                .setCenterIcon(resource);
+                    }
+                });
     }
 }

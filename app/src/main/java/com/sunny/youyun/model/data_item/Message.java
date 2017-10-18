@@ -26,7 +26,7 @@ public class Message extends DataSupport{
     private final int toUserId;
     private final String content;
     private final int id;
-    private final User user;
+    private User user;
     private final long createTime;
     private final long updateTime;
 
@@ -84,6 +84,10 @@ public class Message extends DataSupport{
 
     public void setTargetId(int targetId) {
         this.targetId = targetId;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public static final class Builder {

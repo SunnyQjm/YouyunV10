@@ -37,6 +37,7 @@ import com.sunny.youyun.model.ShareContent;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.model.result.ScanResult;
+import com.sunny.youyun.utils.EasyPermission;
 import com.sunny.youyun.utils.FileUtils;
 import com.sunny.youyun.utils.GlideOptions;
 import com.sunny.youyun.utils.GlideUtils;
@@ -329,23 +330,17 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                 if (!YouyunAPI.isIsLogin())
                     return;
                 //将圆形头像放在二维码中间
-                Glide.with(this)
-                        .asBitmap()
-                        .apply(GlideOptions.getInstance()
-                                .getAvatarOptions())
-                        .load(internetFile.getUser() == null ? "" : internetFile.getUser().getAvatar())
-                        .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                ScanResult scanResult = new ScanResult.Builder()
-                                        .data(String.valueOf(internetFile.getId()))
-                                        .data2(internetFile.getIdentifyCode())
-                                        .type(ScanResult.TYPE_FILE)
-                                        .build();
-                                showQrDialog(GsonUtil.bean2Json(scanResult))
-                                        .setCenterIcon(resource);
-                            }
-                        });
+                EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(this, new EasyPermission.OnPermissionRequestListener() {
+                    @Override
+                    public void success() {
+                        displayQRCode();
+                    }
+
+                    @Override
+                    public void fail() {
+
+                    }
+                });
                 break;
             case R.id.btn_download_now:
                 if (internetFile == null)
@@ -365,6 +360,26 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                 finish();
                 break;
         }
+    }
+
+    private void displayQRCode() {
+        Glide.with(this)
+                .asBitmap()
+                .apply(GlideOptions.getInstance()
+                        .getAvatarOptions())
+                .load(internetFile.getUser() == null ? "" : internetFile.getUser().getAvatar())
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        ScanResult scanResult = new ScanResult.Builder()
+                                .data(String.valueOf(internetFile.getId()))
+                                .data2(internetFile.getIdentifyCode())
+                                .type(ScanResult.TYPE_FILE)
+                                .build();
+                        showQrDialog(GsonUtil.bean2Json(scanResult))
+                                .setCenterIcon(resource);
+                    }
+                });
     }
 
     @OnClick(R.id.btn_send)

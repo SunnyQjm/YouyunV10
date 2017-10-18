@@ -17,6 +17,7 @@ import com.sunny.youyun.activity.chat.item.MessageItemOther;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.manager.MessageManager;
@@ -172,16 +173,16 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
                 .user(UserInfoManager.getInstance().getUserInfo())
                 .build()));
         recyclerView.scrollToPosition(0);
-//        MessageManager.getInstance()
-//                .put(userId, new PrivateLetterItem(new Message.Builder()
-//                        .content(content)
-//                        .ownerId(UserInfoManager.getInstance().getUserId())
-//                        .targetId(userId)
-//                        .toUserId(userId)
-//                        .fromUserId(UserInfoManager.getInstance().getUserId())
-//                        .createTime(System.currentTimeMillis())
-//                        .updateTime(System.currentTimeMillis())
-//                        .user(UserInfoManager.getInstance().getUserInfo())));
+        MessageManager.getInstance()
+                .put(userId, new PrivateLetterItem(new Message.Builder()
+                        .content(content)
+                        .ownerId(UserInfoManager.getInstance().getUserId())
+                        .targetId(userId)
+                        .fromUserId(UserInfoManager.getInstance().getUserId())
+                        .toUserId(userId)
+                        .createTime(System.currentTimeMillis())
+                        .updateTime(System.currentTimeMillis())
+                        .user(UserInfoManager.getInstance().getUserInfo())));
     }
 
     @Override

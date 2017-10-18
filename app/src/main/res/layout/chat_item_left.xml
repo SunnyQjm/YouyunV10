@@ -25,6 +25,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
+        android:gravity="start"
         android:background="@mipmap/img_dialog_gray"
         android:maxWidth="250dp"
         android:paddingLeft="15dp"

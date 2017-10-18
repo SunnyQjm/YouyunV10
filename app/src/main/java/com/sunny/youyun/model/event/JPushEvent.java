@@ -11,6 +11,7 @@ public class JPushEvent {
     public static final String STAR = "STAR";
     public static final String FOLLOW = "FOLLOW";
     public static final String COMMENT = "COMMENT";
+    public static final String JUST_NOTIFY = "JUST_NOTIFY";
     private String type = INSTANTCONTACT;
     private User fromUser;
     private String title;

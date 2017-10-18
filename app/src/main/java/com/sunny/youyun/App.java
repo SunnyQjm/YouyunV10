@@ -11,6 +11,7 @@ import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.MyThreadPool;
@@ -48,8 +49,7 @@ public class App extends Application {
         //load user info from local
         UserInfoManager.init();
         int id = UserInfoManager.getInstance()
-                .getUserInfo()
-                .getId();
+                .getUserId();
         System.out.println("id: " + id);
         //设置设备的 推送标识
         JPushUtil.setTag(this, String.valueOf(id));
@@ -60,6 +60,8 @@ public class App extends Application {
             JPushInit();
             LoggerInit();
             initList();
+            MessageManager.getInstance()
+                    .init(id);
         });
     }
 

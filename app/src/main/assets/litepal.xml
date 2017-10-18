@@ -35,6 +35,7 @@
         <mapping class="com.sunny.youyun.model.InternetFile" />
         <mapping class="com.sunny.youyun.wifidirect.model.TransLocalFile"/>
         <mapping class="com.sunny.youyun.model.User"/>
+        <mapping class="com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem"/>
     </list>
 
     <!--
