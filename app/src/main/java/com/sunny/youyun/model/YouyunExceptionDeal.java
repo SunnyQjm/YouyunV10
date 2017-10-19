@@ -1,12 +1,12 @@
 package com.sunny.youyun.model;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
+import com.sunny.youyun.internet.exception.NotLoginException;
 import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
@@ -50,22 +50,29 @@ public enum YouyunExceptionDeal {
         if (e instanceof LoginTokenInvalidException) {
             showReLogin(appCompatActivity);
         }
+        //没有登录，提示用户先登陆
+        if(e instanceof NotLoginException){
+            showLogin(appCompatActivity);
+        }
     }
+
+
 
     public void deal(Fragment fragment, Throwable e){
         //登陆失效，需要重新登录
         if (e instanceof LoginTokenInvalidException) {
             showReLogin(fragment);
         }
-    }
-
-    public void showReLogin(Activity activity){
-        if(activity instanceof AppCompatActivity){
-            showReLogin((AppCompatActivity) activity);
-        } else {
-            Logger.e("activity not instanceof AppcompatActivity");
+        //没有登录，提示用户先登陆
+        if(e instanceof NotLoginException){
+            showLogin(fragment);
         }
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    /////////////ReLogin
+    //////////////////////////////////////////////////////////////////
     private void showReLogin(AppCompatActivity appCompatActivity) {
         dismissDialog();
         dialog = EasyDialog.showReLogin(appCompatActivity);
@@ -75,6 +82,21 @@ public enum YouyunExceptionDeal {
         dismissDialog();
         dialog = EasyDialog.showReLogin(fragment);
     }
+
+
+    ///////////////////////////////////////////////////////
+    //////////////Login
+    //////////////////////////////////////////////////////
+    private void showLogin(AppCompatActivity appCompatActivity) {
+        dismissDialog();
+        dialog = EasyDialog.showLogin(appCompatActivity);
+    }
+
+    private void showLogin(Fragment fragment) {
+        dismissDialog();
+        dialog = EasyDialog.showLogin(fragment);
+    }
+
 
     public void dismissDialog() {
         if (dialog != null && !dialog.isHidden())

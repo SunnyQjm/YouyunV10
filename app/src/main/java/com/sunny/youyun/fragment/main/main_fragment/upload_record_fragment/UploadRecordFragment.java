@@ -2,7 +2,6 @@ package com.sunny.youyun.fragment.main.main_fragment.upload_record_fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import com.sunny.youyun.App;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
+import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.main_fragment.adapter.FileRecordAdapter;
@@ -57,8 +57,6 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
     Unbinder unbinder;
     private FileRecordAdapter adapter;
     private List<InternetFile> mList = null;
-    //    private MyPopupWindow popupWindow;
-    private volatile int position = 0;
 
     private View view = null;
 
@@ -98,9 +96,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
     }
 
     public static UploadRecordFragment newInstance() {
-
         Bundle args = new Bundle();
-
         UploadRecordFragment fragment = new UploadRecordFragment();
         fragment.setArguments(args);
         return fragment;
@@ -112,64 +108,40 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_upload_record, container, false);
             unbinder = ButterKnife.bind(this, view);
-            initView(container);
+            initView();
         } else {
             unbinder = ButterKnife.bind(this, view);
         }
         return view;
     }
 
-    private void initView(ViewGroup container) {
-        adapter = new FileRecordAdapter(R.layout.item_file_trans_record, App.mList_UploadRecord);
+    private void initView() {
+        adapter = new FileRecordAdapter(App.mList_UploadRecord);
         mList = adapter.getData();
         adapter.setOnItemClickListener(this);
         adapter.setOnItemLongClickListener(this);
         adapter.setOnItemChildClickListener(this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(activity,
+                LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new RecyclerViewDividerItem(activity,
+                RecyclerViewDividerItem.VERTICAL, true));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
-
-//        //init popupWindow
-//        View view = LayoutInflater.from(activity).inflate(R.layout.popup_window_bottom_layout, container, false);
-//        TextView tv_delete = (TextView) view.findViewById(R.id.tv_delete);
-//        TextView tv_cancel = (TextView) view.findViewById(R.id.tv_cancel);
-//        tv_cancel.setOnClickListener(v -> {
-//            if (popupWindow != null && popupWindow.isShowing())
-//                popupWindow.dismiss();
-//        });
-//        tv_delete.setOnClickListener(v -> {
-//            delete(position);
-//            if (popupWindow != null && popupWindow.isShowing())
-//                popupWindow.dismiss();
-//        });
-//        popupWindow = new MyPopupWindow(view, MATCH_PARENT, WRAP_CONTENT);
     }
 
+    /**
+     * 删除item
+     *
+     * @param position
+     */
     private void delete(int position) {
         if (position >= mList.size())
             return;
-        System.out.println("delete : " + position);
         InternetFile internetFile = adapter.getItem(position);
         if (internetFile != null)
             internetFile.delete();
         adapter.remove(position);
-    }
-
-    @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
-    }
-
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
-
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
     }
 
     @Override
@@ -219,12 +191,17 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
 
     public void update(int position) {
         if (adapter != null) {
-            adapter.notifyItemChanged(mList.size() - 1 - position, mList.get(position));
+            adapter.notifyItemChanged(position, mList.get(position));
         } else {
             Logger.i("adapter is null");
         }
     }
 
+    /**
+     * 上传回调
+     *
+     * @param uploadPosition
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateUI(FileUploadPosition uploadPosition) {
         System.out.println(uploadPosition);
@@ -296,7 +273,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
             case SELECT_ALL:
                 for (int i = 0; i < mList.size(); i++) {
                     CheckStateManager.getInstance()
-                            .put(mList.get(i).getPath(), mList.size() - 1 - i,
+                            .put(mList.get(i).getPath_Time(), i,
                                     true);
                 }
                 adapter.notifyDataSetChanged();
@@ -304,7 +281,7 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
             case DELETE:
                 Integer[] result = CheckStateManager.getInstance().intResult();
                 Arrays.sort(result, (o1, o2) -> o2 - o1);
-                for(int position : result){
+                for (int position : result) {
                     delete(position);
                 }
                 break;
@@ -313,15 +290,16 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
 
     @Override
     public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-//        popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-//        this.position = position;
         EventBus.getDefault()
                 .post(new MultiSelectEvent(MultiSelectEvent.Operator.SHOW));
-        InternetFile file = mList.get(mList.size() - position - 1);
+        InternetFile file = (InternetFile) adapter.getItem(position);
+        if (file == null)
+            return true;
         if (adapter instanceof FileRecordAdapter) {
             ((FileRecordAdapter) adapter).setMode(FileRecordAdapter.Mode.SELECT);
             CheckStateManager.init();
-            CheckStateManager.getInstance().put(file.getPath(), position, true);
+            CheckStateManager.getInstance().put(file.getPath_Time()
+                    , position, true);
             adapter.notifyDataSetChanged();
         }
         return true;
@@ -332,16 +310,17 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
         if (adapter == null)
             return;
         String uuid = UUIDUtil.getUUID();
-        InternetFile file = mList.get(mList.size() - position - 1);
+        InternetFile file = (InternetFile) adapter.getItem(position);
         ImageView img_icon = (ImageView) view.findViewById(R.id.img_icon);
-
+        if(file == null)
+            return;
         //如果当前处于选择模式
         if (adapter instanceof FileRecordAdapter &&
                 ((FileRecordAdapter) adapter).getMode() == FileRecordAdapter.Mode.SELECT) {
             if (CheckStateManager.getInstance().get(position)) {
-                CheckStateManager.getInstance().put(file.getPath(), position, false);
+                CheckStateManager.getInstance().put(file.getPath_Time(), position, false);
             } else {
-                CheckStateManager.getInstance().put(file.getPath(), position, true);
+                CheckStateManager.getInstance().put(file.getPath_Time(), position, true);
             }
             adapter.notifyItemChanged(position);
             return;

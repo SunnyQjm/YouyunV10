@@ -62,6 +62,7 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
     private MyPopupWindow popupWindow = null;
 
     private int position = -1;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -106,7 +107,7 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
 
     private void initView(ViewGroup container) {
         mList = App.mList_DownloadRecord;
-        adapter = new FileRecordAdapter(R.layout.item_file_trans_record, mList);
+        adapter = new FileRecordAdapter(mList);
         adapter.setOnItemClickListener(this);
         adapter.setOnItemLongClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -132,7 +133,7 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
     }
 
     private void delete(int position) {
-        if(position >= mList.size())
+        if (position >= mList.size())
             return;
         InternetFile internetFile = adapter.getItem(position);
         if (internetFile != null)

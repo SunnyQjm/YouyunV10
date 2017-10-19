@@ -159,6 +159,29 @@ public class EasyDialog {
                 "LOGIN_DIALOG_TAG");
         return loginTipDialog;
     }
+    public static YouyunTipDialog showLogin(Fragment fragment) {
+        if(loginTipDialog == null) {
+            loginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
+                    fragment.getString(R.string.login_first),
+                    new OnYouyunTipDialogClickListener() {
+                        @Override
+                        public void onCancelClick() {
+                            loginTipDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onSureClick() {
+                            loginTipDialog.dismiss();
+                            EasyYouyunAPIManager.logout(fragment);
+                        }
+                    });
+            loginTipDialog.setRightText(fragment.getString(R.string.login));
+        }
+        loginTipDialog.show(fragment.getFragmentManager(),
+                "LOGIN_DIALOG_TAG");
+        return loginTipDialog;
+    }
+
     public static YouyunLoadingView showLoading(AppCompatActivity appCompatActivity) {
         YouyunLoadingView youyunLoadingView = new YouyunLoadingView(appCompatActivity);
         youyunLoadingView.show();

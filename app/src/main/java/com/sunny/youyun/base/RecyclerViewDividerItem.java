@@ -21,7 +21,7 @@ public class RecyclerViewDividerItem extends RecyclerView.ItemDecoration {
     public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
     public static final int VERTICAL = LinearLayout.VERTICAL;
 
-    private static final int[] ATTRS = new int[]{ android.R.attr.listDivider };
+    private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
 
     private Drawable mDivider;
 
@@ -30,13 +30,18 @@ public class RecyclerViewDividerItem extends RecyclerView.ItemDecoration {
      */
     private int mOrientation;
 
+    /**
+     * 布局显示是否倒转
+     */
+    private boolean reverseLayout = false;
+
     private final Rect mBounds = new Rect();
 
     /**
      * Creates a divider {@link RecyclerView.ItemDecoration} that can be used with a
      * {@link LinearLayoutManager}.
      *
-     * @param context Current context, it will be used to access resources.
+     * @param context     Current context, it will be used to access resources.
      * @param orientation Divider orientation. Should be {@link #HORIZONTAL} or {@link #VERTICAL}.
      */
     public RecyclerViewDividerItem(Context context, int orientation) {
@@ -44,6 +49,14 @@ public class RecyclerViewDividerItem extends RecyclerView.ItemDecoration {
         mDivider = a.getDrawable(0);
         a.recycle();
         setOrientation(orientation);
+    }
+
+    public RecyclerViewDividerItem(Context context, int orientation, boolean isReverseLayout) {
+        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        mDivider = a.getDrawable(0);
+        a.recycle();
+        setOrientation(orientation);
+        setReverseLayout(isReverseLayout);
     }
 
     /**
@@ -58,6 +71,10 @@ public class RecyclerViewDividerItem extends RecyclerView.ItemDecoration {
                     "Invalid orientation. It should be either HORIZONTAL or VERTICAL");
         }
         mOrientation = orientation;
+    }
+
+    public void setReverseLayout(boolean reverseLayout) {
+        this.reverseLayout = reverseLayout;
     }
 
     /**
@@ -86,6 +103,8 @@ public class RecyclerViewDividerItem extends RecyclerView.ItemDecoration {
         canvas.save();
         final int left;
         final int right;
+
+        //对内边距的处理
         if (parent.getClipToPadding()) {
             left = parent.getPaddingLeft();
             right = parent.getWidth() - parent.getPaddingRight();
@@ -97,7 +116,9 @@ public class RecyclerViewDividerItem extends RecyclerView.ItemDecoration {
         }
 
         final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount - 1; i++) {
+        int start = reverseLayout ? 1 : 0;
+        int end = reverseLayout ? childCount : childCount - 1;
+        for (int i = start; i < end; i++) {
             final View child = parent.getChildAt(i);
             parent.getDecoratedBoundsWithMargins(child, mBounds);
             final int bottom = mBounds.bottom + Math.round(ViewCompat.getTranslationY(child));
@@ -124,7 +145,9 @@ public class RecyclerViewDividerItem extends RecyclerView.ItemDecoration {
         }
 
         final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount - 1; i++) {
+        int start = reverseLayout ? 1 : 0;
+        int end = reverseLayout ? childCount : childCount - 1;
+        for (int i = start; i < end; i++) {
             final View child = parent.getChildAt(i);
             parent.getLayoutManager().getDecoratedBoundsWithMargins(child, mBounds);
             final int right = mBounds.right + Math.round(ViewCompat.getTranslationX(child));

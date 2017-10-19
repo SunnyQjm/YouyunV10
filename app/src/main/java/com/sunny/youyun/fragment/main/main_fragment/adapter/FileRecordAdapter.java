@@ -1,19 +1,14 @@
 package com.sunny.youyun.fragment.main.main_fragment.adapter;
 
-import android.support.annotation.IntRange;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.model.InternetFile;
-import com.sunny.youyun.utils.FileTypeUtil;
-import com.sunny.youyun.utils.GlideOptions;
+import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
 import com.sunny.youyun.utils.Tool;
 
@@ -42,16 +37,10 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
         NORMAL, SELECT
     }
 
-    public FileRecordAdapter(@LayoutRes int layoutResId, @Nullable List<InternetFile> data) {
-        super(layoutResId, data);
+    public FileRecordAdapter(@Nullable List<InternetFile> data) {
+        super(R.layout.item_file_trans_record, data);
         this.openLoadAnimation(SLIDEIN_RIGHT);
         this.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-    }
-
-    @Nullable
-    @Override
-    public InternetFile getItem(@IntRange(from = 0) int position) {
-        return super.getItem(mData.size() - 1 - position);
     }
 
     @Override
@@ -67,7 +56,8 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
             helper.setVisible(R.id.img_arrow, true);
             helper.setVisible(R.id.checkBox, false);
         }
-        helper.setChecked(R.id.checkBox, CheckStateManager.getInstance().get(item.getPath()));
+        helper.setChecked(R.id.checkBox, CheckStateManager.getInstance()
+                .get(item.getPath_Time()));
         switch (item.getStatus()) {
             case Status.FINISH:
                 helper.setText(R.id.tv_name, item.getName())
@@ -96,29 +86,8 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
                 break;
         }
 
-        //显示文件icon
-        int result = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(item.getName());
-        if (result == -1 && item.isDone()) {
-            Glide.with(mContext)
-                    .load(item.getPath())
-                    .apply(GlideOptions.getInstance().getRequestOptions())
-                    .transition(GlideOptions.getInstance().getCrossFadeDrawableTransitionOptions())
-                    .into(((ImageView) helper.getView(R.id.img_icon)));
-            return;
-        }
-//        else if (stringResult == FileTypeUtil.getApk() && item.isDone() && mContext.getClass() == Activity.class) {
-//            Drawable drawable = ApkInfoUtil.getIcon((Activity) mContext, item.getPath());
-//            Glide.with(mContext)
-//                    .load(drawable)
-//                    .apply(GlideOptions.getInstance().getRequestOptions())
-//                    .transition(GlideOptions.getInstance().getCrossFadeDrawableTransitionOptions())
-//                    .into(((ImageView) helper.getView(R.id.img_icon)));
-//            return;
-//        }
-        Glide.with(mContext)
-                .load(FileTypeUtil.getIconIdByFileName(item.getName()))
-                .into(((ImageView) helper.getView(R.id.img_icon)));
-
+        GlideUtils.setImage(mContext, (ImageView) helper.getView(R.id.img_icon),
+                item);
     }
 
     /**
@@ -128,7 +97,6 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
      * @param helper
      */
     private void progressStyle(BaseViewHolder helper, String status) {
-        CheckBox checkBox = (CheckBox)helper.getView(R.id.checkBox);
         switch (status) {
             case Status.DOWNLOADING:
             case Status.PAUSE:
@@ -156,21 +124,5 @@ public class FileRecordAdapter extends BaseQuickAdapter<InternetFile, BaseViewHo
                     helper.setImageResource(R.id.img_arrow, R.drawable.icon_arrow);
                 break;
         }
-    }
-
-
-
-    /**
-     * remove item
-     *
-     * @param position the real view position, is reverse than data
-     */
-    @Override
-    public void remove(int position) {
-        int internalPosition = position + getHeaderLayoutCount();
-        notifyItemRemoved(internalPosition);
-        mData.remove(mData.size() - 1 - position);
-        notifyDataSetChanged();
-        notifyItemRangeChanged(internalPosition, mData.size() - internalPosition);
     }
 }

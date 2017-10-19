@@ -7,6 +7,7 @@ import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.cookie_persisten.CookieJarImpl;
 import com.sunny.youyun.internet.cookie_persisten.PersistentCookieStore;
 import com.sunny.youyun.internet.exception.LoginTokenInvalidException;
+import com.sunny.youyun.internet.exception.NotLoginException;
 import com.sunny.youyun.internet.service.ChatServices;
 import com.sunny.youyun.internet.service.FileServices;
 import com.sunny.youyun.internet.service.ForumServices;
@@ -107,8 +108,8 @@ public class APIManager {
         return forumServices;
     }
 
-    public ChatServices getChatServices(Converter.Factory... factories){
-        if(chatServices == null)
+    public ChatServices getChatServices(Converter.Factory... factories) {
+        if (chatServices == null)
             chatServices = createService(ChatServices.class, factories);
         return chatServices;
     }
@@ -149,7 +150,7 @@ public class APIManager {
             Logger.i(request.url().toString());
             BaseResponseBody result = GsonUtil.json2Bean(responseString, BaseResponseBody.class);
             Logger.i(result.toString());
-            if(result.getCode() == ApiInfo.STATUS_CODE_NOT_LOGIN){
+            if (result.getCode() == ApiInfo.STATUS_CODE_NOT_LOGIN) {
                 System.out.println("notLogin: " + YouyunAPI.getLoginToken());
             }
             //如果现在保存的登录状态是已登录，并且报未登录错误，则说明是cookie失效了，此时用
@@ -174,23 +175,29 @@ public class APIManager {
                 LoginTokenResponseBody loginTokenResponseBody = call.execute().body();
 
                 //如果LoginToken还有效，就可以请求到用户的信息以及新token
-                if(loginTokenResponseBody.isSuccess() && loginTokenResponseBody.getData() != null){
-                    YouyunAPI.updateIsLogin(true);
-                    YouyunAPI.updateLoginToken(loginTokenResponseBody.getData().getLoginToken());
-                    Request newRequest = request.newBuilder()
-                            .build();
-                    //重新发起之前的请求
-                    if(loginTokenResponseBody.isSuccess() && loginTokenResponseBody.getStatus() == 0){
-                        originResponse.close();
-                        return chain.proceed(newRequest);
+                if (loginTokenResponseBody.isSuccess()) {
+                    //尝试用LoginToken更新都没用，还返回-1，则表示并没有登录
+                    if(loginTokenResponseBody.getCode() == ApiInfo.STATUS_CODE_NOT_LOGIN){
+                        throw new NotLoginException("Not Login!");
+                    }
+                    if (loginTokenResponseBody.getData() != null) {
+                        YouyunAPI.updateIsLogin(true);
+                        YouyunAPI.updateLoginToken(loginTokenResponseBody.getData().getLoginToken());
+                        Request newRequest = request.newBuilder()
+                                .build();
+                        //重新发起之前的请求
+                        if (loginTokenResponseBody.isSuccess() && loginTokenResponseBody.getStatus() == 0) {
+                            originResponse.close();
+                            return chain.proceed(newRequest);
+                        }
                     }
                 }
 
             }
 
             //如果LoginToken失效了，就抛出异常
-            if(result.getCode() == ApiInfo.STATUS_CODE_LOGIN_INVALID &&
-                    YouyunAPI.isIsLogin()){
+            if (result.getCode() == ApiInfo.STATUS_CODE_LOGIN_INVALID &&
+                    YouyunAPI.isIsLogin()) {
                 System.out.println("抛出LoginToken失效异常");
                 throw new LoginTokenInvalidException("LoginToken Invalid!!");
             }

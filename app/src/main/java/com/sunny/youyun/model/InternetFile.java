@@ -271,6 +271,9 @@ public class InternetFile extends DataSupport implements Serializable {
         this.canStore = canStore;
     }
 
+    public String getPath_Time(){
+        return path + createTime;
+    }
     public static final class Builder {
         private String indentfyCode;
         private int id;

@@ -20,6 +20,7 @@ import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.internet.upload.config.UploadConfig;
+import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.ExpandableLineMenuItem;
@@ -119,6 +120,11 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
             isPublic = isChecked;
         });
 
+        //未登录的话，没有下面的可选项
+        if(!YouyunAPI.isIsLogin()){
+            uploadSettingSelectDirectory.setVisibility(View.GONE);
+            uploadSettingScore.setVisibility(View.GONE);
+        }
 
         Intent intent = getIntent();
         String[] paths = intent.getStringArrayExtra(FileManagerRequest.KEY_PATH);
