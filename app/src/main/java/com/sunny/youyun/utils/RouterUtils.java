@@ -108,7 +108,11 @@ public class RouterUtils {
         fragment.startActivityForResult(intent, requestCode);
     }
 
-    public static void open(Context context, Intent intent){
+    public static void openForResult(Activity activity, Intent intent, int requestCode) {
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    public static void open(Context context, Intent intent) {
         context.startActivity(intent);
     }
 
@@ -116,7 +120,7 @@ public class RouterUtils {
         openForResult(fragment, buildToChatIntent(fragment.getContext(), user), 0);
     }
 
-    public static void openToChat(Context context, @NonNull User user){
+    public static void openToChat(Context context, @NonNull User user) {
         open(context, buildToChatIntent(context, user));
     }
 

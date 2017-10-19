@@ -11,22 +11,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.download.DownloadActivity;
 import com.sunny.youyun.activity.file_manager.FileManagerActivity;
-import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
-import com.sunny.youyun.activity.upload_setting.UploadSettingActivity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.main_fragment.adapter.RecordTabsAdapter;
 import com.sunny.youyun.fragment.main.main_fragment.download_record_fragment.DownloadRecordFragment;
 import com.sunny.youyun.fragment.main.main_fragment.upload_record_fragment.UploadRecordFragment;
-import com.sunny.youyun.internet.upload.FileUploadFileParam;
 import com.sunny.youyun.internet.upload.FileUploader;
-import com.sunny.youyun.internet.upload.config.UploadConfig;
 import com.sunny.youyun.model.event.MultiSelectEvent;
 import com.sunny.youyun.utils.DialogUtils;
 import com.sunny.youyun.utils.RecyclerViewUtils;
@@ -70,8 +64,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
     private static final int TAB_MARGIN_RIGHT = 40;
     private static final int DURATION = 300;
     public static final int DOWNLOAD_CODE = 233;
-    public static final int PATH_S = 234;
-    private static final int UPLOAD_SETTING = 235;
+
 
     private View view = null;
 
@@ -141,7 +134,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                     startActivityForResult(new Intent(activity, DownloadActivity.class), DOWNLOAD_CODE);
                     break;
                 case R.id.et_upload:
-                    startActivityForResult(new Intent(activity, FileManagerActivity.class), PATH_S);
+                    startActivityForResult(new Intent(activity, FileManagerActivity.class), FileUploader.PATH_S);
                     break;
             }
         };
@@ -160,49 +153,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case PATH_S:        //选择文件的结果
-                if (data == null) {
-                    Logger.i("PATH_S: data is null");
-                    return;
-                }
-                String[] paths = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
-                Intent intent = new Intent(activity, UploadSettingActivity.class);
-                intent.putExtra(FileManagerRequest.KEY_PATH, paths);
-                intent.putExtra(FileManagerRequest.KEY_PATH_NAME,
-                        data.getStringArrayExtra(FileManagerRequest.KEY_PATH_NAME));
-                intent.putExtra(FileManagerRequest.KEY_PATH_ID,
-                        data.getStringArrayExtra(FileManagerRequest.KEY_PATH_ID));
-                startActivityForResult(intent, UPLOAD_SETTING);
-                break;
-            case UPLOAD_SETTING:
-                if (data == null) {
-                    Logger.i("UPLOAD_SETTING: data is null");
-                    return;
-                }
-                paths = data.getStringArrayExtra(UploadConfig.PATH);
-                int allowDownloadCount = data.getIntExtra(UploadConfig.ALLOW_DOWNLOAD_COUNT, -1);
-                long expireTime = data.getLongExtra(UploadConfig.EFFECT_DATE, -1);
-                boolean isPublic = data.getBooleanExtra(UploadConfig.IS_PUBLIC, true);
-                int score = data.getIntExtra(UploadConfig.DOWNLOAD_SCORE, 0);
-                String parentId = data.getStringExtra(UploadConfig.PARENT_ID);
-                String description = data.getStringExtra(UploadConfig.DESCRIPTION);
-                for (String path : paths) {
-                    FileUploader.getInstance()
-                            .upload(new FileUploadFileParam
-                                    .Builder()
-                                    .filePath(path)
-                                    .allowDownCount(allowDownloadCount)
-                                    .expireTime(expireTime)
-                                    .isPrivate(!isPublic)
-                                    .isShare(isPublic)
-                                    .parentId(parentId)
-                                    .description(description)
-                                    .score(score)
-                                    .build());
-                }
-                break;
-        }
+        FileUploader.dealUploadResult(this, requestCode, resultCode, data);
     }
 
     @Override

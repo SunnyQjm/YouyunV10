@@ -1,17 +1,30 @@
 package com.sunny.youyun.internet.upload;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
+import android.support.v4.app.Fragment;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.App;
+import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
+import com.sunny.youyun.activity.upload_setting.UploadSettingActivity;
+import com.sunny.youyun.internet.upload.config.UploadConfig;
 import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.utils.RouterUtils;
 
 import java.io.File;
 
-import static com.sunny.youyun.internet.upload.FileUploadService.*;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_ALLOW_DOWN_COUNT;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_DESCRIPTION;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_EXPIRE_TIME;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_FILE_PATH;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_IS_PRIVATE;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_IS_SHARE;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_PARENT_ID;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_POSITION;
+import static com.sunny.youyun.internet.upload.FileUploadService.PARAM_SCORE;
 
 /**
  *
@@ -32,6 +45,104 @@ public enum FileUploader {
     public static void unBind(){
         getInstance().context = null;
     }
+
+
+
+    public static final int PATH_S = 234;
+    private static final int UPLOAD_SETTING = 235;
+
+    public static void dealUploadResult(Activity activity, int requestCode, int resultCode, Intent data){
+        switch (requestCode) {
+            case PATH_S:        //选择文件的结果
+                if (data == null) {
+                    Logger.i("PATH_S: data is null");
+                    return;
+                }
+                String[] paths = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
+                Intent intent = new Intent(activity, UploadSettingActivity.class);
+                intent.putExtra(FileManagerRequest.KEY_PATH, paths);
+                intent.putExtra(FileManagerRequest.KEY_PATH_NAME,
+                        data.getStringExtra(FileManagerRequest.KEY_PATH_NAME));
+                intent.putExtra(FileManagerRequest.KEY_PATH_ID,
+                        data.getStringExtra(FileManagerRequest.KEY_PATH_ID));
+                RouterUtils.openForResult(activity, intent, UPLOAD_SETTING);
+                break;
+            case UPLOAD_SETTING:
+                if (data == null) {
+                    Logger.i("UPLOAD_SETTING: data is null");
+                    return;
+                }
+                paths = data.getStringArrayExtra(UploadConfig.PATH);
+                int allowDownloadCount = data.getIntExtra(UploadConfig.ALLOW_DOWNLOAD_COUNT, -1);
+                long expireTime = data.getLongExtra(UploadConfig.EFFECT_DATE, -1);
+                boolean isPublic = data.getBooleanExtra(UploadConfig.IS_PUBLIC, true);
+                int score = data.getIntExtra(UploadConfig.DOWNLOAD_SCORE, 0);
+                String parentId = data.getStringExtra(UploadConfig.PARENT_ID);
+                String description = data.getStringExtra(UploadConfig.DESCRIPTION);
+                for (String path : paths) {
+                    FileUploader.getInstance()
+                            .upload(new FileUploadFileParam
+                                    .Builder()
+                                    .filePath(path)
+                                    .allowDownCount(allowDownloadCount)
+                                    .expireTime(expireTime)
+                                    .isPrivate(!isPublic)
+                                    .isShare(isPublic)
+                                    .parentId(parentId)
+                                    .description(description)
+                                    .score(score)
+                                    .build());
+                }
+                break;
+        }
+    }
+
+    public static void dealUploadResult(Fragment fragment, int requestCode, int resultCode, Intent data){
+        switch (requestCode) {
+            case PATH_S:        //选择文件的结果
+                if (data == null) {
+                    Logger.i("PATH_S: data is null");
+                    return;
+                }
+                String[] paths = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
+                Intent intent = new Intent(fragment.getContext(), UploadSettingActivity.class);
+                intent.putExtra(FileManagerRequest.KEY_PATH, paths);
+                intent.putExtra(FileManagerRequest.KEY_PATH_NAME,
+                        data.getStringArrayExtra(FileManagerRequest.KEY_PATH_NAME));
+                intent.putExtra(FileManagerRequest.KEY_PATH_ID,
+                        data.getStringArrayExtra(FileManagerRequest.KEY_PATH_ID));
+                RouterUtils.openForResult(fragment, intent, UPLOAD_SETTING);
+                break;
+            case UPLOAD_SETTING:
+                if (data == null) {
+                    Logger.i("UPLOAD_SETTING: data is null");
+                    return;
+                }
+                paths = data.getStringArrayExtra(UploadConfig.PATH);
+                int allowDownloadCount = data.getIntExtra(UploadConfig.ALLOW_DOWNLOAD_COUNT, -1);
+                long expireTime = data.getLongExtra(UploadConfig.EFFECT_DATE, -1);
+                boolean isPublic = data.getBooleanExtra(UploadConfig.IS_PUBLIC, true);
+                int score = data.getIntExtra(UploadConfig.DOWNLOAD_SCORE, 0);
+                String parentId = data.getStringExtra(UploadConfig.PARENT_ID);
+                String description = data.getStringExtra(UploadConfig.DESCRIPTION);
+                for (String path : paths) {
+                    FileUploader.getInstance()
+                            .upload(new FileUploadFileParam
+                                    .Builder()
+                                    .filePath(path)
+                                    .allowDownCount(allowDownloadCount)
+                                    .expireTime(expireTime)
+                                    .isPrivate(!isPublic)
+                                    .isShare(isPublic)
+                                    .parentId(parentId)
+                                    .description(description)
+                                    .score(score)
+                                    .build());
+                }
+                break;
+        }
+    }
+
 
     /**
      * 开始上传

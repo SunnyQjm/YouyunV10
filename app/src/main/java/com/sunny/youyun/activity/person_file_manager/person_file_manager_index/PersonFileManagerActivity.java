@@ -1,5 +1,6 @@
 package com.sunny.youyun.activity.person_file_manager.person_file_manager_index;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.EasyYouyunAPIManager;
 import com.sunny.youyun.model.callback.SimpleListener;
 import com.sunny.youyun.model.nodes.ClassificationNode;
@@ -195,8 +197,8 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
 
                 @Override
                 public void onUpload() {
-                    RouterUtils.open(PersonFileManagerActivity.this,
-                            IntentRouter.FileManagerActivity, currentParentId, pathAdapter.getData()
+                    RouterUtils.openForResult(PersonFileManagerActivity.this,
+                            IntentRouter.FileManagerActivity, FileUploader.PATH_S, currentParentId, pathAdapter.getData()
                                     .get(pathAdapter.getData().size() - 1).getPath());
                     myOptionsPopupWindow.dismiss();
                 }
@@ -207,6 +209,13 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
         myOptionsPopupWindow.setOnDismissListener(() -> {
             WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, false);
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        FileUploader.dealUploadResult(this, requestCode, resultCode, data);
+        load(true);
     }
 
     /**
