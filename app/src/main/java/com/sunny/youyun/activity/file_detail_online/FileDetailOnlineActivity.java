@@ -152,7 +152,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         int fileId = getIntent().getIntExtra("fileId", -1);
         String identifyCode = getIntent().getStringExtra("identifyCode");
         if (fileId < 0) {
-            internetFile = originalInternetFile = ObjectPool.getInstance().get(uuid, InternetFile.empty());
+            internetFile = originalInternetFile = ObjectPool.getInstance()
+                    .get(uuid, InternetFile.empty());
             //浏览量+1
             originalInternetFile.setLookNum(originalInternetFile.getLookNum() + 1);
             fillData();

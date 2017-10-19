@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.finding_fragment.item;
+package com.sunny.youyun.views.popupwindow.search.item;
 
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.finding_fragment.config.SearchItemType;

@@ -1,6 +1,6 @@
 package com.sunny.youyun.model.data_item;
 
-import com.sunny.youyun.fragment.main.finding_fragment.item.FileItem;
+import com.sunny.youyun.views.popupwindow.search.item.FileItem;
 import com.sunny.youyun.fragment.main.finding_fragment.item.UserItem;
 
 /**

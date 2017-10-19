@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sunny.youyun.R;
+import com.sunny.youyun.utils.InputMethodUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,18 +52,19 @@ public class YouyunEditDialog extends DialogFragment {
 
     /**
      * 设置允许输入的类型
+     *
      * @param inputType
      */
     public YouyunEditDialog setInputType(int inputType) {
         this.inputType = inputType;
-        if(editText != null)
+        if (editText != null)
             editText.setInputType(inputType);
         return this;
     }
 
     public void setHint(String hint) {
         this.hint = hint;
-        if(editText != null)
+        if (editText != null)
             editText.setText(hint);
     }
 

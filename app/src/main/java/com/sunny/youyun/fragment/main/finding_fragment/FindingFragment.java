@@ -4,35 +4,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.sunny.youyun.R;
-import com.sunny.youyun.base.RecyclerViewDividerItem;
-import com.sunny.youyun.base.adapter.BaseQuickAdapter;
-import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.RecordTabsAdapter;
-import com.sunny.youyun.fragment.main.finding_fragment.adapter.SearchAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.all.AllFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.concern.ConcernFragment;
-import com.sunny.youyun.fragment.main.finding_fragment.config.SearchItemType;
 import com.sunny.youyun.fragment.main.finding_fragment.hot.HotFragment;
-import com.sunny.youyun.fragment.main.finding_fragment.item.FileItem;
-import com.sunny.youyun.fragment.main.finding_fragment.item.UserItem;
-import com.sunny.youyun.utils.InputMethodUtil;
 import com.sunny.youyun.utils.RecyclerViewUtils;
-import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
-import com.sunny.youyun.views.MyPopupWindow;
 import com.sunny.youyun.views.NoScrollViewPager;
+import com.sunny.youyun.views.popupwindow.search.SearchWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +32,7 @@ import butterknife.Unbinder;
  */
 
 public class FindingFragment extends MVPBaseFragment<FindingPresenter>
-        implements FindingContract.View, BaseQuickAdapter.OnItemClickListener {
+        implements FindingContract.View {
 
 
     @BindView(R.id.easyBar)
@@ -66,12 +52,7 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter>
     private static final int TAB_MARGIN_RIGHT = 40;
 
     //搜索window控件
-    private MyPopupWindow searchPopupWindow = null;
-    private TextView imgSearch = null;
-    private EditText etSearch = null;
-    private RecyclerView recyclerView = null;
-    private SearchAdapter searchAdapter = null;
-
+    private SearchWindow searchPopupWindow = null;
     public static FindingFragment newInstance() {
         Bundle args = new Bundle();
         FindingFragment fragment = new FindingFragment();
@@ -150,38 +131,7 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter>
      * 创建搜索视图
      */
     private void createSearchWindow() {
-        View view = LayoutInflater.from(activity)
-                .inflate(R.layout.finding_search_view_window, null, false);
-        view.requestFocus();
-        searchPopupWindow = new MyPopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        searchPopupWindow.setAnimationStyle(R.style.RightPopupWindowStyle);
-        imgSearch = (TextView) view.findViewById(R.id.img_search);
-        etSearch = (EditText) view.findViewById(R.id.et_search);
-        imgSearch.setOnClickListener(v -> searchPopupWindow.dismiss());
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.addItemDecoration(
-                new RecyclerViewDividerItem(activity, RecyclerViewDividerItem.VERTICAL));
-        searchAdapter = new SearchAdapter(mPresenter.getData());
-        searchAdapter.bindToRecyclerView(recyclerView);
-        searchAdapter.setEmptyView(R.layout.recycler_empty_view);
-        searchAdapter.setOnItemClickListener(this);
-        searchPopupWindow.setOnDismissListener(() -> {
-            if (searchAdapter != null) {
-                searchAdapter.getData().clear();
-                searchAdapter.notifyDataSetChanged();
-                etSearch.setText("");
-            }
-        });
-        etSearch.setOnKeyListener((v, keyCode, event) -> {
-            if(keyCode == KeyEvent.KEYCODE_ENTER){
-                String str = etSearch.getText().toString();
-                mPresenter.search(str);
-                InputMethodUtil.hide(activity, v);
-            }
-            return false;
-        });
+        searchPopupWindow = new SearchWindow(activity);
     }
 
 
@@ -196,29 +146,4 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter>
         unbinder.unbind();
     }
 
-    @Override
-    public void searchSuccess() {
-        if (searchAdapter != null)
-            searchAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        //TODO On search result click
-        MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getItem(position);
-        if (multiItemEntity == null)
-            return;
-        switch (multiItemEntity.getItemType()) {
-            case SearchItemType.TYPE_FILE:
-                if(multiItemEntity instanceof FileItem){
-                    FileItem fileItem = (FileItem) multiItemEntity;
-                    RouterUtils.openToFileDetailOnline(activity, fileItem);
-                }
-                break;
-            case SearchItemType.TYPE_USER:
-                UserItem userItem = (UserItem) multiItemEntity;
-                RouterUtils.openToUser(activity, userItem.getId());
-                break;
-        }
-    }
 }

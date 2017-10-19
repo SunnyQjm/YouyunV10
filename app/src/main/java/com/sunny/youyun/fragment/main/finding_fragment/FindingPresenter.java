@@ -19,19 +19,4 @@ public class FindingPresenter extends FindingContract.Presenter{
     protected void start() {
 
     }
-
-    @Override
-    void search(String str) {
-        mModel.search(str);
-    }
-
-    @Override
-    void searchSuccess() {
-        mView.searchSuccess();
-    }
-
-    @Override
-    List<MultiItemEntity> getData() {
-        return mModel.getData();
-    }
 }

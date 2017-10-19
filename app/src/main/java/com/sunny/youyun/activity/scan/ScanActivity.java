@@ -64,7 +64,7 @@ public class ScanActivity extends MVPBaseActivity<ScanPresenter> implements Scan
     @Override
     protected void onStop() {
         super.onStop();
-        if(mQRCodeView != null) {
+        if (mQRCodeView != null) {
             mQRCodeView.stopSpot();
             mQRCodeView.stopCamera();
         }
@@ -103,6 +103,10 @@ public class ScanActivity extends MVPBaseActivity<ScanPresenter> implements Scan
                 .request(android.Manifest.permission.CAMERA)
                 .subscribe(aBoolean -> {
                     if (aBoolean) {
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
+                        mQRCodeView.startSpot();
                         Logger.i("permissions", Manifest.permission.CAMERA + ": 获取成功");
                     } else {
                         Logger.i("permissions", Manifest.permission.CAMERA + ": 获取失败");

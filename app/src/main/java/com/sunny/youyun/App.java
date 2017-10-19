@@ -3,6 +3,7 @@ package com.sunny.youyun;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Notification;
+import android.content.Context;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;

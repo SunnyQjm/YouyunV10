@@ -29,17 +29,18 @@ import com.sunny.youyun.views.EasyDialog;
 
 public class RouterUtils {
     public static void openForResult(Activity activity, String routerWithNoScheme, int requestCode, String... params) {
-        String router = IntentRouter.IndexScheme + routerWithNoScheme;
+        StringBuilder router = new StringBuilder(IntentRouter.IndexScheme + routerWithNoScheme);
         if (params != null) {
             for (String param : params) {
-                router += "/" + param;
+                router.append("/").append(param);
             }
         }
-        Routers.openForResult(activity, router, requestCode);
-        //5.0以下用老版本的切换动画
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            App.startAnim(activity);
-        }
+        Routers.openForResult(activity, router.toString(), requestCode);
+//        //5.0以下用老版本的切换动画
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//            App.startAnim(activity);
+//        }
+        App.startAnim(activity);
     }
 
     public static void open(Activity context, String routerWithNoScheme, String... params) {
@@ -106,10 +107,12 @@ public class RouterUtils {
 
     public static void openForResult(Fragment fragment, Intent intent, int requestCode) {
         fragment.startActivityForResult(intent, requestCode);
+        App.startAnim(fragment.getActivity());
     }
 
     public static void openForResult(Activity activity, Intent intent, int requestCode) {
         activity.startActivityForResult(intent, requestCode);
+        App.startAnim(activity);
     }
 
     public static void open(Context context, Intent intent) {
@@ -118,10 +121,12 @@ public class RouterUtils {
 
     public static void openToChatForResult(Fragment fragment, @NonNull User user, int requestCode) {
         openForResult(fragment, buildToChatIntent(fragment.getContext(), user), 0);
+        App.startAnim(fragment.getActivity());
     }
 
-    public static void openToChat(Context context, @NonNull User user) {
+    public static void openToChat(Activity context, @NonNull User user) {
         open(context, buildToChatIntent(context, user));
+        App.startAnim(context);
     }
 
     public static Intent buildToChatIntent(Context context, @NonNull User user) {

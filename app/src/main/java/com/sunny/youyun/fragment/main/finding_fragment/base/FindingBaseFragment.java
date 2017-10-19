@@ -3,6 +3,7 @@ package com.sunny.youyun.fragment.main.finding_fragment.base;
 import android.content.Intent;
 import android.view.View;
 
+import com.sunny.youyun.App;
 import com.sunny.youyun.activity.file_detail_online.FileDetailOnlineActivity;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.BaseRecyclerViewFragment;

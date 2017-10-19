@@ -1,4 +1,4 @@
-package com.sunny.youyun.fragment.main.finding_fragment.adapter;
+package com.sunny.youyun.views.popupwindow.search.adapter;
 
 import android.widget.ImageView;
 
@@ -9,6 +9,7 @@ import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.finding_fragment.config.SearchItemType;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.YouyunDefaultInfoManager;
 import com.sunny.youyun.utils.GlideUtils;
 
 import java.util.List;
@@ -40,7 +41,8 @@ public class SearchAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Ba
                 if (item instanceof InternetFile) {
                     InternetFile internetFile = (InternetFile) item;
                     helper.setText(R.id.tv_name, internetFile.getName())
-                            .setText(R.id.tv_description, internetFile.getDescription());
+                            .setText(R.id.tv_description, YouyunDefaultInfoManager
+                                    .getDefaultFileDescription(internetFile.getDescription()));
                     GlideUtils.setImage(mContext, ((ImageView) helper.getView(R.id.img_icon)),
                             internetFile);
                 }
@@ -52,7 +54,8 @@ public class SearchAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Ba
                 if (item instanceof User) {
                     User user = (User) item;
                     helper.setText(R.id.tv_name, user.getUsername())
-                            .setText(R.id.tv_description, user.getSignature());
+                            .setText(R.id.tv_description, YouyunDefaultInfoManager
+                                    .getDefaultUserSignature(user.getSignature()));
                     GlideUtils.load(mContext, ((ImageView) helper.getView(R.id.img_icon)),
                             user.getAvatar());
                 }
