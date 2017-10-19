@@ -11,4 +11,5 @@ public class ChatConfig {
 
     public static final String PARAM_USER_ID = "userId";
     public static final String PARAM_USER_NICKNAME = "nickname";
+    public static final String PARAM_UUID = "uuid";
 }

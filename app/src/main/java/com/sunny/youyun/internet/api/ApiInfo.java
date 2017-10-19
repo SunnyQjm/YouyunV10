@@ -202,10 +202,12 @@ public class ApiInfo {
             GET_CHAT_RECORD_PAGE = "page", GET_CHAT_RECORD_SIZE = "size",
             GET_CHAT_RECORD_TIME = "time";
 
+    //发送消息
     public static final String SEND_MESSAGE_URL = "authc/chat/send",
             SEND_MESSAGE_CONTENT = "content", SEND_MESSAGE_USER_ID = "userId",
             SEND_MESSAGE_JOIN_CODE = "joinCode";
 
+    //获取私信列表
     public static final String GET_PRIVATE_LETTER_LIST_URL = "authc/chat/get/list",
             GET_PRIVATE_LETTER_LIST_TIME = "time",
             GET_PRIVATE_LETTER_LIST_PAGE = "page", GET_PRIVATE_LETTER_LIST_SIZE = "size";

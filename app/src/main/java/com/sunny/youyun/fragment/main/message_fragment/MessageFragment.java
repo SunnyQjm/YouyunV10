@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.chat.ChatActivity;
-import com.sunny.youyun.activity.chat.config.ChatConfig;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.message_fragment.adapter.MessageAdapter;
@@ -57,6 +55,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
         super.onStart();
         MessageEventBus.getInstance()
                 .register(this);
+        updateAll();
         //一开始先加载一波数据
         loadData();
         System.out.println("MessageFragment onStart");
@@ -167,12 +166,9 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
             if (letter == null)
                 return;
             MessageManager.getInstance().clearCount(letter.getId());
-            Intent intent = new Intent(activity, ChatActivity.class);
-            if (letter.getUser() != null) {
-                intent.putExtra(ChatConfig.PARAM_USER_ID, letter.getUser().getId());
-                intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, letter.getUser().getUsername());
-            }
-            RouterUtils.openForResult(this, intent, 0);
+            if(letter.getUser() == null)
+                return;
+            RouterUtils.openToChatForResult(this, letter.getUser(), 0);
         } else if (position == 0) {  //赞
             RouterUtils.open(activity, IntentRouter.StarRecordActivity);
         } else if (position == 1) {   //评论

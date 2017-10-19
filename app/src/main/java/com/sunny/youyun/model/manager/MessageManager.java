@@ -126,7 +126,8 @@ public enum MessageManager {
 
         if (message.getUser() == null)
             return;
-        message.getUser().saveOrUpdate("userId=?", String.valueOf(userId));
+        boolean b  = message.getUser().saveOrUpdate("userid=?", String.valueOf(userId));
+        System.out.println("update message user success: " + b);
         //异步更新数据库
         message.saveOrUpdate("ownerId = ? and targetId = ?",
                 String.valueOf(UserInfoManager.getInstance().getUserId()), String.valueOf(userId));
@@ -139,8 +140,6 @@ public enum MessageManager {
             if (multiItemEntity == null || !(multiItemEntity instanceof PrivateLetterItem))
                 return;
             PrivateLetterItem m = (PrivateLetterItem) multiItemEntity;
-//            System.out.println("put: " + userId);
-//            System.out.println(GsonUtil.bean2Json(m));
             if (message.getUpdateTime() > m.getUpdateTime()) {
                 int position = messagePosition.get(userId);
                 mList.remove(position);
@@ -164,7 +163,12 @@ public enum MessageManager {
     public void clearMessage() {
         lastMessageManager.clear();
         messagePosition.clear();
-        mList.clear();
+        System.out.println("headerCount: " + headCount);
+        System.out.println("begin remove: " + mList.size());
+        while (mList.size() > headCount){
+            mList.remove(headCount);
+        }
+        System.out.println("remove success: " + mList.size());
     }
 
 

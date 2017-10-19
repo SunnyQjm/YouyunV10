@@ -18,6 +18,7 @@ import com.sunny.youyun.activity.BaseUiListener;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.model.QQLoginResult;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.AccountValidatorUtil;
 import com.sunny.youyun.utils.GsonUtil;
@@ -91,6 +92,9 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
     public void loginSuccess() {
         dismissDialog();
         onBackPressed();
+        //初始化加载消息
+        MessageManager.getInstance().init(UserInfoManager.getInstance()
+                .getUserId());
         //登录成功以后设置本机的tag为用户的id
         JPushUtil.setTag(this, String.valueOf(UserInfoManager.getInstance()
                 .getUserInfo()

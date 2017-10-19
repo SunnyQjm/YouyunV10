@@ -40,9 +40,9 @@ public class User extends DataSupport{
     private int fans;
     private long updateTime;
     private boolean isFollow;
-    public static final int INSTANCE_TAG = -1;
-    private int INSTANCE = INSTANCE_TAG;
-
+    private int isLocalUser = -1;
+    public static final int LOCAL_USER_TAG = 5;
+    private static User empty = null;
     protected User(Builder builder) {
         setUsername(builder.username);
         setEmail(builder.email);
@@ -75,6 +75,14 @@ public class User extends DataSupport{
                 '}';
     }
 
+    public static User empty(){
+        if(empty == null)
+            empty = new Builder().build();
+        return empty;
+    }
+    public void setLocalUser(int localUser) {
+        isLocalUser = localUser;
+    }
 
     public int getFans() {
         return fans;

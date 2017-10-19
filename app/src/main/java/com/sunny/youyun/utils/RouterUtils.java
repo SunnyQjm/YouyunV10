@@ -1,8 +1,10 @@
 package com.sunny.youyun.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -13,7 +15,10 @@ import android.view.View;
 import com.github.mzule.activityrouter.router.Routers;
 import com.sunny.youyun.App;
 import com.sunny.youyun.IntentRouter;
+import com.sunny.youyun.activity.chat.ChatActivity;
+import com.sunny.youyun.activity.chat.config.ChatConfig;
 import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.utils.bus.ObjectPool;
 import com.sunny.youyun.views.EasyDialog;
@@ -51,14 +56,15 @@ public class RouterUtils {
 
     /**
      * 如果已登录则执行跳转
+     *
      * @param activity
      * @param routerWithNoScheme
      * @param params
      */
-    public static void openAfterLogin(Activity activity, String routerWithNoScheme, String... params){
-        if(YouyunAPI.isIsLogin()){
+    public static void openAfterLogin(Activity activity, String routerWithNoScheme, String... params) {
+        if (YouyunAPI.isIsLogin()) {
             open(activity, routerWithNoScheme, params);
-        } else if(activity instanceof AppCompatActivity){
+        } else if (activity instanceof AppCompatActivity) {
             EasyDialog.showLogin((AppCompatActivity) activity);
         }
     }
@@ -100,5 +106,26 @@ public class RouterUtils {
 
     public static void openForResult(Fragment fragment, Intent intent, int requestCode) {
         fragment.startActivityForResult(intent, requestCode);
+    }
+
+    public static void open(Context context, Intent intent){
+        context.startActivity(intent);
+    }
+
+    public static void openToChatForResult(Fragment fragment, @NonNull User user, int requestCode) {
+        openForResult(fragment, buildToChatIntent(fragment.getContext(), user), 0);
+    }
+
+    public static void openToChat(Context context, @NonNull User user){
+        open(context, buildToChatIntent(context, user));
+    }
+
+    public static Intent buildToChatIntent(Context context, @NonNull User user) {
+        Intent intent = new Intent(context, ChatActivity.class);
+        String uuid = UUIDUtil.getUUID();
+        intent.putExtra(ChatConfig.PARAM_UUID, uuid);
+        ObjectPool.getInstance()
+                .put(uuid, user);
+        return intent;
     }
 }

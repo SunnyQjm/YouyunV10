@@ -22,19 +22,4 @@ class MainFragmentPresenter extends MainFragmentContract.Presenter {
 
     }
 
-    @Override
-    void uploadFile(FileUploadFileParam uploadFileParam) {
-        System.out.println("UPLOAD PARAM: " + uploadFileParam);
-        try {
-            mModel.uploadFile(uploadFileParam);
-        } catch (IOException e) {
-            Logger.e(e, "上传文件错误");
-            mView.showError("上传错误");
-        }
-    }
-
-    @Override
-    void uploadSuccess(String info) {
-        mView.uploadSuccess(info);
-    }
 }

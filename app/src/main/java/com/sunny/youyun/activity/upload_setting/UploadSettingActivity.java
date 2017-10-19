@@ -121,10 +121,10 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
 
 
         Intent intent = getIntent();
-        String[] paths = intent.getStringArrayExtra("paths");
+        String[] paths = intent.getStringArrayExtra(FileManagerRequest.KEY_PATH);
         pathName = intent.getStringExtra(FileManagerRequest.KEY_PATH_NAME);
         parentId = intent.getStringExtra(FileManagerRequest.KEY_PATH_ID);
-        if(parentId.equals(""))
+        if(parentId != null && parentId.equals(""))
             parentId = null;
         adapter = new ExpandableItemAdapter(this, mPresenter.getData(paths));
         adapter.setOnItemChildClickListener(this);
@@ -133,7 +133,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         uploadSettingIsPublic.setChecked(isPublic);
-        uploadSettingSelectDirectory.setValue(pathName.equals("") ? pathName :
+        uploadSettingSelectDirectory.setValue(pathName != null && !pathName.equals("") ? pathName :
                 getString(R.string.root_path));
     }
 

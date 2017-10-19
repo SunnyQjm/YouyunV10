@@ -206,8 +206,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
                 mPresenter.concern(otherId);
                 break;
             case R.id.person_info_private_letter:
-                RouterUtils.open(this, IntentRouter.ChatActivity,
-                        String.valueOf(user.getId()), user.getUsername());
+                RouterUtils.openToChat(this, user);
                 break;
         }
     }

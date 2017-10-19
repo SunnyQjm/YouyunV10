@@ -21,9 +21,9 @@ public enum UserInfoManager {
     private User user = new User.Builder().build();
 
     public static void init() {
-        List<User> list = DataSupport.where("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG))
+        List<User> list = DataSupport.where("isLocalUser = ?", String.valueOf(User.LOCAL_USER_TAG))
                 .find(User.class);
-        if(list == null || list.size() == 0) {
+        if (list == null || list.size() == 0) {
             return;
         }
         User user = list.get(0);
@@ -33,44 +33,48 @@ public enum UserInfoManager {
 
     public void setUserInfo(User userInfo) {
         this.user.setUserInfo(userInfo);
+        this.user.setLocalUser(User.LOCAL_USER_TAG);
         //单例化保存
-        boolean result = this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
-        System.out.println("更新本地用户信息：" + result);
+        boolean result = this.user.saveOrUpdate("isLocalUser = ?", String.valueOf(User.LOCAL_USER_TAG));
     }
 
     /**
      * 更新用户头像
+     *
      * @param avatar
      */
-    public UserInfoManager updateAvatar(String avatar){
+    public UserInfoManager updateAvatar(String avatar) {
         this.user.setAvatar(avatar);
-        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        this.user.saveOrUpdate("isLocalUser = ?", String.valueOf(User.LOCAL_USER_TAG));
         return this;
     }
 
-    public UserInfoManager updateNickname(String nickname){
+    public UserInfoManager updateNickname(String nickname) {
         this.user.setUsername(nickname);
-        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        this.user.saveOrUpdate("isLocalUser = ?", String.valueOf(User.LOCAL_USER_TAG));
         return this;
     }
 
-    public UserInfoManager updateSignature(String signature){
+    public UserInfoManager updateSignature(String signature) {
         this.user.setSignature(signature);
-        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        this.user.saveOrUpdate("isLocalUser = ?", String.valueOf(User.LOCAL_USER_TAG));
         return this;
     }
 
-    public UserInfoManager updateSex(int sex){
+    public UserInfoManager updateSex(int sex) {
         this.user.setSex(sex);
-        this.user.saveOrUpdate("INSTANCE = ?", String.valueOf(User.INSTANCE_TAG));
+        this.user.saveOrUpdate("isLocalUser = ?", String.valueOf(User.LOCAL_USER_TAG));
         return this;
     }
 
-    public int getUserId(){
+    public int getUserId() {
         return INSTANCE.getUserInfo().getId();
     }
-    public void clear(){
-        user.deleteAsync();
+
+    public void clear() {
+        int num = DataSupport.deleteAll("User",
+                "isLocalUser=" + User.LOCAL_USER_TAG);
+        Logger.i("delete user: " + num);
         user = new User.Builder().build();
     }
 

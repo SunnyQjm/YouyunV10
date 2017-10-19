@@ -18,6 +18,7 @@ import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
+import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.data_item.Message;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.manager.MessageManager;
@@ -25,6 +26,7 @@ import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.bus.MessageEventBus;
+import com.sunny.youyun.utils.bus.ObjectPool;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowPullLoadHeader;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
@@ -32,8 +34,7 @@ import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-@Router(value = {IntentRouter.ChatActivity + "/:" + ChatConfig.PARAM_USER_ID
-        + "/:" + ChatConfig.PARAM_USER_NICKNAME},
+@Router(value = {IntentRouter.ChatActivity + "/:" + ChatConfig.PARAM_UUID},
         intParams = {ChatConfig.PARAM_USER_ID})
 public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
         implements ChatContract.View, View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
@@ -41,7 +42,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
     EditText etContent;
     Button btnSend;
 
-    private int userId;
+    private User user;
 
     @Override
     protected void onStart() {
@@ -73,22 +74,21 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
 
     @Override
     protected void loadData(boolean isRefresh) {
-//        if (isRefresh) {   //没有数据或是加载更多
-//            mPresenter.getMessages(userId, 1, true);
-//        } else {
-//            mPresenter.getMessages(userId, ((Message) adapter.getItem(0)).getUpdateTime(), false);
-//        }
-        mPresenter.getMessages(userId,
+        mPresenter.getMessages(user.getId(),
                 adapter.getData().size() == 0 ? System.currentTimeMillis() :
                         ((Message) adapter.getItem(adapter.getData().size() - 1)).getUpdateTime()
                 , isRefresh);
     }
 
     private void init() {
-        userId = getIntent().getIntExtra(ChatConfig.PARAM_USER_ID, -1);
-        String nickname = getIntent().getStringExtra(ChatConfig.PARAM_USER_NICKNAME);
-        MyNotifyUtil.setChattingId(userId);
-        MessageManager.getInstance().clearCount(userId);
+        String uuid = getIntent().getStringExtra(ChatConfig.PARAM_UUID);
+        if (!uuid.equals("")) {
+            user = ObjectPool.getInstance()
+                    .get(uuid, User.empty());
+        }
+
+        MyNotifyUtil.setChattingId(user.getId());
+        MessageManager.getInstance().clearCount(user.getId());
 
         etContent = (EditText) findViewById(R.id.et_content);
         btnSend = (Button) findViewById(R.id.btn_send);
@@ -99,7 +99,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
         initView();
         //倒叙显示
         linerLayoutManager.setReverseLayout(true);
-        easyBar.setTitle(nickname);
+        easyBar.setTitle(user.getUsername());
 
         etContent.setHint(getString(R.string.add_message));
         refreshLayout.setHeader(new ArrowPullLoadHeader(R.layout.easy_refresh_pull_load_header));
@@ -114,13 +114,13 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiveMessage(JPushEvent jPushEvent) {
         //如果收到对方的聊天信息
-        if (jPushEvent.getFromUser() != null && jPushEvent.getFromUser().getId() == userId &&
+        if (jPushEvent.getFromUser() != null && jPushEvent.getFromUser().getId() == user.getId() &&
                 jPushEvent.getType().equals(JPushEvent.INSTANTCONTACT)) {
             //TODO send message success
             adapter.addData(0, new MessageItemOther(new Message.Builder()
                     .content(jPushEvent.getContent())
                     .fromUserId(jPushEvent.getFromUser().getId())
-                    .toUserId(userId)
+                    .toUserId(user.getId())
                     .createTime(System.currentTimeMillis())
                     .user(jPushEvent.getFromUser())
                     .build()));
@@ -168,21 +168,21 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
         adapter.addData(0, new MessageItemMy(new Message.Builder()
                 .content(content)
                 .fromUserId(UserInfoManager.getInstance().getUserId())
-                .toUserId(userId)
+                .toUserId(user.getId())
                 .createTime(currentTime)
                 .user(UserInfoManager.getInstance().getUserInfo())
                 .build()));
         recyclerView.scrollToPosition(0);
         MessageManager.getInstance()
-                .put(userId, new PrivateLetterItem(new Message.Builder()
+                .put(user.getId(), new PrivateLetterItem(new Message.Builder()
                         .content(content)
                         .ownerId(UserInfoManager.getInstance().getUserId())
-                        .targetId(userId)
+                        .targetId(user.getId())
                         .fromUserId(UserInfoManager.getInstance().getUserId())
-                        .toUserId(userId)
+                        .toUserId(user.getId())
                         .createTime(System.currentTimeMillis())
                         .updateTime(System.currentTimeMillis())
-                        .user(UserInfoManager.getInstance().getUserInfo())));
+                        .user(user)));
     }
 
     @Override
@@ -190,7 +190,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
         switch (v.getId()) {
             //发送一条消息
             case R.id.btn_send:
-                mPresenter.sendMessage(userId, etContent.getText().toString());
+                mPresenter.sendMessage(user.getId(), etContent.getText().toString());
                 etContent.setText("");
                 break;
         }

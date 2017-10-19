@@ -12,8 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.sunny.youyun.R;
-import com.sunny.youyun.activity.chat.ChatActivity;
-import com.sunny.youyun.activity.chat.config.ChatConfig;
 import com.sunny.youyun.activity.main.MainActivity;
 import com.sunny.youyun.activity.main.config.MainActivityConfig;
 import com.sunny.youyun.model.event.JPushEvent;
@@ -113,13 +111,14 @@ public class MyNotifyUtil {
                 jPushEvent.getType().equals(JPushEvent.INSTANTCONTACT) &&
                 jPushEvent.getFromUser() != null && jPushEvent.getFromUser().getId() == chattingId))
             return;
-        Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra(ChatConfig.PARAM_USER_NICKNAME, jPushEvent.getTitle());
-        intent.putExtra(ChatConfig.PARAM_USER_ID, jPushEvent.getFromUser().getId());
+       if(jPushEvent.getFromUser() == null)
+           return;
         showNotify(context, jPushEvent.getTitle(),
                 context.getString(R.string.have_new_message), jPushEvent.getContent(),
                 PendingIntent.getActivity(
-                        context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                        context, 0,
+                        RouterUtils.buildToChatIntent(context, jPushEvent.getFromUser())
+                        , PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     public static final class NormalNotificationBuilder {

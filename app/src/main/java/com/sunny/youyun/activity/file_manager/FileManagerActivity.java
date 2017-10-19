@@ -68,8 +68,8 @@ public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> i
     private static final int TAB_MARGIN_LEFT = 5;
     private static final int TAB_MARGIN_RIGHT = 5;
 
-    private String pathId = "";
-    private String pathName = "";
+    private String pathId;
+    private String pathName;
 
     @Override
     @RequiresPermission(anyOf = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
@@ -140,8 +140,8 @@ public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> i
         RecyclerViewUtils.setIndicator(this, tabLayout,
                 DensityUtil.dip2px(this, TAB_MARGIN_LEFT), DensityUtil.dip2px(this, TAB_MARGIN_RIGHT));
 
-        pathName = getIntent().getStringExtra("pathName");
-        pathId = getIntent().getStringExtra("pathId");
+        pathName = getIntent().getStringExtra(FileManagerRequest.KEY_PATH_NAME);
+        pathId = getIntent().getStringExtra(FileManagerRequest.KEY_PATH_ID);
     }
 
     @Override
@@ -185,8 +185,8 @@ public class FileManagerActivity extends MVPBaseActivity<FileManagerPresenter> i
             case R.id.tv_sure:
                 Intent intent = new Intent();
                 intent.putExtra(FileManagerRequest.KEY_PATH, CheckStateManager.getInstance().stringResult());
-                intent.putExtra("pathId", pathId);
-                intent.putExtra("pathName", pathName);
+                intent.putExtra(FileManagerRequest.KEY_PATH_ID, pathId);
+                intent.putExtra(FileManagerRequest.KEY_PATH_NAME, pathName);
                 setResult(0, intent);
                 finish();
                 break;

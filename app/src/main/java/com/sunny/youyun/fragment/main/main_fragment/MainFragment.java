@@ -25,6 +25,7 @@ import com.sunny.youyun.fragment.main.main_fragment.adapter.RecordTabsAdapter;
 import com.sunny.youyun.fragment.main.main_fragment.download_record_fragment.DownloadRecordFragment;
 import com.sunny.youyun.fragment.main.main_fragment.upload_record_fragment.UploadRecordFragment;
 import com.sunny.youyun.internet.upload.FileUploadFileParam;
+import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.internet.upload.config.UploadConfig;
 import com.sunny.youyun.model.event.MultiSelectEvent;
 import com.sunny.youyun.utils.DialogUtils;
@@ -151,22 +152,6 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                 .setDuration(DURATION)
                 .start();
     }
-
-    @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
-    }
-
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
-
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
-    }
-
     @Override
     protected MainFragmentPresenter onCreatePresenter() {
         return new MainFragmentPresenter(this);
@@ -183,7 +168,7 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                 }
                 String[] paths = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
                 Intent intent = new Intent(activity, UploadSettingActivity.class);
-                intent.putExtra("paths", paths);
+                intent.putExtra(FileManagerRequest.KEY_PATH, paths);
                 intent.putExtra(FileManagerRequest.KEY_PATH_NAME,
                         data.getStringArrayExtra(FileManagerRequest.KEY_PATH_NAME));
                 intent.putExtra(FileManagerRequest.KEY_PATH_ID,
@@ -203,26 +188,21 @@ public class MainFragment extends MVPBaseFragment<MainFragmentPresenter> impleme
                 String parentId = data.getStringExtra(UploadConfig.PARENT_ID);
                 String description = data.getStringExtra(UploadConfig.DESCRIPTION);
                 for (String path : paths) {
-                    mPresenter.uploadFile(new FileUploadFileParam
-                            .Builder()
-                            .filePath(path)
-                            .allowDownCount(allowDownloadCount)
-                            .expireTime(expireTime)
-                            .isPrivate(!isPublic)
-                            .isShare(isPublic)
-                            .parentId(parentId)
-                            .description(description)
-                            .score(score)
-                            .build());
+                    FileUploader.getInstance()
+                            .upload(new FileUploadFileParam
+                                    .Builder()
+                                    .filePath(path)
+                                    .allowDownCount(allowDownloadCount)
+                                    .expireTime(expireTime)
+                                    .isPrivate(!isPublic)
+                                    .isShare(isPublic)
+                                    .parentId(parentId)
+                                    .description(description)
+                                    .score(score)
+                                    .build());
                 }
                 break;
         }
-    }
-
-    @Override
-    public void uploadSuccess(String info) {
-        dismissDialog();
-        Toast.makeText(activity, info, Toast.LENGTH_SHORT).show();
     }
 
     @Override

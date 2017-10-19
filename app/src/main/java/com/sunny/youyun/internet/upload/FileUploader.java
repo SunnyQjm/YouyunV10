@@ -6,6 +6,10 @@ import android.content.Intent;
 
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.App;
+import com.sunny.youyun.model.InternetFile;
+
+import java.io.File;
 
 import static com.sunny.youyun.internet.upload.FileUploadService.*;
 
@@ -32,9 +36,35 @@ public enum FileUploader {
     /**
      * 开始上传
      * @param uploadFileParam
-     * @param position
      */
-    public void upload(FileUploadFileParam uploadFileParam, int position){
+    public void upload(FileUploadFileParam uploadFileParam){
+        if (uploadFileParam.getFilePath() == null)
+            return;
+
+        final File f = new File(uploadFileParam.getFilePath());
+        if (!f.exists()) {
+            Logger.e("文件不存在");
+            return;
+        }
+
+        String name = f.getName();
+        //添加即将上传的文件信息
+        final InternetFile internetFile = new InternetFile.Builder()
+                .name(name)
+                .size(f.length())
+                .fileTAG(InternetFile.TAG_UPLOAD)
+                .path(f.getPath())
+                .status(InternetFile.Status.DOWNLOADING)
+                .createTime(System.currentTimeMillis())
+                .build();
+
+        int position;
+        //添加文件和获取该文件的位置是一个原子操作
+        synchronized (App.mList_UploadRecord) {
+            position = App.mList_UploadRecord.size();
+            internetFile.setPosition(position);
+            App.mList_UploadRecord.add(internetFile);
+        }
         if(context == null)
             return;
         action2Upload(uploadFileParam, position, FileUploadService.ACTION_UPLOAD);

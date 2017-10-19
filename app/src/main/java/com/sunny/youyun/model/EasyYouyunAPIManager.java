@@ -227,6 +227,9 @@ public class EasyYouyunAPIManager {
         //清除所有新消息红点
         MessageManager.getInstance()
                 .clearAll();
+        //清除所有的消息
+        MessageManager.getInstance()
+                .clearMessage();
         //QQ登出
         if (YouyunAPI.getLoginMode() == YouyunAPI.LOGIN_MODE_QQ) {
             TencentUtil.getInstance(activity)

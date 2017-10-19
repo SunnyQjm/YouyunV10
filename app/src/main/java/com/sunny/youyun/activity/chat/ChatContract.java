@@ -15,7 +15,6 @@ interface ChatContract {
     interface View extends BaseView {
         void getMessagesSuccess();
         void sendMessageSuccess(String content);
-
     }
 
     interface Model extends BaseModel {
