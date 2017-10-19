@@ -6,6 +6,7 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
 import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.model.YouyunDefaultInfoManager;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
 import com.sunny.youyun.views.RichText;
@@ -24,7 +25,8 @@ public class FindingItemAdapter extends BaseQuickAdapter<InternetFile, BaseViewH
     @Override
     protected void convert(BaseViewHolder helper, InternetFile item) {
         helper.setText(R.id.tv_file_name, item.getName())
-                .setText(R.id.tv_file_description, item.getDescription())
+                .setText(R.id.tv_file_description, YouyunDefaultInfoManager
+                        .getDefaultFileDescription(item.getDescription()))
                 .setText(R.id.rt_view_count, String.valueOf(item.getLookNum()))
                 .setText(R.id.rt_down_count, String.valueOf(item.getDownloadCount()))
                 .setText(R.id.rt_like_count, String.valueOf(item.getStar()));

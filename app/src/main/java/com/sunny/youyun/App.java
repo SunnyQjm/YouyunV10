@@ -11,6 +11,7 @@ import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunAPI;
+import com.sunny.youyun.model.YouyunDefaultInfoManager;
 import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.JPushUtil;
@@ -57,6 +58,7 @@ public class App extends Application {
         FileDownloader.bind(this);
         FileUploader.bind(this);
         MyThreadPool.getInstance().submit(() -> {
+            YouyunDefaultInfoManager.init(this);
             JPushInit();
             LoggerInit();
             initList();

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
+import com.sunny.youyun.model.YouyunDefaultInfoManager;
 import com.sunny.youyun.model.data_item.Collection;
 import com.sunny.youyun.utils.GlideUtils;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by Sunny on 2017/9/13 0013.
  */
 
-public class CollectionAdapter extends BaseQuickAdapter<Collection, BaseViewHolder>{
+public class CollectionAdapter extends BaseQuickAdapter<Collection, BaseViewHolder> {
     public CollectionAdapter(@Nullable List<Collection> data) {
         super(R.layout.collection_item, data);
     }
@@ -23,7 +24,8 @@ public class CollectionAdapter extends BaseQuickAdapter<Collection, BaseViewHold
     @Override
     protected void convert(BaseViewHolder helper, Collection item) {
         helper.setText(R.id.tv_name, item.getFile().getName())
-                .setText(R.id.tv_description, item.getFile().getDescription());
-        GlideUtils.setImage(mContext, ((ImageView)helper.getView(R.id.img_icon)), item.getFile());
+                .setText(R.id.tv_description, YouyunDefaultInfoManager
+                        .getDefaultFileDescription(item.getFile().getDescription()));
+        GlideUtils.setImage(mContext, ((ImageView) helper.getView(R.id.img_icon)), item.getFile());
     }
 }

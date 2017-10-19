@@ -61,6 +61,15 @@ public class ScanActivity extends MVPBaseActivity<ScanPresenter> implements Scan
         initView();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mQRCodeView != null) {
+            mQRCodeView.stopSpot();
+            mQRCodeView.stopCamera();
+        }
+    }
+
     private void initView() {
         easyBar.setTitle("扫一扫");
         easyBar.setLeftIconVisible();

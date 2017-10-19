@@ -6,6 +6,7 @@ import android.util.SparseIntArray;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.model.User;
+import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.utils.bus.MessageEventBus;
 
@@ -33,6 +34,9 @@ public enum MessageManager {
     private int headCount = 0;
 
     public void init(int userId) {
+        //如果没有登录就不从数据库加载数据
+        if(!YouyunAPI.isIsLogin())
+            return;
         //按更新时间升序查出所有的私信记录
         List<PrivateLetterItem> privateLetterItems = DataSupport.where("ownerId = ?", String.valueOf(userId))
                 .order("updateTime asc")
@@ -163,12 +167,9 @@ public enum MessageManager {
     public void clearMessage() {
         lastMessageManager.clear();
         messagePosition.clear();
-        System.out.println("headerCount: " + headCount);
-        System.out.println("begin remove: " + mList.size());
         while (mList.size() > headCount){
             mList.remove(headCount);
         }
-        System.out.println("remove success: " + mList.size());
     }
 
 

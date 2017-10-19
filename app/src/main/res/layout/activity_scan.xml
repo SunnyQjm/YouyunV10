@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:background="@color/gray"
     tools:context="com.sunny.youyun.activity.scan.ScanActivity">
 
     <com.sunny.youyun.views.QRScan.zxing.ZXingView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,19 +40,20 @@
 
     </com.sunny.youyun.views.QRScan.zxing.ZXingView>
     <com.sunny.youyun.views.EasyBar
-        xmlns:easy="http://schemas.android.com/apk/res-auto"
+        android:background="@color/transparent"
         android:id="@+id/easyBar"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        easy:title="优云"
-        easy:title_size="17sp"
-        easy:title_color="@color/white"
-        easy:left_icon="@drawable/back"
-        android:layout_marginRight="0dp"
-        easy:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="0dp"
-        easy:layout_constraintLeft_toLeftOf="parent"
-        easy:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp" />
+        app:title="优云"
+        app:icon_size="@dimen/bar_item_height"
+        app:title_size="17sp"
+        app:icon_margin="17.5dp"
+        app:left_text="@string/back"
+        app:right_text="@string/sure"
+        app:title_color="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bar_item_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>
