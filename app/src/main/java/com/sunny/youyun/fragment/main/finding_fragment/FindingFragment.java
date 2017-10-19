@@ -7,11 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.RecyclerViewDividerItem;
@@ -26,6 +27,7 @@ import com.sunny.youyun.fragment.main.finding_fragment.config.SearchItemType;
 import com.sunny.youyun.fragment.main.finding_fragment.hot.HotFragment;
 import com.sunny.youyun.fragment.main.finding_fragment.item.FileItem;
 import com.sunny.youyun.fragment.main.finding_fragment.item.UserItem;
+import com.sunny.youyun.utils.InputMethodUtil;
 import com.sunny.youyun.utils.RecyclerViewUtils;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.views.EasyBar;
@@ -65,7 +67,7 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter>
 
     //搜索window控件
     private MyPopupWindow searchPopupWindow = null;
-    private ImageView imgSearch = null;
+    private TextView imgSearch = null;
     private EditText etSearch = null;
     private RecyclerView recyclerView = null;
     private SearchAdapter searchAdapter = null;
@@ -150,15 +152,13 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter>
     private void createSearchWindow() {
         View view = LayoutInflater.from(activity)
                 .inflate(R.layout.finding_search_view_window, null, false);
+        view.requestFocus();
         searchPopupWindow = new MyPopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         searchPopupWindow.setAnimationStyle(R.style.RightPopupWindowStyle);
-        imgSearch = (ImageView) view.findViewById(R.id.img_search);
+        imgSearch = (TextView) view.findViewById(R.id.img_search);
         etSearch = (EditText) view.findViewById(R.id.et_search);
-        imgSearch.setOnClickListener(v -> {
-            String str = etSearch.getText().toString();
-            mPresenter.search(str);
-        });
+        imgSearch.setOnClickListener(v -> searchPopupWindow.dismiss());
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(
@@ -174,7 +174,16 @@ public class FindingFragment extends MVPBaseFragment<FindingPresenter>
                 etSearch.setText("");
             }
         });
+        etSearch.setOnKeyListener((v, keyCode, event) -> {
+            if(keyCode == KeyEvent.KEYCODE_ENTER){
+                String str = etSearch.getText().toString();
+                mPresenter.search(str);
+                InputMethodUtil.hide(activity, v);
+            }
+            return false;
+        });
     }
+
 
     @Override
     protected FindingPresenter onCreatePresenter() {
