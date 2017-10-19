@@ -5,6 +5,7 @@ import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.sunny.youyun.activity.file_manager.item.FileItem;
 import com.sunny.youyun.model.data_item.FindingModel;
 import com.sunny.youyun.model.InternetFile;
 
@@ -24,8 +25,9 @@ public class GlideUtils {
     }
 
     public static void setImage(Context context, ImageView imageView, InternetFile internetFile) {
-        int resId = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(internetFile.getName());
-        if (resId == -1) {
+        int resId = FileTypeUtil.getIconIdByFileName(internetFile.getName());
+        if (FileTypeUtil.judgeIsVideoPhoto(resId) && internetFile.getPath() != null &&
+                !internetFile.getPath().equals("")) {
             Glide.with(context)
                     .load(internetFile.getPath())
                     .apply(GlideOptions
@@ -67,5 +69,25 @@ public class GlideUtils {
                 .transition(GlideOptions
                         .getInstance().getCrossFadeDrawableTransitionOptions())
                 .into(imageView);
+    }
+
+    public static void setImage(Context mContext, ImageView view, FileItem fileItem) {
+        int resId = FileTypeUtil.getIconIdByFileName(fileItem.getName());
+        if (FileTypeUtil.judgeIsVideoPhoto(resId) && fileItem.getPath() != null &&
+                !fileItem.getPath().equals("")) {
+            Glide.with(mContext)
+                    .load(fileItem.getPath())
+                    .apply(GlideOptions
+                            .getInstance().getRequestOptions())
+                    .transition(GlideOptions
+                            .getInstance().getCrossFadeDrawableTransitionOptions())
+                    .into(view);
+        } else {
+            Glide.with(mContext)
+                    .load(resId)
+                    .apply(GlideOptions
+                            .getInstance().getRequestOptions())
+                    .into(view);
+        }
     }
 }

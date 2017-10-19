@@ -4,7 +4,6 @@ import android.content.Context;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.item.AppInfoItem;
 import com.sunny.youyun.activity.file_manager.item.FileItem;
@@ -13,9 +12,9 @@ import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
 import com.sunny.youyun.activity.file_manager.model.AppInfo;
 import com.sunny.youyun.base.adapter.BaseMultiItemQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
-import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.base.entity.MultiItemEntity;
-import com.sunny.youyun.utils.GlideOptions;
+import com.sunny.youyun.base.fragment.MVPBaseFragment;
+import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
 import com.sunny.youyun.utils.Tool;
 
@@ -111,22 +110,24 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                         listener.onFragmentInteraction(null);
                 });
 
+                GlideUtils.setImage(mContext, (ImageView) helper.getView(R.id.img_icon),
+                        fileItem);
                 int resId = ((FileItem) item).getResId();
-                if (resId == -1) {
-                    Glide.with(context)
-                            .load(fileItem.getPath())
-                            .apply(GlideOptions
-                                    .getInstance().getRequestOptions())
-                            .transition(GlideOptions
-                                    .getInstance().getCrossFadeDrawableTransitionOptions())
-                            .into((ImageView) helper.getView(R.id.img_icon));
-                } else {
-                    Glide.with(context)
-                            .load(resId)
-                            .apply(GlideOptions
-                            .getInstance().getRequestOptions())
-                            .into((ImageView) helper.getView(R.id.img_icon));
-                }
+//                if (resId == -1) {
+//                    Glide.with(context)
+//                            .load(fileItem.getPath())
+//                            .apply(GlideOptions
+//                                    .getInstance().getRequestOptions())
+//                            .transition(GlideOptions
+//                                    .getInstance().getCrossFadeDrawableTransitionOptions())
+//                            .into((ImageView) helper.getView(R.id.img_icon));
+//                } else {
+//                    Glide.with(context)
+//                            .load(resId)
+//                            .apply(GlideOptions
+//                            .getInstance().getRequestOptions())
+//                            .into((ImageView) helper.getView(R.id.img_icon));
+//                }
                 break;
             case TYPE_APPLICATION_INFO:
                 AppInfo appInfo = (AppInfoItem) item;

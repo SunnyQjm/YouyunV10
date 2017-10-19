@@ -49,10 +49,12 @@ public class FileTypeUtil {
     public static int getIconByFileNameWithoutVideoPhoto(String finaName) {
         int result = getIconIdByFileName(finaName);
 
-        if (result == photo || result == video) {
-            return -1;
-        }
+
         return result;
+    }
+
+    public static boolean judgeIsVideoPhoto(int resId){
+        return resId == photo || resId == video;
     }
 
     public static int getApk() {

@@ -16,6 +16,7 @@ import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.utils.FileTypeUtil;
 import com.sunny.youyun.utils.GlideOptions;
+import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.TimeUtils;
 import com.sunny.youyun.utils.Tool;
 
@@ -71,22 +72,8 @@ public class FileAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Base
                     if(listener != null)
                         listener.onFragmentInteraction(null);
                 });
-                int resId = FileTypeUtil.getIconByFileNameWithoutVideoPhoto(fileItem.getName());
-                if (resId == -1) {
-                    Glide.with(mContext)
-                            .load(fileItem.getPath())
-                            .apply(GlideOptions
-                                    .getInstance().getRequestOptions())
-                            .transition(GlideOptions
-                                    .getInstance().getCrossFadeDrawableTransitionOptions())
-                            .into((ImageView) helper.getView(R.id.img_icon));
-                } else {
-                    Glide.with(mContext)
-                            .load(resId)
-                            .apply(GlideOptions
-                                    .getInstance().getRequestOptions())
-                            .into((ImageView) helper.getView(R.id.img_icon));
-                }
+                GlideUtils.setImage(mContext, helper.getView(R.id.img_icon),
+                        fileItem);
                 break;
             case ItemTypeConfig.TYPE_DIRECT_INFO:
                 DirectItem directItem = (DirectItem) item;
