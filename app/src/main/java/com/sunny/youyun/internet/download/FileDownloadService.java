@@ -12,7 +12,6 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.internet.event.FileDownloadEvent;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.utils.FileUtils;
-import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.Tool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,6 +43,7 @@ public class FileDownloadService extends Service {
     public static final String ACTION_DOWNLOAD = "download";
     public static final String ACTION_PAUSE = "pause";
     public static final String ACTION_CONTINUE = "continue";
+    public static final String ACTION_CANCEL = "cancel";
 
     private String desDir = FileUtils.getDownloadPath();
 
@@ -97,6 +97,7 @@ public class FileDownloadService extends Service {
                     mission = missionMap.get(url);
                 }
                 start(mission, internetFile, position);
+                save(internetFile);
                 break;
             case ACTION_PAUSE:
                 internetFile.setStatus(InternetFile.Status.PAUSE);
@@ -109,7 +110,22 @@ public class FileDownloadService extends Service {
                                     .build());
                 }
                 break;
-
+            case ACTION_CANCEL:
+                internetFile.setStatus(InternetFile.Status.CANCEL);
+                internetFile.setStatus(getString(R.string.already_cancel));
+                mission = missionMap.get(url);
+                if (mission != null) {
+                    RxDownload.INSTANCE
+                            .delete(mission);
+                }
+                if (dispose(url)) {
+                    EventBus.getDefault()
+                            .post(new FileDownloadEvent.Builder()
+                                    .type(FileDownloadEvent.Type.FINISH)
+                                    .position(position)
+                                    .build());
+                }
+                break;
         }
 
     }
@@ -148,6 +164,7 @@ public class FileDownloadService extends Service {
                                         .type(FileDownloadEvent.Type.ERROR)
                                         .position(position)
                                         .build());
+                        save(internetFile);
                     }
 
                     @Override
@@ -214,7 +231,7 @@ public class FileDownloadService extends Service {
                                     .type(FileDownloadEvent.Type.ERROR)
                                     .position(position)
                                     .build());
-                    showError(internetFile.getName());
+                    save(internetFile);
                 }, () -> {      //onComplete
                     System.out.println("onCompleted");
                     internetFile.setStatus(InternetFile.Status.FINISH);
@@ -224,7 +241,6 @@ public class FileDownloadService extends Service {
                                     .type(FileDownloadEvent.Type.FINISH)
                                     .position(position)
                                     .build());
-                    showSuccess(internetFile.getName());
                     dispose(url);
                     save(internetFile);
                 });
@@ -233,8 +249,9 @@ public class FileDownloadService extends Service {
     }
 
     private void save(InternetFile internetFile) {
-        boolean b = internetFile.saveOrUpdate("identifyCode=? and fileTAG=?", internetFile.getIdentifyCode(),
-                String.valueOf(InternetFile.TAG_DOWNLOAD));
+        boolean b = internetFile.saveOrUpdate("identifyCode=? and fileTAG=? and createTime=?",
+                internetFile.getIdentifyCode(), String.valueOf(InternetFile.TAG_DOWNLOAD),
+                String.valueOf(internetFile.getCreateTime()));
         Logger.i("保存：" + b);
     }
 
@@ -251,14 +268,6 @@ public class FileDownloadService extends Service {
         if (status == null || status.getTotalSize() == 0)      //避免除零错误
             return 0;
         return (int) (status.getDownloadSize() * 100 / status.getTotalSize());
-    }
-
-    private void showError(String name) {
-        MyNotifyUtil.showNotifyExceptMain(mContext, name, getString(R.string.file_download_error), getString(R.string.file_download_error));
-    }
-
-    private void showSuccess(String fileName) {
-        MyNotifyUtil.showNotifyExceptMain(mContext, fileName, getString(R.string.file_download_success), getString(R.string.file_download_success));
     }
 
     @Nullable

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.App;
@@ -311,7 +310,6 @@ public class UploadRecordFragment extends MVPBaseFragment<UploadRecordPresenter>
             return;
         String uuid = UUIDUtil.getUUID();
         InternetFile file = (InternetFile) adapter.getItem(position);
-        ImageView img_icon = (ImageView) view.findViewById(R.id.img_icon);
         if(file == null)
             return;
         //如果当前处于选择模式

@@ -12,6 +12,6 @@ public class MultiSelectEvent {
     }
 
     public enum Operator{
-        SHOW, HIDE, DELETE, SELECT_ALL, CANCEL
+        SHOW, HIDE, DELETE, SELECT_ALL, CANCEL, CANCEL_SELECT_ALL
     }
 }

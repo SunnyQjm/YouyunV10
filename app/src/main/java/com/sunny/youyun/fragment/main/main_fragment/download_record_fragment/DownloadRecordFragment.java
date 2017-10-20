@@ -8,7 +8,6 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import com.sunny.youyun.App;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_detail_off_line.FileDetailOffLineActivity;
+import com.sunny.youyun.activity.file_manager.manager.CheckStateManager;
+import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.fragment.MVPBaseFragment;
 import com.sunny.youyun.fragment.main.main_fragment.adapter.FileRecordAdapter;
@@ -27,6 +28,7 @@ import com.sunny.youyun.internet.download.FileDownloadPosition;
 import com.sunny.youyun.internet.download.FileDownloader;
 import com.sunny.youyun.internet.event.FileDownloadEvent;
 import com.sunny.youyun.model.InternetFile;
+import com.sunny.youyun.model.event.MultiSelectEvent;
 import com.sunny.youyun.utils.RouterUtils;
 import com.sunny.youyun.utils.UUIDUtil;
 import com.sunny.youyun.utils.bus.ObjectPool;
@@ -36,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,7 +47,11 @@ import butterknife.Unbinder;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.sunny.youyun.model.InternetFile.Status.*;
+import static com.sunny.youyun.model.InternetFile.Status.CANCEL;
+import static com.sunny.youyun.model.InternetFile.Status.DOWNLOADING;
+import static com.sunny.youyun.model.InternetFile.Status.ERROR;
+import static com.sunny.youyun.model.InternetFile.Status.FINISH;
+import static com.sunny.youyun.model.InternetFile.Status.PAUSE;
 
 /**
  * Created by Sunny on 2017/6/25 0025.
@@ -110,8 +117,10 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
         adapter = new FileRecordAdapter(mList);
         adapter.setOnItemClickListener(this);
         adapter.setOnItemLongClickListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,
+                true));
+        recyclerView.addItemDecoration(new RecyclerViewDividerItem(activity, DividerItemDecoration.VERTICAL,
+                true));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         mPresenter.beginListen();
@@ -136,8 +145,12 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
         if (position >= mList.size())
             return;
         InternetFile internetFile = adapter.getItem(position);
-        if (internetFile != null)
+        if (internetFile != null) {
+            FileDownloader.getInstance()
+                    .cancel(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + internetFile.getIdentifyCode(),
+                            position);
             internetFile.delete();
+        }
         adapter.remove(position);
     }
 
@@ -197,7 +210,23 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        InternetFile internetFile = mList.get(position);
+        if (adapter == null) {
+            return;
+        }
+        InternetFile internetFile = (InternetFile) adapter.getItem(position);
+        if(internetFile == null)
+            return;
+        //如果当前处于选择模式
+        if (adapter instanceof FileRecordAdapter &&
+                ((FileRecordAdapter) adapter).getMode() == FileRecordAdapter.Mode.SELECT) {
+            if (CheckStateManager.getInstance().get(position)) {
+                CheckStateManager.getInstance().put(internetFile.getPath_Time(), position, false);
+            } else {
+                CheckStateManager.getInstance().put(internetFile.getPath_Time(), position, true);
+            }
+            adapter.notifyItemChanged(position);
+            return;
+        }
         switch (internetFile.getStatus()) {
             case DOWNLOADING:
                 pause(internetFile, position);
@@ -215,6 +244,59 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
                 break;
         }
 
+    }
+
+    /**
+     * 显示多选器
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void MultiSelect(MultiSelectEvent event) {
+        switch (event.operator) {
+            case SHOW:
+                break;
+            case HIDE:
+                if (adapter != null) {
+                    adapter.setMode(FileRecordAdapter.Mode.NORMAL);
+                    adapter.notifyDataSetChanged();
+                }
+                break;
+            case SELECT_ALL:
+                for (int i = 0; i < mList.size(); i++) {
+                    CheckStateManager.getInstance()
+                            .put(mList.get(i).getPath_Time(), i,
+                                    true);
+                }
+                adapter.notifyDataSetChanged();
+                break;
+            case DELETE:
+                Integer[] result = CheckStateManager.getInstance().intResult();
+                Arrays.sort(result, (o1, o2) -> o2 - o1);
+                for (int position : result) {
+                    delete(position);
+                }
+                break;
+            case CANCEL_SELECT_ALL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+        EventBus.getDefault()
+                .post(new MultiSelectEvent(MultiSelectEvent.Operator.SHOW));
+        InternetFile file = (InternetFile) adapter.getItem(position);
+        if (file == null)
+            return true;
+        if (adapter instanceof FileRecordAdapter) {
+            ((FileRecordAdapter) adapter).setMode(FileRecordAdapter.Mode.SELECT);
+            CheckStateManager.init();
+            CheckStateManager.getInstance().put(file.getPath_Time()
+                    , position, true);
+            adapter.notifyDataSetChanged();
+        }
+        return true;
     }
 
     private void continueDownload(InternetFile internetFile, int position) {
@@ -243,10 +325,10 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
         }
     }
 
-    @Override
-    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-        popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-        this.position = position;
-        return true;
-    }
+//    @Override
+//    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+//        popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+//        this.position = position;
+//        return true;
+//    }
 }

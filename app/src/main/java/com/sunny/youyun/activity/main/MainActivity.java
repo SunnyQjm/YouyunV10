@@ -176,6 +176,16 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
                 //TODO select all
                 EventBus.getDefault()
                         .post(new MultiSelectEvent(MultiSelectEvent.Operator.SELECT_ALL));
+//                if(easyBar.getRightText().equals(getString(R.string.select_all))){
+//                    easyBar.setRightText(getString(R.string.cancel_select_all));
+//                    //TODO select all
+//                    EventBus.getDefault()
+//                            .post(new MultiSelectEvent(MultiSelectEvent.Operator.SELECT_ALL));
+//                } else {
+//                    easyBar.setRightText(getString(R.string.select_all));
+//                    EventBus.getDefault()
+//                            .post(new MultiSelectEvent(MultiSelectEvent.Operator.CANCEL_SELECT_ALL));
+//                }
             }
         });
         //设置消失和透明

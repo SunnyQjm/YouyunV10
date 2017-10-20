@@ -185,14 +185,17 @@ public class EasyBar extends RelativeLayout {
     }
 
     public void setTitle(String title) {
+        this.title = title;
         tv_title.setText(title);
     }
 
     public void setLeftText(String text) {
+        this.leftText = leftText;
         tv_left_text.setText(text);
     }
 
     public void setRightText(String text) {
+        this.rightText = text;
         tv_right_text.setText(text);
     }
 
@@ -237,6 +240,12 @@ public class EasyBar extends RelativeLayout {
 
     public View getRightIcon(){
         return img_right;
+    }
+
+    public String getRightText(){
+        if(tv_right_text != null)
+            return tv_right_text.getText().toString();
+        return rightText;
     }
     public View getLeftIcon(){
         return img_left;
