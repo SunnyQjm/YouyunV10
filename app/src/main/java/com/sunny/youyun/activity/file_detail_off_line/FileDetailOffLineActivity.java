@@ -196,7 +196,7 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
         internetFile.setFileTAG(InternetFile.TAG_DOWNLOAD);
         internetFile.setPath(FileUtils.getDownloadPath() + internetFile.getName());
         FileDownloader.getInstance()
-                .download(ApiInfo.BaseUrl + "/" + ApiInfo.DOWNLOAD + internetFile.getIdentifyCode(),
+                .download(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + internetFile.getIdentifyCode(),
                         internetFile.getName(), position);
         finish();
     }

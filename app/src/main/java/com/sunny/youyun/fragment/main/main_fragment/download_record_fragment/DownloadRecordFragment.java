@@ -142,21 +142,6 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
     }
 
     @Override
-    public void showSuccess(String info) {
-        super.showSuccess(info);
-    }
-
-    @Override
-    public void showError(String info) {
-        super.showError(info);
-    }
-
-    @Override
-    public void showTip(String info) {
-        super.showTip(info);
-    }
-
-    @Override
     protected DownloadRecordPresenter onCreatePresenter() {
         return new DownloadRecordPresenter(this);
     }
@@ -199,7 +184,7 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
             return;
         }
         if (adapter != null) {
-            adapter.notifyItemChanged(mList.size() - 1 - position, mList.get(position));
+            adapter.notifyItemChanged(position, mList.get(position));
         } else {
             System.out.println("adapter is null");
         }
@@ -212,7 +197,6 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        position = mList.size() - 1 - position;
         InternetFile internetFile = mList.get(position);
         switch (internetFile.getStatus()) {
             case DOWNLOADING:

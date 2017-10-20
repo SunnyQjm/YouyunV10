@@ -3,18 +3,19 @@ package com.sunny.youyun;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Notification;
-import android.content.Context;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.download.FileDownloader;
+import com.sunny.youyun.internet.download.MyNotify;
 import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunAPI;
 import com.sunny.youyun.model.YouyunDefaultInfoManager;
 import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.model.manager.UserInfoManager;
+import com.sunny.youyun.utils.FileUtils;
 import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.MyThreadPool;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
@@ -28,6 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
+import zlc.season.rxdownload3.core.DownloadConfig;
 
 /**
  * Created by Sunny on 2017/5/9 0009.
@@ -65,7 +67,21 @@ public class App extends Application {
             initList();
             MessageManager.getInstance()
                     .init(id);
+            initRxDownload();
         });
+    }
+
+    private void initRxDownload() {
+        DownloadConfig.INSTANCE
+                .init(DownloadConfig.Builder.Companion.create(this)
+                        .setFps(100)     //Set the update frequency
+                        .setDefaultPath(FileUtils.getDownloadPath())     //Set the default download address
+                        .setDebug(true)
+                        .enableDb(true)     //Enable the database
+                        .enableService(false)
+                        .setNotificationFactory(new MyNotify())
+                        .enableNotification(true));
+
     }
 
     private void LoggerInit() {

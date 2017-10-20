@@ -88,6 +88,24 @@ public class MyNotifyUtil {
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
+    public static Notification buildNotifyExceptMain(Context context, String title, String ticker, String content){
+        if (SHOW_TAG == SHOW_TAG_MAIN)
+            return null;
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(MainActivityConfig.LUNCH_TAG, MainActivityConfig.LUNCH_TAG_UPLOAD_DOWNLOAD);
+        return new MyNotifyUtil.NormalNotificationBuilder(context)
+                .autoCancel(true)
+                .contentIntent(PendingIntent.getActivity(
+                        context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT))
+                .largerIcon(R.drawable.logo)
+                .smallIcon(R.drawable.logo)
+                .ticker(ticker)
+                .content(content)
+                .title(title)
+                .build()
+                .build();
+    }
+
     private static void showNotify(Context context, String title, String ticker, String content,
                                    PendingIntent pendingIntent) {
         MyNotifyUtil.newInstance(context)

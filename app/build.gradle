@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     signingConfigs {
         release {
@@ -9,8 +8,8 @@ android {
             storePassword 'oureda123456'
         }
     }
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.sunny.youyun"
         minSdkVersion 15
@@ -74,13 +73,13 @@ dependencies {
     //retrofit
     //RxDownload
     //rx download
-    compile 'zlc.season:rxdownload2:2.0.4'
+    compile 'zlc.season:rxdownload3:1.0.8'
     //Router
     compile 'com.github.mzule.activityrouter:activityrouter:1.2.2'
     annotationProcessor 'com.github.mzule.activityrouter:compiler:1.1.7'
     //图片加载 glide
     compile 'com.github.bumptech.glide:glide:4.0.0'
-    implementation 'com.android.support:support-v4:25.4.0'
+    implementation 'com.android.support:support-v4:26.1.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     //bar color
     compile 'com.githang:status-bar-compat:0.5.3'
@@ -104,11 +103,10 @@ dependencies {
     //wechat
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.4.0'
 
-    implementation 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:recyclerview-v7:25.4.0'
-    compile 'com.android.support:design:25.4.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation files('libs/open_sdk_r5793_lite.jar')

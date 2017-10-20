@@ -348,15 +348,24 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                     return;
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-                    RxPermissionUtil.getInstance(this)
-                            .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            .subscribe(aBoolean -> {
-                                if (aBoolean)
-                                    download(internetFile.getIdentifyCode());
-                                finish();
-                            });
+                    EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(this, new EasyPermission.OnPermissionRequestListener() {
+                        @Override
+                        public void success() {
+                            if (ActivityCompat.checkSelfPermission(FileDetailOnlineActivity.this,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                return;
+                            }
+                            download(internetFile.getIdentifyCode());
+                        }
+
+                        @Override
+                        public void fail() {
+
+                        }
+                    });
                     return;
                 }
+
                 download(internetFile.getIdentifyCode());
                 finish();
                 break;
