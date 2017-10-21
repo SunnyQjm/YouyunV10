@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.base.FindingBaseFragment;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 
 public class HotFragment extends FindingBaseFragment<HotPresenter>
         implements HotContract.View, BaseQuickAdapter.OnItemClickListener {
@@ -29,6 +30,8 @@ public class HotFragment extends FindingBaseFragment<HotPresenter>
 
     @Override
     public void getDataSuccess() {
+        EspressoIdlingResource.getInstance()
+                .decrement();
         updateAll();
     }
 

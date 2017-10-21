@@ -144,6 +144,7 @@ public class EasyBar extends RelativeLayout {
         img_right_param.height = icon_size;
         img_right.setLayoutParams(img_right_param);
         img_right.setPadding(icon_margin, icon_margin, icon_margin, icon_margin);
+        img_right.setId(R.id.bar_right_icon);
         addView(img_right, img_right_param);
 
         img_right.setVisibility(INVISIBLE);

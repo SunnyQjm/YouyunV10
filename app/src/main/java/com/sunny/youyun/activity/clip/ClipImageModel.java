@@ -5,6 +5,7 @@ import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 
 import java.io.File;
 
@@ -59,7 +60,8 @@ class ClipImageModel implements ClipImageContrat.Model {
     }
 
     private void updateFileToServer(File file) {
-
+        EspressoIdlingResource.getInstance()
+                .increment();
         MultipartBody.Part mpf = MultipartBody.Part.createFormData(ApiInfo.MODIFY_AVATAR_AVATAR,
                 file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file));
 
@@ -86,6 +88,8 @@ class ClipImageModel implements ClipImageContrat.Model {
                             mPresenter.showError("头像修改失败，请检查网络连接");
                             mPresenter.updateFail();
                         }
+                        EspressoIdlingResource.getInstance()
+                                .decrement();
                     }
 
                     @Override
@@ -93,6 +97,8 @@ class ClipImageModel implements ClipImageContrat.Model {
                         mPresenter.showError("头像修改失败，请检查网络连接");
                         YouyunExceptionDeal.getInstance()
                                 .deal(mPresenter.getView(), e);
+                        EspressoIdlingResource.getInstance()
+                                .decrement();
 //                        mPresenter.updateFail();
                     }
 

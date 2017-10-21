@@ -14,6 +14,7 @@ import com.sunny.youyun.model.User;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.GlideUtils;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.ExpandableLineMenuItem;
 import com.sunny.youyun.views.LineMenuItem;
@@ -39,6 +40,14 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
     ImageView personSettingSignatureImgSure;
     @BindView(R.id.person_setting_signature)
     ExpandableLineMenuItem personSettingSignature;
+    @BindView(R.id.li_change_qq)
+    LineMenuItem liChangeQq;
+    @BindView(R.id.li_phone)
+    LineMenuItem liPhone;
+    @BindView(R.id.li_change_password)
+    LineMenuItem liChangePassword;
+    @BindView(R.id.li_email)
+    LineMenuItem liEmail;
     private User user;
 
     @Override
@@ -94,7 +103,7 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //如果是更新头像的请求，则修改成功后填充一下数据
-        if(requestCode == 0)
+        if (requestCode == 0)
             fillData();
     }
 
@@ -102,6 +111,8 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
     public void modifyUserInfoSuccess() {
         showSuccess(getString(R.string.modify_success));
         fillData();
+        EspressoIdlingResource.getInstance()
+                .decrement();
     }
 
     private void fillData() {
@@ -110,13 +121,53 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
         GlideUtils.load(this, liChangeAvatar.getRight_icon(), user.getAvatar());
         liChangeNickname.setValue(user.getUsername());
         etSignature.setText(user.getSignature());
+        if (user.getPhone() == null || user.getPhone().equals(""))
+            liPhone.setValue(getString(R.string.not_bind));
+        else
+            liPhone.setValue(user.getPhone());
+        if (user.getEmail() == null || user.getEmail().equals(""))
+            liEmail.setValue(getString(R.string.not_bind));
+        else
+            liEmail.setValue(user.getEmail());
+        if (user.getQqNumber() == null || user.getQqNumber().equals(""))
+            liChangeQq.setValue(getString(R.string.not_bind));
+        else
+            liChangeQq.setValue(user.getQqNumber());
     }
 
     /**
      * 修改个签
      */
     @OnClick(R.id.person_setting_signature_img_sure)
-    public void onViewClicked() {
+    public void onPersonSettingSignatureImgSureClicked() {
         mPresenter.modifySignature(etSignature.getText().toString());
+    }
+
+    /**
+     * 改变qq
+     */
+    @OnClick(R.id.li_change_qq)
+    public void onLiChangeQqClicked() {
+    }
+
+    /**
+     * 改变手机号
+     */
+    @OnClick(R.id.li_phone)
+    public void onLiPhoneClicked() {
+    }
+
+    /**
+     * 更改密码
+     */
+    @OnClick(R.id.li_change_password)
+    public void onLiChangePasswordClicked() {
+    }
+
+    /**
+     * 更改邮箱
+     */
+    @OnClick(R.id.li_email)
+    public void onEmailClicked() {
     }
 }

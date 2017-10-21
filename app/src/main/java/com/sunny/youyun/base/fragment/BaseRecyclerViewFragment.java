@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.mvp.BasePresenter;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
 import com.sunny.youyun.views.easy_refresh.CustomLinerLayoutManager;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshFooter;
@@ -75,6 +76,8 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
         if (!isVisible || !isPrepared)
             return;
         if (isFirst) {
+            EspressoIdlingResource.getInstance()
+                    .increment();
             loadData(true);
             isFirst = false;
         }
@@ -90,10 +93,14 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
     }
 
     protected void OnRefreshBeginSync() {
+        EspressoIdlingResource.getInstance()
+                .increment();
         loadData(true);
     }
 
     protected void onLoadBeginSync() {
+        EspressoIdlingResource.getInstance()
+                .increment();
         loadData(false);
     }
 

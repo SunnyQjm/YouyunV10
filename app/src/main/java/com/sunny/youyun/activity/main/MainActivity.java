@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import com.sunny.youyun.utils.DensityUtil;
 import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.TimePickerUtils;
 import com.sunny.youyun.utils.bus.MessageEventBus;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.NoScrollViewPager;
 import com.sunny.youyun.views.drag_view.DraggableFlagView;
@@ -350,4 +353,9 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
 
     }
 
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getInstance()
+                .getIdlingResource();
+    }
 }

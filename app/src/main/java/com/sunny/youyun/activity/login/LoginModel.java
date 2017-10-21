@@ -50,6 +50,7 @@ class LoginModel implements LoginContract.Model{
                 .subscribe(new Observer<LoginResponseBody>() {
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         Logger.e(e, "登录失败");
                         YouyunExceptionDeal.getInstance()
                                 .deal(mPresenter.getView(), e);

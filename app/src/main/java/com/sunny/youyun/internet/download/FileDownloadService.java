@@ -198,9 +198,11 @@ public class FileDownloadService extends Service {
                     @Override
                     public void accept(Status status) throws Exception {//onNext
                         long span = System.currentTimeMillis() - lastTime;
-                        lastTime = span + lastTime;
                         dealStatus(internetFile
                                 , lastBytes, span, position, status);
+                        if(span < 200)
+                            return;
+                        lastTime = span + lastTime;
                         lastBytes = status.getDownloadSize();
                     }
                 }, t -> {   //onError
@@ -238,7 +240,9 @@ public class FileDownloadService extends Service {
             internetFile.setStatus(InternetFile.Status.PAUSE);
             dispatchEvent(FileDownloadEvent.Type.PAUSE);
         } else if (status instanceof Waiting) {
-            //
+            internetFile.setStatus(InternetFile.Status.DOWNLOADING);
+            internetFile.setRate("等待下载");
+            dispatchEvent(FileDownloadEvent.Type.START);
         } else if (status instanceof Downloading) {
             if(span < 200)
                 return;

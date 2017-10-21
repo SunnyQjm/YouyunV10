@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.base.FindingBaseFragment;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 
 public class ConcernFragment extends FindingBaseFragment<ConcernPresenter>
         implements ConcernContract.View, BaseQuickAdapter.OnItemClickListener {
@@ -43,6 +44,8 @@ public class ConcernFragment extends FindingBaseFragment<ConcernPresenter>
 
     @Override
     public void getDatasOnlineSuccess() {
+        EspressoIdlingResource.getInstance()
+                .decrement();
         updateAll();
     }
 

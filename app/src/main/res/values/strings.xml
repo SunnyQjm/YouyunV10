@@ -181,4 +181,9 @@
     <string name="nothing_to_live">什么都没留下~</string>
     <string name="already_cancel">已取消</string>
     <string name="cancel_select_all">取消全选</string>
+    <string name="count_setting">账户设置</string>
+    <string name="qq_count">QQ</string>
+    <string name="change_password">更改密码</string>
+    <string name="not_bind">未绑定</string>
+    <string name="email">邮箱</string>
 </resources>

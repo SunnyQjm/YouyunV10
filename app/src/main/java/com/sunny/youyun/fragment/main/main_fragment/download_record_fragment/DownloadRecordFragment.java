@@ -173,6 +173,7 @@ public class DownloadRecordFragment extends MVPBaseFragment<DownloadRecordPresen
             case PROGRESS:
                 break;
             case ERROR:
+                EventBus.getDefault().post(new FileDownloadPosition(-1));
                 break;
         }
         EventBus.getDefault()

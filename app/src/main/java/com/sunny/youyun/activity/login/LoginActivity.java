@@ -3,6 +3,8 @@ package com.sunny.youyun.activity.login;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -24,6 +26,7 @@ import com.sunny.youyun.utils.AccountValidatorUtil;
 import com.sunny.youyun.utils.GsonUtil;
 import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 import com.sunny.youyun.utils.share.TencentUtil;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.RichEditText;
@@ -91,6 +94,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
     @Override
     public void loginSuccess() {
         dismissDialog();
+        RouterUtils.open(this, IntentRouter.MainActivity);
         onBackPressed();
         //初始化加载消息
         MessageManager.getInstance().init(UserInfoManager.getInstance()
@@ -99,6 +103,8 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
         JPushUtil.setTag(this, String.valueOf(UserInfoManager.getInstance()
                 .getUserInfo()
                 .getId()));
+        EspressoIdlingResource.getInstance()
+                .decrement();
     }
 
     @OnClick({R.id.tv_forget_pass, R.id.btn_login, R.id.btn_register, R.id.img_qq_login, R.id.img_we_chat_login})
@@ -134,6 +140,8 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
                 RouterUtils.open(this, IntentRouter.ForgetPassActivity);
                 break;
             case R.id.btn_login:
+                EspressoIdlingResource.getInstance()
+                        .increment();
                 String phone = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 if (phone.equals("") || password.equals("")) {
@@ -167,5 +175,11 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
 
                     }
                 });
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getInstance()
+                .getIdlingResource();
     }
 }

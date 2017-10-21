@@ -30,6 +30,7 @@ public class User extends DataSupport{
     private String email;
     private int sex;
     private String phone;
+    private String qqNumber;
     private String avatar;
     private int score;
     private String signature;
@@ -43,20 +44,24 @@ public class User extends DataSupport{
     private int isLocalUser = -1;
     public static final int LOCAL_USER_TAG = 5;
     private static User empty = null;
+
     protected User(Builder builder) {
+        userId = builder.userId;
         setUsername(builder.username);
         setEmail(builder.email);
         setSex(builder.sex);
         setPhone(builder.phone);
+        qqNumber = builder.qqNumber;
         setAvatar(builder.avatar);
         setScore(builder.score);
-        setSignature(builder.description);
-        setId(builder.id);
+        setSignature(builder.signature);
         setLoginToken(builder.loginToken);
         setCreateTime(builder.createTime);
-        followers = builder.followers;
-        fans = builder.fans;
+        setFollowers(builder.followers);
+        setFans(builder.fans);
         setUpdateTime(builder.updateTime);
+        setFollow(builder.isFollow);
+        isLocalUser = builder.isLocalUser;
     }
 
 
@@ -80,6 +85,15 @@ public class User extends DataSupport{
             empty = new Builder().build();
         return empty;
     }
+
+    public String getQqNumber() {
+        return qqNumber;
+    }
+
+    public void setQqNumber(String qqNumber) {
+        this.qqNumber = qqNumber;
+    }
+
     public void setLocalUser(int localUser) {
         isLocalUser = localUser;
     }
@@ -216,8 +230,10 @@ public class User extends DataSupport{
         private String email;
         private int sex;
         private String phone;
+        private String qqNumber;
         private String avatar;
         private int score;
+        private String signature;
         private String description;
         private int id;
         private String loginToken;
@@ -225,6 +241,9 @@ public class User extends DataSupport{
         private int followers;
         private int fans;
         private long updateTime;
+        private boolean isFollow;
+        private int isLocalUser;
+        private int userId;
 
         public Builder() {
         }
@@ -249,6 +268,11 @@ public class User extends DataSupport{
             return this;
         }
 
+        public Builder qqNumber(String val) {
+            qqNumber = val;
+            return this;
+        }
+
         public Builder avatar(String val) {
             avatar = val;
             return this;
@@ -256,6 +280,11 @@ public class User extends DataSupport{
 
         public Builder score(int val) {
             score = val;
+            return this;
+        }
+
+        public Builder signature(String val) {
+            signature = val;
             return this;
         }
 
@@ -284,6 +313,11 @@ public class User extends DataSupport{
             return this;
         }
 
+        public Builder fans(int val) {
+            fans = val;
+            return this;
+        }
+
         public Builder followeds(int val) {
             fans = val;
             return this;
@@ -294,8 +328,23 @@ public class User extends DataSupport{
             return this;
         }
 
+        public Builder isFollow(boolean val) {
+            isFollow = val;
+            return this;
+        }
+
+        public Builder isLocalUser(int val) {
+            isLocalUser = val;
+            return this;
+        }
+
         public User build() {
             return new User(this);
+        }
+
+        public Builder userId(int val) {
+            userId = val;
+            return this;
         }
     }
 }

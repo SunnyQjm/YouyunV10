@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.base.FindingBaseFragment;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 
 public class AllFragment extends FindingBaseFragment<AllPresenter>
         implements AllContract.View, BaseQuickAdapter.OnItemClickListener {
@@ -27,11 +28,16 @@ public class AllFragment extends FindingBaseFragment<AllPresenter>
         adapter = new FindingItemAdapter(mPresenter.getDatas());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
-        mPresenter.getForumDataALL(page, true);
+//        EspressoIdlingResource.getInstance()
+//                .increment();
+//        mPresenter.getForumDataALL(page, true);
+        onRefresh();
     }
 
     @Override
     public void getForumDataSuccess() {
+        EspressoIdlingResource.getInstance()
+                .decrement();
         updateAll();
     }
 

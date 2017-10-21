@@ -49,6 +49,7 @@ import com.sunny.youyun.utils.RxPermissionUtil;
 import com.sunny.youyun.utils.Tool;
 import com.sunny.youyun.utils.WindowUtil;
 import com.sunny.youyun.utils.bus.ObjectPool;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.RichText;
@@ -329,20 +330,20 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             case R.id.btn_look_comment:
                 break;
             case R.id.img_qr_code:  //显示二维码
-                if (!YouyunAPI.isIsLogin())
-                    return;
                 //将圆形头像放在二维码中间
-                EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(this, new EasyPermission.OnPermissionRequestListener() {
-                    @Override
-                    public void success() {
-                        displayQRCode();
-                    }
+                EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(this,
+                        new EasyPermission.OnPermissionRequestListener() {
+                            @Override
+                            public void success() {
+                                System.out.println("display");
+                                displayQRCode();
+                            }
 
-                    @Override
-                    public void fail() {
+                            @Override
+                            public void fail() {
 
-                    }
-                });
+                            }
+                        });
                 break;
             case R.id.btn_download_now:
                 if (internetFile == null)
@@ -378,7 +379,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                 .asBitmap()
                 .apply(GlideOptions.getInstance()
                         .getAvatarOptions())
-                .load(internetFile.getUser() == null ? "" : internetFile.getUser().getAvatar())
+                .load(internetFile.getUser() == null ? R.drawable.icon_logo_round :
+                        internetFile.getUser().getAvatar())
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
@@ -397,6 +399,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
     public void onViewClicked() {
         //TODO 发表评论
         if (YouyunAPI.isIsLogin()) {
+            EspressoIdlingResource.getInstance()
+                    .increment();
             mPresenter.addComment(internetFile.getId(), etCommentContent.getText().toString());
             etCommentContent.setText("");
             InputMethodUtil.change(this);
@@ -412,6 +416,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
     @Override
     public void getCommentsSuccess(boolean isFirst) {
+
         if (adapter == null)
             return;
         if (!isFirst) {

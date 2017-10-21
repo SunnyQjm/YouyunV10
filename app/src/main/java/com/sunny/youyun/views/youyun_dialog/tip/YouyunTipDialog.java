@@ -1,5 +1,6 @@
 package com.sunny.youyun.views.youyun_dialog.tip;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
@@ -50,11 +51,23 @@ public class YouyunTipDialog extends DialogFragment {
     TextView tvSure;
     Unbinder unbinder;
 
+    private DialogInterface.OnDismissListener onDismissListener;
     public YouyunTipDialog() {
     }
 
     public void setListener(OnYouyunTipDialogClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        System.out.println("onDismiss");
+        if(onDismissListener != null)
+            onDismissListener.onDismiss(dialog);
     }
 
     public static YouyunTipDialog newInstance(final int drawableRes, final String content, final OnYouyunTipDialogClickListener listener) {

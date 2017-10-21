@@ -81,8 +81,9 @@ public class YouyunActivity extends AppCompatActivity {
     }
 
     public void dismissDialog() {
-        if (dialog != null && !dialog.isHidden())
+        if (dialog != null && !dialog.isHidden()) {
             dialog.dismiss();
+        }
         if (loadingView != null && loadingView.isShowing())
             loadingView.dismiss();
     }

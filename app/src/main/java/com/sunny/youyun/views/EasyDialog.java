@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.model.EasyYouyunAPIManager;
+import com.sunny.youyun.utils.idling.EspressoIdlingResource;
 import com.sunny.youyun.views.youyun_dialog.loading.YouyunLoadingView;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
@@ -70,6 +71,8 @@ public class EasyDialog {
     }
 
     public static YouyunTipDialog showSuccess(AppCompatActivity appCompatActivity, String successInfo) {
+        EspressoIdlingResource.getInstance()
+                .increment();
         if (successDialog == null) {
             successDialog = YouyunTipDialog.newInstance(R.drawable.icon_success, successInfo,
                     new OnYouyunTipDialogClickListener() {
@@ -87,14 +90,19 @@ public class EasyDialog {
         } else {
             successDialog.setText(successInfo);
         }
+        successDialog.setOnDismissListener(dialogInterface -> EspressoIdlingResource.getInstance()
+                .decrement());
         successDialog.show(appCompatActivity.getSupportFragmentManager(), "SUCCESS_DIALOG_TAG");
         Observable.timer(1, TimeUnit.SECONDS)
-                .subscribe(aLong -> successDialog.dismiss());
+                .subscribe(aLong -> {
+                    successDialog.dismiss();
+
+                });
         return successDialog;
     }
 
-    public static YouyunTipDialog showReLogin(AppCompatActivity appCompatActivity){
-        if(reLoginTipDialog == null) {
+    public static YouyunTipDialog showReLogin(AppCompatActivity appCompatActivity) {
+        if (reLoginTipDialog == null) {
             reLoginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
                     appCompatActivity.getString(R.string.re_login_tip),
                     new OnYouyunTipDialogClickListener() {
@@ -115,8 +123,8 @@ public class EasyDialog {
         return reLoginTipDialog;
     }
 
-    public static YouyunTipDialog showReLogin(Fragment fragment){
-        if(reLoginTipDialog == null) {
+    public static YouyunTipDialog showReLogin(Fragment fragment) {
+        if (reLoginTipDialog == null) {
             reLoginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
                     fragment.getString(R.string.re_login_tip),
                     new OnYouyunTipDialogClickListener() {
@@ -137,8 +145,8 @@ public class EasyDialog {
         return reLoginTipDialog;
     }
 
-    public static YouyunTipDialog showLogin(AppCompatActivity appCompatActivity){
-        if(loginTipDialog == null) {
+    public static YouyunTipDialog showLogin(AppCompatActivity appCompatActivity) {
+        if (loginTipDialog == null) {
             loginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
                     appCompatActivity.getString(R.string.login_first),
                     new OnYouyunTipDialogClickListener() {
@@ -159,8 +167,9 @@ public class EasyDialog {
                 "LOGIN_DIALOG_TAG");
         return loginTipDialog;
     }
+
     public static YouyunTipDialog showLogin(Fragment fragment) {
-        if(loginTipDialog == null) {
+        if (loginTipDialog == null) {
             loginTipDialog = YouyunTipDialog.newInstance(R.drawable.icon_tip,
                     fragment.getString(R.string.login_first),
                     new OnYouyunTipDialogClickListener() {

@@ -23,7 +23,6 @@ class DcimModel implements DcimContract.Model {
 
     DcimModel(DcimPresenter dcimPresenter) {
         mPresenter = dcimPresenter;
-        selectItems.add("DCIM");
     }
 
     @Override
