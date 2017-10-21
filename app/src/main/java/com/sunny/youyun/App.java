@@ -74,7 +74,7 @@ public class App extends Application {
     private void initRxDownload() {
         DownloadConfig.INSTANCE
                 .init(DownloadConfig.Builder.Companion.create(this)
-                        .setFps(100)     //Set the update frequency
+                        .setFps(200)     //Set the update frequency
                         .setDefaultPath(FileUtils.getDownloadPath())     //Set the default download address
                         .setDebug(true)
                         .enableDb(true)     //Enable the database

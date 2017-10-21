@@ -25,8 +25,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import zlc.season.rxdownload3.RxDownload;
+import zlc.season.rxdownload3.core.Downloading;
+import zlc.season.rxdownload3.core.Failed;
 import zlc.season.rxdownload3.core.Mission;
+import zlc.season.rxdownload3.core.Normal;
 import zlc.season.rxdownload3.core.Status;
+import zlc.season.rxdownload3.core.Succeed;
+import zlc.season.rxdownload3.core.Suspend;
+import zlc.season.rxdownload3.core.Waiting;
+import zlc.season.rxdownload3.extension.ApkInstallExtension;
 
 import static com.sunny.youyun.model.InternetFile.Status.DOWNLOADING;
 
@@ -66,23 +73,30 @@ public class FileDownloadService extends Service {
             String action = intent.getAction();
             String fileName = intent.getStringExtra(PARAM_SAVE_NAME);
             int position = intent.getIntExtra(PARAM_POSITION, 0);
-            download(url, fileName, action, position);
+            download(url, action, position);
         } else {
             System.out.println("intent is null");
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void download(String url, String name, String action, int position) {
+    private void download(String url, String action, int position) {
         if (position >= mList.size())
             return;
         InternetFile internetFile = mList.get(position);
         internetFile.setFileTAG(InternetFile.TAG_DOWNLOAD);
+        String name = internetFile.getName();
         if (url == null || url.equals("") ||
                 name == null || name.equals(""))
             return;
+
         switch (action) {
             case ACTION_DOWNLOAD:
+//                while (new File(desDir + name).exists()) {
+//                    name = FileTypeUtil.reName(name);
+//                }
+//                if (!name.equals(""))
+//                    internetFile.setName(name);
             case ACTION_CONTINUE:
                 internetFile.setStatus(DOWNLOADING);
                 //此处将下载进度放到bus上
@@ -102,13 +116,14 @@ public class FileDownloadService extends Service {
             case ACTION_PAUSE:
                 internetFile.setStatus(InternetFile.Status.PAUSE);
                 internetFile.setRate(getString(R.string.already_pause));
-                if (dispose(url)) {
-                    EventBus.getDefault()
-                            .post(new FileDownloadEvent.Builder()
-                                    .type(FileDownloadEvent.Type.PAUSE)
-                                    .position(position)
-                                    .build());
-                }
+                EventBus.getDefault()
+                        .post(new FileDownloadEvent.Builder()
+                                .type(FileDownloadEvent.Type.PAUSE)
+                                .position(position)
+                                .build());
+                mission = missionMap.get(url);
+                if(mission != null)
+                    stop(mission);
                 break;
             case ACTION_CANCEL:
                 internetFile.setStatus(InternetFile.Status.CANCEL);
@@ -121,7 +136,7 @@ public class FileDownloadService extends Service {
                 if (dispose(url)) {
                     EventBus.getDefault()
                             .post(new FileDownloadEvent.Builder()
-                                    .type(FileDownloadEvent.Type.FINISH)
+                                    .type(FileDownloadEvent.Type.ERROR)
                                     .position(position)
                                     .build());
                 }
@@ -142,15 +157,6 @@ public class FileDownloadService extends Service {
                     @Override
                     public void onSuccess(Object o) {
                         System.out.println("onSuccess");
-                        internetFile.setStatus(InternetFile.Status.FINISH);
-                        //此处将下载进度放到bus上
-                        EventBus.getDefault()
-                                .post(new FileDownloadEvent.Builder()
-                                        .type(FileDownloadEvent.Type.FINISH)
-                                        .position(position)
-                                        .build());
-                        dispose(mission.getUrl());
-                        save(internetFile);
                     }
 
                     @Override
@@ -191,37 +197,13 @@ public class FileDownloadService extends Service {
 
                     @Override
                     public void accept(Status status) throws Exception {//onNext
-
-                        System.out.println("onNext");
                         long span = System.currentTimeMillis() - lastTime;
-                        int percent = getPercent(status);
-                        if (span < 200 && percent != 100)
-                            return;
                         lastTime = span + lastTime;
-                        String rate = Tool.convertToRate(status.getDownloadSize() - lastBytes, span);
+                        dealStatus(internetFile
+                                , lastBytes, span, position, status);
                         lastBytes = status.getDownloadSize();
-                        if (percent == 100) {     //结束后发送结束标识
-                            internetFile.setStatus(InternetFile.Status.FINISH);
-                            //此处将下载进度放到bus上
-                            EventBus.getDefault()
-                                    .post(new FileDownloadEvent.Builder()
-                                            .type(FileDownloadEvent.Type.FINISH)
-                                            .position(position)
-                                            .build());
-                        } else {
-                            internetFile.setStatus(DOWNLOADING);
-                            internetFile.setProgress(percent);
-                            internetFile.setRate(rate);
-                            //此处将下载进度放到bus上
-                            EventBus.getDefault()
-                                    .post(new FileDownloadEvent.Builder()
-                                            .type(FileDownloadEvent.Type.PROGRESS)
-                                            .position(position)
-                                            .build());
-                        }
                     }
                 }, t -> {   //onError
-                    System.out.println("onError");
                     t.printStackTrace();
                     Logger.e("下载失败", t);
                     internetFile.setStatus(InternetFile.Status.ERROR);
@@ -233,7 +215,6 @@ public class FileDownloadService extends Service {
                                     .build());
                     save(internetFile);
                 }, () -> {      //onComplete
-                    System.out.println("onCompleted");
                     internetFile.setStatus(InternetFile.Status.FINISH);
                     //此处将下载进度放到bus上
                     EventBus.getDefault()
@@ -246,6 +227,69 @@ public class FileDownloadService extends Service {
                 });
         disposableMap.put(url, d);
         return mission;
+    }
+
+    private void dealStatus(InternetFile internetFile, long lastBytes, long span, int position, Status status) {
+        System.out.println("status: " + status);
+        if (status instanceof Normal) {
+            internetFile.setStatus(InternetFile.Status.DOWNLOADING);
+            dispatchEvent(FileDownloadEvent.Type.START);
+        } else if (status instanceof Suspend) {
+            internetFile.setStatus(InternetFile.Status.PAUSE);
+            dispatchEvent(FileDownloadEvent.Type.PAUSE);
+        } else if (status instanceof Waiting) {
+            //
+        } else if (status instanceof Downloading) {
+            if(span < 200)
+                return;
+            downloading(internetFile, lastBytes, span, position, status);
+        } else if (status instanceof Failed) {
+            internetFile.setStatus(InternetFile.Status.ERROR);
+            dispatchEvent(FileDownloadEvent.Type.ERROR);
+        } else if (status instanceof Succeed) {
+            internetFile.setStatus(InternetFile.Status.FINISH);
+            //此处将下载进度放到bus上
+            EventBus.getDefault()
+                    .post(new FileDownloadEvent.Builder()
+                            .type(FileDownloadEvent.Type.FINISH)
+                            .position(position)
+                            .build());
+            save(internetFile);
+        } else if (status instanceof ApkInstallExtension.Installing) {
+        } else if (status instanceof ApkInstallExtension.Installed) {
+        }
+    }
+
+    private void dispatchEvent(FileDownloadEvent.Type type) {
+        EventBus.getDefault()
+                .post(new FileDownloadEvent.Builder()
+                        .type(type)
+                        .build());
+    }
+
+    private void downloading(InternetFile internetFile, long lastBytes, long span,
+                             int position, Status status) {
+        String rate = Tool.convertToRate(status.getDownloadSize() - lastBytes, span);
+        int percent = getPercent(status);
+        if (percent == 100) {     //结束后发送结束标识
+            internetFile.setStatus(InternetFile.Status.FINISH);
+            //此处将下载进度放到bus上
+            EventBus.getDefault()
+                    .post(new FileDownloadEvent.Builder()
+                            .type(FileDownloadEvent.Type.FINISH)
+                            .position(position)
+                            .build());
+        } else {
+            internetFile.setStatus(DOWNLOADING);
+            internetFile.setProgress(percent);
+            internetFile.setRate(rate);
+            //此处将下载进度放到bus上
+            EventBus.getDefault()
+                    .post(new FileDownloadEvent.Builder()
+                            .type(FileDownloadEvent.Type.PROGRESS)
+                            .position(position)
+                            .build());
+        }
     }
 
     private void save(InternetFile internetFile) {

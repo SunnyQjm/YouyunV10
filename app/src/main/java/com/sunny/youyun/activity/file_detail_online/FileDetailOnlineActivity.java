@@ -50,6 +50,7 @@ import com.sunny.youyun.utils.Tool;
 import com.sunny.youyun.utils.WindowUtil;
 import com.sunny.youyun.utils.bus.ObjectPool;
 import com.sunny.youyun.views.EasyBar;
+import com.sunny.youyun.views.EasyDialog;
 import com.sunny.youyun.views.RichText;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
 import com.sunny.youyun.views.youyun_dialog.share.ShareDialog;
@@ -238,8 +239,8 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                     new ShareContent.Builder()
                             .shareAppName(getString(R.string.app_name))
                             .shareImageUrl("http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif")
+                            .shareSummary(internetFile.getDescription())
                             .shareTitle(internetFile.getName())
-                            .shareSummary("")
                             .fileId(internetFile.getId())
                             .canStore(internetFile.isCanStore())
                             .identifyCode(internetFile.getIdentifyCode())
@@ -291,7 +292,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         if (internetFile != originalInternetFile)
             internetFile.setDownloadCount(internetFile.getDownloadCount() + 1);
         originalInternetFile.setDownloadCount(originalInternetFile.getDownloadCount() + 1);
-        finish();
+
     }
 
     @Override
@@ -400,7 +401,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             etCommentContent.setText("");
             InputMethodUtil.change(this);
         } else {
-            showTip(getString(R.string.login_first));
+            EasyDialog.showLogin(this);
         }
     }
 

@@ -170,10 +170,10 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
                 return;
             RouterUtils.openToChatForResult(this, letter.getUser(), 0);
         } else if (position == 0) {  //赞
-            RouterUtils.open(activity, IntentRouter.StarRecordActivity);
+            RouterUtils.openAfterLogin(activity, IntentRouter.StarRecordActivity);
         } else if (position == 1) {   //评论
             //TODO go to comment record activity
-            RouterUtils.open(activity, IntentRouter.CommentRecordActivity);
+            RouterUtils.openAfterLogin(activity, IntentRouter.CommentRecordActivity);
         }
     }
 

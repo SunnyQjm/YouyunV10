@@ -14,7 +14,7 @@ import java.util.Objects;
 public class InternetFile extends DataSupport implements Serializable {
     private final int id;
     private String identifyCode;
-    private final String name;
+    private String name;
     private final long size;
     private final long expireTime;
     private final long createTime;
@@ -121,6 +121,10 @@ public class InternetFile extends DataSupport implements Serializable {
                 .lookNum(lookNum)
                 .build();
 
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setLookNum(int lookNum) {

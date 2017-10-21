@@ -43,7 +43,7 @@ public enum TencentUtil {
         bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareContent.getShareUrl());
         bundle.putString(QQShare.SHARE_TO_QQ_TITLE, shareContent.getShareTitle());
         bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareContent.getShareSummary());
-        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareContent.getShareImageUrl());
+//        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareContent.getShareImageUrl());
         bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, activity.getString(R.string.app_name));
         tencent.shareToQQ(activity, bundle, listener);
     }

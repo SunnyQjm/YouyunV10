@@ -1,6 +1,7 @@
 package com.sunny.youyun.utils;
 
 
+import android.support.annotation.NonNull;
 import android.webkit.MimeTypeMap;
 
 import com.sunny.youyun.R;
@@ -53,7 +54,7 @@ public class FileTypeUtil {
         return result;
     }
 
-    public static boolean judgeIsVideoPhoto(int resId){
+    public static boolean judgeIsVideoPhoto(int resId) {
         return resId == photo || resId == video;
     }
 
@@ -69,7 +70,7 @@ public class FileTypeUtil {
      */
     public static int getIconIdByFileName(String fileName) {
         int type = file;
-        if(fileName == null)
+        if (fileName == null)
             return type;
         String MIME = getMIME(fileName);
         if (MIME == null || MIME.equals("")) return type;
@@ -79,22 +80,71 @@ public class FileTypeUtil {
     }
 
 
-    public static String getMIME(String fileName){
-        if(fileName == null)
+    public static String getMIME(String fileName) {
+        if (fileName == null)
             return null;
+        /* 获取文件的后缀名 */
+        String end = getSuffix(fileName);
+        if (end.equals("")) return "";
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(end);
+    }
+
+    /**
+     * 获取文件的后缀名
+     *
+     * @param fileName
+     * @return
+     */
+    public static String getSuffix(@NonNull String fileName) {
         //获取后缀名前的分隔符"."在fName中的位置。
         int dotIndex = fileName.lastIndexOf(".");
         if (dotIndex < 0) {
             return "";
         }
-        /* 获取文件的后缀名 */
-        String end = fileName.substring(dotIndex + 1, fileName.length()).toLowerCase();
-        if (end.equals("")) return "";
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(end);
+        return fileName.substring(dotIndex + 1, fileName.length()).toLowerCase();
+    }
+
+    /**
+     * 获取文件的名字，不包含后缀名
+     *
+     * @return
+     */
+    public static String getRawName(@NonNull String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        return fileName.substring(0, dotIndex);
+    }
+
+    /**
+     * 为防止文件重名导致的下载问题
+     * 进行重命名
+     * 举个栗子：滑稽.jpg  ==> 滑稽(1).jpg
+     *
+     * @param fileName
+     * @return
+     */
+    public static String reName(@NonNull String fileName) {
+        String suffix = "." + FileTypeUtil.getSuffix(fileName);
+        StringBuilder rawName = new StringBuilder(FileTypeUtil.getRawName(fileName));
+        int start = rawName.lastIndexOf("(");
+        int end = rawName.lastIndexOf(")");
+        int num = 1;
+        if (start < 0 || end < 0 || start >= end || end != rawName.length() - 1) {
+            rawName.append("(1)");
+            return rawName + suffix;
+        }
+        try {
+            num = Integer.valueOf(rawName.substring(start + 1, end));
+        } catch (Exception e) {
+            e.printStackTrace();
+            rawName.append("(1)");
+            return rawName + suffix;
+        }
+        rawName.replace(start + 1, end, String.valueOf(num + 1));
+        return rawName + suffix;
     }
 
 
-    public static String getMyMIME(String fileName){
+    public static String getMyMIME(String fileName) {
         String type = getMIME(fileName);
         if (type == null)
             return MIME_OTHER;
@@ -124,6 +174,7 @@ public class FileTypeUtil {
                 return MIME_OTHER;
         }
     }
+
     private static int returnIconIdByStringType(String type) {
         if (type == null)
             return file;
@@ -156,4 +207,6 @@ public class FileTypeUtil {
                 return file;
         }
     }
+
+
 }
