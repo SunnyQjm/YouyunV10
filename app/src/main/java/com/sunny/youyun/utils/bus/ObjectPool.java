@@ -28,6 +28,13 @@ public enum ObjectPool {
         return true;
     }
 
+    public boolean put(@NonNull final String key, @NonNull final Object o) {
+        if (map.get(key) != null)
+            return false;
+        map.put(key, o);
+        return true;
+    }
+
     public <T extends InternetFile> T get(String key, T defaultVal) {
         Object o = map.get(key);
         if (o == null)
@@ -37,6 +44,14 @@ public enum ObjectPool {
     }
 
     public <T extends User> T get(String key, T defaultVal) {
+        Object o = map.get(key);
+        if (o == null)
+            return defaultVal;
+        map.remove(key);
+        return (T) o;
+    }
+
+    public <T> T get(String key, T defaultVal){
         Object o = map.get(key);
         if (o == null)
             return defaultVal;

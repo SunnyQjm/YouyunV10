@@ -2,6 +2,8 @@ package com.sunny.youyun.activity.person_file_manager.person_file_manager_index;
 
 import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.entity.MultiItemEntity;
+import com.sunny.youyun.model.FileManageItem;
+import com.sunny.youyun.model.data_item.ShareSuccess;
 import com.sunny.youyun.mvp.BaseModel;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.mvp.BaseView;
@@ -17,6 +19,7 @@ interface PersonFileManagerContract {
         void getFilesByPathSuccess();
         void deleteSuccess(int position);
         void getPathsSuccess();
+        void shareSuccess(ShareSuccess shareSuccess);
     }
 
     interface Model extends BaseModel {
@@ -25,6 +28,7 @@ interface PersonFileManagerContract {
         void delete(String id, int position);
         //path
         List<PathItem> getPaths();
+        void share(FileManageItem fileManageItem);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
@@ -36,5 +40,7 @@ interface PersonFileManagerContract {
         abstract List<PathItem> getPaths();
         abstract void delete(String id, int position);
         abstract void deleteSuccess(int position);
+        abstract void share(FileManageItem fileManageItem);
+        abstract void shareSuccess(ShareSuccess shareSuccess);
     }
 }

@@ -22,10 +22,14 @@ import com.sunny.youyun.base.activity.BaseRecyclerViewActivityLazy;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.upload.FileUploader;
 import com.sunny.youyun.model.EasyYouyunAPIManager;
+import com.sunny.youyun.model.FileManageItem;
 import com.sunny.youyun.model.callback.SimpleListener;
+import com.sunny.youyun.model.data_item.ShareSuccess;
 import com.sunny.youyun.model.nodes.ClassificationNode;
 import com.sunny.youyun.utils.RouterUtils;
+import com.sunny.youyun.utils.UUIDUtil;
 import com.sunny.youyun.utils.WindowUtil;
+import com.sunny.youyun.utils.bus.ObjectPool;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.CustomLinerLayoutManager;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
@@ -174,6 +178,8 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
                     @Override
                     public void onShareClick(int position) {
                         //TODO share F
+                        popupwindow.dismiss(position);
+                        share(position);
                     }
 
                     @Override
@@ -181,6 +187,25 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
                         WindowUtil.changeWindowAlpha(PersonFileManagerActivity.this, false);
                     }
                 });
+    }
+
+    /**
+     * share
+     * @param position
+     */
+    private void share(int position) {
+        FileManageItem fileManageItem = (FileManageItem) adapter.getItem(position);
+        if(fileManageItem == null)
+            return;
+        mPresenter.share(fileManageItem);
+    }
+
+    @Override
+    public void shareSuccess(ShareSuccess shareSuccess) {
+        String uuid = UUIDUtil.getUUID();
+        ObjectPool.getInstance()
+                .put(uuid, shareSuccess);
+        RouterUtils.open(this, IntentRouter.ShareSuccessActivity, uuid);
     }
 
     /**
@@ -466,6 +491,8 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
         if (pathAdapter != null)
             pathAdapter.notifyDataSetChanged();
     }
+
+
 
 
     /**

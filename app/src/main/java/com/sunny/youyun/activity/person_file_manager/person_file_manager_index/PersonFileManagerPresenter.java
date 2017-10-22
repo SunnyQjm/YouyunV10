@@ -3,6 +3,8 @@ package com.sunny.youyun.activity.person_file_manager.person_file_manager_index;
 import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.model.FileManageItem;
+import com.sunny.youyun.model.data_item.ShareSuccess;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,5 +57,15 @@ class PersonFileManagerPresenter extends PersonFileManagerContract.Presenter{
     @Override
     void deleteSuccess(int position) {
         mView.deleteSuccess(position);
+    }
+
+    @Override
+    void share(FileManageItem fileManageItem) {
+        mModel.share(fileManageItem);
+    }
+
+    @Override
+    void shareSuccess(ShareSuccess shareSuccess) {
+        mView.shareSuccess(shareSuccess);
     }
 }

@@ -186,4 +186,8 @@
     <string name="change_password">更改密码</string>
     <string name="not_bind">未绑定</string>
     <string name="email">邮箱</string>
+    <string name="qr_for_share">qr for share</string>
+    <string name="share_success">分享成功</string>
+    <string name="share_qr">分享二维码</string>
+    <string name="share_link">分享链接</string>
 </resources>

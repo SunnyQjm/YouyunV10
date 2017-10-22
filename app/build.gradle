@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'kotlin-android'
+
 android {
     signingConfigs {
         release {
@@ -7,6 +9,9 @@ android {
             storeFile file('../oureda.jks')
             storePassword 'oureda123456'
         }
+    }
+    dataBinding{
+        enabled true
     }
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
@@ -64,6 +69,9 @@ repositories {
     flatDir { dirs 'libs' }
 }
 
+//kapt {
+//    generateStubs = true
+//}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //ButterKnife
@@ -116,4 +124,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:2.2.2'
     implementation files('libs/open_sdk_r5793_lite.jar')
     implementation files('libs/mta-sdk-1.6.2.jar')
+
+//    kapt "com.android.databinding:compiler:$android_plugin_version"
+//    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 }

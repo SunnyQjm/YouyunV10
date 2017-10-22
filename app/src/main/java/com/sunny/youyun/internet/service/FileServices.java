@@ -140,6 +140,19 @@ public interface FileServices {
     Observable<BaseResponseBody> collect(@Body RequestBody body);
 
 
+    /**
+     * 修改文件夹
+     * @param body
+     * @return
+     */
     @POST(ApiInfo.CHANGE_DIRECTORY_URL)
     Observable<BaseResponseBody> changeDirectory(@Body RequestBody body);
+
+
+    @GET(ApiInfo.SHARE_FILE_URL)
+    Observable<BaseResponseBody<String>> shareFile(
+            @Query(ApiInfo.SHARE_FILE_IDENTIFY_CODE) String identifyCode
+    );
+
+
 }

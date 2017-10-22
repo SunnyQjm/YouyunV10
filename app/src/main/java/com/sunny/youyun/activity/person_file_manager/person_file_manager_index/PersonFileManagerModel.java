@@ -8,8 +8,10 @@ import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.EasyYouyunAPIManager;
+import com.sunny.youyun.model.FileManageItem;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.callback.SimpleListener;
+import com.sunny.youyun.model.data_item.ShareSuccess;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import java.util.ArrayList;
@@ -129,6 +131,45 @@ class PersonFileManagerModel implements PersonFileManagerContract.Model {
                 mPresenter.addSubscription(d);
             }
         });
+    }
+
+    @Override
+    public void share(FileManageItem fileManageItem) {
+        APIManager.getInstance()
+                .getFileServices(GsonConverterFactory.create())
+                .shareFile(fileManageItem.getFile().getIdentifyCode())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseResponseBody<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mPresenter.addSubscription(d);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponseBody<String> stringBaseResponseBody) {
+                        if (stringBaseResponseBody.isSuccess() &&
+                                stringBaseResponseBody.getData() != null) {
+                            mPresenter.shareSuccess(new ShareSuccess.Builder()
+                                    .downloadLink(stringBaseResponseBody.getData())
+                                    .file(fileManageItem)
+                                    .build());
+                        } else {
+                            mPresenter.showError("分享失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.e("分享文件失败", e);
+                        mPresenter.showError("分享失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

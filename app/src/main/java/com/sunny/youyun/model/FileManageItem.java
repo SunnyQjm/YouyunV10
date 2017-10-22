@@ -28,6 +28,10 @@ public class FileManageItem {
     private final long createTime;
     private final long updateTime;
 
+    public static FileManageItem empty(){
+        return new Builder()
+                .build();
+    }
     protected FileManageItem(Builder builder) {
         parentPathName = builder.parentPathName;
         selfId = builder.selfId;

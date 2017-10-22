@@ -151,7 +151,8 @@ public class ApiInfo {
             CHANGE_DIRECTORY_SELF_ID = "selfId", CHANGE_DIRECTORY_TARGET_PARENT_ID = "toParentId",
             CHANGE_DIRECTORY_NAME = "name";
 
-
+    public static final String SHARE_FILE_URL = "authc/file/share",
+            SHARE_FILE_IDENTIFY_CODE = "identifycode";
     ///////////////////////////////////////////////////////////
     /////////ForumService
     //////////////////////////////////////////////////////////

@@ -24,12 +24,13 @@ public class GlideUtils {
                 .into(imageView);
     }
 
-    public static void setImage(Context context, ImageView imageView, InternetFile internetFile) {
-        int resId = FileTypeUtil.getIconIdByFileName(internetFile.getName());
-        if (FileTypeUtil.judgeIsVideoPhoto(resId) && internetFile.getPath() != null &&
-                !internetFile.getPath().equals("")) {
+    public static void setImage(Context context, ImageView imageView, String fileName,
+                                String filePath) {
+        int resId = FileTypeUtil.getIconIdByFileName(fileName);
+        if (FileTypeUtil.judgeIsVideoPhoto(resId) && filePath != null &&
+                !filePath.equals("")) {
             Glide.with(context)
-                    .load(internetFile.getPath())
+                    .load(filePath)
                     .apply(GlideOptions
                             .getInstance().getRequestOptions())
                     .transition(GlideOptions
@@ -42,6 +43,10 @@ public class GlideUtils {
                             .getInstance().getRequestOptions())
                     .into(imageView);
         }
+    }
+
+    public static void setImage(Context context, ImageView imageView, InternetFile internetFile) {
+        setImage(context, imageView, internetFile.getName(), internetFile.getPath());
     }
 
     /**
