@@ -30,6 +30,8 @@ import com.sunny.youyun.model.event.JPushEvent;
 import com.sunny.youyun.model.event.MultiSelectEvent;
 import com.sunny.youyun.model.manager.MessageManager;
 import com.sunny.youyun.utils.DensityUtil;
+import com.sunny.youyun.utils.EasyPermission;
+import com.sunny.youyun.utils.FileUtils;
 import com.sunny.youyun.utils.MyNotifyUtil;
 import com.sunny.youyun.utils.TimePickerUtils;
 import com.sunny.youyun.utils.bus.MessageEventBus;
@@ -208,6 +210,20 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         viewpager.setCurrentItem(MAIN_PAGE_FRAGMENT, false);
 
         changeDragCount();
+
+        //将app图标另存路径
+        EasyPermission.checkAndRequestREAD_WRITE_EXTENAL(this, new EasyPermission.OnPermissionRequestListener() {
+            @Override
+            public void success() {
+                System.out.println("get permission success");
+                FileUtils.saveLogoToDir(MainActivity.this);
+            }
+
+            @Override
+            public void fail() {
+                System.out.println("get permission fail");
+            }
+        });
     }
 
     /**
@@ -215,7 +231,7 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
      */
     private void changeDragCount() {
         int total = MessageManager.getInstance().getTotalCount();
-        if(total > 0){
+        if (total > 0) {
             draggableView.setVisibility(View.VISIBLE);
             draggableView.setText(String.valueOf(total));
         } else {
@@ -335,9 +351,9 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void receiveMessage(JPushEvent jPushEvent){
+    public void receiveMessage(JPushEvent jPushEvent) {
         changeDragCount();
-        switch (jPushEvent.getType()){
+        switch (jPushEvent.getType()) {
             case JPushEvent.COMMENT:
                 break;
             case JPushEvent.FOLLOW:
@@ -348,6 +364,7 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
                 break;
         }
     }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 

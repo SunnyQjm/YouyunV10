@@ -24,6 +24,7 @@ import com.sunny.youyun.model.response_body.BaseResponseBody;
 import com.sunny.youyun.utils.share.TencentUtil;
 import com.sunny.youyun.utils.share.WechatUtil;
 import com.sunny.youyun.views.MyPopupWindow;
+import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 
@@ -41,7 +42,10 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.sunny.youyun.views.youyun_dialog.share.ShareDialog.ShareType.*;
+
 /**
+ * 分享弹窗
  * Created by Sunny on 2017/8/25 0025.
  */
 
@@ -57,21 +61,27 @@ public class ShareDialog {
     private ShareAdapter otherFunctionAdapter;
     private PopupWindow.OnDismissListener onDismissListener;
 
-    private static final int SHARE_TO_QQ = 0;
-    private static final int SHARE_TO_QQ_ZONE = 1;
-    private static final int SHARE_COPY_LINK = 2;
-    private static final int SHARE_TO_WE_CHAT = 3;
-    private static final int SHARE_FRIEND_CIRCLE = 4;
-    private static final int SHARE_COPY_CODE = 5;
-    private static final int SHARE_COLLECT = 6;
+    public enum ShareType {
+        SHARE_TO_QQ, SHARE_TO_QQ_ZONE, SHARE_COPY_LINK, SHARE_TO_WE_CHAT,
+        SHARE_FRIEND_CIRCLE, SHARE_COPY_CODE, SHARE_COLLECT
+    }
 
+    private static final ShareType[] allType = {SHARE_TO_QQ, SHARE_TO_QQ_ZONE, SHARE_COPY_LINK,
+            SHARE_TO_WE_CHAT, SHARE_FRIEND_CIRCLE, SHARE_COPY_CODE, SHARE_COLLECT};
 
     private boolean isCanStore = true;
 
     public ShareDialog(@NonNull final Activity context, ShareContent shareContent) {
         this.context = context;
         this.shareContent = shareContent;
-        initMsg();
+        initMsg(allType);
+        initView();
+    }
+
+    public ShareDialog(@NonNull final Activity context, ShareContent shareContent, ShareType... shareTypes) {
+        this.context = context;
+        this.shareContent = shareContent;
+        initMsg(shareTypes);
         initView();
     }
 
@@ -80,56 +90,70 @@ public class ShareDialog {
         this.context = context;
         this.shareContent = shareContent;
         this.onCollectionListener = listener;
-        initMsg();
+        initMsg(allType);
         initView();
     }
 
-    private void initMsg() {
+    private void initMsg(ShareType... shareTypes) {
         List<ShareNode> shareNodes = new ArrayList<>();
-        shareNodes.add(new ShareNode.Builder()
-                .icon(R.drawable.icon_qq)
-                .name(context.getString(R.string.QQ))
-                .id(SHARE_TO_QQ)
-                .build());
-        shareNodes.add(new ShareNode.Builder()
-                .icon(R.drawable.icon__qq_zone)
-                .name(context.getString(R.string.QQ_ZONE))
-                .id(SHARE_TO_QQ_ZONE)
-                .build());
-
-        shareNodes.add(new ShareNode.Builder()
-                .icon(R.drawable.icon_wechat)
-                .name(context.getString(R.string.WE_CHAT))
-                .id(SHARE_TO_WE_CHAT)
-                .build());
-
-        shareNodes.add(new ShareNode.Builder()
-                .icon(R.drawable.icon_friend_circle)
-                .name(context.getString(R.string.FRIEND_CIRCLE))
-                .id(SHARE_FRIEND_CIRCLE)
-                .build());
-
-        ShareNode collectNode = new ShareNode.Builder()
-                .icon(R.drawable.icon_share_collect)
-                .name(shareContent.isCanStore() ? context.getString(R.string.collection) :
-                        context.getString(R.string.cancel_collection))
-                .id(SHARE_COLLECT)
-                .build();
-        isCanStore = shareContent.isCanStore();
-        shareNodes.add(collectNode);
-        shareAdapter = new ShareAdapter(shareNodes);
-
         List<ShareNode> otherFunctionNodes = new ArrayList<>();
-        otherFunctionNodes.add(new ShareNode.Builder()
-                .icon(R.drawable.icon_copy_link)
-                .name(context.getString(R.string.copy_link))
-                .id(SHARE_COPY_LINK)
-                .build());
-        otherFunctionNodes.add(new ShareNode.Builder()
-                .icon(R.drawable.icon_copy_code)
-                .name(context.getString(R.string.copy_code))
-                .id(SHARE_COPY_CODE)
-                .build());
+        for (ShareType type : shareTypes){
+            switch (type){
+                case SHARE_TO_QQ:
+                    shareNodes.add(new ShareNode.Builder()
+                            .icon(R.drawable.icon_qq)
+                            .name(context.getString(R.string.QQ))
+                            .shareType(SHARE_TO_QQ)
+                            .build());
+                    break;
+                case SHARE_COLLECT:
+                    ShareNode collectNode = new ShareNode.Builder()
+                            .icon(R.drawable.icon_share_collect)
+                            .name(shareContent.isCanStore() ? context.getString(R.string.collection) :
+                                    context.getString(R.string.cancel_collection))
+                            .shareType(SHARE_COLLECT)
+                            .build();
+                    isCanStore = shareContent.isCanStore();
+                    shareNodes.add(collectNode);
+                    break;
+                case SHARE_COPY_CODE:
+                    otherFunctionNodes.add(new ShareNode.Builder()
+                            .icon(R.drawable.icon_copy_code)
+                            .name(context.getString(R.string.copy_code))
+                            .shareType(SHARE_COPY_CODE)
+                            .build());
+                    break;
+                case SHARE_COPY_LINK:
+                    otherFunctionNodes.add(new ShareNode.Builder()
+                            .icon(R.drawable.icon_copy_link)
+                            .name(context.getString(R.string.copy_link))
+                            .shareType(SHARE_COPY_LINK)
+                            .build());
+                    break;
+                case SHARE_TO_QQ_ZONE:
+                    shareNodes.add(new ShareNode.Builder()
+                            .icon(R.drawable.icon__qq_zone)
+                            .name(context.getString(R.string.QQ_ZONE))
+                            .shareType(SHARE_TO_QQ_ZONE)
+                            .build());
+                    break;
+                case SHARE_TO_WE_CHAT:
+                    shareNodes.add(new ShareNode.Builder()
+                            .icon(R.drawable.icon_wechat)
+                            .name(context.getString(R.string.WE_CHAT))
+                            .shareType(SHARE_TO_WE_CHAT)
+                            .build());
+                    break;
+                case SHARE_FRIEND_CIRCLE:
+                    shareNodes.add(new ShareNode.Builder()
+                            .icon(R.drawable.icon_friend_circle)
+                            .name(context.getString(R.string.FRIEND_CIRCLE))
+                            .shareType(SHARE_FRIEND_CIRCLE)
+                            .build());
+                    break;
+            }
+        }
+        shareAdapter = new ShareAdapter(shareNodes);
         otherFunctionAdapter = new ShareAdapter(otherFunctionNodes);
     }
 
@@ -146,14 +170,25 @@ public class ShareDialog {
         shareAdapter.bindToRecyclerView(shareRecyclerView);
         shareAdapter.setOnItemClickListener((adapter, view1, position) -> {
             ShareNode shareNode = (ShareNode) adapter.getData().get(position);
-            switch (shareNode.getId()) {
+            switch (shareNode.getShareType()) {
                 case SHARE_TO_QQ:
-                    TencentUtil.getInstance(context)
-                            .shareToQQ(shareContent, iUiListener);
+                    if(shareContent.getShareType() == QQShare.SHARE_TO_QQ_TYPE_DEFAULT){    //图文分享
+                        TencentUtil.getInstance(context)
+                                .shareMessagePicToQQ(shareContent, iUiListener);
+                    } else if(shareContent.getShareType() == QQShare.SHARE_TO_QQ_TYPE_IMAGE){ //分享图片
+                        TencentUtil.getInstance(context)
+                                .sharePictureToQQ(shareContent, iUiListener);
+                    }
                     break;
                 case SHARE_TO_QQ_ZONE:
-                    TencentUtil.getInstance(context)
-                            .shareToQzon(shareContent, iUiListener);
+                    if(shareContent.getShareType() == QQShare.SHARE_TO_QQ_TYPE_DEFAULT){    //图文分享
+                        TencentUtil.getInstance(context)
+                                .shareMessagePicToQzon(shareContent, iUiListener);
+                    } else if(shareContent.getShareType() == QQShare.SHARE_TO_QQ_TYPE_IMAGE){  //分享图片
+                        TencentUtil.getInstance(context)
+                                .sharePictureToQzon(shareContent, iUiListener);
+                    }
+
                     break;
                 case SHARE_TO_WE_CHAT:
                     WechatUtil.getInstance(context)
@@ -221,7 +256,7 @@ public class ShareDialog {
                 myPopupWindow.dismiss();
                 return;
             }
-            switch (shareNode.getId()) {
+            switch (shareNode.getShareType()) {
                 case SHARE_COPY_LINK:
                     ClipData data = new ClipData("share", new String[]{"text/plain"},
                             new ClipData.Item(shareContent.getShareUrl()));
@@ -276,7 +311,7 @@ public class ShareDialog {
         @Override
         public void onError(UiError uiError) {
             System.out.println("error");
-            com.orhanobut.logger.Logger.e("分享错误", uiError);
+            Logger.e("分享错误", uiError);
         }
 
         @Override
@@ -287,27 +322,28 @@ public class ShareDialog {
     }
 
     public static class ShareNode {
-        private final int id;
+        private final ShareType shareType;
         private String name;
         @DrawableRes
         private final int icon;
 
         private ShareNode(Builder builder) {
-            id = builder.id;
+            shareType = builder.shareType;
             name = builder.name;
             icon = builder.icon;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
 
-        public int getId() {
-            return id;
+        public ShareType getShareType() {
+            return shareType;
         }
 
         public String getName() {
             return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public int getIcon() {
@@ -315,15 +351,15 @@ public class ShareDialog {
         }
 
         public static final class Builder {
-            private int id;
+            private ShareType shareType;
             private String name;
             private int icon;
 
             public Builder() {
             }
 
-            public Builder id(int val) {
-                id = val;
+            public Builder shareType(ShareType val) {
+                shareType = val;
                 return this;
             }
 

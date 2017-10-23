@@ -123,9 +123,10 @@ public class FileDetailOffLineActivity extends MVPBaseActivity<FileDetailOffLine
             shareDialog = new ShareDialog(FileDetailOffLineActivity.this,
                     new ShareContent.Builder()
                             .shareAppName(getString(R.string.app_name))
-                            .shareImageUrl("http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif")
+                            .shareImageUrl(FileUtils.getLogoPath())
+                            .shareSummary(internetFile.getDescription() == null || internetFile.getDescription().equals("") ?
+                                    getString(R.string.share_from_youyun) : internetFile.getDescription())
                             .shareTitle(internetFile.getName())
-                            .shareSummary("")
                             .identifyCode(internetFile.getIdentifyCode())
                             .shareUrl(ApiInfo.BASE_DOWNLOAD_URL + internetFile.getIdentifyCode())
                             .build());

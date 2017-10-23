@@ -10,7 +10,13 @@ import android.widget.Toast;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.App;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 
 /**
@@ -19,6 +25,54 @@ import java.util.Locale;
 public class FileUtils {
 
 
+    public static String getShareQrPath(){
+        return getAppPath() + "/share_qr.jpg";
+    }
+
+    public static String getLogoPath(){
+        return getAppPath() + "/logo.png";
+    }
+
+    public static void saveLogoToDir(final Context context){
+        File file = new File(getLogoPath());
+        if(file.exists())
+            return;
+        InputStream is = null;
+        BufferedInputStream bis = null;
+        DataInputStream dis = null;
+        FileOutputStream fos = null;
+        System.out.println("begin Save logo");
+        try {
+            is = context.getClass().getResourceAsStream("/assets/logo.png");
+            bis = new BufferedInputStream(is);
+            dis = new DataInputStream(bis);
+            fos = new FileOutputStream(FileUtils.getAppPath() + "/logo.png");
+            byte[] buffer = new byte[1024];
+            int n = 0;
+            while ((n = dis.read(buffer)) != -1) {
+                fos.write(buffer, 0, n);
+            }
+            fos.flush();
+            System.out.println("save Logo Success");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (dis != null)
+                    dis.close();
+                if(bis != null)
+                    bis.close();
+                if(is != null)
+                    is.close();
+                if(fos != null)
+                    fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * 获得应用的根目录
      *

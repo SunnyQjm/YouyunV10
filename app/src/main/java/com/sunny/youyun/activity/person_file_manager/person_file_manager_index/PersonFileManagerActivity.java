@@ -197,6 +197,9 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
         FileManageItem fileManageItem = (FileManageItem) adapter.getItem(position);
         if(fileManageItem == null)
             return;
+        if(fileManageItem.getFile() == null){
+            showTip(getString(R.string.directory_share_is_not_supported));
+        }
         mPresenter.share(fileManageItem);
     }
 

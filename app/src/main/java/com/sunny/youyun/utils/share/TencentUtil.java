@@ -8,7 +8,6 @@ import com.sunny.youyun.R;
 import com.sunny.youyun.model.ShareContent;
 import com.sunny.youyun.model.YouyunAPI;
 import com.tencent.connect.share.QQShare;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 
@@ -34,16 +33,24 @@ public enum TencentUtil {
     }
 
     private Tencent tencent;
-    private IWXAPI wechat;
     private Activity activity;
     private static final String SCOPE = "get_simple_userinfo";
 
-    public void shareToQQ(ShareContent shareContent, IUiListener listener) {
+    public void shareMessagePicToQQ(ShareContent shareContent, IUiListener listener) {
         Bundle bundle = new Bundle();
+        bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareContent.getShareUrl());
         bundle.putString(QQShare.SHARE_TO_QQ_TITLE, shareContent.getShareTitle());
         bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareContent.getShareSummary());
-//        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareContent.getShareImageUrl());
+        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareContent.getShareImageUrl());
+        bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, activity.getString(R.string.app_name));
+        tencent.shareToQQ(activity, bundle, listener);
+    }
+
+    public void sharePictureToQQ(ShareContent shareContent, IUiListener listener){
+        Bundle bundle = new Bundle();
+        bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
+        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, shareContent.getShareImageUrl());
         bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, activity.getString(R.string.app_name));
         tencent.shareToQQ(activity, bundle, listener);
     }
@@ -53,8 +60,21 @@ public enum TencentUtil {
         return tencent;
     }
 
-    public void shareToQzon(ShareContent shareContent, IUiListener listener) {
+    public void shareMessagePicToQzon(ShareContent shareContent, IUiListener listener) {
         Bundle bundle = new Bundle();
+        bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareContent.getShareUrl());
+        bundle.putString(QQShare.SHARE_TO_QQ_TITLE, shareContent.getShareTitle());
+        bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareContent.getShareSummary());
+        ArrayList<String> list = new ArrayList<>();
+        list.add(shareContent.getShareImageUrl());
+        bundle.putStringArrayList(QQShare.SHARE_TO_QQ_IMAGE_URL, list);
+        tencent.shareToQzone(activity, bundle, listener);
+    }
+
+    public void sharePictureToQzon(ShareContent shareContent, IUiListener listener){
+        Bundle bundle = new Bundle();
+        bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareContent.getShareUrl());
         bundle.putString(QQShare.SHARE_TO_QQ_TITLE, shareContent.getShareTitle());
         bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareContent.getShareSummary());

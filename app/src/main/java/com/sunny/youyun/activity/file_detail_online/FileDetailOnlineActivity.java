@@ -116,27 +116,27 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         easyBar.setRightIcon(R.drawable.icon_share);
         easyBar.setRightIconVisible();
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
-                    @Override
-                    public void onLeftIconClick(View view) {
-                        onBackPressed();
-                    }
+            @Override
+            public void onLeftIconClick(View view) {
+                onBackPressed();
+            }
 
-                    @Override
-                    public void onRightIconClick(View view) {
-                        //TODO add share operator here
-                        if (ActivityCompat.checkSelfPermission(FileDetailOnlineActivity.this,
-                                Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
-                                ActivityCompat.checkSelfPermission(FileDetailOnlineActivity.this,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            RxPermissionUtil.getInstance(FileDetailOnlineActivity.this)
-                                    .request(Manifest.permission.READ_PHONE_STATE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    .subscribe(aBoolean -> {
-                                        if (aBoolean)
-                                            showShareDialog(view);
-                                    });
-                            return;
-                        }
+            @Override
+            public void onRightIconClick(View view) {
+                //TODO add share operator here
+                if (ActivityCompat.checkSelfPermission(FileDetailOnlineActivity.this,
+                        Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                        ActivityCompat.checkSelfPermission(FileDetailOnlineActivity.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    RxPermissionUtil.getInstance(FileDetailOnlineActivity.this)
+                            .request(Manifest.permission.READ_PHONE_STATE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe(aBoolean -> {
+                                if (aBoolean)
+                                    showShareDialog(view);
+                            });
+                    return;
+                }
                 showShareDialog(view);
             }
         });
@@ -239,8 +239,9 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             shareDialog = new ShareDialog(FileDetailOnlineActivity.this,
                     new ShareContent.Builder()
                             .shareAppName(getString(R.string.app_name))
-                            .shareImageUrl("http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif")
-                            .shareSummary(internetFile.getDescription())
+                            .shareImageUrl(FileUtils.getLogoPath())
+                            .shareSummary(internetFile.getDescription() == null || internetFile.getDescription().equals("") ?
+                                    getString(R.string.share_from_youyun) : internetFile.getDescription())
                             .shareTitle(internetFile.getName())
                             .fileId(internetFile.getId())
                             .canStore(internetFile.isCanStore())
