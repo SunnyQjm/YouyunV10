@@ -69,9 +69,6 @@ repositories {
     flatDir { dirs 'libs' }
 }
 
-//kapt {
-//    generateStubs = true
-//}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //ButterKnife
@@ -83,7 +80,7 @@ dependencies {
     //retrofit
     //RxDownload
     //rx download
-    compile 'zlc.season:rxdownload3:1.0.8'
+    compile 'zlc.season:rxdownload3:1.1.1'
     //Router
     compile 'com.github.mzule.activityrouter:activityrouter:1.2.2'
     annotationProcessor 'com.github.mzule.activityrouter:compiler:1.1.7'

@@ -109,8 +109,8 @@ public class FileDownloadService extends Service {
                     mission = create(url, internetFile, position);
                 else {
                     mission = missionMap.get(url);
+                    start(mission, internetFile, position);
                 }
-                start(mission, internetFile, position);
                 save(internetFile);
                 break;
             case ACTION_PAUSE:
@@ -131,7 +131,7 @@ public class FileDownloadService extends Service {
                 mission = missionMap.get(url);
                 if (mission != null) {
                     RxDownload.INSTANCE
-                            .delete(mission);
+                            .delete(mission, true);
                 }
                 if (dispose(url)) {
                     EventBus.getDefault()
@@ -197,6 +197,9 @@ public class FileDownloadService extends Service {
 
                     @Override
                     public void accept(Status status) throws Exception {//onNext
+                        //创建成功后开始下载
+                        if (status instanceof Normal)
+                            start(mission, internetFile, position);
                         long span = System.currentTimeMillis() - lastTime;
                         dealStatus(internetFile
                                 , lastBytes, span, position, status);
