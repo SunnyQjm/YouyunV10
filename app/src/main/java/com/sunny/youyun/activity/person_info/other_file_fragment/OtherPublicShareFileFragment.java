@@ -58,10 +58,11 @@ public class OtherPublicShareFileFragment extends BaseRecyclerViewFragment<Other
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(activity,
                 DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
-        adapter.setEmptyView(R.layout.recycler_empty_view);
         adapter.setOnItemClickListener(this);
         refreshLayout.setLoadAble(true);
         refreshLayout.setRefreshAble(false);
+        if (userId < 0)
+            isFirst = false;
         loadData(true);
     }
 
@@ -83,6 +84,7 @@ public class OtherPublicShareFileFragment extends BaseRecyclerViewFragment<Other
         refreshLayout.setLoadAble(false);
         updateAll();
     }
+
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         InternetFile concernItem = (InternetFile) adapter.getItem(position);

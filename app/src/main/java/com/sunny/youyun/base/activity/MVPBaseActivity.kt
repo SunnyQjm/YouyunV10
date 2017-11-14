@@ -35,6 +35,10 @@ abstract class MVPBaseActivity<P : BasePresenter<*, *>> : YouyunActivity(), Base
     protected abstract fun onCreatePresenter(): P
 
 
+    override fun dismissDialog() {
+        super.dismissDialog()
+    }
+
     override fun allDataLoadFinish() {
 
     }

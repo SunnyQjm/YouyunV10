@@ -135,14 +135,14 @@ public abstract class BaseRecyclerViewActivity<P extends
 
     @Override
     public void allDataLoadFinish() {
-        if (endView == null) {
-            endView = LayoutInflater.from(this)
-                    .inflate(R.layout.easy_refresh_end, null, false);
-            adapter.addFooterView(endView);
-        }
-        if (adapter != null && adapter.getFooterLayout() != null) {
-            adapter.getFooterLayout().setVisibility(View.VISIBLE);
-        }
+//        if (endView == null) {
+//            endView = LayoutInflater.from(this)
+//                    .inflate(R.layout.easy_refresh_end, null, false);
+//            adapter.addFooterView(endView);
+//        }
+//        if (adapter != null && adapter.getFooterLayout() != null) {
+//            adapter.getFooterLayout().setVisibility(View.VISIBLE);
+//        }
 
         //设置不可加载更多
         refreshLayout.setLoadAble(false);

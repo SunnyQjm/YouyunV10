@@ -28,6 +28,7 @@ public class AllFragment extends FindingBaseFragment<AllPresenter>
         adapter = new FindingItemAdapter(mPresenter.getDatas());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
+        isFirst = false;
         onRefresh();
     }
 

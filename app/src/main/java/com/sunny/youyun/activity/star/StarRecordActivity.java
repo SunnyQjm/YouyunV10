@@ -1,6 +1,7 @@
 package com.sunny.youyun.activity.star;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.github.mzule.activityrouter.annotation.Router;
@@ -43,14 +44,13 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
             }
         });
         adapter = new StarRecordAdapter(getMPresenter().getDatas());
-        recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
-                RecyclerViewDividerItem.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         loadData(true);
     }
 
+    @NonNull
     @Override
     protected StarRecordPresenter onCreatePresenter() {
         return new StarRecordPresenter(this);
@@ -64,7 +64,7 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         StarRecord starRecord = (StarRecord) adapter.getItem(position);
-        if(starRecord == null || starRecord.getFile() == null)
+        if (starRecord == null || starRecord.getFile() == null)
             return;
         RouterUtils.openToFileDetailOnline(this, starRecord.getFileId(),
                 starRecord.getFile().getIdentifyCode());

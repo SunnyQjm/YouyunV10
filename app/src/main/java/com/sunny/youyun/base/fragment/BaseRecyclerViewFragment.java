@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
@@ -63,6 +64,8 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
     protected View view = null;
     protected BaseQuickAdapter adapter = null;
     protected int page = 1;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @Override
     public void onStart() {
@@ -212,14 +215,16 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
                 .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(o -> {
                     this.OnRefreshFinish();
-//                    linerLayoutManager.setScrollAble(true);
-//                    refreshLayout.closeRefresh();
                 });
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshFinish(RefreshEvent refreshEvent){
+    public void refreshFinish(RefreshEvent refreshEvent) {
+        if(progressBar.getVisibility() == View.VISIBLE && !isFirst){
+            progressBar.setVisibility(View.INVISIBLE);
+            adapter.setEmptyView(R.layout.recycler_empty_view);
+        }
         linerLayoutManager.setScrollAble(true);
         refreshLayout.closeRefresh();
         refreshLayout.closeLoad();

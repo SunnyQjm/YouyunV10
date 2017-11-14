@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/light_gray"
     tools:context="com.sunny.youyun.base.fragment.BaseRecyclerViewFragment">
+
+
     <com.sunny.youyun.views.easy_refresh.EasyRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
@@ -17,4 +19,18 @@
 
         </android.support.v7.widget.RecyclerView>
     </com.sunny.youyun.views.easy_refresh.EasyRefreshLayout>
-</LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:progressDrawable="@drawable/progressbar"
+        android:padding="20dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_centerInParent="true"
+        />
+</RelativeLayout>

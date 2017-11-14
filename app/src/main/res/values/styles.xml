@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/application_theme_color</item>
         <item name="colorPrimaryDark">@color/application_theme_color</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/application_theme_color</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -17,7 +17,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/application_theme_color</item>
         <item name="colorPrimaryDark">@color/application_theme_color</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/application_theme_color</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

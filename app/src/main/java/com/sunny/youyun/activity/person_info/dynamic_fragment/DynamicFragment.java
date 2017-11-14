@@ -66,9 +66,10 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         adapter.bindToRecyclerView(recyclerView);
-        adapter.setEmptyView(R.layout.recycler_empty_view);
         refreshLayout.setRefreshAble(false);
         refreshLayout.setLoadAble(true);
+        if(userId < 0)
+            isFirst = false;
         loadData(true);
     }
 

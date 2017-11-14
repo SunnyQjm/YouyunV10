@@ -83,7 +83,6 @@ public class ConcernFragment extends BaseRecyclerViewFragment<ConcernPresenter>
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(activity,
                 DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
-        adapter.setEmptyView(R.layout.recycler_empty_view);
         adapter.setOnItemClickListener(this);
         mPresenter.beginListen();
         refreshLayout.setLoadAble(true);
