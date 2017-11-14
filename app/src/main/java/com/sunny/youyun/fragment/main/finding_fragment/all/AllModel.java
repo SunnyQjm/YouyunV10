@@ -35,7 +35,7 @@ class AllModel implements AllContract.Model{
                 .getForumAll(page, ApiInfo.GET_DEFAULT_SIZE, true, false)
                 .compose(RxResultHelper.INSTANCE.handlePageResult(mList, isRefresh))
                 .compose(RxSchedulersHelper.INSTANCE.io_main())
-                .subscribe(new RxObserver<Integer>() {
+                .subscribe(new RxObserver<Integer>(mPresenter) {
                     @Override
                     public void _onNext(Integer integer) {
                         YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
@@ -55,40 +55,7 @@ class AllModel implements AllContract.Model{
                             }
                         });
                     }
-
-                    @Override
-                    public void _onError(@NotNull String msg) {
-//                        YouyunExceptionDeal.getInstance()
-//                                .deal(mPresenter.getView(), e);
-                        Logger.e(msg);
-                    }
-
-                    @Override
-                    public void onSubscribe(@NotNull Disposable d) {
-                        mPresenter.addSubscription(d);
-                    }
                 });
-//                .subscribe(new Observer<Integer>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        mPresenter.addSubscription(d);
-//                    }
-//
-//                    @Override
-//                    public void onNext(Integer integer) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
     }
 
     @Override
