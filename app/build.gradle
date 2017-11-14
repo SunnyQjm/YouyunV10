@@ -4,10 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
         release {
-            keyAlias 'oureda'
-            keyPassword 'oureda123456'
             storeFile file('../oureda.jks')
-            storePassword 'oureda123456'
+            storePassword projects.hasProperty("c") ? KEYSTORE_PASS :
+                    System.getenv("KEYSTORE_PASS")
+            keyAlias project.hasProperty("ALIAS_NAME") ? ALIAS_NAME :
+                    System.getenv("ALIAS_NAME")
+            keyPassword project.hasProperty("ALIAS_PASS") ? ALIAS_PASS :
+                    System.getenv("ALIAS_PASS")
         }
     }
     dataBinding{

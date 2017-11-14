@@ -252,12 +252,14 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                 public void onCollectionSuccess() {
                     if (internetFile.isCanStore()) {
                         internetFile.setCanStore(false);
-                        originalInternetFile.setCanStore(false);
+                        if (originalInternetFile != null)
+                            originalInternetFile.setCanStore(false);
                         shareDialog.setCollectName(getString(R.string.cancel_collection));
                         showSuccess(getString(R.string.collect_success));
                     } else {
                         internetFile.setCanStore(true);
-                        originalInternetFile.setCanStore(true);
+                        if (originalInternetFile != null)
+                            originalInternetFile.setCanStore(true);
                         shareDialog.setCollectName(getString(R.string.collection));
                         showSuccess(getString(R.string.cancel_collect_success));
                     }
@@ -293,7 +295,10 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
                 .download(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD + identifyCode, internetFile.getName(), position);
         if (internetFile != originalInternetFile)
             internetFile.setDownloadCount(internetFile.getDownloadCount() + 1);
-        originalInternetFile.setDownloadCount(originalInternetFile.getDownloadCount() + 1);
+
+        if (originalInternetFile != null) {
+            originalInternetFile.setDownloadCount(originalInternetFile.getDownloadCount() + 1);
+        }
 
     }
 
@@ -441,14 +446,18 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         //点赞成功后直接
         if (internetFile.isCanStar()) {
             internetFile.setCanStar(false);
-            originalInternetFile.setCanStar(false);
             internetFile.setStar(internetFile.getStar() + 1);
-            originalInternetFile.setStar(originalInternetFile.getStar() + 1);
+            if (originalInternetFile != null) {
+                originalInternetFile.setCanStar(false);
+                originalInternetFile.setStar(originalInternetFile.getStar() + 1);
+            }
         } else {
             internetFile.setCanStar(true);
             originalInternetFile.setCanStar(true);
-            internetFile.setStar(internetFile.getStar() - 1);
-            originalInternetFile.setStar(originalInternetFile.getStar() - 1);
+            if (originalInternetFile != null) {
+                internetFile.setStar(internetFile.getStar() - 1);
+                originalInternetFile.setStar(originalInternetFile.getStar() - 1);
+            }
         }
         fillData();
     }

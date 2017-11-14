@@ -77,6 +77,7 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
     @Override
     public void onStop() {
         super.onStop();
+        refreshFinish(null);
         EventBus.getDefault()
                 .unregister(this);
     }

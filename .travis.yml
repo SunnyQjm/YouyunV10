@@ -1,0 +1,46 @@
+language: android
+sudo: false
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-26.0.2
+  - android-26
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - addon-google_apis-google-26
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
+before_install:
+- openssl aes-256-cbc -K $encrypted_4f423c7955f4_key -iv $encrypted_4f423c7955f4_iv
+  -in oureda.jks.enc -out oureda.jks -d
+- openssl aes-256-cbc -K $encrypted_77b808f930f3_key -iv $encrypted_77b808f930f3_iv
+  -in oureda.release.enc -out oureda.release -d
+- gem install fir-cli
+jdk:
+- oraclejdk8
+before_script:
+- chmod +x gradlew
+script:
+- "./gradlew assembleRelease"
+before_deploy:
+- mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Xueban.apk
+deploy:
+  provider: releases
+  api_key:
+    secure: x3Uz09UmxruWtNgLVRqJ6ruP4phlLoWGKvKRjeiMpgfvHQeg+mgn0s8xtULndvNnRBCCGC1qfvfMpx11yqxk8Mtr21MTztzQGrsDiR397bAZLNTtWF/PL/xeYu2wthBy2w96vhJBTobJBu8X6dJYv768pxx0p3SVhNsCxiYFflrwXHKys/MPOBqL4th7fZM506HxcCH5A7Xmu2DYg3/BzNd2eQhaE/Dc5ISl21wC0Ip1X0t2xsSOuoc/I4AcbVEg5cReJfK1jpanlu+yQe7E9ZBkaOhshJwc0b1anXuOK6W1gCrQclezP0v9B233fcjXXty+BPiOxkbpOhrXvjfLDWd07IUb7VXNy67H8+fAQ6XjdeEohjxkyeHn2KALH6vkv1vOJHK1nYFL2Qh8SKcJyJ4CJLKEuvUgsXCaf4oO5dzQ1MIWuW4YQI0luU1JEz4z14E7RlUGdagOwSvEqGL2HT/NiSziY7bnfdPGC2xECISPszBq7D1Xh24anjDl/lgBJ8jn3tOeLf3PMs813WZklMr/J5VBHZw08ywZIX5WomJhlDWEUQMZfPrPfVOeVtgCUQEdozLp8FUpCk0TuMLh6bjDpVA1CtaA1gHi3LWuGfEV81HDHId45Vpvr9rUh6FTvcm8uKgrty/YY9QTiagRH9tNseJEm9dFUE/mVM2mJSg=
+  file: app/build/outputs/apk/release/Youyun.apk
+  skip_cleanup: true
+  on:
+    tags: true
+    all_branches: true
+    repo: SunnyQjm/XueBanV3.0
+after_deploy:
+- fir p app/build/outputs/apk/release/Youyun.apk -T $FIR_TOKEN -c "`git cat-file tag
+  $TRAVIS_TAG`"
