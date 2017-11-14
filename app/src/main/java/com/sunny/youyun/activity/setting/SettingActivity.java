@@ -1,12 +1,15 @@
 package com.sunny.youyun.activity.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.mzule.activityrouter.annotation.Router;
 import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
+import com.sunny.youyun.activity.about_youyun.AboutYouyunActivity;
 import com.sunny.youyun.base.activity.MVPBaseActivity;
 import com.sunny.youyun.model.EasyYouyunAPIManager;
 import com.sunny.youyun.model.YouyunAPI;
@@ -80,6 +83,7 @@ public class SettingActivity extends MVPBaseActivity<SettingPresenter> implement
 
     }
 
+    @NonNull
     @Override
     protected SettingPresenter onCreatePresenter() {
         return new SettingPresenter(this);
@@ -98,7 +102,7 @@ public class SettingActivity extends MVPBaseActivity<SettingPresenter> implement
      */
     @OnClick(R.id.setting_about_youyun)
     public void onSettingAboutYouyunClicked() {
-        RouterUtils.open(this, IntentRouter.AboutYouyunActivity);
+        RouterUtils.open(this, new Intent(this, AboutYouyunActivity.class));
     }
 
     /**
