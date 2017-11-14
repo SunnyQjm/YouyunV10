@@ -1,6 +1,7 @@
 package com.sunny.youyun.activity.my_collection;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.view.View;
 
@@ -40,6 +41,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
         adapter.setOnItemClickListener(this);
     }
 
+    @NonNull
     @Override
     protected MyCollectionPresenter onCreatePresenter() {
         return new MyCollectionPresenter(this);
@@ -47,6 +49,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
 
     @Override
     public void getCollectionsSuccess() {
+        System.out.println("get collection success");
         updateAll();
     }
 

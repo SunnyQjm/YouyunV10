@@ -16,6 +16,7 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
 
     private boolean isSelf = true;
     private int userId = -1;
+
     private void setSelf(boolean isSelf) {
         this.isSelf = isSelf;
     }
@@ -36,10 +37,10 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         Bundle args = new Bundle();
         DynamicFragment fragment = new DynamicFragment();
         fragment.setArguments(args);
-        if(userId > 0){
+        if (userId > 0) {
             fragment.setSelf(false);
             fragment.setUserId(userId);
-        }else {
+        } else {
             fragment.setSelf(true);
         }
 
@@ -68,9 +69,10 @@ public class DynamicFragment extends BaseRecyclerViewFragment<DynamicPresenter> 
         adapter.bindToRecyclerView(recyclerView);
         refreshLayout.setRefreshAble(false);
         refreshLayout.setLoadAble(true);
-        if(userId < 0)
+        if (userId < 0) {
             isFirst = false;
-        loadData(true);
+            loadData(true);
+        }
     }
 
 

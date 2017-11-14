@@ -61,8 +61,7 @@ public class OtherPublicShareFileFragment extends BaseRecyclerViewFragment<Other
         adapter.setOnItemClickListener(this);
         refreshLayout.setLoadAble(true);
         refreshLayout.setRefreshAble(false);
-        if (userId < 0)
-            isFirst = false;
+        isFirst = false;
         loadData(true);
     }
 

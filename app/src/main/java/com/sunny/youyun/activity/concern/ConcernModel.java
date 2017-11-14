@@ -1,6 +1,9 @@
 package com.sunny.youyun.activity.concern;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.internet.rx.RxObserver;
+import com.sunny.youyun.internet.rx.RxResultHelper;
+import com.sunny.youyun.internet.rx.RxSchedulersHelper;
 import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.model.YouyunExceptionDeal;
@@ -37,17 +40,11 @@ class ConcernModel implements ConcernContract.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getFollowingList(page, size)
-                .map(baseResponseBody -> YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
+                .compose(RxResultHelper.INSTANCE.handlePageResult(mList, isRefresh))
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
+                .subscribe(new RxObserver<Integer>(mPresenter) {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        mPresenter.addSubscription(d);
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
+                    public void _onNext(Integer integer) {
                         YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
@@ -64,18 +61,6 @@ class ConcernModel implements ConcernContract.Model {
                                 Logger.e("获取关注的人列表失败");
                             }
                         });
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        YouyunExceptionDeal.getInstance()
-                                .deal(mPresenter.getView(), e);
-                        Logger.e("获取关注的人列表失败", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }

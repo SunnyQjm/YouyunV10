@@ -91,18 +91,18 @@ public abstract class YouyunActivity extends AppCompatActivity {
             loadingView.dismiss();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Fade fade = new Fade();
-            fade.setMode(Visibility.MODE_OUT);
-            getWindow().setExitTransition(fade);
-            getWindow().setReenterTransition(fade);
-            finishAfterTransition();
-        }else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Fade fade = new Fade();
+//            fade.setMode(Visibility.MODE_OUT);
+//            getWindow().setExitTransition(fade);
+//            getWindow().setReenterTransition(fade);
+//            finishAfterTransition();
+//        }else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @Override
     @CallSuper

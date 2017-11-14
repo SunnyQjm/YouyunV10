@@ -44,6 +44,11 @@ public class RouterUtils {
     }
 
     public static void open(Activity context, String routerWithNoScheme, String... params) {
+        _open(context, routerWithNoScheme, params);
+        App.startAnim(context);
+    }
+
+    private static void _open(Activity context, String routerWithNoScheme, String... params){
         StringBuilder router = new StringBuilder(IntentRouter.IndexScheme + routerWithNoScheme);
         if (params != null) {
             for (String param : params) {
@@ -52,7 +57,6 @@ public class RouterUtils {
         }
         System.out.println(router);
         Routers.open(context, router.toString());
-        App.startAnim(context);
     }
 
     /**

@@ -4,15 +4,21 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.model.event.RefreshEvent;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
 import com.sunny.youyun.views.easy_refresh.CustomLinerLayoutManager;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshFooter;
 import com.sunny.youyun.views.easy_refresh.EasyRefreshLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,12 +37,28 @@ public abstract class BaseRecyclerViewActivity<P extends
     protected RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     protected EasyRefreshLayout refreshLayout;
+    @BindView(R.id.progressBar)
+    protected ProgressBar progressBar;
 
     protected CustomLinerLayoutManager linerLayoutManager;
     protected View endView = null;
 
     protected BaseQuickAdapter adapter = null;
     protected int page = 1;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault()
+                .register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault()
+                .unregister(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +128,22 @@ public abstract class BaseRecyclerViewActivity<P extends
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     this.OnRefreshFinish();
-                    linerLayoutManager.setScrollAble(true);
-                    refreshLayout.closeRefresh();
                 });
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshFinish(RefreshEvent refreshEvent) {
+        if(progressBar.getVisibility() == View.VISIBLE){
+            progressBar.setVisibility(View.INVISIBLE);
+            adapter.setEmptyView(R.layout.recycler_empty_view);
+        }
+        linerLayoutManager.setScrollAble(true);
+        refreshLayout.closeRefresh();
+        refreshLayout.closeLoad();
+        updateAll();
+    }
+
 
     protected void updateAll() {
         if (adapter != null)
@@ -127,8 +160,6 @@ public abstract class BaseRecyclerViewActivity<P extends
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    linerLayoutManager.setScrollAble(true);
-                    refreshLayout.closeLoad();
                     this.onLoadFinish();
                 });
     }

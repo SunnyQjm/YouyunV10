@@ -1,6 +1,9 @@
 package com.sunny.youyun.activity.person_file_manager.person_file_type;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.internet.rx.RxObserver;
+import com.sunny.youyun.internet.rx.RxResultHelper;
+import com.sunny.youyun.internet.rx.RxSchedulersHelper;
 import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.internet.api.APIManager;
@@ -39,31 +42,11 @@ class PersonFileListTypeModel implements PersonFileListTypeContract.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getUserFileByType(MIME, page, size)
-                .map(baseResponseBody -> {
-                    if (baseResponseBody.isSuccess() && baseResponseBody.getData() != null) {
-                        if (isRefresh) {
-                            mList.clear();
-                        }
-                        Collections.addAll(mList, baseResponseBody.getData());
-                        if(baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE){
-                            return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
-                        }
-                        return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
-                    } else {
-                        Logger.e("根据类型获取文件失败: " + baseResponseBody.getMsg());
-                        return ApiInfo.RESULT_DEAL_TYPE_FAIL;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
+                .compose(RxResultHelper.INSTANCE.handleMultiPageResult(mList, isRefresh))
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
+                .subscribe(new RxObserver<Integer>(mPresenter) {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        mPresenter.addSubscription(d);
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
+                    public void _onNext(Integer integer) {
                         YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
@@ -79,18 +62,6 @@ class PersonFileListTypeModel implements PersonFileListTypeContract.Model {
                             public void onFail() {
                             }
                         });
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.e("根据类型获取文件失败", e);
-                        YouyunExceptionDeal.getInstance()
-                                .deal(mPresenter.getView(), e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }

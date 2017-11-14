@@ -1,5 +1,6 @@
 package com.sunny.youyun.model
 
+import com.sunny.youyun.base.entity.MultiItemEntity
 import com.sunny.youyun.internet.api.ApiInfo
 import com.sunny.youyun.model.response_body.BaseResponseBody
 
@@ -33,6 +34,22 @@ object YouyunResultDeal {
         return if (result.size < ApiInfo.GET_DEFAULT_SIZE) {
             ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH
         } else ApiInfo.RESULT_DEAL_TYPE_SUCCESS
+    }
+
+    fun <T : MultiItemEntity> dealMultiData(result: Array<T>, mList: MutableList<MultiItemEntity>, isRefresh: Boolean,
+                                            addAll: (Array<T>, MutableList<MultiItemEntity>) -> Unit): Int {
+        if (isRefresh)
+            mList.clear()
+        addAll(result, mList)
+        return if (result.size < ApiInfo.GET_DEFAULT_SIZE) {
+            ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH
+        } else ApiInfo.RESULT_DEAL_TYPE_SUCCESS
+    }
+
+    fun <T : MultiItemEntity> dealMultiData(result: Array<T>, mList: MutableList<MultiItemEntity>, isRefresh: Boolean): Int {
+        return dealMultiData(result, mList, isRefresh) { r, l ->
+            l.addAll(r)
+        }
     }
 
     /**

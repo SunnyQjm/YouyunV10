@@ -1,6 +1,7 @@
 package com.sunny.youyun.activity.comment;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.internet.rx.RxObserver;
 import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.rx.RxResultHelper;
@@ -37,14 +38,9 @@ class CommentRecordModel implements CommentRecordContract.Model {
                 .getCommentRecord(page, size)
                 .compose(RxResultHelper.INSTANCE.handlePageResult(mList, isRefresh))
                 .compose(RxSchedulersHelper.INSTANCE.io_main())
-                .subscribe(new Observer<Integer>() {
+                .subscribe(new RxObserver<Integer>(mPresenter) {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        mPresenter.addSubscription(d);
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
+                    public void _onNext(Integer integer) {
                         YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
@@ -61,16 +57,6 @@ class CommentRecordModel implements CommentRecordContract.Model {
 
                             }
                         });
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.e("获取评论记录失败", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }

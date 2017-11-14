@@ -1,5 +1,6 @@
 package com.sunny.youyun.internet.rx
 
+import com.sunny.youyun.base.entity.MultiItemEntity
 import com.sunny.youyun.model.YouyunResultDeal
 import com.sunny.youyun.internet.api.ApiInfo
 import com.sunny.youyun.internet.exception.LoginTokenInvalidException
@@ -45,6 +46,20 @@ object RxResultHelper {
                     .flatMap { result ->
                         return@flatMap Observable
                                 .just(YouyunResultDeal.dealData(result = result, mList = mList, isRefresh = isRefresh))
+
+                    }
+        }
+    }
+
+
+    fun <T : MultiItemEntity> handleMultiPageResult(mList: MutableList<MultiItemEntity>, isRefresh: Boolean)
+            : ObservableTransformer<BaseResponseBody<Array<T>>, Int> {
+        return ObservableTransformer { upstream ->
+            return@ObservableTransformer upstream
+                    .compose(handleResult())
+                    .flatMap { result ->
+                        return@flatMap Observable
+                                .just(YouyunResultDeal.dealMultiData(result = result, mList = mList, isRefresh = isRefresh))
 
                     }
         }

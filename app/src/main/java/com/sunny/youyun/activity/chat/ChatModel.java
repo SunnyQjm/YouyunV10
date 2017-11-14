@@ -1,6 +1,8 @@
 package com.sunny.youyun.activity.chat;
 
 import com.orhanobut.logger.Logger;
+import com.sunny.youyun.internet.rx.RxObserver;
+import com.sunny.youyun.internet.rx.RxResultHelper;
 import com.sunny.youyun.internet.rx.RxSchedulersHelper;
 import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.activity.chat.item.DateItem;
@@ -52,7 +54,7 @@ class ChatModel implements ChatContract.Model {
                         if (isRefresh)
                             mList.clear();
                         addAll(baseResponseBody.getData());
-                        if(baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE){
+                        if (baseResponseBody.getData().length < ApiInfo.GET_DEFAULT_SIZE) {
                             return ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH;
                         }
                         return ApiInfo.RESULT_DEAL_TYPE_SUCCESS;
@@ -61,14 +63,9 @@ class ChatModel implements ChatContract.Model {
                     }
                 })
                 .compose(RxSchedulersHelper.INSTANCE.io_main())
-                .subscribe(new Observer<Integer>() {
+                .subscribe(new RxObserver<Integer>(mPresenter) {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        mPresenter.addSubscription(d);
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
+                    public void _onNext(Integer integer) {
                         YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
@@ -85,19 +82,6 @@ class ChatModel implements ChatContract.Model {
                                 Logger.e("获取聊天记录失败");
                             }
                         });
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        YouyunExceptionDeal.getInstance()
-                                .deal(mPresenter.getView(), e);
-                        Logger.e("获取聊天记录失败", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }
@@ -144,28 +128,12 @@ class ChatModel implements ChatContract.Model {
         APIManager.getInstance()
                 .getChatServices(GsonConverterFactory.create())
                 .sendMessage(body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseResponseBody>() {
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
+                .subscribe(new RxObserver<BaseResponseBody>(mPresenter) {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        mPresenter.addSubscription(d);
-                    }
-
-                    @Override
-                    public void onNext(BaseResponseBody baseResponseBody) {
+                    public void _onNext(BaseResponseBody baseResponseBody) {
                         if (baseResponseBody.isSuccess())
                             mPresenter.sendMessageSuccess(content);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.e("发送消息失败", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }

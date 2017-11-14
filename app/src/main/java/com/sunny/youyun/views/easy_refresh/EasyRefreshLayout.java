@@ -457,12 +457,14 @@ public class EasyRefreshLayout extends ViewGroup {
 
     private void callLoad() {
         innerIsLoadAble = false;
+        innerIsRefreshAble = false;
         if (loadListener != null)
             loadListener.onLoad();
     }
 
     private void callRefresh() {
         innerIsRefreshAble = false;
+        innerIsLoadAble = false;
         if (refreshListener != null)
             refreshListener.onRefresh();
     }
@@ -550,6 +552,7 @@ public class EasyRefreshLayout extends ViewGroup {
         int dy = -getScrollY();
         status = Status.NORMAL;
         innerIsRefreshAble = true;
+        innerIsLoadAble = true;
         if(easyRefreshHeader != null)
             easyRefreshHeader.refreshFinish(header);
         mScroller.startScroll(0, getScrollY(), 0, dy);
@@ -564,6 +567,7 @@ public class EasyRefreshLayout extends ViewGroup {
     public void closeLoad() {
         int dy = -getScrollY();
         status = Status.NORMAL;
+        innerIsRefreshAble = true;
         innerIsLoadAble = true;
         mScroller.startScroll(0, getScrollY(), 0, dy);
         if(easyRefreshFooter != null)
