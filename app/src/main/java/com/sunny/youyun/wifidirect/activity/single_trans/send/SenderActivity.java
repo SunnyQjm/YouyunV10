@@ -122,7 +122,7 @@ public class SenderActivity extends WifiDirectBaseActivity<SenderPresenter>
     }
 
     private void initView() {
-        mPresenter.start();
+        getMPresenter().start();
         easyBar.setTitle(getString(R.string.i_want_to_send));
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
@@ -188,13 +188,13 @@ public class SenderActivity extends WifiDirectBaseActivity<SenderPresenter>
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        mPresenter.connect(mList.get(position), null);
+        getMPresenter().connect(mList.get(position), null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.exit();
+        getMPresenter().exit();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

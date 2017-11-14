@@ -26,17 +26,17 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity<MyCollectionP
 
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getCollections(page, isRefresh);
+        getMPresenter().getCollections(page, isRefresh);
     }
 
     private void init() {
-        adapter = new CollectionAdapter(mPresenter.getData());
+        adapter = new CollectionAdapter(getMPresenter().getData());
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(
                 this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         easyBar.setTitle(getString(R.string.my_collection));
-        mPresenter.getCollections(page, true);
+        getMPresenter().getCollections(page, true);
         adapter.setOnItemClickListener(this);
     }
 

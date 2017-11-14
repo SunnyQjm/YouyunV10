@@ -41,7 +41,7 @@ public class CommentRecordActivity extends BaseRecyclerViewActivity<CommentRecor
 
             }
         });
-        adapter = new CommentRecordAdapter(mPresenter.getDatas());
+        adapter = new CommentRecordAdapter(getMPresenter().getDatas());
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
                 RecyclerViewDividerItem.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
@@ -57,7 +57,7 @@ public class CommentRecordActivity extends BaseRecyclerViewActivity<CommentRecor
 
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getCommentRecord(page, isRefresh);
+        getMPresenter().getCommentRecord(page, isRefresh);
     }
 
     @Override

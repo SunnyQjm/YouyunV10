@@ -30,7 +30,7 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
 
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getFollowingList(page, isRefresh);
+        getMPresenter().getFollowingList(page, isRefresh);
     }
 
     private void init() {
@@ -46,7 +46,7 @@ public class ConcernActivity extends BaseRecyclerViewActivity<ConcernPresenter>
 
             }
         });
-        adapter = new UserItemAdapter(mPresenter.getData());
+        adapter = new UserItemAdapter(getMPresenter().getData());
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(
                 this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);

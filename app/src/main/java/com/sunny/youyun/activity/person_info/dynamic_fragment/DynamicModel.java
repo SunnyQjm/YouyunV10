@@ -32,7 +32,7 @@ class DynamicModel implements DynamicContract.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getUserDynamic(page, size)
-                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                .map(baseResponseBody -> YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -43,7 +43,7 @@ class DynamicModel implements DynamicContract.Model {
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getDynamicSuccess();
@@ -78,7 +78,7 @@ class DynamicModel implements DynamicContract.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getUserDynamic(userId, page, size, "23")
-                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                .map(baseResponseBody -> YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -89,7 +89,7 @@ class DynamicModel implements DynamicContract.Model {
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getDynamicSuccess();

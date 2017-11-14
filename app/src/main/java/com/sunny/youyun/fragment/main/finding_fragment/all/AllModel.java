@@ -32,7 +32,7 @@ class AllModel implements AllContract.Model{
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .getForumAll(page, ApiInfo.GET_DEFAULT_SIZE, true, false)
-                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                .map(baseResponseBody -> YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -43,7 +43,7 @@ class AllModel implements AllContract.Model{
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getForumDataSuccess();

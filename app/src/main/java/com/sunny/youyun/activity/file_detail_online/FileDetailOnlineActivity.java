@@ -143,7 +143,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         createHeader();
 
 
-        adapter = new CommentAdapter(mPresenter.getCommentList());
+        adapter = new CommentAdapter(getMPresenter().getCommentList());
         recyclerViewComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewComment.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerViewComment);
@@ -160,11 +160,11 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             originalInternetFile.setLookNum(originalInternetFile.getLookNum() + 1);
             fillData();
 
-            mPresenter.getFileInfo(internetFile.getIdentifyCode());
-            mPresenter.getComments(internetFile.getId(), true);
+            getMPresenter().getFileInfo(internetFile.getIdentifyCode());
+            getMPresenter().getComments(internetFile.getId(), true);
         } else {
-            mPresenter.getFileInfo(identifyCode);
-            mPresenter.getComments(fileId, true);
+            getMPresenter().getFileInfo(identifyCode);
+            getMPresenter().getComments(fileId, true);
         }
     }
 
@@ -324,7 +324,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
             case R.id.rt_view_count:
                 break;
             case R.id.rt_like_count:
-                mPresenter.star(internetFile.getId());
+                getMPresenter().star(internetFile.getId());
                 break;
             case R.id.rt_down_count:
                 break;
@@ -402,7 +402,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         if (YouyunAPI.isIsLogin()) {
             EspressoIdlingResource.getInstance()
                     .increment();
-            mPresenter.addComment(internetFile.getId(), etCommentContent.getText().toString());
+            getMPresenter().addComment(internetFile.getId(), etCommentContent.getText().toString());
             etCommentContent.setText("");
             InputMethodUtil.change(this);
         } else {
@@ -412,7 +412,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
 
     @Override
     public void commentSuccess() {
-        mPresenter.getComments(internetFile.getId(), false);
+        getMPresenter().getComments(internetFile.getId(), false);
     }
 
     @Override
@@ -423,7 +423,7 @@ public class FileDetailOnlineActivity extends MVPBaseActivity<FileDetailOnlinePr
         if (!isFirst) {
             adapter.notifyDataSetChanged();
             //滚动到最后一条，因为有头布局，所以position要加1
-            recyclerViewComment.scrollToPosition(mPresenter.getCommentList().size());
+            recyclerViewComment.scrollToPosition(getMPresenter().getCommentList().size());
         } else {
             adapter.notifyDataSetChanged();
         }

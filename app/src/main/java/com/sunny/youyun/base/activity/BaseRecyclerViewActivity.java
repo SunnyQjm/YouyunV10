@@ -21,7 +21,8 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class BaseRecyclerViewActivity<P extends BasePresenter> extends MVPBaseActivity<P>
+public abstract class BaseRecyclerViewActivity<P extends
+        BasePresenter<?, ?>> extends MVPBaseActivity<P>
         implements EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener {
 
     @BindView(R.id.easyBar)

@@ -26,7 +26,7 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
 
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getStarRecord(page, isRefresh);
+        getMPresenter().getStarRecord(page, isRefresh);
     }
 
     private void init() {
@@ -42,7 +42,7 @@ public class StarRecordActivity extends BaseRecyclerViewActivity<StarRecordPrese
 
             }
         });
-        adapter = new StarRecordAdapter(mPresenter.getDatas());
+        adapter = new StarRecordAdapter(getMPresenter().getDatas());
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
                 RecyclerViewDividerItem.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);

@@ -74,7 +74,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
 
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getMessages(user.getId(),
+        getMPresenter().getMessages(user.getId(),
                 adapter.getData().size() == 0 ? System.currentTimeMillis() :
                         ((Message) adapter.getItem(adapter.getData().size() - 1)).getUpdateTime()
                 , isRefresh);
@@ -104,7 +104,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
         etContent.setHint(getString(R.string.add_message));
         refreshLayout.setHeader(new ArrowPullLoadHeader(R.layout.easy_refresh_pull_load_header));
         refreshLayout.setLoadAble(false);
-        adapter = new ChatAdapter(mPresenter.getData());
+        adapter = new ChatAdapter(getMPresenter().getData());
         adapter.bindToRecyclerView(recyclerView);
         page = 1;
         adapter.setOnItemClickListener(this);
@@ -190,7 +190,7 @@ public class ChatActivity extends BaseRecyclerViewActivityLazy<ChatPresenter>
         switch (v.getId()) {
             //发送一条消息
             case R.id.btn_send:
-                mPresenter.sendMessage(user.getId(), etContent.getText().toString());
+                getMPresenter().sendMessage(user.getId(), etContent.getText().toString());
                 etContent.setText("");
                 break;
         }

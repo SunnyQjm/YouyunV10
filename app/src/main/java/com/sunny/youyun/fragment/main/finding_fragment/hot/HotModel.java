@@ -37,7 +37,7 @@ class HotModel implements HotContract.Model{
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .getForumAll(page, ApiInfo.GET_DEFAULT_SIZE, false, true)
-                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                .map(baseResponseBody -> YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -48,7 +48,7 @@ class HotModel implements HotContract.Model{
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getDataSuccess();

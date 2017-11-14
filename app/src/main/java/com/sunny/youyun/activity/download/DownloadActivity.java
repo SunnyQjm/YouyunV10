@@ -67,7 +67,7 @@ public class DownloadActivity extends MVPBaseActivity<DownloadPresenter> impleme
             showTip(getString(R.string.please_input_correct_identify_code));
             return;
         }
-        mPresenter.getFileInfo(code);
+        getMPresenter().getFileInfo(code);
     }
 
     @Override

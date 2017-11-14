@@ -39,11 +39,11 @@ public class PersonFileListTypeActivity extends BaseRecyclerViewActivity<PersonF
 
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getFileByType(DisplayTypeConfig.getMIMEByType(type), page, isRefresh);
+        getMPresenter().getFileByType(DisplayTypeConfig.getMIMEByType(type), page, isRefresh);
     }
 
     private void init() {
-        adapter = new FileAdapter(mPresenter.getData());
+        adapter = new FileAdapter(getMPresenter().getData());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
         adapter.setOnItemClickListener(this);
@@ -51,7 +51,7 @@ public class PersonFileListTypeActivity extends BaseRecyclerViewActivity<PersonF
                 RecyclerViewDividerItem.VERTICAL));
         type = getIntent().getIntExtra("type", TYPE_DIVIDE_APPLICATION);
         updateTitle(type);
-        mPresenter.getFileByType(DisplayTypeConfig.getMIMEByType(type), page, true);
+        getMPresenter().getFileByType(DisplayTypeConfig.getMIMEByType(type), page, true);
     }
 
     private void updateTitle(int type) {

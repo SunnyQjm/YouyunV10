@@ -17,7 +17,7 @@ import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
  * Created by Sunny on 2017/8/29 0029.
  */
 
-public class YouyunActivity extends AppCompatActivity {
+public abstract class YouyunActivity extends AppCompatActivity {
 
     protected YouyunTipDialog dialog = null;
     protected YouyunLoadingView loadingView = null;

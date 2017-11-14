@@ -42,7 +42,7 @@ class ConcernModel implements ConcernContract.Model {
                 .getUserService(GsonConverterFactory.create())
                 .getFollowingList(page, size)
                 .map(baseResponseBody ->
-                        YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                        YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -53,7 +53,7 @@ class ConcernModel implements ConcernContract.Model {
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getFollowingListSuccess();
@@ -90,7 +90,7 @@ class ConcernModel implements ConcernContract.Model {
                 .getUserService(GsonConverterFactory.create())
                 .getFollowingList(userId, page, size)
                 .map(baseResponseBody ->
-                        YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                        YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -101,7 +101,7 @@ class ConcernModel implements ConcernContract.Model {
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getFollowingListSuccess();

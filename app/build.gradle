@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
         release {
@@ -107,6 +108,13 @@ dependencies {
 
     //wechat
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.4.0'
+
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    //anko
+//    implementation "org.jetbrains.anko:anko-common:$anko_version"
+    implementation "org.jetbrains.anko:anko:$anko_version"
 
     //support
     implementation "com.android.support:support-v4:$support_version"

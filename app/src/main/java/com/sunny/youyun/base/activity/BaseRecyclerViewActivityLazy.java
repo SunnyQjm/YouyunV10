@@ -7,7 +7,9 @@ import android.view.View;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
+import com.sunny.youyun.mvp.BaseModel;
 import com.sunny.youyun.mvp.BasePresenter;
+import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.easy_refresh.ArrowRefreshHeader;
 import com.sunny.youyun.views.easy_refresh.CustomLinerLayoutManager;
@@ -24,7 +26,8 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Sunny on 2017/10/7 0007.
  */
 
-public abstract class BaseRecyclerViewActivityLazy<P extends BasePresenter> extends MVPBaseActivity<P>
+public abstract class BaseRecyclerViewActivityLazy<P extends
+        BasePresenter<? extends BaseView, ? extends BaseModel>> extends MVPBaseActivity<P>
         implements EasyRefreshLayout.OnRefreshListener, EasyRefreshLayout.OnLoadListener {
 
     @BindView(R.id.easyBar)

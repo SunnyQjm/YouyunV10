@@ -36,7 +36,7 @@ class ConcernModel implements ConcernContract.Model{
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .getConcernPeopleShares(page, size)
-                .map(internetFileBaseResponseBody -> YouyunResultDeal.
+                .map(internetFileBaseResponseBody -> YouyunResultDeal.INSTANCE.
                         dealData(internetFileBaseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -48,7 +48,7 @@ class ConcernModel implements ConcernContract.Model{
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getDatasOnlineSuccess();

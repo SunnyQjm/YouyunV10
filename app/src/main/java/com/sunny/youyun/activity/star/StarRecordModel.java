@@ -30,7 +30,7 @@ class StarRecordModel implements StarRecordContract.Model{
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getStarRecord(page, size)
-                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                .map(baseResponseBody -> YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -41,7 +41,7 @@ class StarRecordModel implements StarRecordContract.Model{
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getStarRecordSuccess();

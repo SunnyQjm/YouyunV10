@@ -93,7 +93,7 @@ public class RegisterActivity extends MVPBaseActivity<RegisterPresenter> impleme
                 if (phone.equals("") || password.equals("") || code.equals("")) {
                     Toast.makeText(this, getString(R.string.please_complete_info), Toast.LENGTH_SHORT).show();
                 } else if (AccountValidatorUtil.isMobile(phone)) {
-                    mPresenter.register(phone, phone, password, code);
+                    getMPresenter().register(phone, phone, password, code);
                 } else {
                     Toast.makeText(this, getString(R.string.please_input_correct_phone_number), Toast.LENGTH_SHORT).show();
                 }
@@ -102,7 +102,7 @@ public class RegisterActivity extends MVPBaseActivity<RegisterPresenter> impleme
                 if (phone.equals("")){
                     Toast.makeText(this, getString(R.string.phone_number_not_allow_empty), Toast.LENGTH_SHORT).show();
                 } else if (AccountValidatorUtil.isMobile(phone)) {
-                    mPresenter.sendCode(phone);
+                    getMPresenter().sendCode(phone);
                 } else {
                     Toast.makeText(this, getString(R.string.please_input_correct_phone_number), Toast.LENGTH_SHORT).show();
                 }

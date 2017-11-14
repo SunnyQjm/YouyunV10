@@ -82,7 +82,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
     private void initView() {
 
         //初始化
-        mPresenter.start();
+        getMPresenter().start();
         easyBar.setTitle("正在传输");
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
             }
         });
 
-        adapter = new FileRecordAdapter(R.layout.item_file_trans_record, mPresenter.getData());
+        adapter = new FileRecordAdapter(R.layout.item_file_trans_record, getMPresenter().getData());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
@@ -144,7 +144,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
                 if (data == null)
                     return;
                 String[] results = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
-                mPresenter.send(results);
+                getMPresenter().send(results);
                 break;
         }
     }
@@ -174,7 +174,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
     @Override
     protected void onDestroy() {
         System.out.println("----------Destroy---------");
-        mPresenter.exit();
+        getMPresenter().exit();
         super.onDestroy();
     }
 
@@ -186,10 +186,10 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        position = mPresenter.getData().size() - 1 - position;
-        if (mPresenter.getData().size() <= position)
+        position = getMPresenter().getData().size() - 1 - position;
+        if (getMPresenter().getData().size() <= position)
             return;
-        Intent intent = FileUtils.getOpenFileIntent(mPresenter.getData().get(position).getPath());
+        Intent intent = FileUtils.getOpenFileIntent(getMPresenter().getData().get(position).getPath());
         if (intent != null)
             startActivity(intent);
         else

@@ -99,9 +99,9 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
     protected void onStart() {
         super.onStart();
         if (otherId > 0) { //查看别人的信息
-            mPresenter.getOtherUserInfoOnline(otherId);
+            getMPresenter().getOtherUserInfoOnline(otherId);
         } else {  //查看自己的信息
-            mPresenter.getUserInfoOnline();
+            getMPresenter().getUserInfoOnline();
         }
     }
 
@@ -203,7 +203,7 @@ public class PersonInfoActivity extends MVPBaseActivity<PersonInfoPresenter> imp
                 //TODO 关注
                 if (otherId < 0)
                     return;
-                mPresenter.concern(otherId);
+                getMPresenter().concern(otherId);
                 break;
             case R.id.person_info_private_letter:
                 RouterUtils.openToChat(this, user);

@@ -92,7 +92,7 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
                                 showError("不能为空");
                                 return;
                             }
-                            mPresenter.modifyUserName(result);
+                            getMPresenter().modifyUserName(result);
                         })
                         .show(getSupportFragmentManager(), this.getClass().toString());
                 break;
@@ -140,7 +140,7 @@ public class PersonSettingActivity extends MVPBaseActivity<PersonSettingPresente
      */
     @OnClick(R.id.person_setting_signature_img_sure)
     public void onPersonSettingSignatureImgSureClicked() {
-        mPresenter.modifySignature(etSignature.getText().toString());
+        getMPresenter().modifySignature(etSignature.getText().toString());
     }
 
     /**

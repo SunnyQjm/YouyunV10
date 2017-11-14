@@ -77,7 +77,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
      */
     @Override
     protected void loadData(boolean isRefresh) {
-        mPresenter.getFilesByPath(currentParentId, page, isRefresh);
+        getMPresenter().getFilesByPath(currentParentId, page, isRefresh);
     }
 
     private void init() {
@@ -106,7 +106,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
 
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
                 RecyclerViewDividerItem.VERTICAL));
-        adapter = new FileAdapter(mPresenter.getData());
+        adapter = new FileAdapter(getMPresenter().getData());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setEmptyView(R.layout.recycler_empty_view);
 
@@ -137,7 +137,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
         pathRecyclerView = (RecyclerView) findViewById(R.id.pathRecyclerView);
         pathRecyclerView.setLayoutManager(new CustomLinerLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
-        pathAdapter = new PathAdapter(mPresenter.getPaths());
+        pathAdapter = new PathAdapter(getMPresenter().getPaths());
         //添加一个根目录
         pathAdapter.addData(new PathItem.Builder()
                 .parentId(null)
@@ -200,7 +200,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
         if(fileManageItem.getFile() == null){
             showTip(getString(R.string.directory_share_is_not_supported));
         }
-        mPresenter.share(fileManageItem);
+        getMPresenter().share(fileManageItem);
     }
 
     @Override
@@ -257,7 +257,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
             return;
         }
         FileItem fileItem = (FileItem) multiItemEntity;
-        mPresenter.delete(fileItem.getSelfId(), position);
+        getMPresenter().delete(fileItem.getSelfId(), position);
     }
 
     /**
@@ -299,7 +299,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
 
                                     @Override
                                     public void onSubscribe(Disposable d) {
-                                        mPresenter.addSubscription(d);
+                                        getMPresenter().addSubscription(d);
                                     }
                                 });
                     }
@@ -343,7 +343,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
 
                                     @Override
                                     public void onSubscribe(Disposable d) {
-                                        mPresenter.addSubscription(d);
+                                        getMPresenter().addSubscription(d);
                                     }
                                 });
                 }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),
@@ -374,7 +374,7 @@ public class PersonFileManagerActivity extends BaseRecyclerViewActivityLazy<Pers
 
                             @Override
                             public void onSubscribe(Disposable d) {
-                                mPresenter.addSubscription(d);
+                                getMPresenter().addSubscription(d);
                             }
                         });
                 }).show(getSupportFragmentManager(), String.valueOf(this.getClass()),

@@ -132,7 +132,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         parentId = intent.getStringExtra(FileManagerRequest.KEY_PATH_ID);
         if(parentId != null && parentId.equals(""))
             parentId = null;
-        adapter = new ExpandableItemAdapter(this, mPresenter.getData(paths));
+        adapter = new ExpandableItemAdapter(this, getMPresenter().getData(paths));
         adapter.setOnItemChildClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new RecyclerViewDividerItem(this,
@@ -166,7 +166,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 intent.putExtra(UploadConfig.IS_PUBLIC, isPublic);
                 intent.putExtra(UploadConfig.ALLOW_DOWNLOAD_COUNT, allowDownloadCount);
                 intent.putExtra(UploadConfig.EFFECT_DATE, expireTime);
-                intent.putExtra(UploadConfig.PATH, mPresenter.getPaths());
+                intent.putExtra(UploadConfig.PATH, getMPresenter().getPaths());
                 intent.putExtra(UploadConfig.DOWNLOAD_SCORE, downloadScore);
                 intent.putExtra(UploadConfig.DESCRIPTION, uploadSettingDescriptionEdit.getText()
                         .toString());
@@ -290,7 +290,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
                 if (data == null)
                     return;
                 String[] paths = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
-                mPresenter.addData(paths);
+                getMPresenter().addData(paths);
                 break;
         }
     }
@@ -300,7 +300,7 @@ public class UploadSettingActivity extends MVPBaseActivity<UploadSettingPresente
         System.out.println(adapter.getData().size());
         switch (view.getId()) {
             case R.id.img_delete:
-                mPresenter.remove(position);
+                getMPresenter().remove(position);
                 adapter.removeItem(position);
                 break;
         }

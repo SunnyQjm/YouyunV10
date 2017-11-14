@@ -40,7 +40,7 @@ class MyCollectionModel implements MyCollectionContract.Model{
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getUserCollections(page, size, ApiInfo.GET_USER_DYNAMIC_TYPE_COLLECT)
-                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
+                .map(baseResponseBody -> YouyunResultDeal.INSTANCE.dealData(baseResponseBody, mList, isRefresh))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -51,7 +51,7 @@ class MyCollectionModel implements MyCollectionContract.Model{
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getCollectionsSuccess();

@@ -2,6 +2,7 @@ package com.sunny.youyun.internet.api;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.cookie_persisten.CookieJarImpl;
@@ -130,7 +131,7 @@ public class APIManager {
     private static class youyunRequestInterceptor implements Interceptor {
 
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             Request request = chain.request();
             //begin deal request before request
 

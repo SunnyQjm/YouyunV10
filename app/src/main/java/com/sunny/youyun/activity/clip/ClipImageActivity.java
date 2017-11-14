@@ -88,7 +88,7 @@ public class ClipImageActivity extends MVPBaseActivity<ClipImagePresenter> imple
             public void onRightIconClick(View view) {
                 //TODO clip image hre
                 showLoading();
-                mPresenter.saveFile(saveFileTO);
+                getMPresenter().saveFile(saveFileTO);
             }
         });
         String path = getIntent().getStringExtra(ClipImageConfig.PATH);

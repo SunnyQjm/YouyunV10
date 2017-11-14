@@ -121,7 +121,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter>
 
             }
         });
-        mPresenter.start();
+        getMPresenter().start();
         adapter = new PeersAdapter(mList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -167,7 +167,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter>
                     return;
                 String result = data.getStringExtra(ReceiverFragmentConfig.REQUEST_SCAN_RESULT_KEY);
                 showLoading();
-                mPresenter.connect(result, null);
+                getMPresenter().connect(result, null);
                 break;
         }
     }
@@ -175,7 +175,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter>
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         showLoading();
-        mPresenter.connect(mList.get(position).deviceAddress, null);
+        getMPresenter().connect(mList.get(position).deviceAddress, null);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class ReceiverActivity extends WifiDirectBaseActivity<ReceiverPresenter>
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.exit();
+        getMPresenter().exit();
     }
 
 

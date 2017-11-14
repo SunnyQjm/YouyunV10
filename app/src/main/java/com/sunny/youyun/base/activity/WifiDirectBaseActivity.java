@@ -7,7 +7,9 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.ColorRes;
 
 import com.githang.statusbar.StatusBarCompat;
+import com.sunny.youyun.mvp.BaseModel;
 import com.sunny.youyun.mvp.BasePresenter;
+import com.sunny.youyun.mvp.BaseView;
 import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.utils.NetworkUtils;
 
@@ -16,7 +18,8 @@ import com.sunny.youyun.wifidirect.utils.NetworkUtils;
  * Created by Sunny on 2017/5/12 0012.
  */
 
-public abstract class WifiDirectBaseActivity<P extends BasePresenter> extends MVPBaseActivity<P> {
+public abstract class WifiDirectBaseActivity<P extends
+        BasePresenter<? extends BaseView, ? extends BaseModel>> extends MVPBaseActivity<P>{
     protected WifiP2pManager.PeerListListener peerListListener;
     protected WifiP2pManager.ConnectionInfoListener connectionInfoListener;
 

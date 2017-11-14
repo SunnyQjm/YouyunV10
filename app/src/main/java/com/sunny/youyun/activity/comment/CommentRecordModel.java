@@ -3,15 +3,15 @@ package com.sunny.youyun.activity.comment;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
+import com.sunny.youyun.internet.rx.RxresultHelper;
 import com.sunny.youyun.model.data_item.CommentRecord;
+import com.sunny.youyun.internet.rx.RxSchedulersHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -35,9 +35,8 @@ class CommentRecordModel implements CommentRecordContract.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getCommentRecord(page, size)
-                .map(baseResponseBody -> YouyunResultDeal.dealData(baseResponseBody, mList, isRefresh))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxresultHelper.INSTANCE.handlePageResult(mList, isRefresh))
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -46,7 +45,7 @@ class CommentRecordModel implements CommentRecordContract.Model {
 
                     @Override
                     public void onNext(Integer integer) {
-                        YouyunResultDeal.deal(integer, new YouyunResultDeal.OnResultListener() {
+                        YouyunResultDeal.INSTANCE.deal(integer, new YouyunResultDeal.OnResultListener() {
                             @Override
                             public void onSuccess() {
                                 mPresenter.getCommentRecordSuccess();

@@ -256,19 +256,19 @@ public class MainActivity extends MVPBaseActivity<MainPresenter> implements Main
         switch (view.getId()) {
             case R.id.btn_main_page:
                 viewpager.setCurrentItem(MAIN_PAGE_FRAGMENT, false);
-                mPresenter.changeBottomImg(MAIN_PAGE_FRAGMENT);
+                getMPresenter().changeBottomImg(MAIN_PAGE_FRAGMENT);
                 break;
             case R.id.btn_find:
                 viewpager.setCurrentItem(FINDING_PAGE_FRAGMENT, false);
-                mPresenter.changeBottomImg(FINDING_PAGE_FRAGMENT);
+                getMPresenter().changeBottomImg(FINDING_PAGE_FRAGMENT);
                 break;
             case R.id.btn_msg:
                 viewpager.setCurrentItem(MESSAGE_PAGE_FRAGMENT, false);
-                mPresenter.changeBottomImg(MESSAGE_PAGE_FRAGMENT);
+                getMPresenter().changeBottomImg(MESSAGE_PAGE_FRAGMENT);
                 break;
             case R.id.btn_mine:
                 viewpager.setCurrentItem(MINE_PAGE_FRAGMENT, false);
-                mPresenter.changeBottomImg(MINE_PAGE_FRAGMENT);
+                getMPresenter().changeBottomImg(MINE_PAGE_FRAGMENT);
                 break;
             case R.id.tv_cancel:
                 EventBus.getDefault()

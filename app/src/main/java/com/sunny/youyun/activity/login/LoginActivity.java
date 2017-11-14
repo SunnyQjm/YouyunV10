@@ -129,7 +129,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(result -> {
                             showLoading();
-                            mPresenter.qqLogin(result);
+                            getMPresenter().qqLogin(result);
                         });
 
                 break;
@@ -148,7 +148,7 @@ public class LoginActivity extends MVPBaseActivity<LoginPresenter> implements Lo
                     Toast.makeText(this, getString(R.string.please_complete_info), Toast.LENGTH_SHORT).show();
                 } else if (AccountValidatorUtil.isMobile(phone)) {
                     showLoading();
-                    mPresenter.login(phone, password);
+                    getMPresenter().login(phone, password);
                 } else {
                     Toast.makeText(this, getString(R.string.please_input_correct_phone_number), Toast.LENGTH_SHORT).show();
                 }
