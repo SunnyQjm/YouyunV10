@@ -1,5 +1,7 @@
 package com.sunny.youyun.internet.rx
 
+import android.content.Context
+import com.sunny.youyun.model.YouyunExceptionDeal
 import com.sunny.youyun.model.event.RefreshEvent
 import com.sunny.youyun.mvp.BasePresenter
 import io.reactivex.Observer
@@ -15,6 +17,8 @@ abstract class RxObserver<T>(val mPresenter: BasePresenter<*, *>) : Observer<T> 
     }
 
     override fun onError(e: Throwable) {
+        YouyunExceptionDeal.INSTANCE
+                .deal(mPresenter.view, e)
         com.orhanobut.logger.Logger.e("Error", e)
     }
 
