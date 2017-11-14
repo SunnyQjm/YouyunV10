@@ -20,8 +20,6 @@ cache:
 before_install:
 - openssl aes-256-cbc -K $encrypted_4f423c7955f4_key -iv $encrypted_4f423c7955f4_iv
   -in oureda.jks.enc -out oureda.jks -d
-- openssl aes-256-cbc -K $encrypted_77b808f930f3_key -iv $encrypted_77b808f930f3_iv
-  -in oureda.release.enc -out oureda.release -d
 - gem install fir-cli
 jdk:
 - oraclejdk8
@@ -30,7 +28,7 @@ before_script:
 script:
 - "./gradlew assembleRelease"
 before_deploy:
-- mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Youyun.apk
+- mv app/build/outputs/apk/release/app-release.apk  app/build/outputs/apk/release/Youyun.apk
 deploy:
   provider: releases
   api_key:
