@@ -1,6 +1,7 @@
 package com.sunny.youyun.fragment.main.finding_fragment.all;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
@@ -57,5 +58,10 @@ public class AllFragment extends FindingBaseFragment<AllPresenter>
     @Override
     protected void onLoadFinish() {
 
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        super.onItemClick(adapter, view, position);
     }
 }

@@ -1,6 +1,7 @@
 package com.sunny.youyun.fragment.main.finding_fragment.hot;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
@@ -52,5 +53,10 @@ public class HotFragment extends FindingBaseFragment<HotPresenter>
     @Override
     protected void onLoadFinish() {
 
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        super.onItemClick(adapter, view, position);
     }
 }

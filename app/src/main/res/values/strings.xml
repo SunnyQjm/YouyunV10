@@ -192,4 +192,5 @@
     <string name="share_link">分享链接</string>
     <string name="directory_share_is_not_supported">暂时还不支持文件夹分享</string>
     <string name="finding_item_avatar">finding_item_avatar</string>
+    <string name="share_finding_item">share_finding_item</string>
 </resources>

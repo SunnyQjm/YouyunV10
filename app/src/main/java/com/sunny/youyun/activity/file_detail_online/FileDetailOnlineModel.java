@@ -3,6 +3,7 @@ package com.sunny.youyun.activity.file_detail_online;
 import com.orhanobut.logger.Logger;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.internet.rx.RxSchedulersHelper;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.Comment;
 import com.sunny.youyun.model.InternetFile;
@@ -87,8 +88,7 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .getComments(fileId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(new Observer<BaseResponseBody<Comment[]>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -98,7 +98,7 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
                     @Override
                     public void onNext(BaseResponseBody<Comment[]> listBaseResponseBody) {
                         Logger.i(GsonUtil.getInstance().toJson(listBaseResponseBody));
-                        if(listBaseResponseBody.isSuccess()){
+                        if(listBaseResponseBody.isSuccess() && listBaseResponseBody.getData() != null){
                             commentList.clear();
                             Collections.addAll(commentList, listBaseResponseBody.getData());
                             mPresenter.getCommentSuccess(isFirst);
@@ -120,12 +120,10 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
 
     @Override
     public void getFileInfo(String code) {
-        mPresenter.showLoading();
         APIManager.getInstance()
                 .getFileServices(GsonConverterFactory.create())
                 .getFileInfo(code)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(new Observer<BaseResponseBody<InternetFile>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -161,8 +159,7 @@ class FileDetailOnlineModel implements FileDetailOnlineContract.Model {
         APIManager.getInstance()
                 .getForumServices(GsonConverterFactory.create())
                 .star(fileId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(new Observer<BaseResponseBody<String>>() {
                     @Override
                     public void onSubscribe(Disposable d) {

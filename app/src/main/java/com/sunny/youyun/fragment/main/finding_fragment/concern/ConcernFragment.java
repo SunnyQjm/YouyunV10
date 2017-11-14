@@ -1,6 +1,7 @@
 package com.sunny.youyun.fragment.main.finding_fragment.concern;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.fragment.main.finding_fragment.adapter.FindingItemAdapter;
@@ -47,6 +48,11 @@ public class ConcernFragment extends FindingBaseFragment<ConcernPresenter>
         EspressoIdlingResource.getInstance()
                 .decrement();
         updateAll();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        super.onItemClick(adapter, view, position);
     }
 
 }

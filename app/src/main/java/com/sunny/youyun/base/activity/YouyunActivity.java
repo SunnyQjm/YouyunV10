@@ -4,7 +4,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
+import android.transition.Visibility;
 import android.view.Window;
 
 import com.sunny.youyun.App;
@@ -89,15 +92,30 @@ public abstract class YouyunActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            fade.setMode(Visibility.MODE_OUT);
+            getWindow().setExitTransition(fade);
+            getWindow().setReenterTransition(fade);
+            finishAfterTransition();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     @CallSuper
     public void finish() {
         super.finish();
         dialog = null;
-        loadingView = null;
         App.finishAnim(this);
+        loadingView = null;
 //        //5.0以下用老版本的切换动画
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 //            App.finishAnim(this);
 //        }
     }
+
+
 }
