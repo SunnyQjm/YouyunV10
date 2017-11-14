@@ -4,11 +4,11 @@ android:
   components:
   - tools
   - platform-tools
-  - build-tools-26.0.2
-  - android-26
+  - build-tools-27.0.0
+  - android-27
   - extra-google-m2repository
   - extra-android-m2repository
-  - addon-google_apis-google-26
+  - addon-google_apis-google-27
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -30,7 +30,7 @@ before_script:
 script:
 - "./gradlew assembleRelease"
 before_deploy:
-- mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Xueban.apk
+- mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Youyun.apk
 deploy:
   provider: releases
   api_key:
@@ -40,7 +40,7 @@ deploy:
   on:
     tags: true
     all_branches: true
-    repo: SunnyQjm/XueBanV3.0
+    repo: SunnyQjm/YouyunV10
 after_deploy:
 - fir p app/build/outputs/apk/release/Youyun.apk -T $FIR_TOKEN -c "`git cat-file tag
   $TRAVIS_TAG`"
