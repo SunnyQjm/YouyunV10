@@ -39,7 +39,6 @@ class AboutYouyunActivity : MVPBaseActivity<AboutYouyunPresenter>(), AboutYouyun
         })
 
         tv_version.setOnClickListener{
-            toast("version click")
         }
     }
 
