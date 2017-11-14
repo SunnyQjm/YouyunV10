@@ -1,6 +1,6 @@
 package com.sunny.youyun.views.popupwindow.directory_select;
 
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.entity.MultiItemEntity;

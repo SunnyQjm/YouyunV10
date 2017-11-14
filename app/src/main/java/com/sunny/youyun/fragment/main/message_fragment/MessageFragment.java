@@ -2,6 +2,7 @@ package com.sunny.youyun.fragment.main.message_fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,7 +79,7 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_message, container, false);
             unbinder = ButterKnife.bind(this, view);
@@ -124,11 +125,11 @@ public class MessageFragment extends MVPBaseFragment<MessagePresenter>
 
     private void create_header_view() {
         MessageManager.getInstance()
-                .addHeader(new HeaderItem(getString(R.string.zan),
-                        R.drawable.icon_message_zan));
-        MessageManager.getInstance()
                 .addHeader(new HeaderItem(getString(R.string.comment),
                         R.drawable.icon_message_comment));
+        MessageManager.getInstance()
+                .addHeader(new HeaderItem(getString(R.string.zan),
+                        R.drawable.icon_message_zan));
     }
 
 

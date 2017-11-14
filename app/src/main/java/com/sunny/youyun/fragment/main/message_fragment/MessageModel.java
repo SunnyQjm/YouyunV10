@@ -1,7 +1,7 @@
 package com.sunny.youyun.fragment.main.message_fragment;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.base.entity.MultiItemEntity;
 import com.sunny.youyun.fragment.main.message_fragment.item.PrivateLetterItem;
 import com.sunny.youyun.internet.api.APIManager;

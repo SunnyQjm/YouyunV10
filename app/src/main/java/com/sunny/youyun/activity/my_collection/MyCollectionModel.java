@@ -1,21 +1,18 @@
 package com.sunny.youyun.activity.my_collection;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.data_item.Collection;
-import com.sunny.youyun.model.response_body.BaseResponseBody;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.converter.gson.GsonConverterFactory;
 

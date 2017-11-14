@@ -1,7 +1,7 @@
 package com.sunny.youyun.activity.person_file_manager.person_file_manager_index;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.activity.person_file_manager.item.FileItem;
 import com.sunny.youyun.activity.person_file_manager.item.PathItem;
 import com.sunny.youyun.base.entity.MultiItemEntity;

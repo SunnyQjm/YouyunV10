@@ -1,22 +1,25 @@
 package com.sunny.youyun.internet.rx
 
+import com.sunny.youyun.model.event.RefreshEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by sunny on 17-11-14.
  */
 abstract class RxObserver<T> : Observer<T>{
     override fun onComplete() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onError(e: Throwable) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        _onError(e.toString())
     }
 
     override fun onNext(t: T) {
         _onNext(t)
+        EventBus.getDefault()
+                .post(RefreshEvent())
     }
 
     override fun onSubscribe(d: Disposable) {

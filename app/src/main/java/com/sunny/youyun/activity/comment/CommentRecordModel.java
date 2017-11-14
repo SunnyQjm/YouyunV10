@@ -1,9 +1,9 @@
 package com.sunny.youyun.activity.comment;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
-import com.sunny.youyun.internet.rx.RxresultHelper;
+import com.sunny.youyun.internet.rx.RxResultHelper;
 import com.sunny.youyun.model.data_item.CommentRecord;
 import com.sunny.youyun.internet.rx.RxSchedulersHelper;
 
@@ -35,7 +35,7 @@ class CommentRecordModel implements CommentRecordContract.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .getCommentRecord(page, size)
-                .compose(RxresultHelper.INSTANCE.handlePageResult(mList, isRefresh))
+                .compose(RxResultHelper.INSTANCE.handlePageResult(mList, isRefresh))
                 .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(new Observer<Integer>() {
                     @Override

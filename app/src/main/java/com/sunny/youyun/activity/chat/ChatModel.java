@@ -1,7 +1,8 @@
 package com.sunny.youyun.activity.chat;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.internet.rx.RxSchedulersHelper;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.activity.chat.item.DateItem;
 import com.sunny.youyun.activity.chat.item.MessageItemMy;
 import com.sunny.youyun.activity.chat.item.MessageItemOther;
@@ -59,8 +60,7 @@ class ChatModel implements ChatContract.Model {
                         return ApiInfo.RESULT_DEAL_TYPE_FAIL;
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {

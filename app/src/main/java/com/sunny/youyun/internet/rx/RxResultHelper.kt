@@ -1,6 +1,6 @@
 package com.sunny.youyun.internet.rx
 
-import com.sunny.youyun.YouyunResultDeal
+import com.sunny.youyun.model.YouyunResultDeal
 import com.sunny.youyun.internet.api.ApiInfo
 import com.sunny.youyun.internet.exception.LoginTokenInvalidException
 import com.sunny.youyun.internet.exception.NotLoginException
@@ -12,8 +12,8 @@ import io.reactivex.ObservableTransformer
 /**
  * Created by sunny on 17-11-14.
  */
-object RxresultHelper {
-    fun <T> handleResult(): ObservableTransformer<BaseResponseBody<T>, T> {
+object RxResultHelper {
+    private fun <T> handleResult(): ObservableTransformer<BaseResponseBody<T>, T> {
         return ObservableTransformer { upstream ->
             return@ObservableTransformer upstream
                     .flatMap { result ->

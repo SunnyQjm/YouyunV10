@@ -28,9 +28,6 @@ public class AllFragment extends FindingBaseFragment<AllPresenter>
         adapter = new FindingItemAdapter(mPresenter.getDatas());
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
-//        EspressoIdlingResource.getInstance()
-//                .increment();
-//        mPresenter.getForumDataALL(page, true);
         onRefresh();
     }
 

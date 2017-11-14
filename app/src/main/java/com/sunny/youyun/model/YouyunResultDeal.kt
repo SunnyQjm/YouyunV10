@@ -1,4 +1,4 @@
-package com.sunny.youyun
+package com.sunny.youyun.model
 
 import com.sunny.youyun.internet.api.ApiInfo
 import com.sunny.youyun.model.response_body.BaseResponseBody

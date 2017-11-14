@@ -2,6 +2,7 @@ package com.sunny.youyun.activity.clip;
 
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.internet.api.ApiInfo;
+import com.sunny.youyun.internet.rx.RxSchedulersHelper;
 import com.sunny.youyun.model.YouyunExceptionDeal;
 import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.model.response_body.BaseResponseBody;
@@ -68,8 +69,7 @@ class ClipImageModel implements ClipImageContrat.Model {
         APIManager.getInstance()
                 .getUserService(GsonConverterFactory.create())
                 .modifyAvatar(mpf)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.INSTANCE.io_main())
                 .subscribe(new Observer<BaseResponseBody<String>>() {
                     @Override
                     public void onSubscribe(Disposable d) {

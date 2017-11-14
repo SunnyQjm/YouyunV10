@@ -1,7 +1,7 @@
 package com.sunny.youyun.fragment.main.finding_fragment.concern;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.model.InternetFile;
 import com.sunny.youyun.model.YouyunExceptionDeal;

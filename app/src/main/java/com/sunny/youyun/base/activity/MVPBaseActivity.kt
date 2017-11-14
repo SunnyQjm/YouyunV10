@@ -15,10 +15,6 @@ abstract class MVPBaseActivity<P : BasePresenter<*, *>> : YouyunActivity(), Base
 
     protected var mPresenter: P? = null
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     @CallSuper      //表示
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +34,6 @@ abstract class MVPBaseActivity<P : BasePresenter<*, *>> : YouyunActivity(), Base
 
     protected abstract fun onCreatePresenter(): P
 
-
-    override fun dismissDialog() {
-        super.dismissDialog()
-    }
 
     override fun allDataLoadFinish() {
 

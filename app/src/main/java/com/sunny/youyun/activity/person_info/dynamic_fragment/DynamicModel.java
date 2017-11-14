@@ -1,7 +1,7 @@
 package com.sunny.youyun.activity.person_info.dynamic_fragment;
 
 import com.orhanobut.logger.Logger;
-import com.sunny.youyun.YouyunResultDeal;
+import com.sunny.youyun.model.YouyunResultDeal;
 import com.sunny.youyun.internet.api.APIManager;
 import com.sunny.youyun.model.data_item.Dynamic;
 
