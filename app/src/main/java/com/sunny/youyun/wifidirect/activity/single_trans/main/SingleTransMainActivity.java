@@ -66,7 +66,11 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
                 RouterUtils.open(SingleTransMainActivity.this, IntentRouter.WifiDirectRecordActivity);
             }
         });
-        WifiDirectManager.getInstance().disConnect();
+        com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
+                .Companion.getINSTANCE()
+                .init(this)
+                .removeGroup();
+//        WifiDirectManager.getInstance().disConnect();
     }
 
 

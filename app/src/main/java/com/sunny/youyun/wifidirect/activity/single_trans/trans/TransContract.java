@@ -22,7 +22,7 @@ interface TransContract {
 
         void exit();
 
-        void send(String[] paths);
+        void send(String ip, String[] paths);
 
         List<TransLocalFile> getData();
 
@@ -34,7 +34,7 @@ interface TransContract {
         abstract List<TransLocalFile> getData();
 
 
-        abstract void send(String[] paths);
+        abstract void send(String ip, String[] paths);
         abstract void update();
         abstract void updateItem(int i, TransLocalFile transLocalFile);
     }

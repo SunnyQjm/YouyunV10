@@ -74,12 +74,10 @@ class TransModel implements TransContract.Model {
     }
 
     @Override
-    public void send(String[] paths) {
-        System.out.println("ip: " + SingleTransManager.getInstance().getTargetInfo().getIp());
-        System.out.println(SingleTransManager.getInstance().getTargetInfo());
+    public void send(String ip, String[] paths) {
         for (String path : paths) {
             WifiDirectManager.getInstance()
-                    .sendFile(path, SingleTransManager.getInstance().getTargetInfo().getIp(), mList);
+                    .sendFile(path, ip, mList);
         }
     }
 

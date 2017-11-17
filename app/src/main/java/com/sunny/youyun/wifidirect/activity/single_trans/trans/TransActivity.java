@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
@@ -39,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-@Router(IntentRouter.TransActivity)
+@Router(IntentRouter.TransActivity + "/:ip")
 public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
         implements TransContract.View, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.easyBar)
@@ -52,6 +53,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
     private FileRecordAdapter adapter;
     private YouyunTipDialog dialog = null;
 
+    private String ip = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +82,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
 
     @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private void initView() {
-
+        ip = getIntent().getStringExtra("ip");
         //初始化
         getMPresenter().start();
         easyBar.setTitle("正在传输");
@@ -104,6 +106,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
         adapter.setEmptyView(R.layout.recycler_empty_view);
     }
 
+    @NonNull
     @Override
     protected TransPresenter onCreatePresenter() {
         return new TransPresenter(this);
@@ -144,7 +147,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
                 if (data == null)
                     return;
                 String[] results = data.getStringArrayExtra(FileManagerRequest.KEY_PATH);
-                getMPresenter().send(results);
+                getMPresenter().send(ip, results);
                 break;
         }
     }

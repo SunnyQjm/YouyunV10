@@ -12,7 +12,7 @@ import java.io.IOException;
  * Created by Sunny on 2017/8/10 0010.
  */
 
-class SenderPresenter extends SenderContract.Presenter{
+public class SenderPresenter extends SenderContract.Presenter{
     SenderPresenter(SenderActivity senderFragment) {
         mView = senderFragment;
         mModel = new SenderModel(this);
@@ -32,10 +32,10 @@ class SenderPresenter extends SenderContract.Presenter{
         mModel.connect(device, listener);
     }
 
-    @Override
-    void connectSuccess() {
-        mView.connectSuccess();
-    }
+//    @Override
+//    void connectSuccess() {
+//        mView.connectSuccess();
+//    }
 
     @Override
     void exit() {

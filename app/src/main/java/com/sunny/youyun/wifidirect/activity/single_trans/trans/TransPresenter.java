@@ -31,8 +31,8 @@ class TransPresenter extends TransContract.Presenter{
 
 
     @Override
-    void send(String[] paths) {
-        mModel.send(paths);
+    void send(String ip, String[] paths) {
+        mModel.send(ip, paths);
     }
 
     @Override

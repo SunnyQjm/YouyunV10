@@ -55,7 +55,7 @@ class SenderModel implements SenderContract.Model {
 //                    break;
 //            }
 //        }, throwable -> Logger.e(throwable, "EventRxBusErr"));
-        startSingleTaskServer(SocketConfig.singleTaskPort);
+//        startSingleTaskServer(SocketConfig.singleTaskPort);
     }
 
     /**

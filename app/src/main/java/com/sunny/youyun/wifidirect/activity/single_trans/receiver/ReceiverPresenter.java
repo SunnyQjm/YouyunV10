@@ -11,7 +11,7 @@ import java.io.IOException;
  * Created by Sunny on 2017/8/10 0010.
  */
 
-class ReceiverPresenter extends ReceiverContract.Presenter{
+public class ReceiverPresenter extends ReceiverContract.Presenter{
     ReceiverPresenter(ReceiverActivity receiverFragment) {
         mView = receiverFragment;
         mModel = new ReceiverModel(this);
@@ -31,10 +31,6 @@ class ReceiverPresenter extends ReceiverContract.Presenter{
         mModel.connect(macAddr, listener);
     }
 
-    @Override
-    void connectSuccess() {
-        mView.connectSuccess();
-    }
 
     @Override
     void exit() {

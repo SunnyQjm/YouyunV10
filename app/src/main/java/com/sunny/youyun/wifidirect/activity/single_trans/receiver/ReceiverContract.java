@@ -15,7 +15,6 @@ import java.io.IOException;
 
 interface ReceiverContract {
     interface View extends BaseView {
-        void connectSuccess();
     }
 
     interface Model extends BaseModel {
@@ -26,7 +25,6 @@ interface ReceiverContract {
 
     abstract class Presenter extends BasePresenter<View, Model> {
         abstract void connect(final String macAddr, @Nullable WifiP2pManager.ActionListener listener);
-        abstract void connectSuccess();
         abstract void exit();
     }
 }

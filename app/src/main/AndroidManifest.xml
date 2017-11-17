@@ -67,9 +67,20 @@
                 <category android:name="com.sunny.youyun" />
             </intent-filter>
         </receiver>
+        <!--<receiver-->
+            <!--android:name=".wifidirect.receiver.WifiDirectBroadCastReceiver"-->
+            <!--android:enabled="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.wif.p2p.STATE_CHANGE" />-->
+                <!--<action android:name="android.net.wifi.p2p.PEERS_CHANGED" />-->
+                <!--<action android:name="android.net.wifi.p2p.CONNECTION_STATE_CHANGE" />-->
+                <!--<action android:name="android.net.wifi.p2p.THIS_DEVICE_CHANGED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
         <receiver
-            android:name=".wifidirect.receiver.WifiDirectBroadCastReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:name=".wifidirect.wd_2.receiver.WifiDirectBroadCastReceiver">
             <intent-filter>
                 <action android:name="android.net.wif.p2p.STATE_CHANGE" />
                 <action android:name="android.net.wifi.p2p.PEERS_CHANGED" />

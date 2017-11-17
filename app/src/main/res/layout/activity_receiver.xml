@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.sunny.youyun.views.loading_view.LoadingView
-        android:id="@+id/shape_loading_view"
+        android:id="@+id/lv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_scan_qr_code"
+        app:layout_constraintBottom_toTopOf="@+id/btnScanQrCode"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -41,7 +41,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <com.sunny.youyun.views.RichText
-        android:id="@+id/btn_scan_qr_code"
+        android:id="@+id/btnScanQrCode"
         style="@style/ImageButtonStyle"
         android:layout_marginBottom="18dp"
         android:layout_marginLeft="8dp"
@@ -50,12 +50,12 @@
         app:drawable_height="@dimen/imgBtn_drawable_size"
         app:drawable_src="@drawable/icon_recieve_scan"
         app:drawable_width="@dimen/imgBtn_drawable_size"
-        app:layout_constraintBottom_toTopOf="@+id/btn_add_file"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddFile"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <com.sunny.youyun.views.RichText
-        android:id="@+id/btn_add_file"
+        android:id="@+id/btnAddFile"
         style="@style/ImageButtonStyle"
         android:layout_marginBottom="35dp"
         android:layout_marginLeft="8dp"
