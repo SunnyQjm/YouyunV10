@@ -18,22 +18,7 @@ public class ReceiverPresenter extends ReceiverContract.Presenter{
     }
 
     @Override
-    protected void start() {
-        try {
-            mModel.begin();
-        } catch (IOException e) {
-            Logger.e("初始化失败");
-        }
-    }
+    protected void start() throws IOException {
 
-    @Override
-    void connect(final String macAddr, @Nullable WifiP2pManager.ActionListener listener) {
-        mModel.connect(macAddr, listener);
-    }
-
-
-    @Override
-    void exit() {
-        mModel.exit();
     }
 }

@@ -5,12 +5,16 @@ android {
     signingConfigs {
         release {
             storeFile file('../oureda.jks')
-            storePassword projects.hasProperty("c") ? KEYSTORE_PASS :
-                    System.getenv("KEYSTORE_PASS")
-            keyAlias project.hasProperty("ALIAS_NAME") ? ALIAS_NAME :
-                    System.getenv("ALIAS_NAME")
-            keyPassword project.hasProperty("ALIAS_PASS") ? ALIAS_PASS :
-                    System.getenv("ALIAS_PASS")
+//            storePassword projects.hasProperty("c") ? KEYSTORE_PASS :
+//                    System.getenv("KEYSTORE_PASS")
+//            keyAlias project.hasProperty("ALIAS_NAME") ? ALIAS_NAME :
+//                    System.getenv("ALIAS_NAME")
+//            keyPassword project.hasProperty("ALIAS_PASS") ? ALIAS_PASS :
+//                    System.getenv("ALIAS_PASS")
+
+            storePassword "oureda123456"
+            keyAlias "oureda"
+            keyPassword "oureda123456"
         }
     }
     dataBinding{

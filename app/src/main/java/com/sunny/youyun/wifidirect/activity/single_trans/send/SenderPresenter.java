@@ -20,25 +20,5 @@ public class SenderPresenter extends SenderContract.Presenter{
 
     @Override
     protected void start() {
-        try {
-            mModel.begin();
-        } catch (IOException e) {
-            Logger.e(e, "初始化失败");
-        }
-    }
-
-    @Override
-    void connect(final WifiP2pDevice device, @Nullable WifiP2pManager.ActionListener listener) {
-        mModel.connect(device, listener);
-    }
-
-//    @Override
-//    void connectSuccess() {
-//        mView.connectSuccess();
-//    }
-
-    @Override
-    void exit() {
-        mModel.exit();
     }
 }

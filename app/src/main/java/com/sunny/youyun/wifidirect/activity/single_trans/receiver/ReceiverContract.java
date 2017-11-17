@@ -18,13 +18,8 @@ interface ReceiverContract {
     }
 
     interface Model extends BaseModel {
-        void begin() throws IOException;
-        void connect(final String macAddr, @Nullable WifiP2pManager.ActionListener listener);
-        void exit();
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
-        abstract void connect(final String macAddr, @Nullable WifiP2pManager.ActionListener listener);
-        abstract void exit();
     }
 }

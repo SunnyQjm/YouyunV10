@@ -23,6 +23,5 @@ public class PeersAdapter extends BaseQuickAdapter<DeviceInfo, BaseViewHolder>{
     @Override
     protected void convert(BaseViewHolder helper, DeviceInfo item) {
         helper.setText(R.id.tv_content, item.getDeviceName() + "\nMax: " + item.getMac());
-
     }
 }

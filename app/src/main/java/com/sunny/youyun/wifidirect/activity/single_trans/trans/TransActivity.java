@@ -162,8 +162,9 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
 
     @Override
     public void finish() {
-        WifiDirectManager.getInstance().disConnect();
-        WifiDirectManager.getInstance().cancelConnect(null);
+        com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
+                .Companion.getINSTANCE()
+                .removeGroup();
         try {
             WifiDirectManager.getInstance().stopServer();
         } catch (IOException e) {

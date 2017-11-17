@@ -16,18 +16,11 @@ import java.io.IOException;
 
 interface SenderContract {
     interface View extends BaseView {
-//        void connectSuccess();
     }
 
     interface Model extends BaseModel {
-        void begin() throws IOException;
-        void connect(final WifiP2pDevice device, @Nullable WifiP2pManager.ActionListener listener);
-        void exit();
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
-        abstract void connect(final WifiP2pDevice device, @Nullable WifiP2pManager.ActionListener listener);
-//        abstract void connectSuccess();
-        abstract void exit();
     }
 }

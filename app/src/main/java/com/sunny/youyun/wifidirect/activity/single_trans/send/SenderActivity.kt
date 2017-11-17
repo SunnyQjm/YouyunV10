@@ -1,13 +1,9 @@
 package com.sunny.youyun.wifidirect.activity.single_trans.send
 
 import android.content.Intent
-import android.net.wifi.p2p.WifiP2pDevice
-import android.net.wifi.p2p.WifiP2pManager
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 
 import com.github.mzule.activityrouter.annotation.Router
@@ -20,7 +16,6 @@ import com.sunny.youyun.base.activity.WifiDirectBaseActivity
 import com.sunny.youyun.utils.RouterUtils
 import com.sunny.youyun.views.EasyBar
 import com.sunny.youyun.wifidirect.activity.single_trans.adapter.PeersAdapter
-import com.sunny.youyun.wifidirect.activity.single_trans.trans.TransActivity
 
 
 import butterknife.ButterKnife
@@ -123,13 +118,6 @@ class SenderActivity : WifiDirectBaseActivity<SenderPresenter>(), SenderContract
             }
         }
     }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mPresenter!!.exit()
-    }
-
     fun connectSuccess(ip: String) {
         RouterUtils.open(this, IntentRouter.TransActivity, ip)
         finish()

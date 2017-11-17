@@ -70,7 +70,6 @@ public class SingleTransMainActivity extends WifiDirectBaseActivity<SingleTransM
                 .Companion.getINSTANCE()
                 .init(this)
                 .removeGroup();
-//        WifiDirectManager.getInstance().disConnect();
     }
 
 

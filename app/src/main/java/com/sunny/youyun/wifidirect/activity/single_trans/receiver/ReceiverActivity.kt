@@ -19,6 +19,7 @@ import com.sunny.youyun.wifidirect.utils.NetworkUtils
 
 import butterknife.ButterKnife
 import com.sunny.youyun.base.RecyclerViewDividerItem
+import com.sunny.youyun.base.adapter.BaseViewHolder
 import com.sunny.youyun.wifidirect.activity.single_trans.adapter.PeersAdapter
 import com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
 import com.sunny.youyun.wifidirect.wd_2.model.DeviceInfo
@@ -63,14 +64,16 @@ class ReceiverActivity : WifiDirectBaseActivity<ReceiverPresenter>()
                 .mListener = object : WifiDirectManager.OnWifiDirectListener {
             override fun onWifiP2pDeviceListChange(list: MutableList<DeviceInfo>) {
                 if (recyclerView.adapter == null) {
-                    val adapter = PeersAdapter(WifiDirectManager.INSTANCE
-                            .wifiDeviceList)
+                    val adapter = PeersAdapter(mutableListOf())
                     recyclerView.adapter = adapter
                     adapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { a, v, position ->
                         WifiDirectManager.INSTANCE
                                 .connect((a.getItem(position) as DeviceInfo).mac)
                     }
                 }
+                val b = recyclerView.adapter as BaseQuickAdapter<DeviceInfo, *>
+                b.data.clear()
+                b.data.addAll(list)
                 recyclerView.adapter.notifyDataSetChanged()
                 lv.visibility = View.INVISIBLE
             }
