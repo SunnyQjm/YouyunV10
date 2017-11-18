@@ -10,7 +10,6 @@ import com.githang.statusbar.StatusBarCompat;
 import com.sunny.youyun.mvp.BaseModel;
 import com.sunny.youyun.mvp.BasePresenter;
 import com.sunny.youyun.mvp.BaseView;
-import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.utils.NetworkUtils;
 
 
@@ -28,9 +27,7 @@ public abstract class WifiDirectBaseActivity<P extends
     protected void onResume() {
         super.onResume();
         //打开wifi
-        WifiDirectManager.getInstance().setWifiDirectEnable(NetworkUtils.setWifiEnable(this, true));
-        //开始接收转发表
-//        WifiDirectManager.getInstance().beginReceiveDeviceInfo(SocketConfig.FORWARD_ITEM_LISTEN_PORT);
+        NetworkUtils.setWifiEnable(this, true);
     }
 
     @Override

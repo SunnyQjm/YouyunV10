@@ -15,7 +15,6 @@ import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.RichText;
 import com.sunny.youyun.wifidirect.activity.single_trans.receiver.ReceiverActivity;
 import com.sunny.youyun.wifidirect.activity.single_trans.send.SenderActivity;
-import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

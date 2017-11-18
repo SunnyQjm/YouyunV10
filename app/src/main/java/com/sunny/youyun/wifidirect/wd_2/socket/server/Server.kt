@@ -1,5 +1,7 @@
 package com.sunny.youyun.wifidirect.wd_2.socket.server
 
+import com.sunny.youyun.App
+import com.sunny.youyun.wifidirect.model.TransLocalFile
 import com.sunny.youyun.wifidirect.wd_2.socket.Config
 import com.sunny.youyun.wifidirect.wd_2.utils.L
 import com.sunny.youyun.wifidirect.wd_2.utils.doInIOThread
@@ -12,7 +14,9 @@ import java.net.SocketException
  * Created by sunny on 17-11-17.
  */
 class Server constructor(private val listenPort: Int = Config.port,
-                         private val serverSocketStrategy: ServerSocketStrategy = ServerSocketImpl())
+                         private val serverSocketStrategy: ServerSocketStrategy
+                         = ServerSocketImpl(),
+                         var mList: MutableList<TransLocalFile> = mutableListOf())
     : ServerStrategy {
 
     override fun startSync() {
@@ -49,7 +53,7 @@ class Server constructor(private val listenPort: Int = Config.port,
                  * This thread still comeback to listen the request from client
                  */
                 doAsync {
-                    serverSocketStrategy.service(socket)
+                    serverSocketStrategy.service(socket, mList)
                 }
             } catch (e: SocketException) {
                 //may be cause by call serverSocket.close()
@@ -60,6 +64,7 @@ class Server constructor(private val listenPort: Int = Config.port,
         }
     }
 
+    @Throws(IOException::class)
     override fun stop() {
         isStop = true
         try {

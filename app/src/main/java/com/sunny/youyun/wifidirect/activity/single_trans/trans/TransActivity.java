@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.sunny.youyun.IntentRouter;
 import com.sunny.youyun.R;
 import com.sunny.youyun.activity.file_manager.FileManagerActivity;
 import com.sunny.youyun.activity.file_manager.config.FileManagerRequest;
+import com.sunny.youyun.base.RecyclerViewDividerItem;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.activity.WifiDirectBaseActivity;
 import com.sunny.youyun.utils.FileUtils;
@@ -30,9 +30,9 @@ import com.sunny.youyun.views.EasyBar;
 import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 import com.sunny.youyun.wifidirect.activity.single_trans.adapter.FileRecordAdapter;
-import com.sunny.youyun.wifidirect.manager.SingleTransManager;
-import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
+import com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager;
+import com.sunny.youyun.wifidirect.wd_2.socket.server.Server;
 
 import java.io.IOException;
 
@@ -84,6 +84,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
     private void initView() {
         ip = getIntent().getStringExtra("ip");
         //初始化
+
         getMPresenter().start();
         easyBar.setTitle("正在传输");
         easyBar.setOnEasyBarClickListener(new EasyBar.OnEasyBarClickListener() {
@@ -100,7 +101,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
 
         adapter = new FileRecordAdapter(R.layout.item_file_trans_record, getMPresenter().getData());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new RecyclerViewDividerItem(this, RecyclerViewDividerItem.VERTICAL));
         adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemClickListener(this);
         adapter.setEmptyView(R.layout.recycler_empty_view);
@@ -153,7 +154,7 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
     }
 
     @Override
-    public void updateItem(int position, TransLocalFile transLocalFile) {
+    public void updateItem(int position, @NonNull TransLocalFile transLocalFile) {
         if (adapter != null && adapter.getData().size() > position) {
             adapter.notifyItemChanged(position, transLocalFile);
         }
@@ -162,16 +163,16 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
 
     @Override
     public void finish() {
-        com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
+        WifiDirectManager
                 .Companion.getINSTANCE()
                 .removeGroup();
         try {
-            WifiDirectManager.getInstance().stopServer();
+            Server.Companion.getINSTANCE()
+                    .stop();
         } catch (IOException e) {
             e.printStackTrace();
             Logger.e("关闭服务监听失败", e);
         }
-        SingleTransManager.getInstance().clearInfo();
         super.finish();
     }
 
@@ -193,7 +194,8 @@ public class TransActivity extends WifiDirectBaseActivity<TransPresenter>
         position = getMPresenter().getData().size() - 1 - position;
         if (getMPresenter().getData().size() <= position)
             return;
-        Intent intent = FileUtils.getOpenFileIntent(getMPresenter().getData().get(position).getPath());
+        Intent intent = FileUtils.getOpenFileIntent(getMPresenter().getData()
+                .get(position).getPath());
         if (intent != null)
             startActivity(intent);
         else

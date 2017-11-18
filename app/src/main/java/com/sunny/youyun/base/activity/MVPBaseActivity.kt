@@ -5,6 +5,7 @@ import android.support.annotation.CallSuper
 
 import com.sunny.youyun.mvp.BasePresenter
 import com.sunny.youyun.mvp.BaseView
+import kotlin.properties.Delegates
 
 
 /**
@@ -13,7 +14,7 @@ import com.sunny.youyun.mvp.BaseView
 
 abstract class MVPBaseActivity<P : BasePresenter<*, *>> : YouyunActivity(), BaseView {
 
-    protected var mPresenter: P? = null
+    protected var mPresenter: P by Delegates.notNull()
 
     @CallSuper      //表示
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,19 +27,9 @@ abstract class MVPBaseActivity<P : BasePresenter<*, *>> : YouyunActivity(), Base
     override fun onDestroy() {
         super.onDestroy()
         //当Activity被销毁时，取消所有订阅
-        if (mPresenter != null) {
-            mPresenter!!.clearAllDisposable()
-        }
+        mPresenter.clearAllDisposable()
     }
-
-
     protected abstract fun onCreatePresenter(): P
-
-
-    override fun dismissDialog() {
-        super.dismissDialog()
-    }
-
     override fun allDataLoadFinish() {
 
     }

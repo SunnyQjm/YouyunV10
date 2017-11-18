@@ -77,8 +77,8 @@ class WifiDirectManager {
         //then send a simple socket to group owner for register itself
         if (wifiP2pInfo.groupFormed && !wifiP2pInfo.isGroupOwner) {
             L.i("try to register")
-            Client(wifiP2pInfo.groupOwnerAddress)
-                    .registerSync()
+            Client.INSTANCE
+                    .register(wifiP2pInfo.groupOwnerAddress)
         }
 
         //if group formed, and this device is the group owner

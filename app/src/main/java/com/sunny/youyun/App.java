@@ -18,7 +18,6 @@ import com.sunny.youyun.model.manager.UserInfoManager;
 import com.sunny.youyun.utils.FileUtils;
 import com.sunny.youyun.utils.JPushUtil;
 import com.sunny.youyun.utils.MyThreadPool;
-import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
 
 import org.litepal.LitePal;
@@ -49,7 +48,6 @@ public class App extends Application {
 
         LitePal.initialize(this);
         APIManager.init(this);
-        WifiDirectManager.init(this);
         //load user info from local
         UserInfoManager.init();
         int id = UserInfoManager.getInstance()
