@@ -19,9 +19,9 @@ import com.sunny.youyun.wifidirect.activity.single_trans.adapter.PeersAdapter
 
 
 import butterknife.ButterKnife
-import com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
-import com.sunny.youyun.wifidirect.wd_2.model.DeviceInfo
-import com.sunny.youyun.wifidirect.wd_2.utils.GsonUtil
+import com.sunny.youyun.wifidirect.manager.WifiDirectManager
+import com.sunny.youyun.wifidirect.model.DeviceInfo
+import com.sunny.youyun.wifidirect.utils.GsonUtil
 import kotlinx.android.synthetic.main.bar_item.*
 import kotlinx.android.synthetic.main.fragment_sender.*
 import org.jetbrains.anko.toast
@@ -31,7 +31,7 @@ class SenderActivity : WifiDirectBaseActivity<SenderPresenter>(), SenderContract
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btnQrCode -> {
-                showQrDialog(com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
+                showQrDialog(com.sunny.youyun.wifidirect.manager.WifiDirectManager
                         .Companion.INSTANCE
                         .myDeviceInfo
                         ?.mac)
@@ -99,7 +99,7 @@ class SenderActivity : WifiDirectBaseActivity<SenderPresenter>(), SenderContract
 
 
     override fun onBackPressed() {
-        com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
+        com.sunny.youyun.wifidirect.manager.WifiDirectManager
                 .Companion.INSTANCE
                 .removeGroup()
         super.onBackPressed()

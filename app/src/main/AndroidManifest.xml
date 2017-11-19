@@ -80,7 +80,7 @@
 
         <receiver
             android:enabled="true"
-            android:name=".wifidirect.wd_2.receiver.WifiDirectBroadCastReceiver">
+            android:name="com.sunny.youyun.wifidirect.receiver.WifiDirectBroadCastReceiver">
             <intent-filter>
                 <action android:name="android.net.wif.p2p.STATE_CHANGE" />
                 <action android:name="android.net.wifi.p2p.PEERS_CHANGED" />

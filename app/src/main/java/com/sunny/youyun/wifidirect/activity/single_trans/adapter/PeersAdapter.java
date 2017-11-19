@@ -1,12 +1,11 @@
 package com.sunny.youyun.wifidirect.activity.single_trans.adapter;
 
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.support.annotation.Nullable;
 
 import com.sunny.youyun.R;
 import com.sunny.youyun.base.adapter.BaseQuickAdapter;
 import com.sunny.youyun.base.adapter.BaseViewHolder;
-import com.sunny.youyun.wifidirect.wd_2.model.DeviceInfo;
+import com.sunny.youyun.wifidirect.model.DeviceInfo;
 
 import java.util.List;
 

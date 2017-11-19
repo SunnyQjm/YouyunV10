@@ -29,7 +29,7 @@ object YouyunResultDeal {
     fun <T> dealData(result: Array<T>, mList: MutableList<T>, isRefresh: Boolean): Int {
         if (isRefresh)
             mList.clear()
-        val i = mList.addAll(result)
+        mList.addAll(result)
 
         return if (result.size < ApiInfo.GET_DEFAULT_SIZE) {
             ApiInfo.RESULT_DEAL_TYPE_LOAD_FINISH

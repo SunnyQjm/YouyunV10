@@ -19,10 +19,9 @@ import com.sunny.youyun.wifidirect.utils.NetworkUtils
 
 import butterknife.ButterKnife
 import com.sunny.youyun.base.RecyclerViewDividerItem
-import com.sunny.youyun.base.adapter.BaseViewHolder
 import com.sunny.youyun.wifidirect.activity.single_trans.adapter.PeersAdapter
-import com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager
-import com.sunny.youyun.wifidirect.wd_2.model.DeviceInfo
+import com.sunny.youyun.wifidirect.manager.WifiDirectManager
+import com.sunny.youyun.wifidirect.model.DeviceInfo
 import kotlinx.android.synthetic.main.activity_receiver.*
 import kotlinx.android.synthetic.main.bar_item.*
 

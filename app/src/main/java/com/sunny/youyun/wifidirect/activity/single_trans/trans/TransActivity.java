@@ -31,8 +31,8 @@ import com.sunny.youyun.views.youyun_dialog.tip.OnYouyunTipDialogClickListener;
 import com.sunny.youyun.views.youyun_dialog.tip.YouyunTipDialog;
 import com.sunny.youyun.wifidirect.activity.single_trans.adapter.FileRecordAdapter;
 import com.sunny.youyun.wifidirect.model.TransLocalFile;
-import com.sunny.youyun.wifidirect.wd_2.manager.WifiDirectManager;
-import com.sunny.youyun.wifidirect.wd_2.socket.server.Server;
+import com.sunny.youyun.wifidirect.manager.WifiDirectManager;
+import com.sunny.youyun.wifidirect.socket.server.Server;
 
 import java.io.IOException;
 

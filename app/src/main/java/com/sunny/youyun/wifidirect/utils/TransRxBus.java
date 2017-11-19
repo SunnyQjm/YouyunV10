@@ -27,7 +27,7 @@ public enum TransRxBus {
     }
 
     public void post(FileTransEvent fileTransEvent){
-        System.out.println(GsonUtil.getInstance().toJson(fileTransEvent));
+        System.out.println(GsonUtil.bean2Json(fileTransEvent));
         System.out.println(subject.hasObservers());
         subject.onNext(fileTransEvent);
     }

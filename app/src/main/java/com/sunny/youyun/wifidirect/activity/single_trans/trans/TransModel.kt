@@ -8,8 +8,8 @@ import com.sunny.youyun.utils.UUIDUtil
 import com.sunny.youyun.wifidirect.event.FileTransEvent
 import com.sunny.youyun.wifidirect.model.TransLocalFile
 import com.sunny.youyun.wifidirect.utils.TransRxBus
-import com.sunny.youyun.wifidirect.wd_2.socket.client.Client
-import com.sunny.youyun.wifidirect.wd_2.socket.server.Server
+import com.sunny.youyun.wifidirect.socket.client.Client
+import com.sunny.youyun.wifidirect.socket.server.Server
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
