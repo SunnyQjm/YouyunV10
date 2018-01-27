@@ -202,6 +202,7 @@ public abstract class BaseRecyclerViewFragment<P extends BasePresenter> extends 
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+
     }
 
     @Override

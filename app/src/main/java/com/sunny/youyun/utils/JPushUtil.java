@@ -25,12 +25,12 @@ public class JPushUtil {
         setTag(context, tags);
     }
     public static void setTag(@NonNull Context context, @NonNull Set<String> tags) {
-        setTag(context, tags, (i, s, set) -> Logger.i("Set tag: " +
-                i +
-                "\n" +
-                s +
-                "\n" +
-                set));
+            setTag(context, tags, (i, s, set) -> Logger.i("Set tag: " +
+                    i +
+                    "\n" +
+                    s +
+                    "\n" +
+                    set));
     }
 
     public static void setTag(@NonNull Context context, @NonNull Set<String> tags

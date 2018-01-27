@@ -21,7 +21,6 @@ android {
         enabled true
     }
     compileSdkVersion 27
-    buildToolsVersion "27.0.0"
     defaultConfig {
         applicationId "com.sunny.youyun"
         minSdkVersion 15
@@ -108,8 +107,8 @@ dependencies {
     implementation 'cn.jiguang.sdk:jpush:3.0.5'
     // 此处以JCore 1.1.2 版本为例。
     implementation 'cn.jiguang.sdk:jcore:1.1.2'
-    //permission
-    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+        //permission
+        implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     //eventbus
     implementation 'org.greenrobot:eventbus:3.0.0'
 

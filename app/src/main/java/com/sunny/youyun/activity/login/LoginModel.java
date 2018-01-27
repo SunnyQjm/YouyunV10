@@ -40,6 +40,7 @@ class LoginModel implements LoginContract.Model{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonObject.toString());
 
         APIManager.getInstance()

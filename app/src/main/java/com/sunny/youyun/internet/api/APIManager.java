@@ -143,9 +143,8 @@ public class APIManager {
             Buffer buffer = source.buffer();
             Charset charset = UTF8;
             MediaType contentType = responseBody.contentType();
-            if (contentType != null) {
+            if (contentType != null)
                 charset = contentType.charset(UTF8);
-            }
             String responseString = buffer.clone().readString(charset);
             Logger.i(responseString);
             Logger.i(request.url().toString());
@@ -202,13 +201,6 @@ public class APIManager {
                 System.out.println("抛出LoginToken失效异常");
                 throw new LoginTokenInvalidException("LoginToken Invalid!!");
             }
-//            //对下载文件的Response拦截处理
-//            if (request.url().toString().startsWith(ApiInfo.BaseUrl + ApiInfo.DOWNLOAD)) {
-//                System.out.println("返回带下载进度监听的responseBody");
-//                return response.newBuilder()
-//                        .body(new ProgressResponseBody(response.body()))
-//                        .build();
-//            }
             return originResponse;
         }
     }

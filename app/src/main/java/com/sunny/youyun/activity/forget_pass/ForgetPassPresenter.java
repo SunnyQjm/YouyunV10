@@ -6,7 +6,7 @@ import java.io.IOException;
  * Created by Sunny on 2017/8/26 0026.
  */
 
-class ForgetPassPresenter extends ForgetPassContract.Presenter{
+class   ForgetPassPresenter extends ForgetPassContract.Presenter{
     ForgetPassPresenter(ForgetPassActivity forgetPassActivity) {
         this.mView = forgetPassActivity;
         this.mModel = new ForgetPassModel(this);

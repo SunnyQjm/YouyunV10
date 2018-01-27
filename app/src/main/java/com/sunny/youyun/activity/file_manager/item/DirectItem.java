@@ -16,6 +16,6 @@ public class DirectItem extends BaseLocalFileInfo implements MultiItemEntity{
 
     @Override
     public int getItemType() {
-        return ItemTypeConfig.TYPE_DIRECT_INFO;
+            return ItemTypeConfig.TYPE_DIRECT_INFO;
     }
 }
